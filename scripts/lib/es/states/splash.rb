@@ -5,6 +5,7 @@ module ES
       def init
         @bitmapfont = BitmapFont.new("media/bmpfont/font_cga8_white.png")
         @bitmapfont.string = "Earthen : Smiths #{ES::Version::STRING}"
+        @countdown = Countdown.new(120) # about 2 seconds
       end
 
       def update
@@ -13,11 +14,12 @@ module ES
       end
 
       def render
-        #
         x = (Moon::Screen.width - @bitmapfont.width) / 2
         y = (Moon::Screen.height - @bitmapfont.height) / 2
         @bitmapfont.render(x, y, 0)
+        @countdown.update
         super
+        State.pop if @countdown.done?
       end
 
     end
