@@ -29,27 +29,27 @@ class Vector3
   end
 
   def +(other)
-    x, y, z = *obj_to_vec3a other
+    x, y, z = *obj_to_vec3a(other)
     Vector3.new(@x + x, @y + y, @z + z)
   end
 
   def -(other)
-    x, y, z = *obj_to_vec3a other
+    x, y, z = *obj_to_vec3a(other)
     Vector3.new(@x - x, @y - y, @z - z)
   end
 
   def *(other)
-    x, y, z = *obj_to_vec3a other
+    x, y, z = *obj_to_vec3a(other)
     Vector3.new(@x * x, @y * y, @z * z)
   end
 
   def /(other)
-    x, y, z = *obj_to_vec3a other
+    x, y, z = *obj_to_vec3a(other)
     Vector3.new(@x / x, @y / y, @z / z)
   end
 
   def dot(other)
-    x, y, z = *obj_to_vec3a other
+    x, y, z = *obj_to_vec3a(other)
     @x * x + @y * y + @z * z
   end
 

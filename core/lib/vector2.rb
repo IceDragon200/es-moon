@@ -27,27 +27,27 @@ class Vector2
   end
 
   def +(other)
-    x, y = *obj_to_vec2a other
+    x, y = *obj_to_vec2a(other)
     Vector2.new(@x + x, @y + y)
   end
 
   def -(other)
-    x, y = *obj_to_vec2a other
+    x, y = *obj_to_vec2a(other)
     Vector2.new(@x - x, @y - y)
   end
 
   def *(other)
-    x, y = *obj_to_vec2a other
+    x, y = *obj_to_vec2a(other)
     Vector2.new(@x * x, @y * y)
   end
 
   def /(other)
-    x, y = *obj_to_vec2a other
+    x, y = *obj_to_vec2a(other)
     Vector2.new(@x / x, @y / y)
   end
 
   def dot(other)
-    x, y = *obj_to_vec3a other
+    x, y = *obj_to_vec3a(other)
     @x * x + @y * y
   end
 
