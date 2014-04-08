@@ -1,1 +1,1 @@
-#require 'scripts/lib/es/gdata/'
+require 'scripts/lib/es/gdata/base_model'
