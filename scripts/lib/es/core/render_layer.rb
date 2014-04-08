@@ -1,5 +1,9 @@
 class RenderContainer
 
+  @@container_id = 0
+
+  attr_reader :id
+
   attr_accessor :x
   attr_accessor :y
   attr_accessor :z
@@ -8,6 +12,7 @@ class RenderContainer
     @x = 0
     @y = 0
     @z = 0
+    @id = @@container_id += 1
   end
 
   def render(x=0, y=0, z=0)
