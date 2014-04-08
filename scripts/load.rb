@@ -1,3 +1,4 @@
+require 'scripts/game_config'
 require 'scripts/lib'
 require 'scripts/gdata'
 
