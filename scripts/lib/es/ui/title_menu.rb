@@ -2,11 +2,28 @@ module ES
   module UI
     class TitleMenu < RenderContainer
 
+      attr_reader :index
       def initialize
         super
+        create_fonts
+        @index = 0
+        make_list
+      end
+
+      def get_item(index)
+        @list[index]
+      end
+
+      def current_item
+        get_item(@index)
+      end
+
+      def create_fonts
         @bmpfont_unselected = BitmapFont.new("font_cga8_white.png")
         @bmpfont_selected = BitmapFont.new("font_cga8_droid_blue.png")
-        @index = 0
+      end
+
+      def make_list
         @list = [
           { id: :newgame, name: "New Game" },
           #{ id: :continue, name: "Continue" },
