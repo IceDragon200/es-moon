@@ -1,1 +1,0 @@
-require 'scripts/game_config/controls'

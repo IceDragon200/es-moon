@@ -1,5 +1,5 @@
 module ES
-  module GameConfig
+  module Config
 
     @controls = {
       up:     [Moon::Input::Keyboard::Keys::UP],
