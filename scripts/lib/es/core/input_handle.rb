@@ -15,15 +15,18 @@ class InputHandle
   end
 
   def triggered?
-    each_selector.any { |s| @device.triggered?(s, @modifier) }
+    each_selector { |s| return true if @device.triggered?(s, @modifier) }
+    false
   end
 
   def repeated?
-    each_selector.any { |s| @device.repeated?(s, @modifier) }
+    each_selector { |s| return true if @device.repeated?(s, @modifier) }
+    false
   end
 
   def pressed?
-    each_selector.any { |s| @device.pressed?(s, @modifier) }
+    each_selector { |s| return true if @device.pressed?(s, @modifier) }
+    false
   end
 
 end
