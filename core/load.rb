@@ -1,5 +1,0 @@
-require 'core/lib/state'
-require 'core/lib/bitmap_font'
-require 'core/lib/render_layer'
-require 'core/lib/vector2'
-require 'core/lib/vector3'
