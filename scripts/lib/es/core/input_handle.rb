@@ -5,16 +5,20 @@ class InputHandle
     @selector = selector
   end
 
+  def each_selector(&block)
+    @selector.is_a?(Enumerable) ? @selector.each(&block) : yield(@selector)
+  end
+
   def triggered?
-    @device.triggered?(@selector)
+    each_selector.any { |s| @device.triggered?(s) }
   end
 
   def repeated?
-    @device.repeated?(@selector)
+    each_selector.any { |s| @device.repeated?(s) }
   end
 
   def pressed?
-    @device.pressed?(@selector)
+    each_selector.any { |s| @device.pressed?(s) }
   end
 
 end
