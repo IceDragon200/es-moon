@@ -4,7 +4,7 @@ module ES
 
       def init
         @bitmapfont = BitmapFont.new("media/bmpfont/font_cga8_white.png")
-        @bitmapfont.string = "Splash"
+        @bitmapfont.string = "Earthen : Smiths #{ES::Version::STRING}"
       end
 
       def update
