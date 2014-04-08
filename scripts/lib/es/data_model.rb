@@ -1,0 +1,1 @@
+require 'scripts/lib/es/data_model/base_model'
