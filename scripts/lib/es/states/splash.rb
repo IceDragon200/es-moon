@@ -6,6 +6,7 @@ module ES
         @bitmapfont = BitmapFont.new("media/bmpfont/font_cga8_white.png")
         @bitmapfont.string = "Earthen : Smiths #{ES::Version::STRING}"
         @countdown = Countdown.new(120) # about 2 seconds
+        super
       end
 
       def update
