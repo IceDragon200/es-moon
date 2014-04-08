@@ -1,6 +1,6 @@
 class BitmapFont
 
-  attr_accessor :string
+  attr_reader :string
   attr_accessor :bold
 
   ###
@@ -10,9 +10,14 @@ class BitmapFont
   ###
   def initialize(filename, string="")
     @cell_size = [8, 8]
-    @spritesheet = Moon::Spritesheet.new filename, *@cell_size
+    @spritesheet = Cache.bmpfont filename, *@cell_size
     @string = string
     @bold = false
+  end
+
+  def set_string(new_string)
+    @string = new_string
+    self
   end
 
   def width
@@ -40,6 +45,7 @@ class BitmapFont
                             byte + offset
       end
     end
+    self
   end
 
 end

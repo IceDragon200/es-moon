@@ -4,6 +4,7 @@ module ES
 
       def init
         super
+        @title_menu = ES::UI::TitleMenu.new
       end
 
       def update
@@ -12,6 +13,7 @@ module ES
       end
 
       def render
+        @title_menu.render(0, 0, 0)
         super
       end
 

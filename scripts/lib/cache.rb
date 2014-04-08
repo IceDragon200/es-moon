@@ -1,14 +1,20 @@
 module Cache
 
-  branch :icon do |hsh|
-
-    hsh.default_proc = lambda do |filename, *args|
+  branch :icon do
+    lambda do |filename, *args|
       Moon::Sprite.new("media/icons_64x64/" + filename)
     end
-
   end
 
-  branch :font do |hsh|
+  branch :bmpfont do
+    lambda do |filename, *args|
+      Moon::Spritesheet.new("media/bmpfont/" + filename, *args)
+    end
+  end
+
+  branch :font do
+
+    hsh = {}
 
     hsh["ipaexg"] = ->(size) do
       Moon::Font.new("resources/fonts/ipaexg/ipaexg.ttf", size)
@@ -34,6 +40,7 @@ module Cache
       Moon::Font.new("resources/fonts/vera/VeraMoIt.ttf", size)
     end
 
+    hsh
   end
 
 end
