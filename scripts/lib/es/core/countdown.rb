@@ -5,7 +5,7 @@ class Countdown
   end
 
   def done?
-    @ticks < 0
+    @ticks <= 0
   end
 
   def update
