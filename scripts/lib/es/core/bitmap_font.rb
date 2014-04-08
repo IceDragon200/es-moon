@@ -37,7 +37,7 @@ class BitmapFont
     if @string
       offset = @bold ? 256 : 0
       row = 0
-      @string.bytes.each_with_index do |byte, i|
+      @string.to_s.bytes.each_with_index do |byte, i|
         next row += 1 if byte.chr == "\n"
         @spritesheet.render x + i * @cell_size[0],
                             y + row * @cell_size[1],
