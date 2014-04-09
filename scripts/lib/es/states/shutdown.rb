@@ -7,7 +7,7 @@ module ES
       end
 
       def update
-        exit
+        quit
         super
       end
 
