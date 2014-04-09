@@ -24,11 +24,11 @@ module ES
     end
 
     def self.where(sub, options={})
-      return @data[sub] if options.empty? && !block_given?
-      @data.select do |e|
-        if block_given?
-          yield e
-        else
+      if block_given?
+        @data[sub].select { |e| yield e }
+      else
+        return @data[sub] if options.empty?
+        @data[sub].select do |e|
           options.all? { |k, v| e.send(k) == v }
         end
       end
