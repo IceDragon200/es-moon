@@ -12,6 +12,12 @@ module Cache
     end
   end
 
+  branch :tileset do
+    lambda do |filename, *args|
+      Moon::Spritesheet.new("media/tilesets/" + filename, *args)
+    end
+  end
+
   branch :font do
 
     hsh = {}
