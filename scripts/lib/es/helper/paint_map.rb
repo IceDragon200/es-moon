@@ -60,6 +60,7 @@ module ES
           yield self
           load
         end
+        self
       end
 
       def load
@@ -69,10 +70,11 @@ module ES
         @rect = state[:rect]
         @stroke_weight = state[:stroke_weight]
         @value = state[:value]
+        self
       end
 
       def clear
-        @actions << snapshot.merge(action: :fill, value: -1)
+        @actions << snapshot.merge(action: :clear)
         self
       end
 
@@ -100,6 +102,12 @@ module ES
                 @data[offset.x + x, offset.y + y, layer] = value
               end
             end
+          when :clear
+            (rect.y...rect.y2).each do |y|
+              (rect.x...rect.x2).each do |x|
+                @data[offset.x + x, offset.y + y, layer] = -1
+              end
+            end
           when :stroke
             weight = action[:stroke_weight]
 
@@ -121,6 +129,7 @@ module ES
 
           end
         end
+        self
       end
 
     end
