@@ -1,6 +1,7 @@
 ES::Database.create :chunk do |chunk|
 
   chunk.name = "school_f1/baron.room"
+
   chunk.data = DataMatrix.new(8, 6, 2) do |dm| dm.clear(-1)
     painter = ES::Helper::PaintMap.new(dm)
     painter.save do |pnt|
@@ -23,6 +24,30 @@ ES::Database.create :chunk do |chunk|
       pnt.move( 2,  0).set_value( 137).point        # right chair
     end
     painter.render
+  end
+
+  chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
+    dm.clear(ES::ChunkFlag::NONE)
+    painter = ES::Helper::PaintMap.new(dm)
+    painter.save do |pnt|
+      pnt.set_layer( 1)
+      # we shift that bookshelf a half tile upwards so it looks like its
+      # against the wall instead of off the wall
+      pnt.set_pos(4, 1).set_value ES::ChunkFlag::HALF_OFF_TILE |
+                                  ES::ChunkFlag::OFF_UP
+    end
+    painter.render
+  end
+
+  chunk.passage = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
+    strmap = ES::Passage::STRMAP
+    pss = "xxxxxxxx" +
+          "xoooooox" +
+          "xoooooox" +
+          "ooooxoox" +
+          "xoooooox" +
+          "xxxxxxxx"
+    pss.bytes.each_with_index { |c, i| table.set_by_index(i, strmap[c.chr]) }
   end
 
 end

@@ -1,5 +1,6 @@
 require 'scripts/lib/es/version'
 require 'scripts/lib/es/core'
+require 'scripts/lib/es/const'
 require 'scripts/lib/es/data_model'
 require 'scripts/lib/es/database'
 require 'scripts/lib/es/gdata'
