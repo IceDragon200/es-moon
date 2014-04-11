@@ -30,6 +30,14 @@ class RenderContainer
     0
   end
 
+  def x2
+    x + width
+  end
+
+  def y2
+    y + height
+  end
+
   def render(x=0, y=0, z=0)
     self
   end
