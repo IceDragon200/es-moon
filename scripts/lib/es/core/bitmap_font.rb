@@ -9,11 +9,11 @@ class BitmapFont < RenderContainer
   # @param [String] string initial ASCII string value
   ###
   def initialize(filename, string="")
+    super()
     @cell_size = [8, 8]
     @spritesheet = Cache.bmpfont filename, *@cell_size
     @string = string
     @bold = false
-    @position = Vector3.new
   end
 
   def set_string(new_string)
@@ -38,11 +38,12 @@ class BitmapFont < RenderContainer
     if @string
       offset = @bold ? 256 : 0
       row = 0
+      px, py, pz = *@position
       @string.to_s.bytes.each_with_index do |byte, i|
         next row += 1 if byte.chr == "\n"
-        @spritesheet.render x + i * @cell_size[0],
-                            y + row * @cell_size[1],
-                            z,
+        @spritesheet.render px + x + i * @cell_size[0],
+                            py + y + row * @cell_size[1],
+                            pz + z,
                             byte + offset
       end
     end
