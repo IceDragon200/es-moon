@@ -1,6 +1,7 @@
+require 'scripts/lib/es/core/render_container'
+require 'scripts/lib/es/core/render_layer'
 require 'scripts/lib/es/core/bitmap_font'
 require 'scripts/lib/es/core/countdown'
 require 'scripts/lib/es/core/camera2'
 require 'scripts/lib/es/core/easer'
 require 'scripts/lib/es/core/input_handle'
-require 'scripts/lib/es/core/render_layer'

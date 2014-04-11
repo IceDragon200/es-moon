@@ -1,26 +1,3 @@
-class RenderContainer
-
-  @@container_id = 0
-
-  attr_reader :id
-
-  attr_accessor :x
-  attr_accessor :y
-  attr_accessor :z
-
-  def initialize
-    @x = 0
-    @y = 0
-    @z = 0
-    @id = @@container_id += 1
-  end
-
-  def render(x=0, y=0, z=0)
-
-  end
-
-end
-
 class RenderLayer < RenderContainer
 
   def initialize
@@ -65,7 +42,10 @@ class RenderLayer < RenderContainer
   end
 
   def render(x=0, y=0, z=0)
-    @elements.each { |e| e.render(@x + x, @y + y, @z + z) }
+    px, py, pz = *@position
+    @elements.each do |e|
+      e.render(px + x, py + y, pz + z)
+    end
   end
 
 end
