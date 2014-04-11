@@ -9,8 +9,8 @@ module ES
         @tilemap = Tilemap.new do |tilemap|
           chunk = ES::Database.find :chunk, name: "school_f1/baron.room"
           #filename = "tileset_16x16_Jerom_CC-BY-SA-3.0_8_blue.png"
-          filename = "oryx_lofi_fantasy/lofi_environment.png"
-          tilemap.tileset = Cache.tileset filename, 8, 8
+          filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
+          tilemap.tileset = Cache.tileset filename, 32, 32
           #tilemap.tileset = Cache.tileset("ass_file_tran_16x24.png", 16, 24)
           tilemap.data = chunk.data
         end
