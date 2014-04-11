@@ -29,4 +29,9 @@ class InputHandle
     false
   end
 
+  def held?
+    each_selector { |s| return true if @device.held?(s, @modifier) }
+    false
+  end
+
 end
