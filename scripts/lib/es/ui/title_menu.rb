@@ -3,6 +3,7 @@ module ES
     class TitleMenu < RenderContainer
 
       attr_reader :index
+
       def initialize
         super
         create_fonts
@@ -37,11 +38,13 @@ module ES
 
       def render(x, y, z)
         oy = 0
+        px, py, pz = *@position
         @list.each_with_index do |dat, i|
           font = i == @index ? @bmpfont_selected : @bmpfont_unselected
-          font.set_string(dat[:name]).render(x, y + oy, z)
+          font.set_string(dat[:name]).render(px + x, py + y + oy, pz + z)
           oy += font.height
         end
+        super x, y, z
       end
 
     end
