@@ -29,6 +29,7 @@ module ES
           tilemap.tileset = Cache.tileset filename, 32, 32
           #tilemap.tileset = Cache.tileset("ass_file_tran_16x24.png", 16, 24)
           tilemap.data = chunk.data
+          tilemap.flags = chunk.flags
         end
       end
 

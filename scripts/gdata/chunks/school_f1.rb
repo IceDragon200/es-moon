@@ -31,10 +31,14 @@ ES::Database.create :chunk do |chunk|
     painter = ES::Helper::PaintMap.new(dm)
     painter.save do |pnt|
       pnt.set_layer( 1)
+      # shift the bed a quater tile up
+      pnt.set_pos(1, 1).set_value(Tilemap::DataFlag::QUART_OFF_TILE |
+                                  Tilemap::DataFlag::OFF_DOWN).point
+
       # we shift that bookshelf a half tile upwards so it looks like its
       # against the wall instead of off the wall
-      pnt.set_pos(4, 1).set_value Tilemap::DataFlag::HALF_OFF_TILE |
-                                  Tilemap::DataFlag::OFF_UP
+      pnt.set_pos(4, 1).set_value(Tilemap::DataFlag::HALF_OFF_TILE |
+                                  Tilemap::DataFlag::OFF_UP).point
     end
     painter.render
   end

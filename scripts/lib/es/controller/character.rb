@@ -14,8 +14,6 @@ module ES
         @down   = InputHandle.new(device, ES::Config.controls[:down])
         @left   = InputHandle.new(device, ES::Config.controls[:left])
         @right  = InputHandle.new(device, ES::Config.controls[:right])
-        @accept = InputHandle.new(device, ES::Config.controls[:accept])
-        @cancel = InputHandle.new(device, ES::Config.controls[:cancel])
       end
 
       def update
