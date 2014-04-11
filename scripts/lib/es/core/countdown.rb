@@ -1,7 +1,18 @@
 class Countdown
 
+  attr_reader :ticks
+  attr_reader :ticks_max
+
   def initialize(n)
+    setup(n)
+  end
+
+  def setup(n)
     @ticks = @ticks_max = n.to_i
+  end
+
+  def reset
+    @ticks = @ticks_max
   end
 
   def done?
