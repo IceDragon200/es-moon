@@ -19,15 +19,15 @@ module ES
       end
 
       def update
-        if @up.pressed?
-          @character.move(0, -1)
-        elsif @down.pressed?
-          @character.move(0, 1)
+        if @up.held?
+          @character.move_xy(0, -1)
+        elsif @down.held?
+          @character.move_xy(0, 1)
         end
-        if @left.pressed?
-          @character.move(-1, 0)
-        elsif @right.pressed?
-          @character.move(1, 0)
+        if @left.held?
+          @character.move_xy(-1, 0)
+        elsif @right.held?
+          @character.move_xy(1, 0)
         end
       end
 
