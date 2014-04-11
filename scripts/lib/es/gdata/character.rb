@@ -5,7 +5,7 @@ module ES
       attr_accessor :position
 
       def initialize
-        @position = Vector2.new(0, 0)
+        @position = Vector3.new(0, 0, 0)
       end
 
       def world_update
