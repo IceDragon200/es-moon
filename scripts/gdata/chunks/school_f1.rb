@@ -9,10 +9,11 @@ ES::Database.create :chunk do |chunk|
       pnt.rect.contract( 1)                         # inner
       pnt.set_value( 0).stroke                      # walls
       pnt.set_value( 12).fill                       # fill floor
-      pnt.set_rect(3, 2, 3, 3).set_value( 53).fill  # fill rug
+      pnt.set_rect(3, 2, 3, 3).set_value( 60).fill  # fill rug
       pnt.reset_rect                                # restore rect
       pnt.set_pos( 2,  0).set_value( 1).point       # wall lamp
       pnt.move( 3,  0).set_value( 1).point          # wall lamp
+      pnt.set_pos( 0,  3).set_value( 12).point      # doorway
       ## Detail layer                               #
       pnt.set_pos( 0,  0).set_layer( 1).clear       # goto second layer
       pnt.move( 1,  1).set_value( 135).point        # bed
