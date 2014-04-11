@@ -25,20 +25,4 @@ module ES
     }
 
   end
-
-  module ChunkFlag
-
-    NONE            = 0        # 0000 0000 # no flag
-    # up and down offsets will conflict, left and right offsets will conflict
-    OFF_UP          = 16       # 0001 0000 # enable offset up
-    OFF_LEFT        = 32       # 0010 0000 # enable offset left
-    OFF_RIGHT       = 64       # 0100 0000 # enable offset right
-    OFF_DOWN        = 128      # 1000 0000 # enable offset down
-    # note that offset will overwrite each other
-    QUART_OFF_TILE  = 1        # 0000 0001 # enable quater offset
-    HALF_OFF_TILE   = 1|2      # 0000 0011 # enable half offset
-    TQUART_OFF_TILE = 1|2|4    # 0000 0111 # enable 3/4 offset
-    FULL_OFF_TILE   = 1|2|4|8  # 0000 1111 # enable full offset
-
-  end
 end

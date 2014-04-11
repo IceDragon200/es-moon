@@ -27,14 +27,14 @@ ES::Database.create :chunk do |chunk|
   end
 
   chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
-    dm.clear(ES::ChunkFlag::NONE)
+    dm.clear(Tilemap::DataFlag::NONE)
     painter = ES::Helper::PaintMap.new(dm)
     painter.save do |pnt|
       pnt.set_layer( 1)
       # we shift that bookshelf a half tile upwards so it looks like its
       # against the wall instead of off the wall
-      pnt.set_pos(4, 1).set_value ES::ChunkFlag::HALF_OFF_TILE |
-                                  ES::ChunkFlag::OFF_UP
+      pnt.set_pos(4, 1).set_value Tilemap::DataFlag::HALF_OFF_TILE |
+                                  Tilemap::DataFlag::OFF_UP
     end
     painter.render
   end
