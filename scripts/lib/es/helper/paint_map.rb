@@ -3,7 +3,6 @@ module ES
     class PaintMap
 
       attr_accessor :layer
-      attr_accessor :pos
       attr_accessor :rect
       attr_accessor :stroke_weight
       attr_accessor :value
@@ -13,41 +12,75 @@ module ES
         @actions = []
         @stack = []
         @layer = 0
-        @pos = Vector2.new
-        @rect = Moon::Rect.new(0, 0, data.xsize, data.ysize)
+        @rect = Moon::Rect.new(0, 0, @data.xsize, @data.ysize)
         @stroke_weight = 1
         @value = 0
       end
 
+      def pos
+        @rect.xy
+      end
+
+      def size
+        @rect.wh
+      end
+
+      def reset_pos
+        @rect.xy = [0, 0]
+      end
+
+      def reset_size
+        @rect.wh = [@data.xsize, @data.ysize]
+      end
+
+      def reset_rect
+        @rect.set(0, 0, @data.xsize, @data.ysize)
+      end
+
       def set_layer(n)
-        self.layer = n
+        @layer = n
         self
       end
 
-      def set_pos(n)
-        self.pos = n
+      def set_pos(*args)
+        if args.size == 1
+          @rect.xy, = args
+        else
+          @rect.xy = args
+        end
         self
       end
 
-      def set_rect(n)
-        self.rect = n
+      def set_size(*args)
+        if args.size == 1
+          @rect.wh, = args
+        else
+          @rect.wh = args
+        end
+      end
+
+      def set_rect(*args)
+        if args.size == 1
+          @rect.set(args[0])
+        else
+          @rect.set(*args)
+        end
         self
       end
 
       def set_stroke_weight(n)
-        self.stroke_weight = n
+        @stroke_weight = n
         self
       end
 
       def set_value(n)
-        self.value = n
+        @value = n
         self
       end
 
       def snapshot
         {
           layer: @layer,
-          pos: @pos.dup,
           rect: @rect.dup,
           stroke_weight: @stroke_weight,
           value: @value,
@@ -66,7 +99,6 @@ module ES
       def load
         state = @stack.pop
         @layer = state[:layer]
-        @pos = state[:pos]
         @rect = state[:rect]
         @stroke_weight = state[:stroke_weight]
         @value = state[:value]
@@ -88,24 +120,35 @@ module ES
         self
       end
 
+      def point
+        @actions << snapshot.merge(action: :point)
+        self
+      end
+
+      def move(x, y)
+        @rect.xy += [x, y]
+        self
+      end
+
       def render
         for action in @actions
-          offset = action[:pos]
           rect   = action[:rect]
           layer  = action[:layer]
           value  = action[:value]
 
           case action[:action]
+          when :point
+            @data[rect.x, rect.y, layer] = value
           when :fill
             (rect.y...rect.y2).each do |y|
               (rect.x...rect.x2).each do |x|
-                @data[offset.x + x, offset.y + y, layer] = value
+                @data[x, y, layer] = value
               end
             end
           when :clear
             (rect.y...rect.y2).each do |y|
               (rect.x...rect.x2).each do |x|
-                @data[offset.x + x, offset.y + y, layer] = -1
+                @data[x, y, layer] = -1
               end
             end
           when :stroke
@@ -113,17 +156,17 @@ module ES
 
             (rect.w+weight*2).times do |x|
               weight.times do |y|
-                dx = offset.x + rect.x + x - weight
-                @data[dx, offset.y + rect.y-1-y, layer] = value
-                @data[dx, offset.y + rect.y2+y, layer] = value
+                dx = rect.x + x - weight
+                @data[dx, rect.y-1-y, layer] = value
+                @data[dx, rect.y2+y, layer] = value
               end
             end
 
             weight.times do |x|
               (rect.h+weight*2).times do |y|
-                dy = offset.y + rect.y + y - weight
-                @data[offset.x + rect.x-1-x, dy, layer] = value
-                @data[offset.x + rect.x2+x,  dy, layer] = value
+                dy = rect.y + y - weight
+                @data[rect.x-1-x, dy, layer] = value
+                @data[rect.x2+x,  dy, layer] = value
               end
             end
 
@@ -131,6 +174,10 @@ module ES
         end
         self
       end
+
+      alias :resize :set_size
+      alias :size= :set_size
+      alias :pos= :set_pos
 
     end
   end
