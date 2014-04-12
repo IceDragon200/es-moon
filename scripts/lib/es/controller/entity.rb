@@ -18,14 +18,14 @@ module ES
 
       def update
         if @up.held?
-          @entity.move_xy(0, -1)
+          @entity.move(0, -1)
         elsif @down.held?
-          @entity.move_xy(0, 1)
+          @entity.move(0, 1)
         end
         if @left.held?
-          @entity.move_xy(-1, 0)
+          @entity.move(-1, 0)
         elsif @right.held?
-          @entity.move_xy(1, 0)
+          @entity.move(1, 0)
         end
       end
 

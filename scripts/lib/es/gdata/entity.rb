@@ -3,29 +3,30 @@ module ES
     class Entity
 
       attr_accessor :position
+      attr_accessor :dest_position
 
       def initialize
-        @position = Vector3.new(0, 0, 0)
+        moveto(0, 0, 0)
       end
 
       def move_speed
         0.08
       end
 
-      def moveto(x, y)
-        @position.xy = x, y
+      def moveto(x, y, z=nil)
+        @position = Vector3[x, y, z || (@position && @position.z) || 0]
+        @dest_position = @position.dup
       end
 
-      def move_xy(x, y)
-        @position.xy += Vector2[x, y] * move_speed
-        resolve_passage
+      def move(x, y, z=0)
+        @dest_position = @position + Vector3[x, y, z] * move_speed
       end
 
-      def resolve_passage
-
+      def moving?
+        @dest_position != @position
       end
 
-      def world_update
+      def update
         #
       end
 

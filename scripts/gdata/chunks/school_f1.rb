@@ -35,7 +35,7 @@ ES::Database.create :chunk do |chunk|
                   Tilemap::DataFlag::OFF_UP
   end
 
-  chunk.passage = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
+  chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
     pss = "xxxxxxxx" +
           "xoooooox" +
           "xoooooox" +

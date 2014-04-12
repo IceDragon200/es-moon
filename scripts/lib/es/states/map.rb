@@ -5,11 +5,12 @@ module ES
       def init
         super
         create_map
+        create_entity
 
         create_camera
 
         create_tilemaps
-        create_entity
+        create_entity_sprite
         #create_particles
 
         create_debug_objects
@@ -28,6 +29,11 @@ module ES
       def create_map
         @map = ES::GData::Map.new
         @map.setup(Database.find :map, name: "school_f1")
+      end
+
+      def create_entity
+        @entity = ES::GData::Actor.new
+        @map.entities.push @entity
       end
 
       def create_camera
@@ -50,8 +56,7 @@ module ES
         end
       end
 
-      def create_entity
-        @entity = ES::GData::Actor.new
+      def create_entity_sprite
         filename = "oryx_lofi_fantasy/3x/lofi_char_3x.png"
         @entity_sp = Cache.tileset filename, 24, 24
         @entity_voffset =
@@ -97,12 +102,22 @@ module ES
         @controller.update
         @cam_controller.update
 
-        #update_particles
+        @map.update
 
+        #update_particles
+        if Moon::Input::Keyboard.triggered?(Moon::Input::Keyboard::Keys::SPACE)
+          flag = @map.passages[*@entity.position.xy]
+          puts [@entity.position, [flag, flag.masked?(ES::Passage::LEFT),
+                                         flag.masked?(ES::Passage::RIGHT),
+                                         flag.masked?(ES::Passage::UP),
+                                         flag.masked?(ES::Passage::DOWN)]
+               ]
+        end
         @camera.update
 
         @ui_posmon.update
         @ui_camera_posmon.update
+
         super
       end
 
