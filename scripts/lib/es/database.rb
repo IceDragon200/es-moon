@@ -29,7 +29,7 @@ module ES
       else
         return @data[sub] if options.empty?
         @data[sub].select do |e|
-          options.all? { |k, v| e.send(k) == v }
+          options.all? { |k, v| e.where_match?(k, v) }
         end
       end
     end

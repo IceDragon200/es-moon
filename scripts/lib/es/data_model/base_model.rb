@@ -73,11 +73,43 @@ module ES
       end
 
       def to_h
-        hsh = Hash.new
-        self.class.all_fields.each do |_, k|
-          hsh[k] = send(k)
+        hsh = {}
+        self.class.all_fields.each do |k, d|
+          obj = send(k)
+          obj = obj.to_h if obj.respond_to?(:to_h)
+          hsh[k] = obj
         end
         hsh
+      end
+
+      ###
+      # Honestly, I had no idea what to call this method at all.
+      # This is a search function used by Database::where
+      # @param [String|Symbol] key
+      # @param [Object] value
+      # @return [Boolean]
+      ###
+      def where_match?(key, value)
+        # tags and meta are special cases
+        case key.to_s
+        ###
+        # EG:
+        # tags: ["red", "herb", "thing"]
+        # tag: "herb"
+        ###
+        when "tags", "tag"
+          value = [value] unless value.is_a?(Array)
+          (meta & value) == value
+        ###
+        # NOTE* Key Symbols will be converted to Strings
+        # EG:
+        # meta: { x: "hi" }
+        ###
+        when "meta"
+          value.all? { |k, v| @meta[k.to_s] == v }
+        else
+          send(key) == value
+        end
       end
 
       private :initialize_fields
