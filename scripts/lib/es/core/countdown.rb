@@ -24,7 +24,7 @@ class Countdown
   end
 
   def rate
-    @ticks.to_f / @ticks_max
+    1 - (@ticks.to_f / @ticks_max)
   end
 
 end
