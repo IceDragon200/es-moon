@@ -12,6 +12,10 @@ module ES
         0.08
       end
 
+      def moveto(x, y)
+        @position.xy = x, y
+      end
+
       def move_xy(x, y)
         @position.xy += Vector2[x, y] * move_speed
         resolve_passage

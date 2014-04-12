@@ -7,16 +7,18 @@ module ES
         create_camera
 
         create_tilemap
-        create_character
+        create_entity
         create_debug_objects
 
-        @controller = ES::Controller::Entity.new(@character)
+        @entity.moveto(1, 1)
+
+        @controller = ES::Controller::Entity.new(@entity)
         @cam_controller = ES::Controller::Camera.new(@camera)
 
-        @ui_posmon.set_obj(@character, true)
+        @ui_posmon.set_obj(@entity, true)
         @ui_camera_posmon.set_obj(@camera, true)
 
-        @camera.follow(@character)
+        @camera.follow(@entity)
       end
 
       def create_camera
@@ -27,24 +29,24 @@ module ES
         @map_pos = Vector3.new 0, 0, 0
         @tilemap = Tilemap.new do |tilemap|
           chunk = ES::Database.find :chunk, name: "school_f1/baron.room"
-          #filename = "tileset_16x16_Jerom_CC-BY-SA-3.0_8_blue.png"
+
           filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
+
           tilemap.tileset = Cache.tileset filename, 32, 32
-          #tilemap.tileset = Cache.tileset("ass_file_tran_16x24.png", 16, 24)
           tilemap.data = chunk.data
           tilemap.flags = chunk.flags
         end
       end
 
-      def create_character
-        @character = ES::GData::Actor.new
+      def create_entity
+        @entity = ES::GData::Actor.new
         filename = "oryx_lofi_fantasy/3x/lofi_char_3x.png"
-        @character_sp = Cache.tileset filename, 24, 24
-        @character_voffset =
-          Vector3.new @tilemap.tileset.cell_width - @character_sp.cell_width,
-                      @tilemap.tileset.cell_height - @character_sp.cell_height,
+        @entity_sp = Cache.tileset filename, 24, 24
+        @entity_voffset =
+          Vector3.new @tilemap.tileset.cell_width - @entity_sp.cell_width,
+                      @tilemap.tileset.cell_height - @entity_sp.cell_height,
                       0
-        @character_voffset /= 2
+        @entity_voffset /= 2
       end
 
       def create_debug_objects
@@ -65,9 +67,9 @@ module ES
 
       def render
         pos = @map_pos - @camera.view_xy.xyz
-        charpos = pos + (@character.position * 32) + @character_voffset
+        charpos = pos + (@entity.position * 32) + @entity_voffset
         @tilemap.render(*pos)
-        @character_sp.render(*charpos, 0)
+        @entity_sp.render(*charpos, 0)
 
         # debug
         h = Moon::Screen.height - @ui_posmon.height
