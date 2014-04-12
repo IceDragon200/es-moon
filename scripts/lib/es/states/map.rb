@@ -8,6 +8,8 @@ module ES
 
         create_tilemap
         create_entity
+        #create_particles
+
         create_debug_objects
 
         @entity.moveto(1, 1)
@@ -49,14 +51,43 @@ module ES
         @entity_voffset /= 2
       end
 
+      def create_particles
+        filename = "oryx_lofi_fantasy/lofi_obj.png"
+        spritesheet = Cache.tileset filename, 8, 8
+        @particles = ParticleSystem.new(spritesheet)
+        @particles.ticks = 30
+
+        device = Moon::Input::Keyboard
+        @spawn = InputHandle.new(device, device::Keys::SPACE)
+      end
+
       def create_debug_objects
         @ui_posmon = ES::UI::PositionMonitor.new
         @ui_camera_posmon = ES::UI::PositionMonitor.new
       end
 
+      def update_particles
+        if @spawn.held?
+          x = (rand * 2.0) / 8.0
+          y = (rand * 2.0) / 8.0
+          x = -x if rand(2) == 0
+
+          @particles.add(
+            cell_index: 137,
+            position: @entity.position * 32,
+            accel: [x, y, 0.0],
+            velocity: [0.0, -2.0, 0.0]
+          )
+        end
+
+        @particles.update
+      end
+
       def update
         @controller.update
         @cam_controller.update
+
+        #update_particles
 
         @camera.update
 
@@ -70,6 +101,8 @@ module ES
         charpos = pos + (@entity.position * 32) + @entity_voffset
         @tilemap.render(*pos)
         @entity_sp.render(*charpos, 0)
+
+        #@particles.render(*pos)
 
         # debug
         h = Moon::Screen.height - @ui_posmon.height
