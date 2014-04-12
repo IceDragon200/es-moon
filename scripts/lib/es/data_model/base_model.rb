@@ -37,9 +37,23 @@ module ES
         alias_method setter, "#{sym}="
 
         define_method "#{sym}=" do |obj|
-          unless obj.is_a?(type) || (allow_nil && (obj == nil))
-            raise TypeError,
-                  "wrong type #{obj.class.inspect} (expected #{type.inspect})"
+          # validate that obj is of type
+          if type.is_a?(Module)
+            unless obj.is_a?(type) || (allow_nil && (obj == nil))
+              raise TypeError,
+                    "wrong type #{obj.class.inspect} (expected #{type.inspect})"
+            end
+          # validate that obj is an Array of type
+          elsif type.is_a?(Array)
+            unless obj.is_a?(Array) || (allow_nil && (obj == nil))
+              raise TypeError,
+                    "wrong type #{obj.class.inspect} (expected Array)"
+            end
+            unless obj.all? { |o| type.any? { |t| o.is_a?(t) } }
+              str = type.map { |s| s.inspect }.join(", ")
+              raise TypeError,
+                    "wrong type #{obj.class.inspect} (expected #{str})"
+            end
           end
           send(setter, obj)
         end
@@ -48,11 +62,11 @@ module ES
       @@dmid = 0
 
       attr_reader :dmid          # DataModel ID
-      field :id,   type: Integer, default: 0         # ID
-      field :name, type: String,  default: proc {""} # Name of this model
-      field :note, type: String,  default: proc {""} # A string for describing this DataModel
-      field :tags, type: Array,   default: proc {[]} # Used for lookups
-      field :meta, type: Hash,    default: proc {{}} # Meta Data, String Values and String Keys
+      field :id,   type: Integer,  default: 0         # ID
+      field :name, type: String,   default: proc {""} # Name of this model
+      field :note, type: String,   default: proc {""} # A string for describing this DataModel
+      field :tags, type: [String], default: proc {[]} # Used for lookups
+      field :meta, type: Hash,     default: proc {{}} # Meta Data, String Values and String Keys
 
       def initialize(opts={})
         opts.each { |k, v| send(k.to_s + "=", v) }
