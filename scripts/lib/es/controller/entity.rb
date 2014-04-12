@@ -1,12 +1,12 @@
 module ES
   module Controller
-    class Character
+    class Entity
 
-      attr_accessor :character
+      attr_accessor :entity
       attr_accessor :active
 
-      def initialize(character)
-        @character = character
+      def initialize(entity)
+        @entity = entity
         @active = true
 
         device = Moon::Input::Keyboard
@@ -18,14 +18,14 @@ module ES
 
       def update
         if @up.held?
-          @character.move_xy(0, -1)
+          @entity.move_xy(0, -1)
         elsif @down.held?
-          @character.move_xy(0, 1)
+          @entity.move_xy(0, 1)
         end
         if @left.held?
-          @character.move_xy(-1, 0)
+          @entity.move_xy(-1, 0)
         elsif @right.held?
-          @character.move_xy(1, 0)
+          @entity.move_xy(1, 0)
         end
       end
 

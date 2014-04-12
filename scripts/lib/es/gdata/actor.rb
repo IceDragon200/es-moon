@@ -1,6 +1,6 @@
 module ES
   module GData
-    class Actor < Character
+    class Actor < Entity
     end
   end
 end

@@ -1,6 +1,6 @@
 module ES
   module GData
-    class Character
+    class Entity
 
       attr_accessor :position
 

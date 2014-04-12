@@ -1,6 +1,6 @@
 module ES
   module GData
-    class Npc < Character
+    class Npc < Entity
     end
   end
 end

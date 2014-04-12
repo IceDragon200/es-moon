@@ -1,6 +1,6 @@
 module ES
   module GData
-    class Enemy < Character
+    class Enemy < Entity
     end
   end
 end

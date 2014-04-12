@@ -10,10 +10,13 @@ module ES
         create_character
         create_debug_objects
 
-        @controller = ES::Controller::Character.new(@character)
+        @controller = ES::Controller::Entity.new(@character)
+        @cam_controller = ES::Controller::Camera.new(@camera)
 
         @ui_posmon.set_obj(@character, true)
         @ui_camera_posmon.set_obj(@camera, true)
+
+        @camera.follow(@character)
       end
 
       def create_camera
@@ -34,7 +37,7 @@ module ES
       end
 
       def create_character
-        @character = ES::GData::Character.new
+        @character = ES::GData::Actor.new
         filename = "oryx_lofi_fantasy/3x/lofi_char_3x.png"
         @character_sp = Cache.tileset filename, 24, 24
         @character_voffset =
@@ -51,6 +54,9 @@ module ES
 
       def update
         @controller.update
+        @cam_controller.update
+
+        @camera.update
 
         @ui_posmon.update
         @ui_camera_posmon.update
@@ -58,7 +64,7 @@ module ES
       end
 
       def render
-        pos = @map_pos - @camera.position.xyz
+        pos = @map_pos - @camera.view_xy.xyz
         charpos = pos + (@character.position * 32) + @character_voffset
         @tilemap.render(*pos)
         @character_sp.render(*charpos, 0)
