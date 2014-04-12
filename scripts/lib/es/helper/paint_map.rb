@@ -2,182 +2,98 @@ module ES
   module Helper
     class PaintMap
 
+      VERSION = "2.0.0"
+
       attr_accessor :layer
-      attr_accessor :rect
-      attr_accessor :stroke_weight
-      attr_accessor :value
 
       def initialize(data)
         @data = data
-        @actions = []
-        @stack = []
         @layer = 0
-        @rect = Moon::Rect.new(0, 0, @data.xsize, @data.ysize)
-        @stroke_weight = 1
-        @value = 0
       end
 
-      def pos
-        @rect.xy
+      def [](*args)
+        @data[*args]
       end
 
-      def size
-        @rect.wh
-      end
-
-      def reset_pos
-        @rect.xy = [0, 0]
-      end
-
-      def reset_size
-        @rect.wh = [@data.xsize, @data.ysize]
-      end
-
-      def reset_rect
-        @rect.set(0, 0, @data.xsize, @data.ysize)
-      end
-
-      def set_layer(n)
-        @layer = n
-        self
-      end
-
-      def set_pos(*args)
-        if args.size == 1
-          @rect.xy, = args
+      def []=(*args)
+        case args.size
+        # [[x, y]]= value
+        # [vec2]= value
+        # [vec3]= value
+        when 2
+          pos, value = *args
+          x, y, layer = *pos
+          layer ||= @layer
+        # [x, y] = value
+        when 3
+          x, y, value = *args
+          layer = @layer
+        # [x, y, z] = value
+        when 4
+          x, y, layer, value = *args
         else
-          @rect.xy = args
+          raise ArgumentError,
+                "wrong argument count #{args.size} (expected 2, 3, or 4)"
         end
-        self
+        @data[x, y, layer] = value
       end
 
-      def set_size(*args)
-        if args.size == 1
-          @rect.wh, = args
+      def fill(opts)
+        rect  = opts[:rect]
+        value = opts[:value]
+        layer = opts[:layer] || @layer
+
+        if rect
+          # so we can support Arrays as well
+          rx, ry, rw, rh = *rect
+          rx2 = rx + rw
+          ry2 = ry + rh
+          (ry...ry2).each do |y|
+            (rx...rx2).each do |x|
+              @data[x, y, layer] = value
+            end
+          end
         else
-          @rect.wh = args
-        end
-      end
-
-      def set_rect(*args)
-        if args.size == 1
-          @rect.set(args[0])
-        else
-          @rect.set(*args)
-        end
-        self
-      end
-
-      def set_stroke_weight(n)
-        @stroke_weight = n
-        self
-      end
-
-      def set_value(n)
-        @value = n
-        self
-      end
-
-      def snapshot
-        {
-          layer: @layer,
-          rect: @rect.dup,
-          stroke_weight: @stroke_weight,
-          value: @value,
-        }
-      end
-
-      def save
-        @stack << snapshot
-        if block_given?
-          yield self
-          load
-        end
-        self
-      end
-
-      def load
-        state = @stack.pop
-        @layer = state[:layer]
-        @rect = state[:rect]
-        @stroke_weight = state[:stroke_weight]
-        @value = state[:value]
-        self
-      end
-
-      def clear
-        @actions << snapshot.merge(action: :clear)
-        self
-      end
-
-      def fill
-        @actions << snapshot.merge(action: :fill)
-        self
-      end
-
-      def stroke
-        @actions << snapshot.merge(action: :stroke)
-        self
-      end
-
-      def point
-        @actions << snapshot.merge(action: :point)
-        self
-      end
-
-      def move(x, y)
-        @rect.xy += [x, y]
-        self
-      end
-
-      def render
-        for action in @actions
-          rect   = action[:rect]
-          layer  = action[:layer]
-          value  = action[:value]
-
-          case action[:action]
-          when :point
-            @data[rect.x, rect.y, layer] = value
-          when :fill
-            (rect.y...rect.y2).each do |y|
-              (rect.x...rect.x2).each do |x|
-                @data[x, y, layer] = value
-              end
+          @data.ysize.times do |y|
+            @data.xsize.times do |x|
+              @data[x, y, layer] = value
             end
-          when :clear
-            (rect.y...rect.y2).each do |y|
-              (rect.x...rect.x2).each do |x|
-                @data[x, y, layer] = -1
-              end
-            end
-          when :stroke
-            weight = action[:stroke_weight]
-
-            (rect.w+weight*2).times do |x|
-              weight.times do |y|
-                dx = rect.x + x - weight
-                @data[dx, rect.y-1-y, layer] = value
-                @data[dx, rect.y2+y, layer] = value
-              end
-            end
-
-            weight.times do |x|
-              (rect.h+weight*2).times do |y|
-                dy = rect.y + y - weight
-                @data[rect.x-1-x, dy, layer] = value
-                @data[rect.x2+x,  dy, layer] = value
-              end
-            end
-
           end
         end
         self
       end
 
-      alias :resize :set_size
-      alias :size= :set_size
-      alias :pos= :set_pos
+      def clear(opts={})
+        fill({value: -1}.merge(opts))
+        self
+      end
+
+      def stroke(opts) # value, weight, rect
+        rect = opts[:rect]
+        weight = opts[:weight]
+        value = opts[:value]
+        layer = opts[:layer] || @layer
+
+        rx, ry, rw, rh = *rect
+        rx2 = rx + rw
+        ry2 = ry + rh
+
+        (rw+weight*2).times do |x|
+          weight.times do |y|
+            dx = rx + x - weight
+            @data[dx, ry-1-y, layer] = value
+            @data[dx, ry2+y, layer] = value
+          end
+        end
+        weight.times do |x|
+          (rh+weight*2).times do |y|
+            dy = ry + y - weight
+            @data[rx-1-x, dy, layer] = value
+            @data[rx2+x,  dy, layer] = value
+          end
+        end
+        self
+      end
 
     end
   end

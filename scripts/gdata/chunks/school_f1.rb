@@ -3,44 +3,37 @@ ES::Database.create :chunk do |chunk|
   chunk.name = "school_f1/baron.room"
 
   chunk.data = DataMatrix.new(8, 6, 2) do |dm| dm.clear(-1)
-    painter = ES::Helper::PaintMap.new(dm)
-    painter.save do |pnt|
-      ## Ground layer                               #
-      pnt.set_layer( 0).clear                       # ground layer
-      pnt.rect.contract( 1)                         # inner
-      pnt.set_value( 0).stroke                      # walls
-      pnt.set_value( 12).fill                       # fill floor
-      pnt.set_rect(3, 2, 3, 3).set_value( 60).fill  # fill rug
-      pnt.reset_rect                                # restore rect
-      pnt.set_pos( 2,  0).set_value( 1).point       # wall lamp
-      pnt.move( 3,  0).set_value( 1).point          # wall lamp
-      pnt.set_pos( 0,  3).set_value( 12).point      # doorway
-      ## Detail layer                               #
-      pnt.set_pos( 0,  0).set_layer( 1).clear       # goto second layer
-      pnt.move( 1,  1).set_value( 135).point        # bed
-      pnt.move( 3,  0).set_value( 141).point        # bookshelf
-      pnt.move( 0,  2).set_value( 140).point        # table
-      pnt.move(-1,  0).set_value( 138).point        # left chair
-      pnt.move( 2,  0).set_value( 137).point        # right chair
-    end
-    painter.render
+    pnt = ES::Helper::PaintMap.new(dm)
+    ### Ground layer                                           #
+    pnt.layer = 0
+    pnt.clear                                                  #
+    pnt.fill(value: 12)                                        # floor
+    pnt.stroke(value: 0, weight: 1, rect: dm.rect.contract(1)) # walls
+    pnt.fill(value: 60, rect: [3, 2, 3, 3])                    # rug
+    pnt[2, 0] = 1                                              # wall lamp
+    pnt[5, 0] = 1                                              # wall lamp
+    pnt[0, 3] = 12                                             # doorway
+    pnt[0, 3] = 12                                             # doorway
+    ### Detail layer                                           #
+    pnt.layer = 1
+    pnt.clear                                                  #
+    pnt[1, 1] = 135                                            # bed
+    pnt[4, 1] = 141                                            # bookshelf
+    pnt[4, 3] = 140                                            # table
+    pnt[3, 3] = 138                                            # left chair
+    pnt[5, 3] = 137                                            # right chair
   end
 
   chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
     dm.clear(Tilemap::DataFlag::NONE)
-    painter = ES::Helper::PaintMap.new(dm)
-    painter.save do |pnt|
-      pnt.set_layer( 1)
-      # shift the bed a quater tile up
-      pnt.set_pos(1, 1).set_value(Tilemap::DataFlag::QUART_OFF_TILE |
-                                  Tilemap::DataFlag::OFF_DOWN).point
+    # shift the bed a quater tile up
+    dm[1, 1, 1] = Tilemap::DataFlag::QUART_OFF_TILE |
+                  Tilemap::DataFlag::OFF_DOWN
 
-      # we shift that bookshelf a half tile upwards so it looks like its
-      # against the wall instead of off the wall
-      pnt.set_pos(4, 1).set_value(Tilemap::DataFlag::HALF_OFF_TILE |
-                                  Tilemap::DataFlag::OFF_UP).point
-    end
-    painter.render
+    # we shift that bookshelf a half tile upwards so it looks like its
+    # against the wall instead of off the wall
+    dm[4, 1, 1] = Tilemap::DataFlag::HALF_OFF_TILE |
+                  Tilemap::DataFlag::OFF_UP
   end
 
   chunk.passage = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
