@@ -4,9 +4,11 @@ module ES
 
       def init
         super
+        create_map
+
         create_camera
 
-        create_tilemap
+        create_tilemaps
         create_entity
         #create_particles
 
@@ -23,20 +25,28 @@ module ES
         @camera.follow(@entity)
       end
 
+      def create_map
+        @map = ES::GData::Map.new
+        @map.setup(Database.find :map, name: "school_f1")
+      end
+
       def create_camera
         @camera = Camera2.new
       end
 
-      def create_tilemap
+      def create_tilemaps
         @map_pos = Vector3.new 0, 0, 0
-        @tilemap = Tilemap.new do |tilemap|
-          chunk = ES::Database.find :chunk, name: "school_f1/baron.room"
 
-          filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
+        filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
+        @tileset = Cache.tileset filename, 32, 32
 
-          tilemap.tileset = Cache.tileset filename, 32, 32
-          tilemap.data = chunk.data
-          tilemap.flags = chunk.flags
+        @tilemaps = @map.visible_chunks.map do |chunk|
+          Tilemap.new do |tilemap|
+            tilemap.position.set(*(chunk.position * 32))
+            tilemap.tileset = @tileset
+            tilemap.data = chunk.data
+            tilemap.flags = chunk.flags
+          end
         end
       end
 
@@ -45,8 +55,8 @@ module ES
         filename = "oryx_lofi_fantasy/3x/lofi_char_3x.png"
         @entity_sp = Cache.tileset filename, 24, 24
         @entity_voffset =
-          Vector3.new @tilemap.tileset.cell_width - @entity_sp.cell_width,
-                      @tilemap.tileset.cell_height - @entity_sp.cell_height,
+          Vector3.new @tileset.cell_width - @entity_sp.cell_width,
+                      @tileset.cell_height - @entity_sp.cell_height,
                       0
         @entity_voffset /= 2
       end
@@ -97,9 +107,11 @@ module ES
       end
 
       def render
-        pos = @map_pos - @camera.view_xy.xyz
-        charpos = pos + (@entity.position * 32) + @entity_voffset
-        @tilemap.render(*pos)
+        pos = (@map_pos - @camera.view_xy.xyz).round
+        charpos = (pos + (@entity.position * 32) + @entity_voffset).round
+        @tilemaps.each do |tilemap|
+          tilemap.render(*pos)
+        end
         @entity_sp.render(*charpos, 0)
 
         #@particles.render(*pos)

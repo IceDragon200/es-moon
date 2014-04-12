@@ -50,6 +50,14 @@ module ES
         @passages = Table.new(@size.x, @size.y)
       end
 
+      def visible_chunks
+        # for now, we say all the chunks are visible
+        # however lately only about 1 or 2 will be visible at anytime
+        # NOTE that visible_chunks.size == number_of_tilemaps
+        # so try to keep this value to 2 or so
+        @chunks
+      end
+
     end
   end
 end
