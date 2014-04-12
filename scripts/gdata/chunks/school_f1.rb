@@ -13,7 +13,6 @@ ES::Database.create :chunk do |chunk|
     pnt[2, 0] = 1                                              # wall lamp
     pnt[5, 0] = 1                                              # wall lamp
     pnt[0, 3] = 12                                             # doorway
-    pnt[0, 3] = 12                                             # doorway
     ### Detail layer                                           #
     pnt.layer = 1
     pnt.clear                                                  #
