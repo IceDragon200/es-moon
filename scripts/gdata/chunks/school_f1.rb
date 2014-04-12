@@ -44,14 +44,13 @@ ES::Database.create :chunk do |chunk|
   end
 
   chunk.passage = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
-    strmap = ES::Passage::STRMAP
     pss = "xxxxxxxx" +
           "xoooooox" +
           "xoooooox" +
           "ooooxoox" +
           "xoooooox" +
           "xxxxxxxx"
-    pss.bytes.each_with_index { |c, i| table.set_by_index(i, strmap[c.chr]) }
+    table.set_from_strmap(pss, ES::Passage::STRMAP)
   end
 
 end
