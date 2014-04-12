@@ -16,3 +16,7 @@ in the foot, I've quickly worked around it by just using #to_i for now.
 
 * 2014/04/11 some time later
 Float#round has been fixed upstream
+
+* 2014/04/12 [7:46 PM]
+We now have IO and YAML, I don't think I'll be porting anything big yet though.
+Probably use it for save data?
