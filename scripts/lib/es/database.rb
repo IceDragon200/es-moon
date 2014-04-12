@@ -2,7 +2,9 @@ module ES
   module Database
 
     @class_reg = {
-      chunk: ES::DataModel::Chunk
+      chunk: ES::DataModel::Chunk,
+      entity: ES::DataModel::Entity,
+      map: ES::DataModel::Map,
     }
 
     @data = {}
@@ -14,7 +16,9 @@ module ES
     def self.create(sub, options={})
       entries = (@data[sub] ||= [])
 
-      obj = @class_reg[sub].new({ id: entries.size }.merge(options))
+      klass = @class_reg[sub]
+      raise IndexError, "could not find data class #{sub}" unless klass
+      obj = klass.new({ id: entries.size }.merge(options))
 
       entries[obj.id] = obj
 

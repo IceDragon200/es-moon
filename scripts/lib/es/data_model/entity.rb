@@ -1,6 +1,6 @@
 module ES
   module DataModel
-    class Character < BaseModel
+    class Entity < BaseModel
 
       #field
 
