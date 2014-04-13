@@ -4,8 +4,10 @@ module ES
 
       attr_accessor :position
       attr_accessor :dest_position
+      attr_reader :bounding_box
 
       def initialize
+        @bounding_box = Moon::Rect.new(0, 0, 1, 1)
         moveto(0, 0, 0)
       end
 

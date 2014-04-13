@@ -92,49 +92,74 @@ module ES
         ##
         # resolve collisions and so forth
         collision_test.each do |entity|
+          #next entity.moveto(*entity.dest_position)
           dest = entity.dest_position
+          #dest2 = dest + entity.bounding_box.xyz
           src = entity.position
+          #src2 = src + entity.bounding_box.xyz
           delta = dest - src
           ##
           # determine entry points
-          left  = delta.x < 0
-          right = delta.x > 0
-          up    = delta.y < 0
-          down  = delta.y > 0
+          sig_x = delta.x <=> 0
+          sig_y = delta.y <=> 0
           ##
-          #src_x = left ? src.x.floor : (right ? src.x.ceil : src.x.round)
-          #src_y =   up ? src.y.floor : ( down ? src.y.ceil : src.y.round)
-          #dest_x = left ? dest.x.floor : (right ? dest.x.ceil : dest.x.round)
-          #dest_y =   up ? dest.y.floor : ( down ? dest.y.ceil : dest.y.round)
-          src_x = src.x.round
-          src_y = src.y.round
-          dest_x = dest.x.round
-          dest_y = dest.y.round
-          #src_flr = src.xy.floor
-          #dest_flr = dest.xy.floor
-          src_flr = Vector2[src_x, src_y]
-          dest_flr = Vector2[dest_x, dest_y]
-          ##
-          src_flag = @passages[*src_flr]
-          dest_flag = @passages[*dest_flr]
+          src_pos = src.xy.round
+          sx, sy = *src_pos
 
-          # if we aren't going to be in the same tile, can we leave the current?
-          if src_flr != dest_flr
-            x, y = *src
-            #x = left ? src_flr.x : (right ? x : x)
-            #y = up ? src_flr.y : (down ? y : y)
-            if (left && !src_flag.masked?(ES::Passage::LEFT)) ||
-               (right && !src_flag.masked?(ES::Passage::RIGHT)) ||
-               (up && !src_flag.masked?(ES::Passage::UP)) ||
-               (down && !src_flag.masked?(ES::Passage::DOWN)) ||
-               # can we enter the destination tile?
-               (dest_flag == ES::Passage::NONE)
-              next entity.moveto(x, y)
+          src_flag = @passages[*src_pos]
+
+          dest_flag_x1y2 = @passages[sx, sy - 1]
+          dest_flag_x1y3 = @passages[sx, sy + 1]
+          dest_flag_x2y1 = @passages[sx - 1, sy]
+          dest_flag_x3y1 = @passages[sx + 1, sy]
+          dest_flag_x2y2 = @passages[sx - 1, sy - 1]
+          dest_flag_x3y2 = @passages[sx + 1, sy - 1]
+          dest_flag_x2y3 = @passages[sx - 1, sy + 1]
+          dest_flag_x3y3 = @passages[sx + 1, sy + 1]
+
+          bounds = Moon::Rect.new(0, 0, 0, 0)
+
+          if src_flag.masked?(ES::Passage::LEFT)
+            if dest_flag_x2y1 == ES::Passage::NONE
+              bounds.x = sx
+            else
+              bounds.x = sx - 1
             end
+          else
+            bounds.x = sx
+          end
+          if src_flag.masked?(ES::Passage::RIGHT)
+            if dest_flag_x3y1 == ES::Passage::NONE
+              bounds.x2 = sx
+            else
+              bounds.x2 = sx + 1 #- entity.bounding_box.width
+            end
+          else
+            bounds.x2 = sx + 1 #- entity.bounding_box.width
+          end
+          if src_flag.masked?(ES::Passage::UP)
+            if dest_flag_x1y2 == ES::Passage::NONE
+              bounds.y = sy
+            else
+              bounds.y = sy - 1
+            end
+          else
+            bounds.y = sy
+          end
+          if src_flag.masked?(ES::Passage::DOWN)
+            if dest_flag_x1y3 == ES::Passage::NONE
+              bounds.y2 = sy
+            else
+              bounds.y2 = sy + 1 #- entity.bounding_box.height
+            end
+          else
+            bounds.y2 = sy + 1 #- entity.bounding_box.height
           end
 
-          # we can move freely around in a tile
-          entity.moveto(*dest)
+          p bounds.to_h
+
+          entity.moveto([[dest.x, bounds.x].max, bounds.x2].min,
+                        [[dest.y, bounds.y].max, bounds.y2].min)
         end
       end
 

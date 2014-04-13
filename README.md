@@ -47,3 +47,9 @@ but this also means we have no save data either :(
 
   Yay! fixed my horrible markdown
 
+
+* 2014/04/12 [9:25 PM]
+
+  Programmers remorse, I just wasted the day fixing the passage stuff.
+
+  BUT IT WAS WORTH IT!!!

@@ -17,16 +17,8 @@ module ES
       end
 
       def update
-        if @up.held?
-          @entity.move(0, -1)
-        elsif @down.held?
-          @entity.move(0, 1)
-        end
-        if @left.held?
-          @entity.move(-1, 0)
-        elsif @right.held?
-          @entity.move(1, 0)
-        end
+        @entity.move(@left.held? ? -1 : (@right.held? ? 1 : 0),
+                     @up.held? ? -1 : (@down.held? ? 1 : 0))
       end
 
     end
