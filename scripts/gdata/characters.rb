@@ -1,1 +1,0 @@
-#require 'scripts/gdata/characters/'
