@@ -70,7 +70,8 @@ module ES
       def refresh_passages
         @passages = Table.new(*@size.xy.ceil)
         @passages.map_with_xy do |_, x, y|
-          @chunks[@chunk_map[x, y]].passages[x, y]
+          chunk = @chunks[@chunk_map[x, y]]
+          chunk.passages[x - chunk.position.x, y - chunk.position.y]
         end
       end
 
@@ -132,10 +133,10 @@ module ES
             if dest_flag_x3y1 == ES::Passage::NONE
               bounds.x2 = sx
             else
-              bounds.x2 = sx + 1 #- entity.bounding_box.width
+              bounds.x2 = sx + 1
             end
           else
-            bounds.x2 = sx + 1 #- entity.bounding_box.width
+            bounds.x2 = sx + 1
           end
           if src_flag.masked?(ES::Passage::UP)
             if dest_flag_x1y2 == ES::Passage::NONE
@@ -150,13 +151,13 @@ module ES
             if dest_flag_x1y3 == ES::Passage::NONE
               bounds.y2 = sy
             else
-              bounds.y2 = sy + 1 #- entity.bounding_box.height
+              bounds.y2 = sy + 1
             end
           else
-            bounds.y2 = sy + 1 #- entity.bounding_box.height
+            bounds.y2 = sy + 1
           end
 
-          p bounds.to_h
+          #p bounds
 
           entity.moveto([[dest.x, bounds.x].max, bounds.x2].min,
                         [[dest.y, bounds.y].max, bounds.y2].min)
