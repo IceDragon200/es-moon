@@ -1,13 +1,10 @@
 module Moon
   class Rect
 
-    def contract(n)
-      n = n.to_i
-      self.x += n
-      self.y += n
-      self.width -= n * 2
-      self.height -= n * 2
-      self
+    def contract(cx, cy=cx)
+      cx = cx.to_i
+      cy = cy.to_i
+      Rect.new x + cx, y + cy, width - cx * 2, height - cy * 2
     end
 
   end
