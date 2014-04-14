@@ -1,18 +1,16 @@
 ES::Database.create :chunk do |chunk|
 
   chunk.name = "mind_plane/baron-arc1"
-  chunk.data = DataMatrix.new(10, 10, 2) do |dm|
-    dm.fill(-1) # clear
-    dm[0, 0, 0] = 20
-    (1..8).each { |x| dm[x, 0, 0] = 21 }
-    dm[9, 0, 0] = 22
-    (1..8).each do |y|
-      dm[0, y, 0] = 30
-      dm[9, y, 0] = 32
-    end
-    dm[0, 9, 0] = 40
-    dm[9, 9, 0] = 42
-    (1..8).each { |x| dm[x, 9, 0] = 21 }
+
+  chunk.data = DataMatrix.new(10, 10, 2) do |dm| dm.clear(-1)
+    pnt = ES::Helper::PaintMap.new(dm)
+  end
+
+  chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
+    dm.clear(Tilemap::DataFlag::NONE)
+  end
+
+  chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
   end
 
 end
