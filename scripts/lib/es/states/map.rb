@@ -131,22 +131,24 @@ module ES
         end
         @entity_sp.render(*charpos, 0)
 
-        chp = @entity.position
-        x = chp.x.round
-        y = chp.y.round
-        x2 = x - 1
-        y2 = y - 1
-        x3 = x + 1
-        y3 = y + 1
-        @pss_spritesheet.render(pos.x + x * 32, pos.y + y  *  32, 0, @map.passages[x, y] == ES::Passage::NONE ? 2 : 1)
-        @pss_spritesheet.render(pos.x + x * 32, pos.y + y2 *  32, 0, @map.passages[x, y2] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x * 32, pos.y + y3 *  32, 0, @map.passages[x, y3] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x2 * 32, pos.y + y *  32, 0, @map.passages[x2, y] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x2 * 32, pos.y + y2 * 32, 0, @map.passages[x2, y2] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x2 * 32, pos.y + y3 * 32, 0, @map.passages[x2, y3] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x3 * 32, pos.y + y *  32, 0, @map.passages[x3, y] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x3 * 32, pos.y + y2 * 32, 0, @map.passages[x3, y2] == ES::Passage::NONE ? 8 : 9)
-        @pss_spritesheet.render(pos.x + x3 * 32, pos.y + y3 * 32, 0, @map.passages[x3, y3] == ES::Passage::NONE ? 8 : 9)
+        ##
+        # Passage debug
+        #chp = @entity.position
+        #x = chp.x.round
+        #y = chp.y.round
+        #x2 = x - 1
+        #y2 = y - 1
+        #x3 = x + 1
+        #y3 = y + 1
+        #@pss_spritesheet.render(pos.x + x * 32, pos.y + y  *  32, 0, @map.passages[x, y] == ES::Passage::NONE ? 2 : 1)
+        #@pss_spritesheet.render(pos.x + x * 32, pos.y + y2 *  32, 0, @map.passages[x, y2] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x * 32, pos.y + y3 *  32, 0, @map.passages[x, y3] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x2 * 32, pos.y + y *  32, 0, @map.passages[x2, y] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x2 * 32, pos.y + y2 * 32, 0, @map.passages[x2, y2] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x2 * 32, pos.y + y3 * 32, 0, @map.passages[x2, y3] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x3 * 32, pos.y + y *  32, 0, @map.passages[x3, y] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x3 * 32, pos.y + y2 * 32, 0, @map.passages[x3, y2] == ES::Passage::NONE ? 8 : 9)
+        #@pss_spritesheet.render(pos.x + x3 * 32, pos.y + y3 * 32, 0, @map.passages[x3, y3] == ES::Passage::NONE ? 8 : 9)
 
         #@particles.render(*pos)
 
@@ -155,6 +157,7 @@ module ES
         @ui_posmon.render((Moon::Screen.width - @ui_posmon.width) / 2, h, 0)
         @ui_camera_posmon.render((Moon::Screen.width - @ui_camera_posmon.width) / 2,
                                   Moon::Screen.height - @ui_camera_posmon.height - h, 0)
+
         super
       end
 

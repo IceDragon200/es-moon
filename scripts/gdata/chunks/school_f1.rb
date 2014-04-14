@@ -1,6 +1,6 @@
 ES::Database.create :chunk do |chunk|
 
-  chunk.name = "school_f1/baron.room"
+  chunk.name = "school_f1/room.baron"
 
   chunk.data = DataMatrix.new(8, 6, 2) do |dm| dm.clear(-1)
     pnt = ES::Helper::PaintMap.new(dm)
@@ -42,6 +42,45 @@ ES::Database.create :chunk do |chunk|
           "ooooxoox" +
           "xoooooox" +
           "xxxxxxxx"
+    table.set_from_strmap(pss, ES::Passage::STRMAP)
+  end
+
+end
+
+ES::Database.create :chunk do |chunk|
+
+  chunk.name = "school_f1/hallway"
+
+  chunk.data = DataMatrix.new(7, 12, 2) do |dm| dm.clear(-1)
+    pnt = ES::Helper::PaintMap.new(dm)
+    pnt.layer = 0
+    pnt.clear                                                  #
+    pnt.fill(value: 12, rect: dm.rect.contract(2, 0))          # floor
+    pnt.stroke(value: 0, rect: dm.rect.contract(2, 0))         # wall
+    pnt[6, 2] = 1                                              # lamp
+    pnt[6, 4] = 1                                              # lamp
+    pnt[5, 3] = 12                                             # walkway
+    pnt[6, 3] = 12                                             # walkway
+    pnt.layer = 1
+  end
+
+  chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
+    dm.clear(Tilemap::DataFlag::NONE)
+  end
+
+  chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
+    pss = "xxxxxxx" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxooooo" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxoooxx" +
+          "xxxxxxx"
     table.set_from_strmap(pss, ES::Passage::STRMAP)
   end
 

@@ -85,19 +85,19 @@ module ES
 
       def update
         collision_test = []
+        #interaction_test = []
+
         @entities.each do |entity|
           entity.update
           collision_test << entity if entity.moving?
+          #interaction_test << entity if entity.interact?
         end
 
         ##
         # resolve collisions and so forth
         collision_test.each do |entity|
-          #next entity.moveto(*entity.dest_position)
           dest = entity.dest_position
-          #dest2 = dest + entity.bounding_box.xyz
           src = entity.position
-          #src2 = src + entity.bounding_box.xyz
           delta = dest - src
           ##
           # determine entry points
