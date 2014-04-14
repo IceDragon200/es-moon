@@ -70,7 +70,7 @@ module ES
 
       def stroke(opts) # value, weight, rect
         rect = opts[:rect]
-        weight = opts[:weight]
+        weight = opts[:weight] || 1
         value = opts[:value]
         layer = opts[:layer] || @layer
 
