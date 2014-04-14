@@ -53,3 +53,8 @@ but this also means we have no save data either :(
   Programmers remorse, I just wasted the day fixing the passage stuff.
 
   BUT IT WAS WORTH IT!!!
+
+* 2014/04/13 [9:46 PM]
+
+  So I just realized that writing maps in code is going to get ugly fast,
+  about time we start on that internal map editor I guess.
