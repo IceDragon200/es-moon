@@ -11,11 +11,7 @@ module ES
         if @obj
           o = @obj
           o = @obj.position if @obj_uses_internal_position
-          ##
-          # https://github.com/mruby/mruby/issues/2042
-          #set_string("x: #{o.x.round(2)}, y: #{o.y.round(2)}")
-          #set_string("x: #{o.x.to_i}, y: #{o.y.to_i}")
-          # patched
+
           set_string("x: #{o.x.round(2)}, y: #{o.y.round(2)}")
         else
           set_string("x: -.-, y: -.-")

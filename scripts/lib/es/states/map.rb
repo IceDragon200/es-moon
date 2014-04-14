@@ -25,6 +25,7 @@ module ES
 
         @camera.follow(@entity)
 
+        @pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
         @pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
       end
 
@@ -124,13 +125,18 @@ module ES
       end
 
       def render
-        pos = (@map_pos - @camera.view_xy.xyz).round
+        campos = @camera.view_xy.xyz
+        pos = (@map_pos - campos).round
         charpos = (pos + (@entity.position * 32) + @entity_voffset).round
         @tilemaps.each do |tilemap|
           tilemap.render(*pos)
         end
         @entity_sp.render(*charpos, 0)
 
+        #rad = Math::PI * 2 * ((@ticks % 120) / 120.0)
+        rad = (Moon::Input::Mouse.pos - charpos.xy).rad
+        sqpos = Vector2[32, 0].rotate(rad).xyz + @entity_voffset
+        @pss_spritesheet8x.render(*(charpos + sqpos), 1)
         ##
         # Passage debug
         #chp = @entity.position
