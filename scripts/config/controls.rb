@@ -3,13 +3,18 @@ module ES
 
     keys = Moon::Input::Keyboard::Keys
     @controls = {
-      up:     [keys::UP],
-      left:   [keys::LEFT],
-      right:  [keys::RIGHT],
-      down:   [keys::DOWN],
-      accept: [keys::ENTER, keys::D],
-      cancel: [keys::ESCAPE, keys::S]
+      up:     [keys::UP,     keys::W],
+      left:   [keys::LEFT,   keys::A],
+      right:  [keys::RIGHT,  keys::D],
+      down:   [keys::DOWN,   keys::S],
+      accept: [keys::ENTER,  keys::Z],
+      cancel: [keys::ESCAPE, keys::X],
+      action: [keys::ESCAPE, keys::C],
     }
+
+    def self.control(button)
+      @controls[button]
+    end
 
     class << self
       attr_accessor :controls

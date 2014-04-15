@@ -102,6 +102,10 @@ module ES
       end
 
       def update
+        #campos = @camera.view_xy.xyz
+        #pos = (@map_pos - campos).round
+        #charpos = (pos + (@entity.position * 32) + @entity_voffset).round
+        #@controller.direction = (Moon::Input::Mouse.pos - charpos.xy).rad
         @controller.update
         @cam_controller.update
 
@@ -128,15 +132,17 @@ module ES
         campos = @camera.view_xy.xyz
         pos = (@map_pos - campos).round
         charpos = (pos + (@entity.position * 32) + @entity_voffset).round
+
         @tilemaps.each do |tilemap|
           tilemap.render(*pos)
         end
         @entity_sp.render(*charpos, 0)
 
         #rad = Math::PI * 2 * ((@ticks % 120) / 120.0)
-        rad = (Moon::Input::Mouse.pos - charpos.xy).rad
-        sqpos = Vector2[32, 0].rotate(rad).xyz + @entity_voffset
-        @pss_spritesheet8x.render(*(charpos + sqpos), 1)
+        #rad = (Moon::Input::Mouse.pos - charpos.xy).rad
+        #sqpos = Vector2[32, 0].rotate(rad).xyz + @entity_voffset
+        #@pss_spritesheet8x.render(*(charpos + sqpos), 1)
+
         ##
         # Passage debug
         #chp = @entity.position
