@@ -9,7 +9,8 @@ Since we can't load any external data, except for audio and graphics,
 all the game's data is written in ruby (maps, characters etc..),
 but this also means we have no save data either :(
 
-# How to spin up ES moon
+
+## How to spin up ES moon
 
 First up you'll need a copy of moon (archSeer/moon)
 
@@ -23,17 +24,19 @@ ln -s moon/core es-moon/core
 ln -s moon/bin/host/game es-moon/game
 ```
 
-execute game, or use the play helper script
+Execute "game", or use the "play" helper script
 
-## optional
 If your name is archSeer or IceDragon, then this should work correctly.
+
+### Optional [in case all else fails]
 
 In case that the above was false, you may need some graphical resources that weren't
 included due to licensing.
 
 In that case, I can't really help you ^~^;
 
-# Journal of a rambling dragon
+
+## Journal of a rambling dragon
 
 * 2014/04/10
 
@@ -81,3 +84,8 @@ In that case, I can't really help you ^~^;
 
   So I just realized that writing maps in code is going to get ugly fast,
   about time we start on that internal map editor I guess.
+
+
+## FAQ
+
+FYI, WE HAVE NO FAQS, OR FAX, just saying ya know.
