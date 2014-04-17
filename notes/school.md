@@ -6,13 +6,13 @@ Oh hi, what brings you to my notes?
 Whatever it may be, welcome to the es-moon notes, this is just an extract
 from IceDragon's ever messy EDOS notes.
 
-# What is the School?
+## What is the School?
 
 I actually have no idea, its somewhere between the world of Earthen, and
 the spirit world.
 
 
-# That was "where", not what!
+## That was "where", not what!
 
 Oh right, the school is a Combat and Magic boarding school, or
 CaM for short.
@@ -28,7 +28,7 @@ Communication with the outside is restricted to special time frames,
 and only letters may be sent to and from.
 
 
-# So what's it like?
+## So what's it like?
 
 On the outside, CaM appears to be a normal school, students in uniform,
 student council, blah de dah.
@@ -36,29 +36,37 @@ On the inside its what you'd expect from a school, writing boards,
 good old Wothren desk's...
 
 
-# HOLD UP, Whats Wothren!?
+## HOLD UP, Whats Wothren!?
 
 Err, its wood taken from the great tree and guardian spirit Worenike?
 
 
-# Oh, WAIT WAT?
+## Oh, WAIT WAT?
 
 Um, there are 6 leader guardian spirits...
 
-- Gaiadrom (Gai-a-dr-om) of the earth
+- Gaiadrom (Gai-a-dr-om) of the land
 - Drakraos (Dra-ke-os) of the shadow
 - Valdine (Val-dine) of the liquid/water/aqua
 - Inflamari (In-fla-ma-ri) of the flare
 - Xenolto (Zen-ol-to) of the atmos/air
 - Xenura (Zen-ooh-ra) of the light
 
+## Six(6) Elements?
 
-# Are there anymore?
+Yep, or 4 elements and 2 alignments if you want to call it that.
+
+Fire, Water, Earth, Wind > Flare, Aqua, Land, Atmos respectively
+
+and Light, Dark > Lumi, Shadow
+
+
+## Are there anymore guardian spirits?
 
 Yes, but. um, I think we're straying from the point here...
 
 
-# Right so the school, whats the student population?
+## Right so the school, whats the student population?
 
 I have no idea, probably around 300 students, 5 years, 3 classes each,
 approximately 20 students per class.
@@ -66,43 +74,43 @@ approximately 20 students per class.
 Sounds about right.
 
 
-# How big is the school?
+## How big is the school?
 
 2 floors + basement and rooftop
 
 
-# Whats accessible to the students?
+## Whats accessible to the students?
 
 2 floors and the rooftop.
 
 
-# Why not the basement?
+## Why not the basement?
 
 Ask the principal...
 
 
-# What is the purpose of the school in the game?
+## What is the purpose of the school in the game?
 
 Its the starting point of the game and gives a basic run through of the game's
 control without putting the player under too much pressure.
 
 
-# Where do we start?
+## Where do we start?
 
 Actually you start from Baron's mind plane...
 
 
-# Mind plane?
+## Mind plane?
 
 Consult the upcoming mind_plane.md
 
 
-# So when do we go to the school?
+## So when do we go to the school?
 
 Exactly after the events in the mind plane, which shouldn't be too long.
 
 
-# How do we get there?
+## How do we get there?
 
 Baron, the main character is already attending school and is in his final
 year, not to mention the day is his graduation.
@@ -114,18 +122,18 @@ After which the player will be free to roam around the campus until they
 wish to continue the game by going to the rooftop.
 
 
-# Why the rooftop?
+## Why the rooftop?
 
 I dunno, it was the first thing I did with the original game, a battle
 with a dragon on the rooftop!
 
 
-# Dragon, seriously?
+## Dragon, seriously?
 
 Actually I might change it, just deal with it for now.
 
 
-# So what happens before/afterwards?
+## So what happens before/afterwards?
 
 1. During the graduation, Baron noticed someone watching from the entrance
    to the hall.
@@ -144,13 +152,13 @@ Actually I might change it, just deal with it for now.
    in 1 after the other (there was about 20 of them)
 
 
-# HOLD UP, 20 PO-PO for 1 GIRL!?
+## HOLD UP, 20 PO-PO for 1 GIRL!?
 
 Hey, leaving 1 dimension to enter another is serious business, especially
 unauthorized travelling.
 
 
-# Okay then, continue
+## Okay then, continue
 
 9. So after a short skirmish, the group (Baron, Chika and Spyet) are knocked
    aside and into the warp gate / portal that Spyet came from.
@@ -158,7 +166,7 @@ unauthorized travelling.
 10. Here ends the School scene.
 
 
-# Okay cool, but I'd like to make a suggestion
+## Okay cool, but I'd like to make a suggestion
 
 Um, pull request, issue, comment, email me?
 Anything that floats your boat.
