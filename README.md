@@ -86,6 +86,11 @@ In that case, I can't really help you ^~^;
   about time we start on that internal map editor I guess.
 
 
+* 2014/04/17 [1:04 AM]
+
+  For some odd reason, the best time to work is in the night when its nice
+  and cool, however its bad for my health!
+
 ## FAQ
 
 FYI, WE HAVE NO FAQS, OR FAX, just saying ya know.
