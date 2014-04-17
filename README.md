@@ -92,6 +92,15 @@ In that case, I can't really help you ^~^;
   and cool, however its bad for my health!
 
 
+* 2014/04/17 [2:04 AM]
+
+  Why am I still awake at a time like this?
+
+  I haven't even put any code to the game!
+
+  Aha, at least I started on some notes, that way I can figure out the
+  floorplan for the school I guess?
+
 ## FAQ
 
 FYI, WE HAVE NO FAQS, OR FAX, just saying ya know.
