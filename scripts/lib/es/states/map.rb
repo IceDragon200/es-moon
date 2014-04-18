@@ -44,8 +44,6 @@ module ES
       end
 
       def create_tilemaps
-        @map_pos = Vector3.new 0, 0, 0
-
         filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
         @tileset = Cache.tileset filename, 32, 32
 
@@ -129,14 +127,19 @@ module ES
       end
 
       def render
-        campos = @camera.view_xy.xyz
-        pos = (@map_pos - campos).round
-        charpos = (pos + (@entity.position * 32) + @entity_voffset).round
+        campos = -@camera.view_xy.xyz.round
+        charpos = (campos + (@entity.position * 32) + @entity_voffset).round
 
         @tilemaps.each do |tilemap|
-          tilemap.render(*pos)
+          tilemap.render(*campos)
         end
         @entity_sp.render(*charpos, 0)
+
+        mouse_pos = Moon::Input::Mouse.pos
+        minoroffset = Vector2[campos.x % 32, campos.y % 32]
+        x = minoroffset.x + ((mouse_pos.x - minoroffset.x) / 32).to_i * 32
+        y = minoroffset.y + ((mouse_pos.y - minoroffset.y) / 32).to_i * 32
+        @pss_spritesheet.render(x, y, 0, 1)
 
         #rad = Math::PI * 2 * ((@ticks % 120) / 120.0)
         #rad = (Moon::Input::Mouse.pos - charpos.xy).rad
