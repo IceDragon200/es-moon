@@ -1,6 +1,6 @@
 require 'scripts/config'
 require 'scripts/lib'
-require 'scripts/gdata'
+require 'scripts/data'
 
 State.push(ES::States::Shutdown)
 State.push(ES::States::Title)

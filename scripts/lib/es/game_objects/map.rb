@@ -1,5 +1,5 @@
 module ES
-  module GData
+  module GameObject
     class Map
 
       attr_reader :size
@@ -26,7 +26,7 @@ module ES
         @entities = []
         @chunks = @dmap.chunks.map do |dchunk_lookup|
           dchunk = Database.find :chunk, dchunk_lookup
-          chunk = ES::GData::Chunk.new
+          chunk = ES::GameObject::Chunk.new
           chunk.setup(dchunk)
           chunk
         end

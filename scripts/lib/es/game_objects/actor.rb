@@ -1,5 +1,5 @@
 module ES
-  module GData
+  module GameObject
     class Actor < Entity
     end
   end
