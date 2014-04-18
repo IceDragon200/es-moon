@@ -30,7 +30,7 @@ module ES
       def on_title_menu_accept
         case @title_menu.current_item[:id]
         when :newgame
-          State.change(ES::States::Map)
+          State.change(ES::States::MapEditor)
         when :quit
           State.pop
         end
