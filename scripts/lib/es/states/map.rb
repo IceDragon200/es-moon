@@ -126,6 +126,12 @@ module ES
         super
       end
 
+      def screen_pos_to_map_pos(screen_pos)
+        campos = @camera.view_xy.round
+        pos = screen_pos + campos
+        pos / 32
+      end
+
       def render
         campos = -@camera.view_xy.xyz.round
         charpos = (campos + (@entity.position * 32) + @entity_voffset).round
