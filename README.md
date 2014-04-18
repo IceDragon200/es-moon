@@ -101,6 +101,18 @@ In that case, I can't really help you ^~^;
   Aha, at least I started on some notes, that way I can figure out the
   floorplan for the school I guess?
 
+
+* 2014/04/17 [4:40 PM]
+
+  We are now known as "Lost in Japan", and yes we have nothing to do
+  with Japan.
+
+
+* 2014/04/17 [8:34 PM]
+
+  TODO.md, finally...
+
+
 ## FAQ
 
 FYI, WE HAVE NO FAQS, OR FAX, just saying ya know.
