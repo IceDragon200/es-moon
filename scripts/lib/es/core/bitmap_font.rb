@@ -3,6 +3,7 @@ class BitmapFont < RenderContainer
   attr_reader :string
   def string=(n)
     @string = n != nil ? n.to_s : nil
+    refresh_size
   end
 
   attr_accessor :bold
@@ -16,16 +17,20 @@ class BitmapFont < RenderContainer
     super()
     @cell_size = [8, 8]
     @spritesheet = Cache.bmpfont filename, *@cell_size
-    @string = string
-    @bold = false
+    self.string = string
+  end
+
+  def refresh_size
+    @cached_width = @string.size * @cell_size[0]
+    @cached_height = (@string.count("\n") + 1) * @cell_size[1]
   end
 
   def width
-    @string.size * @cell_size[0]
+    @cached_width
   end
 
   def height
-    (@string.count("\n") + 1) * @cell_size[1]
+    @cached_height
   end
 
   ###
