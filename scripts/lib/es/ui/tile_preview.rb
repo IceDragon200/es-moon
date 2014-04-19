@@ -25,12 +25,15 @@ module ES
       end
 
       def render(x=0, y=0, z=0)
-        if @tileset && @tile_id >= 0
+        if @tileset
           px, py, pz = *(@position + [x, y, z])
           @cursor_ss.render px, py, pz, 1
 
           diff = (@cursor_ss.cell_size - @tileset.cell_size) / 2
-          @tileset.render diff.x + px, diff.y + py, pz, @tile_id
+
+          if @tile_id >= 0
+            @tileset.render diff.x + px, diff.y + py, pz, @tile_id
+          end
 
           @bitmap_font.string = @tile_id
           @bitmap_font.render diff.x + px,

@@ -33,19 +33,24 @@ module ES
 
       def tile_id=(n)
         @tile_id = n.to_i
-        @cursor_pos.set((@tile_id % @visible_cols) * @tilesize.x,
-                        (@tile_id / @visible_cols) * @tilesize.y)
+        @cursor_pos.set((@tile_id % @visible_cols).floor * @tilesize.x,
+                        (@tile_id / @visible_cols).floor * @tilesize.y)
+      end
+
+      ###
+      #
+      ###
+      def select_tile(*args)
+        sx, sy = *Vector2.extract(args.singularize)
+        pos = screen_to_relative(sx, sy).reduce(@tilesize)
+        if relative_pos_inside?(pos)
+          ps = (pos / @tilesize).floor
+          self.tile_id = ps.x + (ps.y + @row_index) * @visible_cols
+        end
       end
 
       def update
-        # this needs to die in fire...
-        if Moon::Input::Mouse.triggered?(Moon::Input::Mouse::Buttons::BUTTON_1)
-          pos = screen_to_relative(Moon::Input::Mouse.pos-[0,8]).reduce(@tilesize)
-          if relative_pos_inside?(pos)
-            ps = (pos / @tilesize).floor
-            self.tile_id = ps.x + (ps.y + @row_index) * @visible_cols
-          end
-        end
+        #
       end
 
       def render(x=0, y=0, z=0)

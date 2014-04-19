@@ -1,3 +1,5 @@
+include Moon
+
 require 'scripts/config'
 require 'scripts/lib'
 require 'scripts/data'

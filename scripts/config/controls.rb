@@ -1,7 +1,7 @@
 module ES
   module Config
 
-    keys = Moon::Input::Keyboard::Keys
+    keys = Moon::Input
     @controls = {
       up:     [keys::UP,     keys::W],
       left:   [keys::LEFT,   keys::A],

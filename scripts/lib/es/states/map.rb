@@ -17,9 +17,6 @@ module ES
 
         @entity.moveto(1, 1)
 
-        @controller = ES::Controller::Entity.new(@entity)
-        @cam_controller = ES::Controller::Camera.new(@camera)
-
         @ui_posmon.set_obj(@entity, true)
         @ui_camera_posmon.set_obj(@camera, true)
 
@@ -27,6 +24,19 @@ module ES
 
         #@pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
         #@pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
+
+        @input.on :press, Moon::Input::LEFT do
+          @entity.move(-1, 0)
+        end
+        @input.on :press, Moon::Input::RIGHT do
+          @entity.move(1, 0)
+        end
+        @input.on :press, Moon::Input::UP do
+          @entity.move(0, -1)
+        end
+        @input.on :press, Moon::Input::DOWN do
+          @entity.move(0, 1)
+        end
       end
 
       def create_map
@@ -100,24 +110,9 @@ module ES
       end
 
       def update_map
-        #campos = @camera.view_xy.xyz
-        #pos = (@map_pos - campos).floor
-        #charpos = (pos + (@entity.position * 32) + @entity_voffset).floor
-        #@controller.direction = (Moon::Input::Mouse.pos - charpos.xy).rad
-        @controller.update
-        @cam_controller.update
-
         @map.update
 
         #update_particles
-        if Moon::Input::Keyboard.triggered?(Moon::Input::Keyboard::Keys::SPACE)
-          flag = @map.passages[*@entity.position.xy]
-          puts [@entity.position, [flag, flag.masked?(ES::Passage::LEFT),
-                                         flag.masked?(ES::Passage::RIGHT),
-                                         flag.masked?(ES::Passage::UP),
-                                         flag.masked?(ES::Passage::DOWN)]
-               ]
-        end
         @camera.update
 
         @ui_posmon.update

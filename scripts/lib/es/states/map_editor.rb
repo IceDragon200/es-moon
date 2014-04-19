@@ -5,7 +5,6 @@ module ES
       def init
         super
         @mouse = Moon::Input::Mouse
-        @keyboard = Moon::Input::Keyboard
 
         @cursor_position = Vector2.new
         @cursor_position_map_pos = Vector2.new
@@ -29,6 +28,41 @@ module ES
         @help_visible = false
 
         @cursor_ss = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
+
+        register_events
+      end
+
+      def register_events
+        ## help
+        @input.on :press, Moon::Input::F1 do
+          @help_visible = true
+        end
+        @input.on :release, Moon::Input::F1 do
+          @help_visible = false
+        end
+        ## tile panel
+        @input.on :press, Moon::Input::TAB do
+          @tile_panel_visible = true
+        end
+        @input.on :release, Moon::Input::TAB do
+          @tile_panel_visible = false
+        end
+        ## place tile
+        @input.on :press, Moon::Input::MOUSE_LEFT do
+          if @tile_panel_visible
+            @tile_panel.select_tile(@mouse.pos-[0,8])
+          else
+            place_tile
+          end
+        end
+        ## copy tile
+        @input.on :press, Moon::Input::MOUSE_MIDDLE do
+          copy_tile
+        end
+        ## erase tile
+        @input.on :press, Moon::Input::MOUSE_RIGHT do
+          erase_tile
+        end
       end
 
       def update_map
@@ -36,25 +70,34 @@ module ES
         super
       end
 
-      def update
-        if @keyboard.triggered?(@keyboard::Keys::F1)
-          @help_visible = !@help_visible
+      def place_tile
+        info = @tile_info.info
+        if chunk = info[:chunk]
+          dx, dy, dz = *info[:chunk_data_position]
+          chunk.data[dx, dy, dz] = @tile_panel.tile_id
         end
+      end
 
+      def copy_tile
+        data = @tile_info.info[:data]
+        tile_id = data.reject { |n| n == -1 }.last || -1
+        @tile_panel.tile_id = tile_id
+      end
+
+      def erase_tile
+        info = @tile_info.info
+        if chunk = info[:chunk]
+          dx, dy, dz = *info[:chunk_data_position]
+          chunk.data[dx, dy, dz] = -1
+        end
+      end
+
+      def update
         unless @help_visible
-          if @keyboard.triggered?(@keyboard::Keys::TAB)
-            @tile_panel_visible = !@tile_panel_visible
-          end
-
           if !@tile_panel_visible
             tp = screen_pos_to_map_pos(Vector2[@mouse.x, @mouse.y])
             @cursor_position_map_pos = tp
             @tile_info.tile_position.set(tp)
-            if @mouse.triggered?(@mouse::Buttons::BUTTON_2)
-              data = @tile_info.info[:data]
-              tile_id = data.reject { |n| n == -1 }.last
-              @tile_panel.tile_id = tile_id
-            end
           end
 
           @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view_xy.floor)
