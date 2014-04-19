@@ -1,5 +1,7 @@
 class RenderContainer
 
+  include ScreenElement # Moon::Core
+
   @@container_id = 0
 
   attr_reader :id
