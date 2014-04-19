@@ -164,6 +164,21 @@ module ES
         end
       end
 
+      ###
+      # Returns all the tiledata for this row
+      ###
+      def tile_data(x, y)
+        chunk = @chunks[@chunk_map[x, y]]
+        chunk_offset = chunk.position
+        cx, cy = x - chunk.position.x, y - chunk.position.y
+
+        {
+          chunk: chunk,
+          data: chunk.data.zsize.times.map { |z| chunk.data[cx, cy, z] },
+          passage: @passages[x, y],
+        }
+      end
+
     end
   end
 end
