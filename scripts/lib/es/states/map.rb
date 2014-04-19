@@ -101,8 +101,8 @@ module ES
 
       def update
         #campos = @camera.view_xy.xyz
-        #pos = (@map_pos - campos).round
-        #charpos = (pos + (@entity.position * 32) + @entity_voffset).round
+        #pos = (@map_pos - campos).floor
+        #charpos = (pos + (@entity.position * 32) + @entity_voffset).floor
         #@controller.direction = (Moon::Input::Mouse.pos - charpos.xy).rad
         @controller.update
         @cam_controller.update
@@ -127,14 +127,14 @@ module ES
       end
 
       def screen_pos_to_map_pos(screen_pos)
-        campos = @camera.view_xy.round
+        campos = @camera.view_xy.floor
         pos = screen_pos + campos
         pos / 32
       end
 
       def render
-        campos = -@camera.view_xy.xyz.round
-        charpos = (campos + (@entity.position * 32) + @entity_voffset).round
+        campos = -@camera.view_xy.xyz.floor
+        charpos = (campos + (@entity.position * 32) + @entity_voffset).floor
 
         @tilemaps.each do |tilemap|
           tilemap.render(*campos)
