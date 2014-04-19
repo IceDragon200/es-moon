@@ -20,6 +20,14 @@ module ES
         @size = Vector3.new(*@dchunk.data.size)
       end
 
+      def id
+        @dchunk.id
+      end
+
+      def name
+        @dchunk.name
+      end
+
       def data
         @dchunk.data
       end
