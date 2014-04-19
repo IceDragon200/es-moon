@@ -7,13 +7,13 @@ class State
     @beta_layer = RenderLayer.new
 
     bmpfont = BitmapFont.new("font_cga8_white.png")
-    bmpfont.set_string("moon-0.1.0")
+    bmpfont.string = "moon-0.1.0"
     bmpfont.position.set(Moon::Screen.width - bmpfont.width, 0, 0)
 
     @beta_layer.add(bmpfont)
 
     bmpfont2 = BitmapFont.new("font_cga8_white.png")
-    bmpfont2.set_string("es-moon-#{ES::Version::STRING}")
+    bmpfont2.string = "es-moon-#{ES::Version::STRING}"
 
     @beta_layer.add(bmpfont2)
 

@@ -41,7 +41,8 @@ module ES
         px, py, pz = *@position
         @list.each_with_index do |dat, i|
           font = i == @index ? @bmpfont_selected : @bmpfont_unselected
-          font.set_string(dat[:name]).render(px + x, py + y + oy, pz + z)
+          font.string = dat[:name]
+          font.render(px + x, py + y + oy, pz + z)
           oy += font.height
         end
         super x, y, z

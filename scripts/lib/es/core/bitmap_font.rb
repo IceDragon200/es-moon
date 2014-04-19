@@ -1,6 +1,6 @@
 class BitmapFont < RenderContainer
 
-  attr_reader :string
+  attr_accessor :string
   attr_accessor :bold
 
   ###
@@ -14,11 +14,6 @@ class BitmapFont < RenderContainer
     @spritesheet = Cache.bmpfont filename, *@cell_size
     @string = string
     @bold = false
-  end
-
-  def set_string(new_string)
-    @string = new_string
-    self
   end
 
   def width

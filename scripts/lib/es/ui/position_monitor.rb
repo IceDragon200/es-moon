@@ -13,9 +13,9 @@ module ES
           o = @obj.position if @obj_uses_internal_position
 
           #set_string("x: #{o.x.round(2)}, y: #{o.y.round(2)}")
-          set_string("x: #{o.x.to_i}, y: #{o.y.to_i}")
+          self.string = "x: #{o.x.to_i}, y: #{o.y.to_i}"
         else
-          set_string("x: -.-, y: -.-")
+          self.string = "x: -.-, y: -.-"
         end
       end
 

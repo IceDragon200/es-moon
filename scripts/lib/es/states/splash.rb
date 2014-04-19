@@ -4,7 +4,7 @@ module ES
 
       def init
         @bitmapfont = BitmapFont.new("font_cga8_white.png")
-        @bitmapfont.set_string "Earthen : Smiths #{ES::Version::STRING}"
+        @bitmapfont.string = "Earthen : Smiths #{ES::Version::STRING}"
         @countdown = Countdown.new(120) # about 2 seconds
         super
       end
