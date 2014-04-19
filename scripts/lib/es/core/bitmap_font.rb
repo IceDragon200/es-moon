@@ -33,13 +33,19 @@ class BitmapFont < RenderContainer
     if @string
       offset = @bold ? 256 : 0
       row = 0
+      col = 0
       px, py, pz = *@position
       @string.to_s.bytes.each_with_index do |byte, i|
-        next row += 1 if byte.chr == "\n"
-        @spritesheet.render px + x + i * @cell_size[0],
+        if byte.chr == "\n"
+          col = 0
+          row += 1
+          next
+        end
+        @spritesheet.render px + x + col * @cell_size[0],
                             py + y + row * @cell_size[1],
                             pz + z,
                             byte + offset
+        col += 1
       end
     end
     super x, y, z
