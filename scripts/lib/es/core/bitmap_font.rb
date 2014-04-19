@@ -1,6 +1,10 @@
 class BitmapFont < RenderContainer
 
-  attr_accessor :string
+  attr_reader :string
+  def string=(n)
+    @string = n != nil ? n.to_s : nil
+  end
+
   attr_accessor :bold
 
   ###
@@ -35,7 +39,8 @@ class BitmapFont < RenderContainer
       row = 0
       col = 0
       px, py, pz = *@position
-      @string.to_s.bytes.each_with_index do |byte, i|
+
+      @string.bytes.each_with_index do |byte, i|
         if byte.chr == "\n"
           col = 0
           row += 1
