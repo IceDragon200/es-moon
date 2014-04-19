@@ -25,8 +25,8 @@ module ES
 
         @camera.follow(@entity)
 
-        @pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
-        @pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
+        #@pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
+        #@pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
       end
 
       def create_map
@@ -140,12 +140,6 @@ module ES
           tilemap.render(*campos)
         end
         @entity_sp.render(*charpos, 0)
-
-        mouse_pos = Moon::Input::Mouse.pos
-        minoroffset = Vector2[campos.x % 32, campos.y % 32]
-        x = minoroffset.x + ((mouse_pos.x - minoroffset.x) / 32).to_i * 32
-        y = minoroffset.y + ((mouse_pos.y - minoroffset.y) / 32).to_i * 32
-        @pss_spritesheet.render(x, y, 0, 1)
 
         #rad = Math::PI * 2 * ((@ticks % 120) / 120.0)
         #rad = (Moon::Input::Mouse.pos - charpos.xy).rad
