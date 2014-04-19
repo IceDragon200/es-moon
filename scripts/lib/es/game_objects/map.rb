@@ -174,6 +174,8 @@ module ES
 
         {
           chunk: chunk,
+          data_position: [x, y],
+          chunk_data_position: [cx, cy],
           data: chunk.data.zsize.times.map { |z| chunk.data[cx, cy, z] },
           passage: @passages[x, y],
         }
