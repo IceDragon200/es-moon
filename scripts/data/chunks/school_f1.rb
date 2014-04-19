@@ -1,6 +1,6 @@
 ES::Database.create :chunk do |chunk|
 
-  chunk.name = "school_f1/room.baron"
+  chunk.name = "school_f1/room/baron"
 
   chunk.data = DataMatrix.new(8, 6, 2) do |dm| dm.clear(-1)
     dm.default = -1
