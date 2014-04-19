@@ -1,5 +1,11 @@
 module Cache
 
+  branch :block do
+    lambda do |filename, *args|
+      Moon::Spritesheet.new("media/blocks/" + filename, *args)
+    end
+  end
+
   branch :icon do
     lambda do |filename, *args|
       Moon::Sprite.new("media/icons_64x64/" + filename)
