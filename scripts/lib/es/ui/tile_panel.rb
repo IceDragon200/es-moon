@@ -2,8 +2,73 @@ module ES
   module UI
     class TilePanel < RenderContainer
 
-      def render(x, y, z)
+      attr_accessor :tileset       # Spritesheet
+      attr_accessor :visible_rows
+      attr_reader :tile_id         # Integer
 
+      def initialize
+        super
+        @tileset = nil # spritesheet
+        @visible_rows = 4
+        @visible_cols = 8
+
+        @tilesize = Vector2.new 32, 32
+        @cursor_pos = Vector2.new 0, 0
+
+        @bitmap_font = BitmapFont.new "font_cga8_white.png"
+
+        @block_ss = Cache.block "e032x032.png", 32, 32
+
+        @tile_id = 0
+        @row_index = 0
+      end
+
+      def width
+        @tileset ? @tileset.cell_width * @visible_cols : 0
+      end
+
+      def height
+        8 + (@tileset ? @tileset.cell_height * @visible_rows : 0)
+      end
+
+      def tile_id=(n)
+        @tile_id = n.to_i
+        @cursor_pos.set((@tile_id % @visible_cols) * @tilesize.x,
+                        (@tile_id / @visible_cols) * @tilesize.y)
+      end
+
+      def update
+        # this needs to die in fire...
+        if Moon::Input::Mouse.triggered?(Moon::Input::Mouse::Buttons::BUTTON_1)
+          pos = screen_to_relative(Moon::Input::Mouse.pos-[0,8]).reduce(@tilesize)
+          if relative_pos_inside?(pos)
+            ps = (pos / @tilesize).floor
+            self.tile_id = ps.x + (ps.y + @row_index) * @visible_cols
+          end
+        end
+      end
+
+      def render(x=0, y=0, z=0)
+        px, py, pz = *@position
+        px += x
+        py += y
+        pz += z
+
+        vis = @visible_rows * @visible_cols
+        @tileset.cell_count.times do |i|
+          break if i >= vis
+          tx = (i % @visible_cols) * @tileset.cell_width
+          ty = (i / @visible_cols).floor * @tileset.cell_height
+          @tileset.render px + tx, py + ty + 8, pz, @row_index + i
+        end
+
+        if relative_pos_inside?(@cursor_pos)
+          @bitmap_font.string = "tile #{@tile_id}"
+          @bitmap_font.render px, py, pz
+          @block_ss.render px + @cursor_pos.x, py + @cursor_pos.y + 8, pz, 1
+        end
+
+        super x, y, z
       end
 
     end

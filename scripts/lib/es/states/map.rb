@@ -99,7 +99,7 @@ module ES
         @particles.update
       end
 
-      def update
+      def update_map
         #campos = @camera.view_xy.xyz
         #pos = (@map_pos - campos).floor
         #charpos = (pos + (@entity.position * 32) + @entity_voffset).floor
@@ -122,6 +122,10 @@ module ES
 
         @ui_posmon.update
         @ui_camera_posmon.update
+      end
+
+      def update
+        update_map
 
         super
       end
