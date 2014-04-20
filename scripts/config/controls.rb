@@ -9,7 +9,7 @@ module ES
       down:   [keys::DOWN,   keys::S],
       accept: [keys::ENTER,  keys::Z],
       cancel: [keys::ESCAPE, keys::X],
-      action: [keys::ESCAPE, keys::C],
+      action: [keys::C],
     }
 
     def self.control(button)
