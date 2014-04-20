@@ -6,8 +6,8 @@ module ES
         super
         @mouse = Moon::Input::Mouse
 
-        @cursor_position = Vector2.new
-        @cursor_position_map_pos = Vector2.new
+        @cursor_position = Vector3.new
+        @cursor_position_map_pos = Vector3.new
 
         @tile_panel_visible = false
 
@@ -95,12 +95,12 @@ module ES
       def update
         unless @help_visible
           if !@tile_panel_visible
-            tp = screen_pos_to_map_pos(Vector2[@mouse.x, @mouse.y])
+            tp = screen_pos_to_map_pos(Vector3[@mouse.x, @mouse.y, 0])
             @cursor_position_map_pos = tp
-            @tile_info.tile_position.set(tp)
+            @tile_info.tile_position.set(@cursor_position_map_pos.xy)
           end
 
-          @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view_xy.floor)
+          @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view.floor)
 
           @tile_panel.update
           @tile_preview.tile_id = @tile_panel.tile_id
@@ -120,7 +120,7 @@ module ES
             @tile_preview.render
           end
 
-          @cursor_ss.render(*@cursor_position, 0, 1)
+          @cursor_ss.render(*@cursor_position, 1)
         end
       end
 

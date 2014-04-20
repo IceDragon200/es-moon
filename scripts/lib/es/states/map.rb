@@ -26,16 +26,23 @@ module ES
         #@pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
 
         @input.on :press, Moon::Input::LEFT do
-          @entity.move(-1, 0)
+          @entity.velocity.x = -1 * @entity.move_speed
         end
         @input.on :press, Moon::Input::RIGHT do
-          @entity.move(1, 0)
+          @entity.velocity.x = 1 * @entity.move_speed
         end
+        @input.on :release, Moon::Input::LEFT, Moon::Input::RIGHT do
+          @entity.velocity.x = 0
+        end
+
         @input.on :press, Moon::Input::UP do
-          @entity.move(0, -1)
+          @entity.velocity.y = -1 * @entity.move_speed
         end
         @input.on :press, Moon::Input::DOWN do
-          @entity.move(0, 1)
+          @entity.velocity.y = 1 * @entity.move_speed
+        end
+        @input.on :release, Moon::Input::UP, Moon::Input::DOWN do
+          @entity.velocity.y = 0
         end
       end
 
@@ -125,14 +132,17 @@ module ES
         super
       end
 
+      ###
+      # @param [Vector3] screen_pos
+      ###
       def screen_pos_to_map_pos(screen_pos)
-        campos = @camera.view_xy.floor
+        campos = @camera.view.floor
         pos = screen_pos + campos
         pos / 32
       end
 
       def render
-        campos = -@camera.view_xy.xyz.floor
+        campos = -@camera.view.floor
         charpos = (campos + (@entity.position * 32) + @entity_voffset).floor
 
         @tilemaps.each do |tilemap|

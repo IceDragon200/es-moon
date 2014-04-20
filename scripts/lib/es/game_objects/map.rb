@@ -96,8 +96,9 @@ module ES
         ##
         # resolve collisions and so forth
         collision_test.each do |entity|
-          dest = entity.dest_position
+          velo = entity.velocity
           src = entity.position
+          dest = src + velo
           delta = dest - src
           ##
           # determine entry points
@@ -157,10 +158,9 @@ module ES
             bounds.y2 = sy + 1
           end
 
-          #p bounds
-
-          entity.moveto([[dest.x, bounds.x].max, bounds.x2].min,
-                        [[dest.y, bounds.y].max, bounds.y2].min)
+          entity.position.set([[dest.x, bounds.x].max, bounds.x2].min,
+                              [[dest.y, bounds.y].max, bounds.y2].min,
+                              entity.position.z)
         end
       end
 
