@@ -20,6 +20,14 @@ class BitmapFont < RenderContainer
     self.string = string
   end
 
+  def color
+    @spritesheet.color
+  end
+
+  def color=(n)
+    @spritesheet.color = n
+  end
+
   def refresh_size
     @cached_width = @string.size * @cell_size[0]
     @cached_height = (@string.count("\n") + 1) * @cell_size[1]
