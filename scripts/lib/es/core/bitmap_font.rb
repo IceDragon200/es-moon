@@ -47,8 +47,6 @@ class BitmapFont < RenderContainer
       col = 0
       px, py, pz = *@position
 
-      old_color = @spritesheet.color
-      @spritesheet.color = @color
       @string.bytes.each_with_index do |byte, i|
         if byte.chr == "\n"
           col = 0
@@ -58,10 +56,10 @@ class BitmapFont < RenderContainer
         @spritesheet.render px + x + col * @cell_size[0],
                             py + y + row * @cell_size[1],
                             pz + z,
-                            byte + offset
+                            byte + offset,
+                            color: @color
         col += 1
       end
-      @spritesheet.color = old_color
     end
     super x, y, z
   end
