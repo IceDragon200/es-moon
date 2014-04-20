@@ -3,7 +3,7 @@ module ES
     class Splash < State
 
       def init
-        @bitmapfont = BitmapFont.new("font_cga8_white.png")
+        @bitmapfont = BitmapFont.new("cga8.png")
         @bitmapfont.string = "Earthen : Smiths #{ES::Version::STRING}"
         @countdown = Countdown.new(120) # about 2 seconds
         super

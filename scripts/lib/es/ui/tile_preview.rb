@@ -10,7 +10,7 @@ module ES
         @cursor_ss = Moon::Spritesheet.new "resources/blocks/e064x064.png",
                                            64, 64
 
-        @bitmap_font = BitmapFont.new "font_cga8_white.png"
+        @bitmap_font = BitmapFont.new "cga8.png"
 
         @tileset = nil
         @tile_id = -1

@@ -3,7 +3,7 @@ module ES
     class PositionMonitor < BitmapFont
 
       def initialize
-        super "font_cga8_white.png"
+        super "cga8.png"
         @obj = nil
       end
 

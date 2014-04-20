@@ -7,6 +7,7 @@ class BitmapFont < RenderContainer
   end
 
   attr_accessor :bold
+  attr_accessor :color
 
   ###
   # Current font cell size is fixed at 8x8
@@ -15,17 +16,10 @@ class BitmapFont < RenderContainer
   ###
   def initialize(filename, string="")
     super()
+    @color = Color.new(255, 255, 255, 255)
     @cell_size = [8, 8]
     @spritesheet = Cache.bmpfont filename, *@cell_size
     self.string = string
-  end
-
-  def color
-    @spritesheet.color
-  end
-
-  def color=(n)
-    @spritesheet.color = n
   end
 
   def refresh_size
@@ -53,6 +47,8 @@ class BitmapFont < RenderContainer
       col = 0
       px, py, pz = *@position
 
+      old_color = @spritesheet.color
+      @spritesheet.color = @color
       @string.bytes.each_with_index do |byte, i|
         if byte.chr == "\n"
           col = 0
@@ -65,6 +61,7 @@ class BitmapFont < RenderContainer
                             byte + offset
         col += 1
       end
+      @spritesheet.color = old_color
     end
     super x, y, z
   end

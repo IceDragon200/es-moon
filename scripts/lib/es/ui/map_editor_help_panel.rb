@@ -4,7 +4,7 @@ module ES
 
       def initialize
         super
-        @bitmap_font = BitmapFont.new "font_cga8_white.png"
+        @bitmap_font = BitmapFont.new "cga8.png"
         @bitmap_font.string = "" +
           "'Right Click' to erase current tile\n" +
           "'Middle Click' to select current tile\n" +

@@ -11,7 +11,7 @@ module ES
         @map = nil
         @tile_position = Vector2.new(0, 0)
         @tileset = nil # spritesheet
-        @bitmap_font = BitmapFont.new "font_cga8_white.png"
+        @bitmap_font = BitmapFont.new "cga8.png"
 
         @block_ss = Cache.block "e008x008.png", 8, 8
         #@block_ss = Cache.block "e016x016.png", 16, 16

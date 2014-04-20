@@ -20,8 +20,9 @@ module ES
       end
 
       def create_fonts
-        @bmpfont_unselected = BitmapFont.new("font_cga8_white.png")
-        @bmpfont_selected = BitmapFont.new("font_cga8_droid_blue.png")
+        @bmpfont_unselected = BitmapFont.new("cga8.png")
+        @bmpfont_selected = BitmapFont.new("cga8.png")
+        @bmpfont_selected.color = Color.new(0.2000, 0.7098, 0.8980, 1.0000)
       end
 
       def make_list

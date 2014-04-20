@@ -15,7 +15,7 @@ module ES
         @tilesize = Vector2.new 32, 32
         @cursor_pos = Vector2.new 0, 0
 
-        @bitmap_font = BitmapFont.new "font_cga8_white.png"
+        @bitmap_font = BitmapFont.new "cga8.png"
 
         @block_ss = Cache.block "e032x032.png", 32, 32
 
