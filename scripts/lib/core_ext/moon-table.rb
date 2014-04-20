@@ -15,7 +15,7 @@ class Table
   # @return [Boolean]
   ###
   def pos_inside?(*args)
-    px, py = *Vector2.obj_to_vec2_a(args.size > 1 ? args : args.first)
+    px, py = *Moon::Vector2.extract(args.size > 1 ? args : args.first)
     px.between?(0, xsize) && py.between?(0, ysize)
   end
 
