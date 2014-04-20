@@ -112,6 +112,10 @@ In that case, I can't really help you ^~^;
 
   TODO.md, finally...
 
+* 2014/04/20 [12:15 AM]
+
+  Yesterday was day of the Input and Vector rehaul!
+  Today, is the day I finally throw the old chunk code out!?
 
 ## FAQ
 
