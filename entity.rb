@@ -277,23 +277,6 @@ class EntityState < State
     super
   end
 
-  def to_h
-    {
-      world: @world
-    }
-  end
-
-  def export
-    {
-      "world" => @world.export
-    }
-  end
-
-  def import(data)
-    @world.import data["world"]
-    self
-  end
-
 end
 
 
@@ -311,7 +294,7 @@ loop do
   count -= 1
   break if count <= 0
 end
-dump = YAML.dump(state.export)
+dump = YAML.dump(world.export)
 puts dump
 data = YAML.load(dump)
 puts data
