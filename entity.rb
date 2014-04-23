@@ -230,7 +230,7 @@ class Component::Position < Vector2
 
 end
 
-module System::MoveSystem
+module System::Movement
 
   extend System
 
@@ -252,7 +252,7 @@ class EntityState < State
     super
 
     @world = World.new
-    @world.register(System::MoveSystem)
+    @world.register(System::Movement)
     create_player
     50.times { create_entity }
   end
