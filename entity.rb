@@ -36,6 +36,7 @@ module System
 end
 
 class World
+  attr_reader :random
 
   # @components = { ComponentClass => {entity_id => [component, ...], ...}, ...}
   def initialize
@@ -59,13 +60,12 @@ class World
   def add_component(id, component)
     #sym = component.class.to_s.demodulize.downcase.to_sym # this is the sweetest thing...
     key = component.class
-    ## wouldn't this mean we'd map components by entities?
     (@components[key][id] ||= []) << component
     component
   end
 
-  def [](component_klass) # maybe just @components[component] ?
-    @components[component_klass].values.flatten
+  def [](klass) # maybe just @components[component] ?
+    @components[klass].values.flatten
   end
 
   # Systems
@@ -218,8 +218,8 @@ end
 
 # using mixin !?
 class Component::Position < Vector2
-
   include Component
+
   field :x, type: Integer, default: 0
   field :y, type: Integer, default: 0
 
@@ -231,7 +231,6 @@ class Component::Position < Vector2
 end
 
 module System::Movement
-
   extend System
 
   def self.process(delta, world)
