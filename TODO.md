@@ -34,6 +34,8 @@ TODO
 
 ## Entity interaction
 
+* ~~Entity System Draft~~
+
 * Add other entities other than the player
 
   For now something like a sign, this means we'd need a message box I guess?
