@@ -134,20 +134,14 @@ end
 class Entity
 
   attr_reader :id
-  attr_reader :components
 
   def initialize(world)
     @world = world
     @id = MoonRandom.base64 16 # right within ruby's optimal string length
-    @components = {}
   end
 
   def add(component)
     @world.add_component(@id, component)
-    # single instance
-    #@components[component.class] = component
-    # multiple instances
-    (@components[component.class] ||= []).push component
     component
   end
 
