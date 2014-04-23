@@ -133,11 +133,10 @@ class World
       end
       comp_hash[component_klass.to_s] = entities
     end
-    entities = @entities.map { |entity| entity.export }
     {
       "components" => components,
-      "systems" => @systems.map { |sys| sys.export },
-      "entities" => entities
+      "systems"    => @systems.map { |sys| sys.export },
+      "entities"   => @entities.map { |entity| entity.export }
     }
   end
 
@@ -192,6 +191,15 @@ module Component
       send(key.to_s+"=", data[:default]) if data.key?(:default)
       send(key.to_s+"=", options[key]) if options.key?(key)
     end
+  end
+
+  def export
+    to_h.merge(class: self.class.to_s).stringify_keys
+  end
+
+  def import(data)
+    setup(data)
+    self
   end
 
   def self.included(mod)
@@ -250,15 +258,6 @@ class Component::Position < Vector2
   def initialize(options={})
     super 0, 0
     setup(options)
-  end
-
-  def export
-    to_h.merge(class: self.class.to_s).stringify_keys
-  end
-
-  def import(data)
-    setup(data)
-    self
   end
 
 end
