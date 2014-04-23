@@ -64,6 +64,10 @@ module System
     #
   end
 
+  def self.load(data)
+    Object.const_get(data["class"]).import(data)
+  end
+
 end
 
 class World
@@ -113,14 +117,50 @@ class World
   end
 
   def to_h
-    components = @components.map do |component_klass, comps|
-      entities = comps.map { |eid, comp| [eid, comp.map { |c| c.to_h }] }
-      [component_klass.to_s, entities]
-    end
     {
-      components: components,
-      systems: @systems.map { |sys| sys.to_h }
+      components: @components,
+      entities: @entities,
+      systems: @systems
     }
+  end
+
+  def export
+    components = @components.each_with_object({}) do |d, comp_hash|
+      component_klass, comps = *d
+      entities = comps.each_with_object({}) do |a, hsh|
+        eid, comp = *a
+        hsh[eid] = comp.map { |c| c.export }
+      end
+      comp_hash[component_klass.to_s] = entities
+    end
+    entities = @entities.map { |entity| entity.export }
+    {
+      "components" => components,
+      "systems" => @systems.map { |sys| sys.export },
+      "entities" => entities
+    }
+  end
+
+  def import(data)
+    @components = data["components"].each_with_object({}) do |d, comp_hash|
+      component_klass, comps = *d
+      entities = comps.each_with_object({}) do |a, hsh|
+        eid, comp = *a
+        hsh[eid] = comp.map { |c| Component.load(c) }
+      end
+      comp_hash[component_klass.to_s] = entities
+    end
+    @entities = data["entities"].map do |d|
+      Entity.new(self).import(d)
+    end
+    @systems = data["systems"].map do |d|
+      System.load(d)
+    end
+    self
+  end
+
+  def self.load(data)
+    new.import(data)
   end
 
 end
@@ -158,6 +198,10 @@ module Component
     mod.extend ComponentClass
   end
 
+  def self.load(data)
+    Object.const_get(data["class"]).new(data.symbolize_keys)
+  end
+
   private :setup
 
 end
@@ -174,6 +218,21 @@ class Entity
   def add(component)
     @world.add_component(@id, component)
     component
+  end
+
+  def to_h
+    {
+      id: @id
+    }
+  end
+
+  def export
+    to_h.stringify_keys
+  end
+
+  def import(data)
+    @id = data["id"]
+    self
   end
 
 end
@@ -193,9 +252,14 @@ class Component::Position < Vector2
     setup(options)
   end
 
-  #def to_h
-  #  super.merge class: self.class.to_s
-  #end
+  def export
+    to_h.merge(class: self.class.to_s).stringify_keys
+  end
+
+  def import(data)
+    setup(data)
+    self
+  end
 
 end
 
@@ -214,6 +278,15 @@ module System::MoveSystem
     {
       class: to_s
     }
+  end
+
+  def self.export
+    to_h.stringify_keys
+  end
+
+  def self.import(data)
+    #
+    self
   end
 
 end
@@ -252,8 +325,19 @@ class EntityState < State
 
   def to_h
     {
-      world: @world.to_h
+      world: @world
     }
+  end
+
+  def export
+    {
+      "world" => @world.export
+    }
+  end
+
+  def import(data)
+    @world.import data["world"]
+    self
   end
 
 end
@@ -261,8 +345,8 @@ end
 
 ### force invoke
 
-p "seed: #{MoonRandom.seed}"
-p "seed: #{MoonRandom.seed = 12}"
+puts "seed: #{MoonRandom.seed}"
+puts "seed: #{MoonRandom.seed = 12}"
 state = EntityState.new(nil)
 state.init
 
@@ -272,4 +356,10 @@ loop do
   count -= 1
   break if count <= 0
 end
-puts YAML.dump(state.to_h)
+dump = YAML.dump(state.export)
+puts dump
+data = YAML.load(dump)
+puts data
+world = World.load data["world"]
+puts data["world"]
+puts world.to_h
