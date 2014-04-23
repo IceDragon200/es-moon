@@ -9,63 +9,14 @@
 #  - ability to fetch entities by specific queries?
 #  - ability to "import" components from a db preset (.dup and add them)
 #+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-module MoonRandom
-
-  class << self
-    attr_accessor :seed
-    attr_accessor :random
-    alias :set_seed :seed=
-    private :set_seed
-  end
-
-  BINARY_DIGITS = %w[0 1]
-  OCTAL_DIGITS  = %w[0 1 2 3 4 5 6 7]
-  HEX_DIGITS    = %w[0 1 2 3 4 5 6 7 8 9 A B C D E F]
-  BASE64_DIGITS = %w[A B C D E F G H I J K L M N O P Q R S T U V W X Y Z] +
-                  %w[a b c d e f g h i j k l m n o p q r s t u v w x y z] +
-                  %w[0 1 2 3 4 5 6 7 8 9 + /]
-
-  def self.seed=(_seed)
-    set_seed _seed.to_i
-    self.random = Random.new(self.seed)
-  end
-
-  def self.int(size)
-    random.rand(size)
-  end
-
-  def self.sample(array)
-    array[int(array.size)]
-  end
-
-  def self.binary(digits)
-    digits.times.map { sample(BINARY_DIGITS) }.join("")
-  end
-
-  def self.octal(digits)
-    digits.times.map { sample(OCTAL_DIGITS) }.join("")
-  end
-
-  def self.hex(digits)
-    digits.times.map { sample(HEX_DIGITS) }.join("")
-  end
-
-  def self.base64(digits)
-    digits.times.map { sample(BASE64_DIGITS) }.join("")
-  end
-
-  self.seed = rand(0xFFFFFFF)
-
-end
-
 module System
 
-  def self.process(delta, world)
+  def process(delta, world)
     #
   end
 
   def self.load(data)
-    Object.const_get(data["class"]).import(data)
+    Object.const_get(data["class"])
   end
 
 end
@@ -74,6 +25,7 @@ class World
 
   # @components = { ComponentClass => {entity_id => [component, ...], ...}, ...}
   def initialize
+    @random = Moon::SeedRandom.new
     @components = Hash.new { |hash, key| hash[key] = {} } # subkeys always initialized to {}
     @entities = []
     @systems = []
@@ -134,6 +86,7 @@ class World
       comp_hash[component_klass.to_s] = entities
     end
     {
+      "random"     => @random.export,
       "components" => components,
       "systems"    => @systems.map { |sys| sys.export },
       "entities"   => @entities.map { |entity| entity.export }
@@ -141,6 +94,7 @@ class World
   end
 
   def import(data)
+    @random = Moon::SeedRandom.load(data["random"])
     @components = data["components"].each_with_object({}) do |d, comp_hash|
       component_klass, comps = *d
       entities = comps.each_with_object({}) do |a, hsh|
@@ -220,7 +174,7 @@ class Entity
 
   def initialize(world)
     @world = world
-    @id = MoonRandom.base64 16 # right within ruby's optimal string length
+    @id = @world.random.base64 16 # right within ruby's optimal string length
   end
 
   def add(component)
@@ -308,8 +262,8 @@ class EntityState < State
 
   def create_entity
     entity = @world.spawn
-    entity.add Component::Position.new(x: MoonRandom.int(100),
-                                       y: MoonRandom.int(100))
+    entity.add Component::Position.new(x: @world.random.int(100),
+                                       y: @world.random.int(100))
   end
 
   def update
@@ -344,10 +298,11 @@ end
 
 ### force invoke
 
-puts "seed: #{MoonRandom.seed}"
-puts "seed: #{MoonRandom.seed = 12}"
 state = EntityState.new(nil)
 state.init
+world = state.instance_variable_get("@world")
+puts "seed: #{world.random.seed}"
+puts "seed: #{world.random.seed = 12}"
 
 count = 120
 loop do
