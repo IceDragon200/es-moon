@@ -15,6 +15,20 @@ module System
     #
   end
 
+  def to_h
+    {
+      class: to_s
+    }
+  end
+
+  def export
+    to_h.stringify_keys
+  end
+
+  def import(data)
+    self
+  end
+
   def self.load(data)
     Object.const_get(data["class"])
   end
@@ -218,28 +232,16 @@ end
 
 module System::MoveSystem
 
+  extend System
+
   def self.process(delta, world)
+    super delta, world
     world[Component::Position].each do |pos|
 
       pos.x += 1 * delta
       pos.y += 1 * delta
 
     end
-  end
-
-  def self.to_h
-    {
-      class: to_s
-    }
-  end
-
-  def self.export
-    to_h.stringify_keys
-  end
-
-  def self.import(data)
-    #
-    self
   end
 
 end
