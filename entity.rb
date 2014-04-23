@@ -31,6 +31,13 @@ end
 
 module MoonRandom
 
+  class << self
+    attr_accessor :seed
+    attr_accessor :random
+    alias :set_seed :seed=
+    private :set_seed
+  end
+
   BINARY_DIGITS = %w[0 1]
   OCTAL_DIGITS  = %w[0 1 2 3 4 5 6 7]
   HEX_DIGITS    = %w[0 1 2 3 4 5 6 7 8 9 A B C D E F]
@@ -38,21 +45,36 @@ module MoonRandom
                   %w[a b c d e f g h i j k l m n o p q r s t u v w x y z] +
                   %w[0 1 2 3 4 5 6 7 8 9 + /]
 
+  def self.seed=(seed)
+    set_seed seed
+    self.random = Random.new(self.seed)
+  end
+
+  def self.int(size)
+    random.rand(size)
+  end
+
+  def self.sample(array)
+    array[int(array.size)]
+  end
+
   def self.binary(digits)
-    digits.times.map { BINARY_DIGITS.sample }.join("")
+    digits.times.map { sample(BINARY_DIGITS) }.join("")
   end
 
   def self.octal(digits)
-    digits.times.map { OCTAL_DIGITS.sample }.join("")
+    digits.times.map { sample(OCTAL_DIGITS) }.join("")
   end
 
   def self.hex(digits)
-    digits.times.map { HEX_DIGITS.sample }.join("")
+    digits.times.map { sample(HEX_DIGITS) }.join("")
   end
 
   def self.base64(digits)
-    digits.times.map { BASE64_DIGITS.sample }.join("")
+    digits.times.map { sample(BASE64_DIGITS) }.join("")
   end
+
+  self.seed = rand(0xFFFFFFFF)
 
 end
 
@@ -195,7 +217,8 @@ class EntityState < State
 
   def create_entity
     entity = @world.spawn
-    entity.add Component::Position.new(x: rand(100), y: rand(100))
+    entity.add Component::Position.new(x: MoonRandom.int(100),
+                                       y: MoonRandom.int(100))
   end
 
   def update
@@ -213,6 +236,8 @@ end
 
 ### force invoke
 
+p "seed: #{MoonRandom.seed}"
+p "seed: #{MoonRandom.seed = 12}"
 state = EntityState.new
 
 count = 120
