@@ -1,13 +1,8 @@
 #+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 #  Entity System proposal
 #---- TODO -------------------------------------------------------------
-#  - ability to fetch component aggregates in system
-#
 #  - ability to tag entities
-#  - ability to fetch entities
-#  - ability to fetch entity components trough entity
 #  - ability to fetch entities by specific queries?
-#  - ability to "import" components from a db preset (.dup and add them)
 #+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 module System
 
@@ -54,18 +49,25 @@ class World
     return entity
   end
 
+  def [](*klasses) # get entities for each component and intersect
+    klasses.map { |klass| @components[klass].keys }.inject(:&)
+  end
+
   # Components
 
   # not to be used directly
-  def add_component(id, component)
+  def add_component(entity, component)
     #sym = component.class.to_s.demodulize.downcase.to_sym # this is the sweetest thing...
     key = component.class
-    (@components[key][id] ||= []) << component
+    (@components[key][entity] ||= []) << component
     component
   end
 
-  def [](klass) # maybe just @components[component] ?
-    @components[klass].values.flatten
+  def get_component(entity, component) # component is class here
+    # .first is a hack? return first element, always
+    # will be hard when we have more than one component
+    # of the same type
+    @components[component][entity].first
   end
 
   # Systems
@@ -191,9 +193,17 @@ class Entity
     @id = @world.random.base64 16 # right within ruby's optimal string length
   end
 
+  def ==(obj)
+    self.id == obj.id
+  end
+
   def add(component)
-    @world.add_component(@id, component)
+    @world.add_component(self, component)
     component
+  end
+
+  def [](component)
+    @world.get_component(self, component)
   end
 
   def to_h
@@ -230,16 +240,43 @@ class Component::Position < Vector2
 
 end
 
+class Component::Sprite
+  include Component
+
+  field :sprite, type: Integer, default: 0
+
+  def initialize(options={})
+    setup(options)
+  end
+
+end
+
 module System::Movement
   extend System
 
   def self.process(delta, world)
-    super delta, world
-    world[Component::Position].each do |pos|
+    world[Component::Position].each do |entity|
+      pos = entity[Component::Position]
 
       pos.x += 1 * delta
       pos.y += 1 * delta
+    end
+  end
 
+end
+
+module System::Rendering
+  extend System
+
+  def self.process(delta, world)
+    entities = world[Component::Position, Component::Sprite]
+    puts entities.count
+
+    entities.each do |entity|
+      pos = entity[Component::Position]
+
+      pos.x += 1 * delta
+      pos.y += 1 * delta
     end
   end
 
@@ -252,6 +289,7 @@ class EntityState < State
 
     @world = World.new
     @world.register(System::Movement)
+    @world.register(System::Rendering)
     create_player
     50.times { create_entity }
   end
@@ -259,6 +297,7 @@ class EntityState < State
   def create_player
     player = @world.spawn
     player.add Component::Position.new(x: 2, y: 1)
+    player.add Component::Sprite.new()
   end
 
   def create_entity
