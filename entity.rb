@@ -9,26 +9,6 @@
 #  - ability to fetch entities by specific queries?
 #  - ability to "import" components from a db preset (.dup and add them)
 #+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
-# don't mind this...
-class State
-  def initialize
-    init
-  end
-  def init
-  end
-  def update
-  end
-  def render
-  end
-end
-# or this
-class Vector2
-  attr_accessor :x, :y
-  def initialize(x, y)
-    @x, @y = x, y
-  end
-end
-
 module MoonRandom
 
   class << self
@@ -45,8 +25,8 @@ module MoonRandom
                   %w[a b c d e f g h i j k l m n o p q r s t u v w x y z] +
                   %w[0 1 2 3 4 5 6 7 8 9 + /]
 
-  def self.seed=(seed)
-    set_seed seed
+  def self.seed=(_seed)
+    set_seed _seed.to_i
     self.random = Random.new(self.seed)
   end
 
@@ -74,7 +54,7 @@ module MoonRandom
     digits.times.map { sample(BASE64_DIGITS) }.join("")
   end
 
-  self.seed = rand(0xFFFFFFFF)
+  self.seed = rand(0xFFFFFFF)
 
 end
 
@@ -132,24 +112,53 @@ class World
     end
   end
 
-end
-
-# Component as class
-class Component
-  # Ghost town
-
-  def initialize(options)
-    options.each { |key, value| send(key.to_s+"=", value) }
+  def to_h
+    components = @components.map do |component_klass, comps|
+      entities = comps.map { |eid, comp| [eid, comp.map { |c| c.to_h }] }
+      [component_klass.to_s, entities]
+    end
+    {
+      components: components,
+      systems: @systems.map { |sys| sys.to_h }
+    }
   end
 
 end
 
 # Component as mixin
-module MComponent
+module Component
 
-  def setup(options)
-    options.each { |key, value| send(key.to_s+"=", value) }
+  module ComponentClass
+
+    def field(name, data)
+      (@fields ||= {})[name] = data
+      attr_reader name unless method_defined?(name)
+      attr_writer name.to_s+"=" unless method_defined?(name.to_s+"=")
+    end
+
+    def fields
+      @fields ||= {}
+      if superclass.respond_to?(:fields)
+        superclass.fields.merge(@fields)
+      else
+        @fields
+      end
+    end
+
   end
+
+  def setup(options={})
+    self.class.fields.each do |key, data|
+      send(key.to_s+"=", data[:default]) if data.key?(:default)
+      send(key.to_s+"=", options[key]) if options.key?(key)
+    end
+  end
+
+  def self.included(mod)
+    mod.extend ComponentClass
+  end
+
+  private :setup
 
 end
 
@@ -172,18 +181,22 @@ end
 
 # Example usage
 
-# using inheritance
-#class Component::Position < Component
-#  attr_accessor :x, :y
-#end
-
 # using mixin !?
 class Component::Position < Vector2
-  include MComponent
-  def initialize(options)
+
+  include Component
+  field :x, type: Integer, default: 0
+  field :y, type: Integer, default: 0
+
+  def initialize(options={})
     super 0, 0
     setup(options)
   end
+
+  #def to_h
+  #  super.merge class: self.class.to_s
+  #end
+
 end
 
 module System::MoveSystem
@@ -195,6 +208,12 @@ module System::MoveSystem
       pos.y += 1 * delta
 
     end
+  end
+
+  def self.to_h
+    {
+      class: to_s
+    }
   end
 
 end
@@ -231,6 +250,12 @@ class EntityState < State
     super
   end
 
+  def to_h
+    {
+      world: @world.to_h
+    }
+  end
+
 end
 
 
@@ -238,14 +263,13 @@ end
 
 p "seed: #{MoonRandom.seed}"
 p "seed: #{MoonRandom.seed = 12}"
-state = EntityState.new
+state = EntityState.new(nil)
+state.init
 
 count = 120
 loop do
-  sleep 0.016
   state.update
-  count = count.pred
+  count -= 1
   break if count <= 0
-  p "#{count} #{state.inspect}"
 end
-p state
+puts YAML.dump(state.to_h)
