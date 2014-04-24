@@ -144,7 +144,6 @@ module Component
 
       attr_reader name unless method_defined?(name)
       attr_writer name unless method_defined?(name.to_s+"=")
-
       name
     end
 
@@ -163,6 +162,14 @@ module Component
     self.class.fields.each do |key, data|
       send(key.to_s+"=", data[:default]) if data.key?(:default)
       send(key.to_s+"=", options[key]) if options.key?(key)
+    end
+  end
+
+  def to_h # predefine to_h for fields
+    self.class.fields.inject({}) do |result, keyval| # res, (k, v) doesn't work?!
+      (key, data) = *keyval
+      result[key] = self.send(key)
+      result
     end
   end
 
