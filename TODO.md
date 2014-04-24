@@ -43,22 +43,9 @@ TODO
   * Entities are stored in a quadtree, so that we can fetch and render only
     the ones visible on screen.
 
-  * Entities are built from components, instead of inheritance.
-
   * Systems operate on filtered ranges of entities.
 
-    Filters are usually whether entity includes a component.
-
-  * The usual practice is that systems contain the processing logic, and entities
-    are simply blobs that link together data (components), but since our components
-    can/will be done via mixins, that allows for pretty easy logic separation.
-
-    That means systems would just be loops running over a filtered selection of
-    entities, and calling the correct method. Though again, we might need a single
-    component in multiple systems, mixing the concerns... or we might need multiple
-    components in one system.
-
-    So we might just follow the practice of putting the logic into a system component?
+    Filters are usually whether entity includes or excludes a component.
 
   * Entities communicate with each other using a messaging system that triggers
     events (Eventable).
