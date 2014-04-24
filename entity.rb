@@ -142,7 +142,7 @@ module Component
     def field(name, data)
       (@fields ||= {})[name] = data
       attr_reader name unless method_defined?(name)
-      attr_writer name.to_s+"=" unless method_defined?(name.to_s+"=")
+      attr_writer name unless method_defined?(name.to_s+"=")
     end
 
     def fields
