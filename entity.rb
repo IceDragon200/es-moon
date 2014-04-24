@@ -259,10 +259,6 @@ class Component::Sprite
     setup(options)
   end
 
-  def to_h
-    { sprite: @sprite }
-  end
-
 end
 
 module System::Movement
