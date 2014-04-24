@@ -163,6 +163,14 @@ module Component
     end
   end
 
+  def to_h # predefine to_h for fields
+    self.class.fields.inject({}) do |result, keyval| # res, (k, v) doesn't work?!
+      (key, data) = *keyval
+      result[key] = self.send(key)
+      result
+    end
+  end
+
   def export
     to_h.merge(class: self.class.to_s).stringify_keys
   end
