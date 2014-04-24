@@ -1,5 +1,7 @@
 include Moon
 
+require 'entity'
+
 require 'scripts/config'
 require 'scripts/lib'
 require 'scripts/data'

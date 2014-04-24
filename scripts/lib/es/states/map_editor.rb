@@ -28,6 +28,15 @@ module ES
         @help_visible = false
 
         @cursor_ss = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
+        @layer_ss = Moon::Spritesheet.new("resources/blocks/b016x016.png", 16, 16)
+
+        @layer_opacity = [1.0, 1.0]
+        @layer_count = 2
+
+        @tilemaps.each { |t| t.layer_opacity = @layer_opacity }
+
+        @mode = :view
+        @layer = -1
 
         register_events
       end
@@ -42,26 +51,52 @@ module ES
         end
         ## tile panel
         @input.on :press, Moon::Input::TAB do
-          @tile_panel_visible = true
+          @tile_panel_visible = true if @mode == :edit
         end
         @input.on :release, Moon::Input::TAB do
-          @tile_panel_visible = false
+          @tile_panel_visible = false if @mode == :edit
         end
         ## place tile
         @input.on :press, Moon::Input::MOUSE_LEFT do
           if @tile_panel_visible
             @tile_panel.select_tile(@mouse.pos-[0,8])
           else
-            place_tile
+            place_tile(@tile_panel.tile_id) if @mode == :edit
           end
         end
         ## copy tile
         @input.on :press, Moon::Input::MOUSE_MIDDLE do
-          copy_tile
+          copy_tile if @mode == :edit
         end
         ## erase tile
         @input.on :press, Moon::Input::MOUSE_RIGHT do
-          erase_tile
+          erase_tile if @mode == :edit
+        end
+        ## mode toggle
+        @input.on :press, Moon::Input::E do
+          @mode = :edit
+        end
+        @input.on :press, Moon::Input::V do
+          @mode = :view
+        end
+        ## layer toggle
+        setlayer = lambda do |layer|
+          @layer = layer
+          if @layer < 0
+            @layer_opacity.map! { 1.0 }
+          else
+            @layer_opacity.map! { 0.3 }
+            @layer_opacity[@layer] = 1.0
+          end
+        end
+        @input.on :press, Moon::Input::N0 do
+          setlayer.(-1)
+        end
+        @input.on :press, Moon::Input::N1 do
+          setlayer.(0)
+        end
+        @input.on :press, Moon::Input::N2 do
+          setlayer.(1)
         end
       end
 
@@ -70,11 +105,11 @@ module ES
         super
       end
 
-      def place_tile
+      def place_tile(tile_id)
         info = @tile_info.info
         if chunk = info[:chunk]
-          dx, dy, dz = *info[:chunk_data_position]
-          chunk.data[dx, dy, dz] = @tile_panel.tile_id
+          dx, dy, _ = *info[:chunk_data_position]
+          chunk.data[dx, dy, @layer] = tile_id
         end
       end
 
@@ -85,27 +120,51 @@ module ES
       end
 
       def erase_tile
-        info = @tile_info.info
-        if chunk = info[:chunk]
-          dx, dy, dz = *info[:chunk_data_position]
-          chunk.data[dx, dy, dz] = -1
+        place_tile(-1)
+      end
+
+      def update_edit_mode
+        if !@tile_panel_visible
+          tp = screen_pos_to_map_pos(Vector3[@mouse.x, @mouse.y, 0])
+          @cursor_position_map_pos = tp
+          @tile_info.tile_position.set(@cursor_position_map_pos.xy)
         end
+
+        @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view.floor)
+
+        @tile_panel.update
+        @tile_preview.tile_id = @tile_panel.tile_id
       end
 
       def update
         unless @help_visible
-          if !@tile_panel_visible
-            tp = screen_pos_to_map_pos(Vector3[@mouse.x, @mouse.y, 0])
-            @cursor_position_map_pos = tp
-            @tile_info.tile_position.set(@cursor_position_map_pos.xy)
-          end
-
-          @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view.floor)
-
-          @tile_panel.update
-          @tile_preview.tile_id = @tile_panel.tile_id
+          update_edit_mode if @mode == :edit
         end
         super
+      end
+
+      def render_edit_mode
+        @tile_info.render
+
+        if @tile_panel_visible
+          @tile_panel.render
+        else
+          @tile_preview.render
+        end
+
+        @layer_count.times do |i|
+          @layer_ss.render @tile_preview.x + i * @layer_ss.cell_width,
+                           @tile_preview.y2,
+                           @tile_preview.z,
+                           i == @layer ? 12 : 1
+        end
+
+        @layer_ss.render @tile_preview.x,
+                         @tile_preview.y2 + @layer_ss.cell_height,
+                         @tile_preview.z,
+                         13
+
+        @cursor_ss.render(*@cursor_position, 1)
       end
 
       def render
@@ -113,14 +172,7 @@ module ES
           @help_panel.render
         else
           super
-          @tile_info.render
-          if @tile_panel_visible
-            @tile_panel.render
-          else
-            @tile_preview.render
-          end
-
-          @cursor_ss.render(*@cursor_position, 1)
+          render_edit_mode if @mode == :edit
         end
       end
 
