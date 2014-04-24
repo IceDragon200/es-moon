@@ -141,8 +141,11 @@ module Component
 
     def field(name, data)
       (@fields ||= {})[name] = data
+
       attr_reader name unless method_defined?(name)
-      attr_writer name.to_s+"=" unless method_defined?(name.to_s+"=")
+      attr_writer name unless method_defined?(name.to_s+"=")
+
+      name
     end
 
     def fields
@@ -249,6 +252,10 @@ class Component::Sprite
     setup(options)
   end
 
+  def to_h
+    { sprite: @sprite }
+  end
+
 end
 
 module System::Movement
@@ -283,6 +290,8 @@ module System::Rendering
 end
 
 class EntityState < State
+
+  attr_reader :world
 
   def init
     super
@@ -323,7 +332,7 @@ end
 
 state = EntityState.new(nil)
 state.init
-world = state.instance_variable_get("@world")
+world = state.world
 puts "seed: #{world.random.seed}"
 puts "seed: #{world.random.seed = 12}"
 
@@ -333,10 +342,11 @@ loop do
   count -= 1
   break if count <= 0
 end
+
 dump = YAML.dump(world.export)
 puts dump
 data = YAML.load(dump)
 puts data
-world = World.load data["world"]
-puts data["world"]
+world = World.load data
+puts data
 puts world.to_h
