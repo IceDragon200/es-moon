@@ -24,12 +24,27 @@ class Component::Sprite
 
 end
 
+class Component::PixieDust
+  include Component
+
+  # Component will lazily take the class name and downcase it for registering
+  # you can always register a component using the register function again
+  register :pixie_dust
+
+  field :dust, type: Integer, default: 0
+
+  def initialize(options={})
+    setup(options)
+  end
+
+end
+
 module System::Movement
   extend System
 
   def self.process(delta, world)
-    world[Component::Position].each do |entity|
-      pos = entity[Component::Position]
+    world[:position].each do |entity|
+      pos = entity[:position]
 
       pos.x += 1 * delta
       pos.y += 1 * delta
@@ -42,11 +57,11 @@ module System::Rendering
   extend System
 
   def self.process(delta, world)
-    entities = world[Component::Position, Component::Sprite]
+    entities = world[:position, :sprite]
     puts entities.count
 
     entities.each do |entity|
-      pos = entity[Component::Position]
+      pos = entity[:position]
 
       pos.x += 1 * delta
       pos.y += 1 * delta
@@ -71,8 +86,9 @@ class EntityState < State
 
   def create_player
     player = @world.spawn
-    player.add Component::Position.new(x: 2, y: 1)
-    player.add Component::Sprite.new()
+    # just proof that Component[] works
+    player.add Component[:position].new(x: 2, y: 1)
+    player.add Component[:sprite].new
   end
 
   def create_entity
@@ -101,6 +117,9 @@ state.init
 world = state.world
 puts "seed: #{world.random.seed}"
 puts "seed: #{world.random.seed = 12}"
+
+puts Component.list
+#puts world.components
 
 120.times do
   state.update
