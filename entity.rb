@@ -78,7 +78,7 @@ class EntityState < State
     super
 
     @world = World.new
-    @world.register(System::Movement)
+    @world.register(:movement)
     @world.register(System::Rendering)
     create_player
     50.times { create_entity }
@@ -119,6 +119,7 @@ puts "seed: #{world.random.seed}"
 puts "seed: #{world.random.seed = 12}"
 
 puts Component.list
+puts System.list
 #puts world.components
 
 120.times do
