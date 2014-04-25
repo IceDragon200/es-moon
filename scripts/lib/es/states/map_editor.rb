@@ -29,6 +29,9 @@ module ES
 
         @cursor_ss = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
         @layer_ss = Moon::Spritesheet.new("resources/blocks/b016x016.png", 16, 16)
+        @passage_ss = Moon::Spritesheet.new("resources/blocks/passage_blocks.png", 32, 32)
+
+        create_passage_layer
 
         @layer_opacity = [1.0, 1.0]
         @layer_count = 2
@@ -39,6 +42,14 @@ module ES
         @layer = -1
 
         register_events
+      end
+
+      def create_passage_layer
+        @passage_tilemap = Tilemap.new do |tilemap|
+          tilemap.position.set(0, 0, 0)
+          tilemap.tileset = @passage_ss
+          tilemap.data = @passage_data # special case passage data
+        end
       end
 
       def register_events
