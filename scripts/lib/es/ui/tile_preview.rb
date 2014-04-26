@@ -10,7 +10,7 @@ module ES
         @cursor_ss = Moon::Spritesheet.new "resources/blocks/e064x064.png",
                                            64, 64
 
-        @bitmap_font = BitmapFont.new "cga8.png"
+        @text = Text.new "", Cache.font("uni0553", 14)
 
         @tileset = nil
         @tile_id = -1
@@ -35,10 +35,10 @@ module ES
             @tileset.render diff.x + px, diff.y + py, pz, @tile_id
           end
 
-          @bitmap_font.string = @tile_id
-          @bitmap_font.render diff.x + px,
-                              diff.y + py + @tileset.cell_height,
-                              pz
+          @text.string = @tile_id
+          @text.render diff.x + px,
+                       diff.y + py + @tileset.cell_height,
+                       pz
         end
         super x, y, z
       end

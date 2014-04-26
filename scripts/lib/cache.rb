@@ -28,8 +28,24 @@ module Cache
 
     hsh = {}
 
+    hsh["uni0553"] = ->(size) do
+      Moon::Font.new("resources/fonts/uni0553/uni0553-webfont.ttf", size)
+    end
+
+    hsh["uni0554"] = ->(size) do
+      Moon::Font.new("resources/fonts/uni0554/uni0554-webfont.ttf", size)
+    end
+
+    hsh["uni0563"] = ->(size) do
+      Moon::Font.new("resources/fonts/uni0563/uni0563-webfont.ttf", size)
+    end
+
+    hsh["uni0564"] = ->(size) do
+      Moon::Font.new("resources/fonts/uni0564/uni0564-webfont.ttf", size)
+    end
+
     hsh["ipaexg"] = ->(size) do
-      Moon::Font.new("resources/fonts/ipaexg/ipaexg.ttf", size)
+      Moon::Font.new("resources/fonts/ipaexg00201/ipaexg.ttf", size)
     end
 
     hsh["vera"] = ->(size) do

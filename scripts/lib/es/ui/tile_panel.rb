@@ -15,7 +15,7 @@ module ES
         @tilesize = Vector2.new 32, 32
         @cursor_pos = Vector2.new 0, 0
 
-        @bitmap_font = BitmapFont.new "cga8.png"
+        @text = Text.new("", Cache.font("uni0553", 14))
 
         @block_ss = Cache.block "e032x032.png", 32, 32
 
@@ -68,8 +68,8 @@ module ES
         end
 
         if relative_pos_inside?(@cursor_pos)
-          @bitmap_font.string = "tile #{@tile_id}"
-          @bitmap_font.render px, py, pz
+          @text.string = "tile #{@tile_id}"
+          @text.render px, py, pz
           @block_ss.render px + @cursor_pos.x, py + @cursor_pos.y + 8, pz, 1
         end
 

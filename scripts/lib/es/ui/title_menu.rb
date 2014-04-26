@@ -20,9 +20,10 @@ module ES
       end
 
       def create_fonts
-        @bmpfont_unselected = BitmapFont.new("cga8.png")
-        @bmpfont_selected = BitmapFont.new("cga8.png")
-        @bmpfont_selected.color = Color.new(0.2000, 0.7098, 0.8980, 1.0000)
+        font = Cache.font("uni0553", 14)
+        @text_unselected = Text.new("", font)
+        @text_selected = Text.new("", font)
+        @text_selected.color = Color.new(0.2000, 0.7098, 0.8980, 1.0000)
       end
 
       def make_list
@@ -39,12 +40,12 @@ module ES
 
       def render(x, y, z)
         oy = 0
-        px, py, pz = *@position
+        pos = @position + [x, y, z]
         @list.each_with_index do |dat, i|
-          font = i == @index ? @bmpfont_selected : @bmpfont_unselected
-          font.string = dat[:name]
-          font.render(px + x, py + y + oy, pz + z)
-          oy += font.height
+          text = i == @index ? @text_selected : @text_unselected
+          text.string = dat[:name]
+          text.render(pos.x, pos.y + oy, pos.z)
+          oy += text.height
         end
         super x, y, z
       end

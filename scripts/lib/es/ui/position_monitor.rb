@@ -1,9 +1,9 @@
 module ES
   module UI
-    class PositionMonitor < BitmapFont
+    class PositionMonitor < Moon::Text
 
       def initialize
-        super "cga8.png"
+        super "", Cache.font("uni0553", 14)
         @obj = nil
       end
 

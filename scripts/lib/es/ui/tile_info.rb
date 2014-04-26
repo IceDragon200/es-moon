@@ -11,7 +11,7 @@ module ES
         @map = nil
         @tile_position = Vector2.new(0, 0)
         @tileset = nil # spritesheet
-        @bitmap_font = BitmapFont.new "cga8.png"
+        @text = Text.new("", Cache.font("uni0553", 14))
 
         @block_ss = Cache.block "e008x008.png", 8, 8
         #@block_ss = Cache.block "e016x016.png", 16, 16
@@ -31,7 +31,7 @@ module ES
           chunk = data[:chunk]
           passage = data[:passage]
 
-          @bitmap_font.string = "" +
+          @text.string = "" +
                                 "position:       #{data[:data_position]}\n" +
                                 "chunk_id:       #{chunk.id}\n" +
                                 "chunk_name:     #{chunk.name}\n" +
@@ -40,8 +40,8 @@ module ES
                                 "passage:        #{passage}\n" +
                                 "" # placeholder
 
-          @bitmap_font.render px, py, pz
-          py += @bitmap_font.height
+          @text.render px, py, pz
+          py += @text.height
 
 
           # draw blocks for passage
@@ -85,8 +85,8 @@ module ES
 
             @tileset.render px + xo, py, pz, tile_id
 
-            @bitmap_font.string = tile_id.to_s
-            @bitmap_font.render px + xo, py + @tileset.cell_height, pz
+            @text.string = tile_id.to_s
+            @text.render px + xo, py + @tileset.cell_height, pz
           end
         end
         super x, y, z
