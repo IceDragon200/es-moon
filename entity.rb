@@ -58,7 +58,6 @@ module System::Rendering
 
   def self.process(delta, world)
     entities = world[:position, :sprite]
-    puts entities.count
 
     entities.each do |entity|
       pos = entity[:position]
@@ -88,7 +87,7 @@ class EntityState < State
     player = @world.spawn
     # just proof that Component[] works
     player.add Component[:position].new(x: 2, y: 1)
-    player.add Component[:sprite].new
+    player[:sprite] = Component[:sprite].new
   end
 
   def create_entity
