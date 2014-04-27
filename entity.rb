@@ -1,15 +1,9 @@
 # Example usage
 
-class Component::Position < Vector2
+class Component::Position
   include Component
 
-  field :x, type: Integer, default: 0
-  field :y, type: Integer, default: 0
-
-  def initialize(options={})
-    super 0, 0
-    setup(options)
-  end
+  field :vec2, type: Vector2, default: Vector2.new
 
 end
 
@@ -17,10 +11,6 @@ class Component::Sprite
   include Component
 
   field :sprite, type: Integer, default: 0
-
-  def initialize(options={})
-    setup(options)
-  end
 
 end
 
@@ -33,10 +23,6 @@ class Component::PixieDust
 
   field :dust, type: Integer, default: 0
 
-  def initialize(options={})
-    setup(options)
-  end
-
 end
 
 module System::Movement
@@ -44,7 +30,7 @@ module System::Movement
 
   def self.process(delta, world)
     world[:position].each do |entity|
-      pos = entity[:position]
+      pos = entity[:position].vec2
 
       pos.x += 1 * delta
       pos.y += 1 * delta
@@ -60,7 +46,7 @@ module System::Rendering
     entities = world[:position, :sprite]
 
     entities.each do |entity|
-      pos = entity[:position]
+      pos = entity[:position].vec2
 
       pos.x += 1 * delta
       pos.y += 1 * delta
