@@ -13,6 +13,14 @@ module ES
           ""
       end
 
+      def width
+        @text.width
+      end
+
+      def height
+        @text.height
+      end
+
       def render(x=0, y=0, z=0)
         @text.render(*(@position + [x, y, z]))
         super x, y, z
