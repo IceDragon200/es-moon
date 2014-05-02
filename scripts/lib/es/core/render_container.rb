@@ -1,6 +1,8 @@
 class RenderContainer
 
-  include ScreenElement # Moon::Core
+  include ScreenElement  # Moon::Core
+  include Transitionable
+  include Eventable
 
   @@container_id = 0
 
@@ -10,6 +12,7 @@ class RenderContainer
   def initialize
     @position = Vector3.new
     @id = @@container_id += 1
+    init_eventable
   end
 
   def x
@@ -38,6 +41,10 @@ class RenderContainer
 
   def y2
     y + height
+  end
+
+  def update
+    update_transition
   end
 
   def render(x=0, y=0, z=0)
