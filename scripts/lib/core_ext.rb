@@ -6,6 +6,7 @@ require 'scripts/lib/core_ext/numeric'
 
 # moon builtin core
 require 'scripts/lib/core_ext/moon-rect'
+require 'scripts/lib/core_ext/moon-color'
 require 'scripts/lib/core_ext/moon-spritesheet'
 
 # moon core
