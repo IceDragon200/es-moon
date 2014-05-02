@@ -28,7 +28,7 @@ module ES
       end
 
       def height
-        8 + (@tileset ? @tileset.cell_height * @visible_rows : 0)
+        16 + (@tileset ? @tileset.cell_height * @visible_rows : 0)
       end
 
       def tile_id=(n)
@@ -49,28 +49,21 @@ module ES
         end
       end
 
-      def update
-        #
-      end
-
       def render(x=0, y=0, z=0)
-        px, py, pz = *@position
-        px += x
-        py += y
-        pz += z
+        px, py, pz = *(@position + [x, y, z])
 
         vis = @visible_rows * @visible_cols
         @tileset.cell_count.times do |i|
           break if i >= vis
           tx = (i % @visible_cols) * @tileset.cell_width
           ty = (i / @visible_cols).floor * @tileset.cell_height
-          @tileset.render px + tx, py + ty + 8, pz, @row_index + i
+          @tileset.render px + tx, py + ty + 16, pz, @row_index + i
         end
 
         if relative_pos_inside?(@cursor_pos)
           @text.string = "tile #{@tile_id}"
           @text.render px, py, pz
-          @block_ss.render px + @cursor_pos.x, py + @cursor_pos.y + 8, pz, 1
+          @block_ss.render px + @cursor_pos.x, py + @cursor_pos.y + 16, pz, 1
         end
 
         super x, y, z
