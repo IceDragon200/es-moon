@@ -42,9 +42,9 @@ class RenderLayer < RenderContainer
   end
 
   def render(x=0, y=0, z=0)
-    px, py, pz = *@position
+    px, py, pz = *(@position + [x, y, z])
     @elements.each do |e|
-      e.render(px + x, py + y, pz + z)
+      e.render px, py, pz
     end
   end
 
