@@ -17,9 +17,6 @@ module ES
 
         @entity.moveto(1, 1)
 
-        @ui_posmon.set_obj(@entity, true)
-        @ui_camera_posmon.set_obj(@camera, true)
-
         @camera.follow(@entity)
 
         #@pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
@@ -94,11 +91,6 @@ module ES
         @spawn = InputHandle.new(device, device::Keys::SPACE)
       end
 
-      def create_debug_objects
-        @ui_posmon = ES::UI::PositionMonitor.new
-        @ui_camera_posmon = ES::UI::PositionMonitor.new
-      end
-
       def update_particles
         if @spawn.held?
           x = (rand * 2.0) / 8.0
@@ -121,9 +113,6 @@ module ES
 
         #update_particles
         @camera.update
-
-        @ui_posmon.update
-        @ui_camera_posmon.update
       end
 
       def update
@@ -184,12 +173,6 @@ module ES
         #                        @map.passages[x3, y3] == ES::Passage::NONE ? 8 : 9)
 
         #@particles.render(*campos)
-
-        # debug
-        h = Moon::Screen.height - @ui_posmon.height
-        @ui_posmon.render((Moon::Screen.width - @ui_posmon.width) / 2, h, 0)
-        @ui_camera_posmon.render((Moon::Screen.width - @ui_camera_posmon.width) / 2,
-                                  Moon::Screen.height - @ui_camera_posmon.height - h, 0)
 
         super
       end
