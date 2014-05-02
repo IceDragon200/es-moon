@@ -28,45 +28,27 @@ module Cache
 
     hsh = {}
 
-    hsh["uni0553"] = ->(size) do
-      Moon::Font.new("resources/fonts/uni0553/uni0553-webfont.ttf", size)
+    loader = lambda do |filename|
+      ->(size) { Moon::Font.new(filename, size) }
     end
 
-    hsh["uni0554"] = ->(size) do
-      Moon::Font.new("resources/fonts/uni0554/uni0554-webfont.ttf", size)
-    end
+    hsh["awesome"] = loader.("resources/fonts/fontawesome-webfont.ttf")
 
-    hsh["uni0563"] = ->(size) do
-      Moon::Font.new("resources/fonts/uni0563/uni0563-webfont.ttf", size)
-    end
+    hsh["foundation"] = loader.("resources/fonts/general_foundicons.ttf")
+    hsh["foundation_enclosed"] = loader.("resources/fonts/general_enclosed_foundicons.ttf")
 
-    hsh["uni0564"] = ->(size) do
-      Moon::Font.new("resources/fonts/uni0564/uni0564-webfont.ttf", size)
-    end
+    hsh["uni0553"] = loader.("resources/fonts/uni0553/uni0553-webfont.ttf")
+    hsh["uni0554"] = loader.("resources/fonts/uni0554/uni0554-webfont.ttf")
+    hsh["uni0563"] = loader.("resources/fonts/uni0563/uni0563-webfont.ttf")
+    hsh["uni0564"] = loader.("resources/fonts/uni0564/uni0564-webfont.ttf")
 
-    hsh["ipaexg"] = ->(size) do
-      Moon::Font.new("resources/fonts/ipaexg00201/ipaexg.ttf", size)
-    end
+    hsh["ipaexg"] = loader.("resources/fonts/ipaexg00201/ipaexg.ttf")
 
-    hsh["vera"] = ->(size) do
-      Moon::Font.new("resources/fonts/vera/Vera.ttf", size)
-    end
-
-    hsh["vera_mono"] = ->(size) do
-      Moon::Font.new("resources/fonts/vera/VeraMono.ttf", size)
-    end
-
-    hsh["vera_mono_bold_italic"] = ->(size) do
-      Moon::Font.new("resources/fonts/vera/VeraMoBI.ttf", size)
-    end
-
-    hsh["vera_mono_bold"] = ->(size) do
-      Moon::Font.new("resources/fonts/vera/VeraMoBd.ttf", size)
-    end
-
-    hsh["vera_mono_italic"] = ->(size) do
-      Moon::Font.new("resources/fonts/vera/VeraMoIt.ttf", size)
-    end
+    hsh["vera"] = loader.("resources/fonts/vera/Vera.ttf")
+    hsh["vera_mono"] = loader.("resources/fonts/vera/VeraMono.ttf")
+    hsh["vera_mono_bold_italic"] = loader.("resources/fonts/vera/VeraMoBI.ttf")
+    hsh["vera_mono_bold"] = loader.("resources/fonts/vera/VeraMoBd.ttf")
+    hsh["vera_mono_italic"] = loader.("resources/fonts/vera/VeraMoIt.ttf")
 
     hsh
   end
