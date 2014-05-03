@@ -9,9 +9,9 @@ module ES
         super
       end
 
-      def update
+      def update(delta)
         #
-        super
+        super delta
       end
 
       def render

@@ -8,8 +8,10 @@ class RenderContainer
 
   attr_reader :id
   attr_accessor :position
+  attr_accessor :visible
 
   def initialize
+    @visible = true
     @position = Vector3.new
     @id = @@container_id += 1
     init_eventable
@@ -43,8 +45,8 @@ class RenderContainer
     y + height
   end
 
-  def update
-    update_transition
+  def update(delta)
+    update_transition(delta)
   end
 
   def render(x=0, y=0, z=0)

@@ -91,7 +91,7 @@ module ES
         @spawn = InputHandle.new(device, device::Keys::SPACE)
       end
 
-      def update_particles
+      def update_particles(delta)
         if @spawn.held?
           x = (rand * 2.0) / 8.0
           y = (rand * 2.0) / 8.0
@@ -105,20 +105,20 @@ module ES
           )
         end
 
-        @particles.update
+        @particles.update delta
       end
 
-      def update_map
-        @map.update
+      def update_map(delta)
+        @map.update delta
 
         #update_particles
-        @camera.update
+        @camera.update delta
       end
 
-      def update
-        update_map
+      def update(delta)
+        update_map delta
 
-        super
+        super delta
       end
 
       ###

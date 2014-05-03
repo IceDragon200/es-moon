@@ -83,7 +83,7 @@ module ES
         @chunks
       end
 
-      def update
+      def update(delta)
         collision_test = []
         #interaction_test = []
 
@@ -99,11 +99,11 @@ module ES
           velo = entity.velocity
           src = entity.position
           dest = src + velo
-          delta = dest - src
+          chng = dest - src
           ##
           # determine entry points
-          sig_x = delta.x <=> 0
-          sig_y = delta.y <=> 0
+          sig_x = chng.x <=> 0
+          sig_y = chng.y <=> 0
           ##
           src_pos = src.xy.round
           sx, sy = *src_pos

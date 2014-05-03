@@ -22,8 +22,8 @@ module ES
         #end
       end
 
-      def update
-        super
+      def update(delta)
+        super delta
       end
 
       def render

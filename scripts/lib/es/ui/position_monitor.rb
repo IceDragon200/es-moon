@@ -7,7 +7,7 @@ module ES
         @obj = nil
       end
 
-      def update
+      def update(delta)
         if @obj
           o = @obj
           o = @obj.position if @obj_uses_internal_position

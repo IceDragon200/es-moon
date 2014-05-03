@@ -193,11 +193,6 @@ module ES
 
       end
 
-      def update_map
-        return if @mode.is? :help
-        super
-      end
-
       def place_tile(tile_id)
         info = @tile_info.info
         if chunk = info[:chunk]
@@ -216,7 +211,7 @@ module ES
         place_tile(-1)
       end
 
-      def update_edit_mode
+      def update_edit_mode(delta)
         if @mode.is? :edit
           tp = screen_pos_to_map_pos(Vector3[@mouse.x, @mouse.y, 0])
           @cursor_position_map_pos = tp
@@ -224,19 +219,24 @@ module ES
           @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view.floor)
         end
 
-        @tile_panel.update
-        @dashboard.update
+        @tile_panel.update delta
+        @dashboard.update delta
         @tile_preview.tile_id = @tile_panel.tile_id
       end
 
-      def update
+      def update_map(delta)
+        return if @mode.is? :help
+        super delta
+      end
+
+      def update(delta)
         if @mode.has? :edit
-          update_edit_mode
+          update_edit_mode delta
         end
 
-        @ui_posmon.update
-        @ui_camera_posmon.update
-        super
+        @ui_posmon.update delta
+        @ui_camera_posmon.update delta
+        super delta
       end
 
       def render_edit_mode

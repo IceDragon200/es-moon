@@ -108,7 +108,7 @@ puts System.list
 #puts world.components
 
 120.times do
-  state.update
+  state.update 0.016
 end
 
 dump = YAML.dump(world.export)

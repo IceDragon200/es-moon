@@ -6,9 +6,9 @@ module ES
         super
       end
 
-      def update
+      def update(delta)
         quit
-        super
+        super delta
       end
 
     end
