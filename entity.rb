@@ -82,8 +82,8 @@ class EntityState < State
                                        y: @world.random.int(100))
   end
 
-  def update
-    @world.update(0.016)
+  def update(delta)
+    @world.update(delta)
     super
   end
 
