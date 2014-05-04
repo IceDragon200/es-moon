@@ -1,6 +1,8 @@
 module Moon
   class Color
 
+    WHITE = new 1.0, 1.0, 1.0, 1.0
+
     def coerce(other)
       return self, other
     end
