@@ -3,12 +3,12 @@ class RenderContainer
   include ScreenElement  # Moon::Core
   include Transitionable
   include Eventable
+  include Visibility
 
   @@container_id = 0
 
   attr_reader :id
   attr_accessor :position
-  attr_accessor :visible
 
   def initialize
     @visible = true
@@ -46,7 +46,7 @@ class RenderContainer
   end
 
   def update(delta)
-    update_transition(delta)
+    update_transition delta
   end
 
   def render(x=0, y=0, z=0)
