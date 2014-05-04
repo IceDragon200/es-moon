@@ -19,7 +19,10 @@ module ES
 
         #@pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
         #@pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
+        register_actor_move
+      end
 
+      def register_actor_move
         @input.on :press, Moon::Input::LEFT do
           @entity.velocity.x = -1 * @entity.move_speed
         end
@@ -117,15 +120,6 @@ module ES
         update_map delta
 
         super delta
-      end
-
-      ###
-      # @param [Vector3] screen_pos
-      ###
-      def screen_pos_to_map_pos(screen_pos)
-        campos = @camera.view.floor
-        pos = screen_pos + campos
-        pos / 32
       end
 
       def render

@@ -25,7 +25,7 @@ module ES
 
       def render(x, y, z)
         if @spritesheet
-          px, py, pz = *(@position + [x, y, z])
+          px, py, pz = *(@position + [x, y, z])# + @tile_rect.xyz)
           @tile_rect.h.times do |i|
             @tile_rect.w.times do |j|
               @spritesheet.render px + j * @spritesheet.cell_width,

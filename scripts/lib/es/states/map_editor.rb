@@ -35,16 +35,18 @@ module ES
           @list.include?(mode)
         end
 
-        def trace?(modes)
+        def starts_with?(*modes)
           modes.each_with_index.all? do |mode, i|
             @list[i] == mode
           end
         end
 
-        def backtrace?(modes)
-          modes.each_with_index.all? do |mode, i|
-            @list[-(i+1)] == mode
-          end
+        def trace?(modes)
+          @list == modes
+        end
+
+        def [](index)
+          @list[index]
         end
 
       end
@@ -62,9 +64,27 @@ module ES
 
       end
 
+      class CamCursor
+
+        attr_accessor :position
+        attr_accessor :velocity
+
+        def initialize
+          @position = Vector3.new
+          @velocity = Vector3.new
+        end
+
+        def update(delta)
+          @position += @velocity * delta
+        end
+
+      end
+
       def init
         super
         @mouse = Moon::Input::Mouse
+
+        @cam_cursor = CamCursor.new
 
         @cursor_position = Vector3.new
         @cursor_position_map_pos = Vector3.new
@@ -94,8 +114,10 @@ module ES
 
         @tile_panel.tileset = @tileset
 
+        color = Color.new 0.1059, 0.6314, 0.8863, 1.0000
+        color += color
         @tileselection_rect.spritesheet = @cursor_ss
-        @tileselection_rect.color.set 0.1059, 0.6314, 0.8863, 1.0000
+        @tileselection_rect.color.set color
 
         @dashboard.position.set 0, 0, 0
         @tile_info.position.set 0, @dashboard.y2 + 16, 0
@@ -155,9 +177,13 @@ module ES
         @_wrappers ||= []
         (@_modes ||=[]).push mode
         modes = @_modes.dup
-        wrapper = InputContext.new(@_wrappers.last||@input) do |i, *a, &b|
+
+        wrapper = InputContext.new(@input) do |i, *a, &b|
           i.on(*a) { |*a2, &b2| b.call(*a2, &b2) if @mode.trace?(modes) }
         end
+        #wrapper = InputContext.new(@_wrappers.last||@input) do |i, *a, &b|
+        #  i.on(*a) { |*a2, &b2| b.call(*a2, &b2) if @mode.trace?(modes) }
+        #end
 
         @_wrappers.push wrapper
 
@@ -165,6 +191,29 @@ module ES
 
         @_wrappers.pop
         @_modes = @_modes.slice 0, @_modes.size-1
+      end
+
+      def register_actor_move
+        @cam_move_speed = 8
+        @input.on :press, Moon::Input::LEFT do
+          @cam_cursor.velocity.x = -1 * @cam_move_speed if @mode.starts_with? :edit
+        end
+        @input.on :press, Moon::Input::RIGHT do
+          @cam_cursor.velocity.x = 1 * @cam_move_speed if @mode.starts_with? :edit
+        end
+        @input.on :release, Moon::Input::LEFT, Moon::Input::RIGHT do
+          @cam_cursor.velocity.x = 0 if @mode.starts_with? :edit
+        end
+
+        @input.on :press, Moon::Input::UP do
+          @cam_cursor.velocity.y = -1 * @cam_move_speed if @mode.starts_with? :edit
+        end
+        @input.on :press, Moon::Input::DOWN do
+          @cam_cursor.velocity.y = 1 * @cam_move_speed if @mode.starts_with? :edit
+        end
+        @input.on :release, Moon::Input::UP, Moon::Input::DOWN do
+          @cam_cursor.velocity.y = 0 if @mode.starts_with? :edit
+        end
       end
 
       def register_events
@@ -195,16 +244,36 @@ module ES
           ## New Map
           input.on :press, Moon::Input::F2 do
             @dashboard.enable 1
-            #if @mode.is? :edit
-            #  @mode.push :dashboard
-            #elsif @mode.is? :dashboard
-            #  @mode.pop
-            #end
+            @mode.push :create_map
+          end
+
+          modespace :create_map do |inp2|
+            inp2.on :release, Moon::Input::F2 do
+              @dashboard.disable 1
+              @mode.pop
+            end
           end
 
           ## New Chunk
           input.on :press, Moon::Input::F3 do
             @dashboard.enable 2
+            @mode.push :create_chunk
+            @selection_stage = 1
+          end
+
+          @selection_stage = 0
+          modespace :create_chunk do |inp2|
+            inp2.on :press, Moon::Input::MOUSE_LEFT do
+              if @selection_stage == 1
+                @tileselection_rect.tile_rect.xyz = @cursor_position_map_pos
+                @selection_stage += 1
+              elsif @selection_stage == 2
+                @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+                @selection_stage = 0
+                create_chunk @tileselection_rect, name: "new/chunk-#{@map.chunks.size}"
+                @mode.pop
+              end
+            end
           end
 
           ## tile panel
@@ -242,6 +311,8 @@ module ES
 
           input.on :press, Moon::Input::V do
             @mode.change :view
+            @camera.follow @entity
+            @ui_posmon.obj = @entity
           end
 
           ## layer toggle
@@ -258,7 +329,29 @@ module ES
         modespace :view do |input|
           ## mode toggle
           input.on :press, Moon::Input::E do
+            @camera.follow @cam_cursor
+            @ui_posmon.obj = @cam_cursor
             @mode.change :edit
+          end
+
+          input.on :press, Moon::Input::LEFT do
+            @entity.velocity.x = -1 * @entity.move_speed
+          end
+          input.on :press, Moon::Input::RIGHT do
+            @entity.velocity.x = 1 * @entity.move_speed
+          end
+          input.on :release, Moon::Input::LEFT, Moon::Input::RIGHT do
+            @entity.velocity.x = 0
+          end
+
+          input.on :press, Moon::Input::UP do
+            @entity.velocity.y = -1 * @entity.move_speed
+          end
+          input.on :press, Moon::Input::DOWN do
+            @entity.velocity.y = 1 * @entity.move_speed
+          end
+          input.on :release, Moon::Input::UP, Moon::Input::DOWN do
+            @entity.velocity.y = 0
           end
         end
       end
@@ -281,12 +374,27 @@ module ES
         place_tile(-1)
       end
 
+      ###
+      # @param [Vector3] screen_pos
+      ###
+      def screen_pos_to_map_pos(screen_pos)
+        (screen_pos + @camera.view.floor) / 32
+      end
+
+      def map_pos_to_screen_pos(map_pos)
+        map_pos * 32 - @camera.view.floor
+      end
+
+      def screen_pos_map_reduce(screen_pos)
+        screen_pos_to_map_pos(screen_pos).floor * 32 - @camera.view.floor
+      end
+
       def update_edit_mode(delta)
-        if @mode.is? :edit
-          tp = screen_pos_to_map_pos(Vector3[@mouse.x, @mouse.y, 0])
-          @cursor_position_map_pos = tp
-          @tile_info.tile_position.set(@cursor_position_map_pos.xy)
-          @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view.floor)
+        if @mode.starts_with? :edit
+          mp = @mouse.pos.xyz
+          @cursor_position_map_pos = screen_pos_to_map_pos mp
+          @tile_info.tile_position.set @cursor_position_map_pos.xy
+          @cursor_position.set screen_pos_map_reduce(mp)
         end
 
         @hud.update delta
@@ -299,6 +407,7 @@ module ES
       end
 
       def update(delta)
+        @cam_cursor.update delta
         if @mode.has? :edit
           update_edit_mode delta
         end
@@ -309,12 +418,17 @@ module ES
         @ui_camera_posmon.position.set((w - @ui_camera_posmon.width) / 2,
                                         h - @ui_camera_posmon.height,
                                         0)
+        @tileselection_rect.position.set map_pos_to_screen_pos(@tileselection_rect.tile_rect.xyz)
+
+        if @selection_stage == 2
+          @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+        end
         super delta
       end
 
       def render_edit_mode
         @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1)
-
+        @tileselection_rect.render 0, 0, 0
         @hud.render
       end
 
