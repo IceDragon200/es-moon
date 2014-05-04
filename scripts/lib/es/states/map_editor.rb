@@ -9,7 +9,7 @@ module ES
         end
 
         def current
-          @list[-1]
+          @list.last
         end
 
         def push(mode)
@@ -33,6 +33,31 @@ module ES
 
         def has?(mode)
           @list.include?(mode)
+        end
+
+        def trace?(modes)
+          modes.each_with_index.all? do |mode, i|
+            @list[i] == mode
+          end
+        end
+
+        def backtrace?(modes)
+          modes.each_with_index.all? do |mode, i|
+            @list[-(i+1)] == mode
+          end
+        end
+
+      end
+
+      class InputContext
+
+        def initialize(input, &block)
+          @input = input
+          @wrap_function = block
+        end
+
+        def on(*args, &block)
+          @wrap_function.call @input, *args, &block
         end
 
       end
@@ -126,86 +151,116 @@ module ES
         end
       end
 
+      def modespace(mode)
+        @_wrappers ||= []
+        (@_modes ||=[]).push mode
+        modes = @_modes.dup
+        wrapper = InputContext.new(@_wrappers.last||@input) do |i, *a, &b|
+          i.on(*a) { |*a2, &b2| b.call(*a2, &b2) if @mode.trace?(modes) }
+        end
+
+        @_wrappers.push wrapper
+
+        yield @_wrappers.last
+
+        @_wrappers.pop
+        @_modes = @_modes.slice 0, @_modes.size-1
+      end
+
       def register_events
-        ## help
-        @input.on :press, Moon::Input::F1 do
-          @mode.push :help
-        end
-        @input.on :release, Moon::Input::F1 do
-          @mode.pop
-        end
+        modespace :edit do |input|
+          ## copy tile
+          input.on :press, Moon::Input::MOUSE_MIDDLE do
+            copy_tile
+          end
 
-        ## Dashboard
-        #@input.on :press, Moon::Input::F2 do
-        #  if @mode.is? :edit
-        #    @mode.push :dashboard
-        #  elsif @mode.is? :dashboard
-        #    @mode.pop
-        #  end
-        #end
+          ## erase tile
+          input.on :press, Moon::Input::MOUSE_RIGHT do
+            erase_tile
+          end
 
-        ## tile panel
-        @input.on :press, Moon::Input::TAB do
-          if @mode.is? :edit
+          ## help
+          input.on :press, Moon::Input::F1 do
+            @dashboard.enable 0
+            @mode.push :help
+          end
+
+          modespace :help do |inp2|
+            inp2.on :release, Moon::Input::F1 do
+              @dashboard.disable 0
+              @mode.pop
+            end
+          end
+
+          ## New Map
+          input.on :press, Moon::Input::F2 do
+            @dashboard.enable 1
+            #if @mode.is? :edit
+            #  @mode.push :dashboard
+            #elsif @mode.is? :dashboard
+            #  @mode.pop
+            #end
+          end
+
+          ## New Chunk
+          input.on :press, Moon::Input::F3 do
+            @dashboard.enable 2
+          end
+
+          ## tile panel
+          input.on :press, Moon::Input::TAB do
             @mode.push :tile_select
             @tile_panel.show
             @tile_preview.hide
           end
-        end
-        @input.on :release, Moon::Input::TAB do
-          if @mode.is? :tile_select
-            @mode.pop
-            @tile_panel.hide
-            @tile_preview.show
-          end
-        end
 
-        ## multi function
-        @input.on :press, Moon::Input::MOUSE_LEFT do
-          ## interact
-          if @mode.is? :dashboard
-            pos = Moon::Input::Mouse.pos
-            if @dashboard.pos_inside?(pos)
-              @dashboard.trigger Input::MouseEvent.new(:click, pos)
+          modespace :tile_select do |inp2|
+            inp2.on :release, Moon::Input::TAB do
+              @mode.pop
+              @tile_panel.hide
+              @tile_preview.show
             end
-          ## select tile
-          elsif @mode.is? :tile_select
-            @tile_panel.select_tile(@mouse.pos-[0,16])
-          ## place tile
-          elsif @mode.is? :edit
+            inp2.on :press, Moon::Input::MOUSE_LEFT do
+              @tile_panel.select_tile(@mouse.pos-[0,16])
+            end
+          end
+
+          input.on :press, Moon::Input::MOUSE_LEFT do
             place_tile(@tile_panel.tile_id)
           end
-        end
 
-        ## copy tile
-        @input.on :press, Moon::Input::MOUSE_MIDDLE do
-          copy_tile if @mode.is? :edit
-        end
+          ## multi function
+          modespace :dashboard do |inp2|
+            inp2.on :press, Moon::Input::MOUSE_LEFT do
+              ## interact
+              pos = Moon::Input::Mouse.pos
+              if @dashboard.pos_inside?(pos)
+                @dashboard.trigger Input::MouseEvent.new(:click, pos)
+              end
+            end
+          end
 
-        ## erase tile
-        @input.on :press, Moon::Input::MOUSE_RIGHT do
-          erase_tile if @mode.is? :edit
-        end
+          input.on :press, Moon::Input::V do
+            @mode.change :view
+          end
 
-        ## mode toggle
-        @input.on :press, Moon::Input::E do
-          @mode.change :edit
+          ## layer toggle
+          input.on :press, Moon::Input::N0 do
+            set_layer(-1)
+          end
+          input.on :press, Moon::Input::N1 do
+            set_layer(0)
+          end
+          input.on :press, Moon::Input::N2 do
+            set_layer(1)
+          end
         end
-        @input.on :press, Moon::Input::V do
-          @mode.change :view
+        modespace :view do |input|
+          ## mode toggle
+          input.on :press, Moon::Input::E do
+            @mode.change :edit
+          end
         end
-
-        ## layer toggle
-        @input.on :press, Moon::Input::N0 do
-          set_layer(-1)
-        end
-        @input.on :press, Moon::Input::N1 do
-          set_layer(0)
-        end
-        @input.on :press, Moon::Input::N2 do
-          set_layer(1)
-        end
-
       end
 
       def place_tile(tile_id)
