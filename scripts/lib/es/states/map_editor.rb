@@ -268,12 +268,30 @@ module ES
             inp2.on :press, Moon::Input::MOUSE_LEFT do
               if @selection_stage == 1
                 @tileselection_rect.tile_rect.xyz = @cursor_position_map_pos
+
+                @tileselection_rect.activate
                 @selection_stage += 1
               elsif @selection_stage == 2
                 @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+
+                id = @map.chunks.size+1
+                create_chunk @tileselection_rect.tile_rect, id: id, name: "new/chunk-#{id}"
+                create_tilemaps
+
                 @selection_stage = 0
-                create_chunk @tileselection_rect, name: "new/chunk-#{@map.chunks.size}"
+                @tileselection_rect.deactivate
+                @dashboard.disable 2
                 @mode.pop
+              end
+            end
+            inp2.on :press, Moon::Input::MOUSE_RIGHT do
+              if @selection_stage == 1
+                @selection_stage = 0
+                @dashboard.disable 2
+                @mode.pop
+              elsif @selection_stage == 2
+                @selection_stage -= 1
+                @tileselection_rect.deactivate
               end
             end
           end
@@ -376,6 +394,32 @@ module ES
         place_tile(-1)
       end
 
+      def create_chunk(rect, data)
+        size = Vector3.new(*rect.wh, 2)
+
+        data[:data] = begin
+          dm = DataMatrix.new(*size)
+          dm.fill(-1)
+          dm
+        end
+        data[:flags] = begin
+          dm = DataMatrix.new(*size)
+          dm.fill(-1)
+          dm
+        end
+        data[:passages] = Table.new(*size.xy)
+
+        dchunk = ES::DataModel::Chunk.new data
+
+        chunk = ES::GameObject::Chunk.new
+        chunk.setup(dchunk)
+
+        @map.chunks << chunk
+        chunk_p = @map.dmap.chunk_position
+        chunk_p[chunk_p.size] = rect.xyz
+        @map.refresh
+      end
+
       ###
       # @param [Vector3] screen_pos
       ###
@@ -416,21 +460,25 @@ module ES
 
         h = Moon::Screen.height
         w = Moon::Screen.width
-        @ui_posmon.position.set((w - @ui_posmon.width) / 2, 0, 0)
+        @ui_posmon.position.set((w - @ui_posmon.width - 48), 0, 0)
         @ui_camera_posmon.position.set((w - @ui_camera_posmon.width) / 2,
                                         h - @ui_camera_posmon.height,
                                         0)
-        @tileselection_rect.position.set map_pos_to_screen_pos(@tileselection_rect.tile_rect.xyz)
 
-        if @selection_stage == 2
-          @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+        if @tileselection_rect.active?
+          @tileselection_rect.position.set map_pos_to_screen_pos(@tileselection_rect.tile_rect.xyz)
+
+          if @selection_stage == 2
+            @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+          end
         end
+
         super delta
       end
 
       def render_edit_mode
         @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1)
-        @tileselection_rect.render 0, 0, 0
+        @tileselection_rect.render 0, 0, 0 if @tileselection_rect.active?
         @hud.render
       end
 
