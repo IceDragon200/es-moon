@@ -100,11 +100,11 @@ end
 state = EntityState.new(nil)
 state.init
 world = state.world
-puts "seed: #{world.random.seed}"
-puts "seed: #{world.random.seed = 12}"
+#puts "seed: #{world.random.seed}"
+#puts "seed: #{world.random.seed = 12}"
 
-puts Component.list
-puts System.list
+#puts Component.list
+#puts System.list
 #puts world.components
 
 120.times do
@@ -112,9 +112,9 @@ puts System.list
 end
 
 dump = YAML.dump(world.export)
-puts dump
+#puts dump
 data = YAML.load(dump)
-puts data
+#puts data
 world = World.load data
-puts data
-puts world.to_h
+#puts data
+#puts world.to_h
