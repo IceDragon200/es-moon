@@ -44,49 +44,64 @@ module ES
         @cursor_position = Vector3.new
         @cursor_position_map_pos = Vector3.new
 
-        @dashboard_visible = false
+        @hud = RenderLayer.new
 
-        @dashboard = ES::UI::MapEditorDashboard.new
-        @dashboard.position.set 0, -@dashboard.height, 0
+        @help_panel       = ES::UI::MapEditorHelpPanel.new
 
-        @tile_preview = ES::UI::TilePreview.new
-        @tile_preview.tileset = @tileset
-        @tile_preview.position.set Moon::Screen.width - @tile_preview.width, 0, 0
+        @dashboard        = ES::UI::MapEditorDashboard.new
+        @layer_view       = ES::UI::MapEditorLayerView.new
+        @tile_info        = ES::UI::TileInfo.new
+        @tile_panel       = ES::UI::TilePanel.new
+        @tile_preview     = ES::UI::TilePreview.new
 
-        @tile_info = ES::UI::TileInfo.new
-        @tile_info.map = @map
-        @tile_info.tileset = @tileset
-        @tile_info.position.set 0, 8, 0
-
-        @tile_panel = ES::UI::TilePanel.new
-        @tile_panel.tileset = @tileset
-        @tile_panel.position.set 0, Moon::Screen.height - 32 * @tile_panel.visible_rows - 16, 0
-
-        @help_panel = ES::UI::MapEditorHelpPanel.new
-
-
-        @cursor_ss = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
-        @layer_ss = Moon::Spritesheet.new("resources/blocks/b016x016.png", 16, 16)
-        @passage_ss = Moon::Spritesheet.new("resources/blocks/passage_blocks.png", 32, 32)
+        @ui_posmon        = ES::UI::PositionMonitor.new
+        @ui_camera_posmon = ES::UI::PositionMonitor.new
 
         @tileselection_rect = ES::UI::SelectionTileRect.new
+
+        @cursor_ss  = Cache.block "e032x032.png", 32, 32
+        @passage_ss = Cache.block "passage_blocks.png", 32, 32
+
+        @tile_preview.tileset = @tileset
+
+        @tile_info.map = @map
+        @tile_info.tileset = @tileset
+
+        @tile_panel.tileset = @tileset
+
         @tileselection_rect.spritesheet = @cursor_ss
         @tileselection_rect.color.set 0.1059, 0.6314, 0.8863, 1.0000
 
+        @dashboard.position.set 0, 0, 0
+        @tile_info.position.set 0, @dashboard.y2 + 16, 0
+        @tile_preview.position.set Screen.width - @tile_preview.width, @dashboard.y2, 0
+        @tile_panel.position.set 0, Screen.height - 32 * @tile_panel.visible_rows - 16, 0
+
+        @dashboard.show
+        @tile_panel.hide
+
+        @hud.add @dashboard
+        @hud.add @layer_view
+        @hud.add @tile_info
+        @hud.add @tile_panel
+        @hud.add @tile_preview
+        @hud.add @ui_camera_posmon
+        @hud.add @ui_posmon
+
+
         create_passage_layer
 
-        create_debug_objects
-
-        @ui_posmon.set_obj(@entity, true)
-        @ui_camera_posmon.set_obj(@camera, true)
+        @ui_posmon.obj = @entity
+        @ui_camera_posmon.obj = @camera
 
         @layer_opacity = [1.0, 1.0]
-        @layer_count = 2
+        @layer_count = @layer_opacity.size
 
         @tilemaps.each { |t| t.layer_opacity = @layer_opacity }
 
         @mode = ModeStack.new
         @mode.push :view
+
         set_layer(-1)
 
         register_events
@@ -94,15 +109,10 @@ module ES
 
       def create_passage_layer
         @passage_tilemap = Tilemap.new do |tilemap|
-          tilemap.position.set(0, 0, 0)
+          tilemap.position.set 0, 0, 0
           tilemap.tileset = @passage_ss
           tilemap.data = @passage_data # special case passage data
         end
-      end
-
-      def create_debug_objects
-        @ui_posmon = ES::UI::PositionMonitor.new
-        @ui_camera_posmon = ES::UI::PositionMonitor.new
       end
 
       def set_layer(layer)
@@ -125,24 +135,28 @@ module ES
         end
 
         ## Dashboard
-        @input.on :press, Moon::Input::F2 do
-          if @mode.is? :edit
-            @mode.push :dashboard
-            @dashboard.transition :position, Vector3[0, 0, 0]
-          elsif @mode.is? :dashboard
-            @mode.pop
-            @dashboard.transition :position, Vector3[0, -@dashboard.height, 0]
-          end
-        end
+        #@input.on :press, Moon::Input::F2 do
+        #  if @mode.is? :edit
+        #    @mode.push :dashboard
+        #  elsif @mode.is? :dashboard
+        #    @mode.pop
+        #  end
+        #end
 
         ## tile panel
         @input.on :press, Moon::Input::TAB do
           if @mode.is? :edit
             @mode.push :tile_select
+            @tile_panel.show
+            @tile_preview.hide
           end
         end
         @input.on :release, Moon::Input::TAB do
-          @mode.pop if @mode.is? :tile_select
+          if @mode.is? :tile_select
+            @mode.pop
+            @tile_panel.hide
+            @tile_preview.show
+          end
         end
 
         ## multi function
@@ -219,8 +233,7 @@ module ES
           @cursor_position.set(@cursor_position_map_pos.floor * 32 - @camera.view.floor)
         end
 
-        @tile_panel.update delta
-        @dashboard.update delta
+        @hud.update delta
         @tile_preview.tile_id = @tile_panel.tile_id
       end
 
@@ -234,42 +247,19 @@ module ES
           update_edit_mode delta
         end
 
-        @ui_posmon.update delta
-        @ui_camera_posmon.update delta
+        h = Moon::Screen.height
+        w = Moon::Screen.width
+        @ui_posmon.position.set((w - @ui_posmon.width) / 2, 0, 0)
+        @ui_camera_posmon.position.set((w - @ui_camera_posmon.width) / 2,
+                                        h - @ui_camera_posmon.height,
+                                        0)
         super delta
       end
 
       def render_edit_mode
-        ox = 0
-        oy = @dashboard.y2
-        @dashboard.render ox, 0, 0
-        @tile_info.render ox, oy, 0
-
-        if @mode.is? :tile_select
-          @tile_panel.render ox, oy, 0
-        else
-          @tile_preview.render ox, oy, 0
-          @layer_count.times do |i|
-            @layer_ss.render @tile_preview.x + i * @layer_ss.cell_width + ox,
-                             @tile_preview.y2 + oy,
-                             @tile_preview.z,
-                             i == @layer ? 12 : 1
-          end
-
-          @layer_ss.render @tile_preview.x + ox,
-                           @tile_preview.y2 + @layer_ss.cell_height + oy,
-                           @tile_preview.z,
-                           13
-        end
-
-
         @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1)
 
-        h = Moon::Screen.height - @ui_posmon.height
-        @ui_posmon.render((Moon::Screen.width - @ui_posmon.width) / 2 + ox, h + oy, 0)
-        @ui_camera_posmon.render((Moon::Screen.width - @ui_camera_posmon.width) / 2 + ox,
-                                  Moon::Screen.height - @ui_camera_posmon.height - h + oy,
-                                  0)
+        @hud.render
       end
 
       def render
