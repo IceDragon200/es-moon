@@ -11,8 +11,8 @@ class Transition
     @target = target
     @a = a
     @b = b
-    @time = 0
-    @duration = duration.to_i
+    @time = 0.0
+    @duration = duration
     @easer = Easer::Linear
     @callback = block
   end
@@ -21,17 +21,18 @@ class Transition
     @time >= @duration
   end
 
-  def update
+  def update(delta)
     return if done?
-    @time += 1
-    @callback.(@easer.ease(@a, @b, @time.to_f / @duration))
+    @time += delta
+    @time = @duration if @time > @duration
+    @callback.(@easer.ease(@a, @b, @time / @duration))
   end
 
 end
 
 module Transitionable
 
-  def transition(attribute, value, duration=8)
+  def transition(attribute, value, duration=0.15)
     src = send(attribute)
     setter = "#{attribute}="
     transition = Transition.new(self, src, value, duration) { |v| send(setter, v) }
@@ -40,12 +41,12 @@ module Transitionable
     transition
   end
 
-  def update_transition
+  def update_transition(delta)
     return unless @transitions
     return if @transitions.empty?
     dead = []
     @transitions.each do |transition|
-      transition.update
+      transition.update(delta)
       dead << transition if transition.done?
     end
     @transitions -= dead
