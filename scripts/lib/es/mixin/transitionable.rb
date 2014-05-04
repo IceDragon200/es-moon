@@ -1,41 +1,26 @@
-class Transition
-
-  attr_accessor :easer
-  attr_accessor :a
-  attr_accessor :b
-  attr_reader :target
-  attr_reader :time
-  attr_reader :duration
-
-  def initialize(target, a, b, duration, &block)
-    @target = target
-    @a = a
-    @b = b
-    @time = 0.0
-    @duration = duration
-    @easer = Easer::Linear
-    @callback = block
-  end
-
-  def done?
-    @time >= @duration
-  end
-
-  def update(delta)
-    return if done?
-    @time += delta
-    @time = @duration if @time > @duration
-    @callback.(@easer.ease(@a, @b, @time / @duration))
-  end
-
-end
-
 module Transitionable
 
+  ###
+  # @param [String] attribute
+  #   @example "color"
+  #   @example "position.x"
+  # @param [Object] value  target value
+  # @param [Numeric] duration  in seconds
+  ###
   def transition(attribute, value, duration=0.15)
-    src = send(attribute)
-    setter = "#{attribute}="
-    transition = Transition.new(self, src, value, duration) { |v| send(setter, v) }
+    attribute = attribute.to_s
+    rolling = attribute.split(".")
+    if rolling.size > 1
+      src = rolling.inject(self) { |obj, param| obj.send(param) }
+      setter = "#{rolling.pop}="
+      transition = Transition.new(src, value, duration) do |v|
+        rolling.inject(self) { |obj, param| obj.send(param) }.send(setter, v)
+      end
+    else
+      src = send(attribute)
+      setter = "#{attribute}="
+      transition = Transition.new(src, value, duration) { |v| send(setter, v) }
+    end
 
     (@transitions ||=[]).push transition
     transition
