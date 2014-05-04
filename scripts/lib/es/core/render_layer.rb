@@ -41,10 +41,15 @@ class RenderLayer < RenderContainer
     @elements.delete(element)
   end
 
+  def update(delta)
+    super delta
+    @elements.each { |element| element.update(delta) }
+  end
+
   def render(x=0, y=0, z=0)
     px, py, pz = *(@position + [x, y, z])
     @elements.each do |e|
-      e.render px, py, pz unless e.visible
+      e.render px, py, pz if e.visible
     end
   end
 
