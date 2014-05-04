@@ -15,7 +15,7 @@ module ES
         @tilesize = Vector2.new 32, 32
         @cursor_pos = Vector2.new 0, 0
 
-        @text = Text.new("", Cache.font("uni0553", 14))
+        @text = Text.new "", Cache.font("uni0553", 16)
 
         @block_ss = Cache.block "e032x032.png", 32, 32
 

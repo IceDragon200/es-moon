@@ -6,7 +6,7 @@ module ES
       attr_accessor :obj
 
       def initialize
-        super "", Cache.font("uni0553", 14)
+        super "", Cache.font("uni0553", 16)
         @visible = true
         @obj = nil
       end

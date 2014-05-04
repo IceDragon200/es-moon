@@ -11,7 +11,7 @@ module ES
         @map = nil
         @tile_position = Vector2.new(0, 0)
         @tileset = nil # spritesheet
-        @text = Text.new("", Cache.font("uni0553", 14))
+        @text = Text.new("", Cache.font("uni0553", 16))
 
         @block_ss = Cache.block "e008x008.png", 8, 8
         #@block_ss = Cache.block "e016x016.png", 16, 16

@@ -107,6 +107,8 @@ module ES
         @cursor_ss  = Cache.block "e032x032.png", 32, 32
         @passage_ss = Cache.block "passage_blocks.png", 32, 32
 
+        @font = Cache.font "uni0553", 16
+
         @tile_preview.tileset = @tileset
 
         @tile_info.map = @map

@@ -3,7 +3,7 @@ module ES
     class Splash < State
 
       def init
-        font = Cache.font "uni0553", 14
+        font = Cache.font "uni0553", 16
         @text = Text.new("Earthen : Smiths #{ES::Version::STRING}", font)
         @countdown = Countdown.new(120) # about 2 seconds
         super

@@ -20,9 +20,9 @@ module ES
       end
 
       def create_fonts
-        font = Cache.font("uni0553", 14)
-        @text_unselected = Text.new("", font)
-        @text_selected = Text.new("", font)
+        font = Cache.font "uni0553", 16
+        @text_unselected = Text.new "", font
+        @text_selected = Text.new "", font
         @text_selected.color = Color.new(0.2000, 0.7098, 0.8980, 1.0000)
       end
 
