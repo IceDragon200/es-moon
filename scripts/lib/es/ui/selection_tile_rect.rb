@@ -2,12 +2,15 @@ module ES
   module UI
     class SelectionTileRect < RenderContainer
 
+      include Activatable
+
       attr_accessor :tile_rect
       attr_accessor :color
       attr_accessor :spritesheet
 
       def initialize
         super
+        @active = false
         @tile_rect = Rect.new 0, 0, 0, 0
         @spritesheet = nil
         @color = Color.new 1.0, 1.0, 1.0, 1.0
