@@ -76,6 +76,7 @@ module ES
         @tile_info.position.set 0, @dashboard.y2 + 16, 0
         @tile_preview.position.set Screen.width - @tile_preview.width, @dashboard.y2, 0
         @tile_panel.position.set 0, Screen.height - 32 * @tile_panel.visible_rows - 16, 0
+        @layer_view.position.set @tile_preview.x, @tile_preview.y2, 0
 
         @dashboard.show
         @tile_panel.hide
