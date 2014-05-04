@@ -28,6 +28,7 @@ module ES
   module FontStringMap
 
     Foundation = {
+      "" => "",
       "settings" => "\uF000",
       "heart" => "\uF001",
       "star" => "\uF002",
@@ -78,6 +79,7 @@ module ES
     }
 
     Awesome = {
+      "" => "",
       "glass" => "\uF000",
       "music" => "\uF001",
       "search" => "\uF002",
