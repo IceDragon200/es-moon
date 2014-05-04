@@ -167,6 +167,7 @@ module ES
 
       def set_layer(layer)
         @layer = layer
+        @layer_view.index = @layer
         if @layer < 0
           @layer_opacity.map! { 1.0 }
         else
@@ -261,6 +262,21 @@ module ES
             @dashboard.enable 2
             @mode.push :create_chunk
             @selection_stage = 1
+          end
+
+          ## Show Chunk Labels
+          input.on :press, Moon::Input::F10 do
+            @dashboard.enable 9
+            @mode.push :show_chunk_labels
+            @tile_info.hide
+          end
+
+          modespace :show_chunk_labels do |inp2|
+            inp2.on :release, Moon::Input::F10 do
+              @dashboard.disable 9
+              @tile_info.show
+              @mode.pop
+            end
           end
 
           @selection_stage = 0
@@ -479,6 +495,14 @@ module ES
       def render_edit_mode
         @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1)
         @tileselection_rect.render 0, 0, 0 if @tileselection_rect.active?
+        if @mode.is? :show_chunk_labels
+          color = Color::WHITE
+          oy = @font.size
+          @map.chunks.each do |chunk|
+            x, y, z = *map_pos_to_screen_pos(chunk.position)
+            @font.render x, y-oy, z, chunk.name, color, outline: 0
+          end
+        end
         @hud.render
       end
 

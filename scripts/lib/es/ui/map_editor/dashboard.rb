@@ -11,9 +11,18 @@ module ES
         @unselected_color = Color.new 1.0, 1.0, 1.0, 1.0
         @selected_color = Color.new 0.3137, 0.7843, 0.4706, 1.0000
 
-        @help_button = add_button "book"
-        @new_map_button = add_button "plus-circle"
-        @new_chunk_button = add_button "plus-square"
+        @help       = add_button "book"                                   # F1
+        @new_map    = add_button "square-o"                               # F2
+        @new_chunk  = add_button "plus-square"                            # F3
+        @reserved1  = add_button ""                                       # F4
+        @reserved2  = add_button ""                                       # F5
+        @reserved3  = add_button ""                                       # F6
+        @reserved4  = add_button ""                                       # F7
+        @reserved5  = add_button ""                                       # F8
+        @reserved6  = add_button ""                                       # F9
+        @show_chunk = add_button "search"                                 # F10
+        @reserved8  = add_button ""                                       # F11
+        @reserved9  = add_button ""                                       # F12
 
         disable
       end
