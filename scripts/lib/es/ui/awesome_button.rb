@@ -18,6 +18,7 @@ module ES
       end
 
       def render(x=0, y=0, z=0)
+        return if @text.string.empty?
         px, py, pz = *(@position + [x, y, z])
         @text.render px + (width-@text.font.size)/2,
                      py + (height-@text.font.size)/2,
