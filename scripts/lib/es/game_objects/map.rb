@@ -3,6 +3,7 @@ module ES
     class Map
 
       attr_reader :size
+      attr_reader :chunks
       attr_reader :passages
       attr_accessor :entities
 
@@ -70,7 +71,9 @@ module ES
       def refresh_passages
         @passages = Table.new(*@size.xy.ceil)
         @passages.map_with_xy do |_, x, y|
-          chunk = @chunks[@chunk_map[x, y]]
+          index = @chunk_map[x, y]
+          next if index == -1
+          chunk = @chunks[index]
           chunk.passages[x - chunk.position.x, y - chunk.position.y]
         end
       end
@@ -168,17 +171,20 @@ module ES
       # Returns all the tiledata for this row
       ###
       def tile_data(x, y)
-        chunk = @chunks[@chunk_map[x, y]]
+        data = {
+          data_position: [x, y],
+          passage: @passages[x, y] || 0,
+        }
+        chunk_index = @chunk_map[x, y]
+        return data if chunk_index == -1
+
+        chunk = @chunks[chunk_index]
         chunk_offset = chunk.position
         cx, cy = x - chunk.position.x, y - chunk.position.y
 
-        {
-          chunk: chunk,
-          data_position: [x, y],
-          chunk_data_position: [cx, cy],
-          data: chunk.data.zsize.times.map { |z| chunk.data[cx, cy, z] },
-          passage: @passages[x, y],
-        }
+        data.merge chunk: chunk,
+                   chunk_data_position: [cx, cy],
+                   data: chunk.data.zsize.times.map { |z| chunk.data[cx, cy, z] }
       end
 
     end

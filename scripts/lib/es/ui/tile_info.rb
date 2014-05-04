@@ -28,15 +28,23 @@ module ES
           pz = z + @position.z
 
           data = self.info
+          tile_data = data[:data] || []
           chunk = data[:chunk]
           passage = data[:passage]
 
+          data_position = data[:data_position]
+
+          chunk_id = chunk ? chunk.id : -1
+          chunk_name = chunk ? chunk.name : ""
+          chunk_position = chunk ? chunk.position.to_a : [-1, -1]
+          chunk_data_pos = data.fetch(:chunk_data_position, [-1, -1])
+
           @text.string = "" +
-                                "position:       #{data[:data_position]}\n" +
-                                "chunk_id:       #{chunk.id}\n" +
-                                "chunk_name:     #{chunk.name}\n" +
-                                "chunk_data_pos: #{data[:chunk_data_position]}\n" +
-                                "chunk_position: #{chunk.position.to_a}\n" +
+                                "position:       #{data_position}\n" +
+                                "chunk_id:       #{chunk_id}\n" +
+                                "chunk_name:     #{chunk_name}\n" +
+                                "chunk_data_pos: #{chunk_data_pos}\n" +
+                                "chunk_position: #{chunk_position}\n" +
                                 "passage:        #{passage}\n" +
                                 "" # placeholder
 
@@ -78,7 +86,7 @@ module ES
           end
           py += @block_ss.cell_height * 3
 
-          data[:data].each_with_index do |tile_id, i|
+          tile_data.each_with_index do |tile_id, i|
             next if tile_id < 0
             xo = @tileset.cell_width * i
 
