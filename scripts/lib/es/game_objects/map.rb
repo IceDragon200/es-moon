@@ -2,6 +2,7 @@ module ES
   module GameObject
     class Map
 
+      attr_reader :dmap # now, you don't usually expose this, but...
       attr_reader :size
       attr_reader :chunks
       attr_reader :passages
@@ -32,6 +33,10 @@ module ES
           chunk
         end
 
+        refresh
+      end
+
+      def refresh
         refresh_chunk_positions
         refresh_size
         refresh_chunk_map
@@ -45,7 +50,7 @@ module ES
       end
 
       def refresh_size
-        @size = Vector3.new(0, 0, 0)
+        @size = Vector3.new 0, 0, 0
         @chunks.each do |chunk|
           x, y, z = *(chunk.position + chunk.size)
           @size.x = x if @size.x < x
@@ -185,6 +190,17 @@ module ES
         data.merge chunk: chunk,
                    chunk_data_position: [cx, cy],
                    data: chunk.data.zsize.times.map { |z| chunk.data[cx, cy, z] }
+      end
+
+      def to_h
+        {
+          size: @size,
+          chunks: @chunks,
+          chunk_map: @chunk_map,
+          passages: @passages,
+          entities: @entities,
+          dmap: @dmap,
+        }
       end
 
     end
