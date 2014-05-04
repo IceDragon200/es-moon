@@ -14,6 +14,7 @@ class Camera2
 
   def follow(obj)
     @obj = obj
+    puts "[Camera:follow] #{obj}"
   end
 
   def view
