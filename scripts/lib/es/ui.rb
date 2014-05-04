@@ -6,7 +6,7 @@ require 'scripts/lib/es/ui/tile_info'
 require 'scripts/lib/es/ui/tile_panel'
 require 'scripts/lib/es/ui/tile_preview'
 
-require 'scripts/lib/es/ui/map_editor_help_panel'
-require 'scripts/lib/es/ui/map_editor_dashboard'
+require 'scripts/lib/es/ui/awesome_button'
+require 'scripts/lib/es/ui/map_editor'
 
 require 'scripts/lib/es/ui/selection_tile_rect'
