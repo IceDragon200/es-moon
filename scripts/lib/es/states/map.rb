@@ -13,8 +13,6 @@ module ES
         create_entity_sprite
         #create_particles
 
-        create_debug_objects
-
         @entity.moveto(1, 1)
 
         @camera.follow(@entity)
