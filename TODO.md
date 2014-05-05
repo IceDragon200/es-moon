@@ -3,62 +3,63 @@ TODO
 
 ## That Editor!
 
-* ~~Can select a tile~~
+- [x] Can select a tile
 
-* ~~Can place a tile~~
+- [x] Can place a tile
 
-* ~~Can remove a tile~~
+- [x] Can remove a tile
 
-* ~~Tile selection panel!~~
+- [x] Tile selection panel!
 
-* Awesome dashboard thing ma bob
+- [x] Awesome dashboard thing ma bob
 
   Just a dropdown panel with save button maybe?
   Also layer buttons, and a toggle button for showing passage editor,
   vs tile editor.
 
 
-* Saving
+- [x] Saving
 
   Just dump a YAML file or something...
 
 
-* Loading
+- [x] Loading
 
   Just load aforementioned dumped YAML file or something...
 
 
-* Layer selection panel!?
+- [ ] Layer selection panel!?
+
   If the dashboard doesn't cut it...
 
 
 ## Entity interaction
 
-* ~~Entity System Draft~~
+- [x] Entity System Draft
 
-* Add other entities other than the player
+- [ ] Add other entities other than the player
 
   For now something like a sign, this means we'd need a message box I guess?
 
-  * Entities are stored in a quadtree, so that we can fetch and render only
+  - [ ] Entities are stored in a quadtree, so that we can fetch and render only
     the ones visible on screen.
 
-  * Systems operate on filtered ranges of entities.
+  - [ ] Systems operate on filtered ranges of entities.
 
     Filters are usually whether entity includes or excludes a component.
 
-  * Entities communicate with each other using a messaging system that triggers
+  - [ ] Entities communicate with each other using a messaging system that triggers
     events (Eventable).
 
-  * Pre-programmed sequences, like a moving pattern, etc. are defined in a behavioral tree
+  - [ ] Pre-programmed sequences, like a moving pattern, etc. are defined in a behavioral tree
     and AI controllers are basically just stepping over the behavior tree.
 
     ref: http://gamedev.stackexchange.com/questions/44396/many-sources-of-movement-in-an-entity-system?rq=1
 
-  * Collision detection is done using a system that uses the entity quadtree,
+  - [ ] Collision detection is done using a system that uses the entity quadtree,
     and only checks between collisions of objects in the same region.
 
-  * Notifying an entity that a player is nearby ("attack me!") can be done by
+  - [ ] Notifying an entity that a player is nearby ("attack me!") can be done by
     notifying the entities in the same quadtree section.
 
   References:
@@ -72,12 +73,13 @@ TODO
   http://www.richardlord.net/blog/why-use-an-entity-framework
 
 
-* Setup action triggers! (at least plan them)
+- [ ] Setup action triggers! (at least plan them)
 
   when a collides with b do x, y, z
 
 
-* Some sort of event system? (we could create a ruby DSL for it)
+- [ ] Some sort of event system? (we could create a ruby DSL for it)
+
 
 ## Complete the first Area
 
@@ -87,13 +89,13 @@ Areas have many Maps, Maps have many Chunks, and Chunks are data
 
 ## Minimal Combat!
 
-* Combat...
+- [ ] Combat...
 
-* Go do a zelda thing for now
+- [ ] Go do a zelda thing for now
 
-* Simple shift system
+- [ ] Simple shift system
 
   Its an old feature from Yggdrasil, by pressing a key you could quickly
   change the player entity to another party member.
 
-* Flying stuff (projectiles)
+- [ ] Flying stuff (projectiles)
