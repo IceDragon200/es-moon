@@ -41,18 +41,18 @@ module ES
           if type.is_a?(Module)
             unless obj.is_a?(type) || (allow_nil && (obj == nil))
               raise TypeError,
-                    "wrong type #{obj.class.inspect} (expected #{type.inspect})"
+                    "[#{sym}] wrong type #{obj.class.inspect} (expected #{type.inspect})"
             end
           # validate that obj is an Array of type
           elsif type.is_a?(Array)
             unless obj.is_a?(Array) || (allow_nil && (obj == nil))
               raise TypeError,
-                    "wrong type #{obj.class.inspect} (expected Array)"
+                    "[#{sym}] wrong type #{obj.class.inspect} (expected Array)"
             end
             unless obj.all? { |o| type.any? { |t| o.is_a?(t) } }
               str = type.map { |s| s.inspect }.join(", ")
               raise TypeError,
-                    "wrong type #{obj.class.inspect} (expected #{str})"
+                    "[#{sym}] wrong type #{obj.class.inspect} (expected #{str})"
             end
           end
           send(setter, obj)
@@ -69,7 +69,7 @@ module ES
       field :meta, type: Hash,     default: proc {{}} # Meta Data, String Values and String Keys
 
       def initialize(opts={})
-        opts.each { |k, v| send(k.to_s + "=", v) }
+        opts.each { |k, v| self[k] = v }
         initialize_fields(opts.keys)
         @dmid = @@dmid += 1
       end
@@ -77,23 +77,95 @@ module ES
       def initialize_fields(dont_init=[])
         self.class.all_fields.each do |k, options|
           next if dont_init.include?(k)
+
           case v = options[:default]
           when Proc
-            send(k.to_s + "=", v.call(options[:type], self))
+            self[k] = v.call options[:type], self
           else
-            send(k.to_s + "=", v)
+            self[k] = v
           end
         end
       end
 
+      def [](key)
+        send key
+      end
+
+      def []=(key, value)
+        send "#{key}=", value
+      end
+
       def to_h
+        hsh = {}
+        self.class.all_fields.each { |k, d| hsh[k] = send(k) }
+        hsh
+      end
+
+      # recursive
+      def to_h_r
         hsh = {}
         self.class.all_fields.each do |k, d|
           obj = send(k)
-          obj = obj.to_h if obj.respond_to?(:to_h)
+          if obj.is_a?(Array)
+            obj = obj.map do |o|
+              o.respond_to?(:to_h) ? o.to_h : o
+            end
+          elsif obj.is_a?(Hash)
+            obj = obj.each_with_object({}) do |a, hash|
+              k, v = a
+              hash[k] = v.respond_to?(:to_h) ? v.to_h : v
+              hash
+            end
+          else
+            obj = obj.to_h if obj.respond_to?(:to_h)
+          end
           hsh[k] = obj
         end
         hsh
+      end
+
+      def export_obj(obj)
+        if obj.is_a?(Array)
+          obj.map { |o| export_obj(o) }
+        elsif obj.is_a?(Hash)
+          obj.each_with_object({}) do |a, hash|
+            k, v = *a
+            hash[k] = export_obj(v)
+          end
+        else
+          obj.respond_to?(:export) ? obj.export : obj
+        end
+      end
+
+      def export
+        hsh = {}
+        self.class.all_fields.each do |k, d|
+          hsh[k] = export_obj send(k)
+        end
+        hsh.stringify_keys
+      end
+
+      def import_obj(obj)
+        if obj.is_a?(Array)
+          obj.map { |o| import_obj(o) }
+        elsif obj.is_a?(Hash)
+          if obj.key?("&class")
+            Object.const_get(obj["&class"]).load obj
+          else
+            obj.each_with_object({}) do |a, hash|
+              k, v = *a
+              hash[k] = import_obj(v)
+            end
+          end
+        else
+          obj
+        end
+      end
+
+      def import(data)
+        self.class.all_fields.each do |k, d|
+          self[k] = import_obj(data[k.to_s])
+        end
       end
 
       ###
@@ -122,11 +194,19 @@ module ES
         when "meta"
           value.all? { |k, v| @meta[k.to_s] == v }
         else
-          send(key) == value
+          self[key] == value
         end
       end
 
+      def self.load(data)
+        instance = new
+        instance.import data
+        instance
+      end
+
       private :initialize_fields
+      private :export_obj
+      private :import_obj
 
     end
   end
