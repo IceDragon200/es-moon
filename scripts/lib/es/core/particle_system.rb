@@ -19,11 +19,11 @@ class ParticleSystem < RenderContainer
 
     def reset
       @cell_index = -1
-      @accel = Vector3.new(0, 0, 0)
-      @force = Vector3.new(0, 0, 0)
-      @position = Vector3.new(0, 0, 0)
-      @velocity = Vector3.new(0, 0, 0)
-      @color = Moon::Color.new(255, 255, 255, 255)
+      @accel = Vector3.new 0, 0, 0
+      @force = Vector3.new 0, 0, 0
+      @position = Vector3.new 0, 0, 0
+      @velocity = Vector3.new 0, 0, 0
+      @color = Vector4.new 1.0, 1.0, 1.0, 1.0
       @ticks = 0
       self
     end

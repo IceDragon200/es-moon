@@ -16,7 +16,7 @@ class BitmapFont < RenderContainer
   ###
   def initialize(filename, string="")
     super()
-    @color = Color.new(255, 255, 255, 255)
+    @color = Vector4.new 1.0, 1.0, 1.0, 1.0
     @cell_size = [8, 8]
     @spritesheet = Cache.bmpfont filename, *@cell_size
     self.string = string

@@ -8,8 +8,8 @@ module ES
 
       def initialize
         super
-        @unselected_color = Color.new 1.0, 1.0, 1.0, 1.0
-        @selected_color = Color.new 0.3137, 0.7843, 0.4706, 1.0000
+        @unselected_color = Vector4.new 1.0, 1.0, 1.0, 1.0
+        @selected_color = Vector4.new 0.3137, 0.7843, 0.4706, 1.0000
 
         @help       = add_button "book"                                   # F1
         @new_map    = add_button "square-o"                               # F2

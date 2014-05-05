@@ -13,7 +13,7 @@ module ES
         @active = false
         @tile_rect = Rect.new 0, 0, 0, 0
         @spritesheet = nil
-        @color = Color.new 1.0, 1.0, 1.0, 1.0
+        @color = Vector4.new 1.0, 1.0, 1.0, 1.0
       end
 
       def width

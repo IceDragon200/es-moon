@@ -116,7 +116,7 @@ module ES
 
         @tile_panel.tileset = @tileset
 
-        color = Color.new 0.1059, 0.6314, 0.8863, 1.0000
+        color = Vector4.new 0.1059, 0.6314, 0.8863, 1.0000
         color += color
         @tileselection_rect.spritesheet = @cursor_ss
         @tileselection_rect.color.set color
@@ -147,14 +147,17 @@ module ES
         @layer_opacity = [1.0, 1.0]
         @layer_count = @layer_opacity.size
 
-        @tilemaps.each { |t| t.layer_opacity = @layer_opacity }
-
         @mode = ModeStack.new
         @mode.push :view
 
         set_layer(-1)
 
         register_events
+      end
+
+      def create_tilemaps
+        super
+        @tilemaps.each { |t| t.layer_opacity = @layer_opacity }
       end
 
       def create_passage_layer
@@ -392,6 +395,21 @@ module ES
         end
       end
 
+      ###
+      # @param [Vector3] screen_pos
+      ###
+      def screen_pos_to_map_pos(screen_pos)
+        (screen_pos + @camera.view.floor) / 32
+      end
+
+      def map_pos_to_screen_pos(map_pos)
+        map_pos * 32 - @camera.view.floor
+      end
+
+      def screen_pos_map_reduce(screen_pos)
+        screen_pos_to_map_pos(screen_pos).floor * 32 - @camera.view.floor
+      end
+
       def place_tile(tile_id)
         info = @tile_info.info
         if chunk = info[:chunk]
@@ -414,13 +432,11 @@ module ES
         size = Vector3.new(*rect.wh, 2)
 
         data[:data] = begin
-          dm = DataMatrix.new(*size)
-          dm.fill(-1)
+          dm = DataMatrix.new(*size, default: -1)
           dm
         end
         data[:flags] = begin
           dm = DataMatrix.new(*size)
-          dm.fill(-1)
           dm
         end
         data[:passages] = Table.new(*size.xy)
@@ -434,21 +450,6 @@ module ES
         chunk_p = @map.dmap.chunk_position
         chunk_p[chunk_p.size] = rect.xyz
         @map.refresh
-      end
-
-      ###
-      # @param [Vector3] screen_pos
-      ###
-      def screen_pos_to_map_pos(screen_pos)
-        (screen_pos + @camera.view.floor) / 32
-      end
-
-      def map_pos_to_screen_pos(map_pos)
-        map_pos * 32 - @camera.view.floor
-      end
-
-      def screen_pos_map_reduce(screen_pos)
-        screen_pos_to_map_pos(screen_pos).floor * 32 - @camera.view.floor
       end
 
       def update_edit_mode(delta)
@@ -496,7 +497,7 @@ module ES
         @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1)
         @tileselection_rect.render 0, 0, 0 if @tileselection_rect.active?
         if @mode.is? :show_chunk_labels
-          color = Color::WHITE
+          color = Vector4::WHITE
           oy = @font.size
           @map.chunks.each do |chunk|
             x, y, z = *map_pos_to_screen_pos(chunk.position)
