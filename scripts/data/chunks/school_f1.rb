@@ -2,9 +2,7 @@ ES::Database.create :chunk do |chunk|
 
   chunk.name = "school_f1/room/baron"
 
-  chunk.data = DataMatrix.new(8, 6, 2) do |dm| dm.clear(-1)
-    dm.default = -1
-
+  chunk.data = DataMatrix.new(8, 6, 2, default: -1) do |dm|
     pnt = ES::Helper::PaintMap.new(dm)
     ### Ground layer                                           #
     pnt.layer = 0
