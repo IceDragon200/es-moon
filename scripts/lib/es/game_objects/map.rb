@@ -60,8 +60,7 @@ module ES
       end
 
       def refresh_chunk_map
-        @chunk_map = Table.new(*@size.xy.ceil)
-        @chunk_map.fill(-1)
+        @chunk_map = Table.new(*@size.xy.ceil, default: -1)
         @chunks.each_with_index do |chunk, i|
           pos  = chunk.position.ceil
           size = chunk.size.ceil
