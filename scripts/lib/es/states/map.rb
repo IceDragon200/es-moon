@@ -20,6 +20,8 @@ module ES
         #@pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
         #@pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
         register_actor_move
+
+        @transform = Transform.new
       end
 
       def register_actor_move
@@ -127,9 +129,9 @@ module ES
         charpos = (campos + (@entity.position * 32) + @entity_voffset).floor
 
         @tilemaps.each do |tilemap|
-          tilemap.render(*campos)
+          tilemap.render(*campos, transform: @transform)
         end
-        @entity_sp.render(*charpos, 0)
+        @entity_sp.render(*charpos, 0, transform: @transform)
 
         #rad = Math::PI * 2 * ((@ticks % 120) / 120.0)
         #rad = (Moon::Input::Mouse.pos - charpos.xy).rad

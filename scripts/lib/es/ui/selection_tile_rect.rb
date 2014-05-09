@@ -26,15 +26,16 @@ module ES
         @spritesheet.cell_height * @tile_rect.h
       end
 
-      def render(x, y, z)
+      def render(x, y, z, option={})
         if @spritesheet
           px, py, pz = *(@position + [x, y, z])# + @tile_rect.xyz)
+          render_options = { color: @color }.merge(options)
           @tile_rect.h.times do |i|
             @tile_rect.w.times do |j|
               @spritesheet.render px + j * @spritesheet.cell_width,
                                   py + i * @spritesheet.cell_height,
                                   pz,
-                                  1, color: @color
+                                  1, render_options
             end
           end
         end

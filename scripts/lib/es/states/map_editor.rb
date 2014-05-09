@@ -81,6 +81,9 @@ module ES
       end
 
       def init
+        @layer_opacity = [1.0, 1.0]
+        @layer_count = @layer_opacity.size
+
         super
         @mouse = Moon::Input::Mouse
 
@@ -144,15 +147,16 @@ module ES
         @ui_posmon.obj = @entity
         @ui_camera_posmon.obj = @camera
 
-        @layer_opacity = [1.0, 1.0]
-        @layer_count = @layer_opacity.size
-
         @mode = ModeStack.new
         @mode.push :view
 
         set_layer(-1)
 
         register_events
+
+        @zoom = 1.0
+
+        @transform_transition = nil
       end
 
       def create_tilemaps
@@ -224,6 +228,18 @@ module ES
 
       def register_events
         modespace :edit do |input|
+          input.on :press, Moon::Input::N0 do
+            zoom_reset
+          end
+
+          input.on :press, Moon::Input::MINUS do
+            zoom_out
+          end
+
+          input.on :press, Moon::Input::EQUAL do
+            zoom_in
+          end
+
           ## copy tile
           input.on :press, Moon::Input::MOUSE_MIDDLE do
             copy_tile
@@ -355,7 +371,7 @@ module ES
           end
 
           ## layer toggle
-          input.on :press, Moon::Input::N0 do
+          input.on :press, Moon::Input::GRAVE_ACCENT do
             set_layer(-1)
           end
           input.on :press, Moon::Input::N1 do
@@ -393,6 +409,25 @@ module ES
             @entity.velocity.y = 0
           end
         end
+      end
+
+      def transition_transform(dest)
+        @transform_transition = Transition.new(@zoom, dest, 0.15) do |v|
+          @zoom = v
+          @transform = Transform.scale(v, v, 1.0)
+        end
+      end
+
+      def zoom_reset
+        transition_transform(1.0)
+      end
+
+      def zoom_out
+        transition_transform(@zoom/2.0)
+      end
+
+      def zoom_in
+        transition_transform(@zoom*2.0)
       end
 
       ###
@@ -462,17 +497,10 @@ module ES
 
         @hud.update delta
         @tile_preview.tile_id = @tile_panel.tile_id
-      end
 
-      def update_map(delta)
-        return if @mode.is? :help
-        super delta
-      end
-
-      def update(delta)
-        @cam_cursor.update delta
-        if @mode.has? :edit
-          update_edit_mode delta
+        if @transform_transition
+          @transform_transition.update delta
+          @transform_transition = nil if @transform_transition.done?
         end
 
         h = Moon::Screen.height
@@ -489,19 +517,30 @@ module ES
             @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
           end
         end
+      end
 
+      def update_map(delta)
+        return if @mode.is? :help
+        super delta
+      end
+
+      def update(delta)
+        @cam_cursor.update delta
+        if @mode.has? :edit
+          update_edit_mode delta
+        end
         super delta
       end
 
       def render_edit_mode
-        @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1)
-        @tileselection_rect.render 0, 0, 0 if @tileselection_rect.active?
+        @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1, transform: @transform)
+        @tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
         if @mode.is? :show_chunk_labels
           color = Vector4::WHITE
           oy = @font.size
           @map.chunks.each do |chunk|
             x, y, z = *map_pos_to_screen_pos(chunk.position)
-            @font.render x, y-oy, z, chunk.name, color, outline: 0
+            @font.render x, y-oy, z, chunk.name, color, outline: 0, transform: @transform
           end
         end
         @hud.render
