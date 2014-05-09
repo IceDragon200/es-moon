@@ -1,14 +1,14 @@
 class Transition
 
   attr_accessor :easer
-  attr_accessor :a
-  attr_accessor :b
+  attr_accessor :src
+  attr_accessor :dest
   attr_reader :time
   attr_reader :duration
 
-  def initialize(a, b, duration, &block)
-    @a = a
-    @b = b
+  def initialize(src, dest, duration, &block)
+    @src = src
+    @dest = dest
     @time = 0.0
     @duration = duration
     @easer = Easer::Linear
@@ -23,7 +23,7 @@ class Transition
     return if done?
     @time += delta
     @time = @duration if @time > @duration
-    @callback.(@easer.ease(@a, @b, @time / @duration))
+    @callback.(@easer.ease(@src, @dest, @time / @duration))
   end
 
 end
