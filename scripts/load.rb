@@ -4,6 +4,9 @@ require 'entity'
 
 require 'scripts/config'
 require 'scripts/lib'
+
+#require 'build/data' # only run once to generate the initial data stubs
+
 require 'scripts/data'
 
 State.push ES::States::Shutdown
