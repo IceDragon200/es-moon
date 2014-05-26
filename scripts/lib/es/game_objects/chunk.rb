@@ -2,6 +2,8 @@ module ES
   module GameObject
     class Chunk
 
+      attr_reader :dchunk
+
       attr_reader :size
       attr_accessor :position
 
