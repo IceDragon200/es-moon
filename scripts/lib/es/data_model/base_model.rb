@@ -150,7 +150,10 @@ module ES
           obj.map { |o| import_obj(o) }
         elsif obj.is_a?(Hash)
           if obj.key?("&class")
-            Object.const_get(obj["&class"]).load obj
+            safe_obj = obj.dup
+            klass_path = safe_obj.delete("&class")
+            klass = Object.const_get(klass_path)
+            klass.load safe_obj
           else
             obj.each_with_object({}) do |a, hash|
               k, v = *a
