@@ -3,55 +3,71 @@ module ES
 
     class MapEditorDashboard < RenderLayer
 
-      attr_accessor :unselected_color
-      attr_accessor :selected_color
+      attr_accessor :default_color
 
       def initialize
         super
-        @unselected_color = Vector4.new 1.0, 1.0, 1.0, 1.0
-        @selected_color = Vector4.new 0.3137, 0.7843, 0.4706, 1.0000
+        pal = Cache.palette
+        @default_color = pal["white"]
+        @info_color    = pal["system/info"]
+        @ok_color      = pal["system/ok"]
+        @warning_color = pal["system/warning"]
+        @error_color   = pal["system/error"]
 
         @help       = add_button "book"                                   # F1
         @new_map    = add_button "square-o"                               # F2
         @new_chunk  = add_button "plus-square"                            # F3
-        @reserved1  = add_button ""                                       # F4
-        @reserved2  = add_button ""                                       # F5
-        @reserved3  = add_button ""                                       # F6
-        @reserved4  = add_button ""                                       # F7
-        @reserved5  = add_button ""                                       # F8
-        @reserved6  = add_button ""                                       # F9
+        @reserved4  = add_button ""                                       # F4
+        @reserved5  = add_button "download"                               # F5
+        @reserved6  = add_button "upload"                                 # F6
+        @reserved7  = add_button ""                                       # F7
+        @reserved8  = add_button ""                                       # F8
+        @reserved9  = add_button ""                                       # F9
         @show_chunk = add_button "search"                                 # F10
-        @reserved8  = add_button ""                                       # F11
-        @reserved9  = add_button ""                                       # F12
+        @reserved11 = add_button ""                                       # F11
+        @reserved12 = add_button ""                                       # F12
 
         disable
       end
 
       def add_button(icon_name)
         button = AwesomeButton.new
-        button.text.string = ES::FontStringMap::Awesome[icon_name]
+        button.text.string = Cache.charmap("awesome.yml")[icon_name]
         button.position.set @elements.size * button.width, 0, 0
         add button
         button
       end
 
-      def enable(index=nil)
+      def state(color, index=nil)
         if index
-          #@elements[index].text.color.set @selected_color
-          @elements[index].transition "text.color", @selected_color
+          #@elements[index].text.color.set color
+          @elements[index].transition "text.color", color
         else
-          @elements.each { |e| e.text.color.set @selected_color }
+          @elements.each { |e| e.text.color.set color }
         end
       end
 
-      def disable(index=nil)
-        if index
-          #@elements[index].text.color.set @unselected_color
-          @elements[index].transition "text.color", @unselected_color
-        else
-          @elements.each { |e| e.text.color.set @unselected_color }
-        end
+      def info(index=nil)
+        state @info_color, index
       end
+
+      def ok(index=nil)
+        state @ok_color, index
+      end
+
+      def error(index=nil)
+        state @error_color, index
+      end
+
+      def warning(index=nil)
+        state @warning_color, index
+      end
+
+      def disable(index=nil)
+        state @default_color, index
+      end
+
+      alias :enable :ok
 
     end
   end
