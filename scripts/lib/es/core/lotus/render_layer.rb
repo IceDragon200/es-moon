@@ -3,6 +3,23 @@ class RenderLayer < RenderContainer
   def initialize
     super
     @elements = []
+
+    on :any do |event|
+      case event
+      when Moon::Input::MouseEvent
+        subevent = event.dup
+        subevent.position = screen_to_relative(subevent.position)
+        @elements.each do |element|
+          if element.pos_inside?(subevent.position)
+            element.trigger subevent
+          end
+        end
+      else
+        @elements.each do |element|
+          element.trigger event
+        end
+      end
+    end
   end
 
   def width
