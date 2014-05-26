@@ -1,0 +1,1 @@
+require 'build/data/entities/actors'
