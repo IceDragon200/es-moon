@@ -1,6 +1,6 @@
 module ES
   module States
-    class Title < State
+    class Title < Base
 
       def init
         super

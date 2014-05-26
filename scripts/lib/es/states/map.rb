@@ -1,6 +1,6 @@
 module ES
   module States
-    class Map < State
+    class Map < Base
 
       def init
         super

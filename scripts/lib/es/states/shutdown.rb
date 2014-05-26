@@ -1,6 +1,6 @@
 module ES
   module States
-    class Shutdown < State
+    class Shutdown < Base
 
       def init
         super

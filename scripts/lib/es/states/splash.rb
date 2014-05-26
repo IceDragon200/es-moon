@@ -1,11 +1,13 @@
 module ES
   module States
-    class Splash < State
+    class Splash < Base
 
       def init
         font = Cache.font "uni0553", 16
         @text = Text.new("Earthen : Smiths #{ES::Version::STRING}", font)
-        @countdown = Countdown.new(120) # about 2 seconds
+        add_task 2 do
+          State.pop
+        end
         super
       end
 
@@ -18,9 +20,7 @@ module ES
         x = (Moon::Screen.width - @text.width) / 2
         y = (Moon::Screen.height - @text.height) / 2
         @text.render(x, y, 0)
-        @countdown.update
         super
-        State.pop if @countdown.done?
       end
 
     end
