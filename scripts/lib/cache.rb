@@ -1,5 +1,14 @@
 module Cache
 
+  branch :palette do
+    lambda do |*args|
+      YAML.load(File.read("data/palette.yml")).each_with_object({}) do |a, r|
+        k, v = *a
+        r[k] = Vector4[v]
+      end
+    end
+  end
+
   branch :charmap do
     lambda do |filename, *args|
       YAML.load(File.read("data/charmap/#{filename}"))
