@@ -1,5 +1,11 @@
 module Cache
 
+  branch :charmap do
+    lambda do |filename, *args|
+      YAML.load(File.read("data/charmap/#{filename}"))
+    end
+  end
+
   branch :block do
     lambda do |filename, *args|
       Moon::Spritesheet.new("media/blocks/" + filename, *args)
