@@ -19,7 +19,7 @@ class Countdown
     @ticks <= 0
   end
 
-  def update
+  def tick
     @ticks -= 1 if @ticks > 0
   end
 
