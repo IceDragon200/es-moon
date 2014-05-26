@@ -198,6 +198,19 @@ module ES
         end
       end
 
+      def self.basepath
+        "data/"
+      end
+
+      def save_file
+        path = (self.class.basepath + name).split("/")
+        basename = path.pop
+        pathname = "#{path.join("/")}/#{basename}.yml"
+
+        Dir.mkdir_p path.join("/")
+        YAML.save_file(pathname, export)
+      end
+
       def self.load(data)
         instance = new
         instance.import data

@@ -4,6 +4,10 @@ module ES
 
       #field
 
+      def self.basepath
+        "data/entities/"
+      end
+
     end
   end
 end

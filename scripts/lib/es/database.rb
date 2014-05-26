@@ -27,6 +27,22 @@ module ES
       obj
     end
 
+    def self.load(sub, data)
+      create sub do |obj|
+        obj.import data
+      end
+    end
+
+    def self.load_file(sub, filename)
+      puts "[Database.load_file #{sub}] #{filename}"
+      load sub, YAML.load_file(filename)
+    end
+
+    def self.load_data_file(sub, basename)
+      klass = @class_reg[sub]
+      load_file sub, klass.basepath + basename + ".yml"
+    end
+
     def self.where(sub, options={})
       if block_given?
         @data[sub].select { |e| yield e }
