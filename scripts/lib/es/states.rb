@@ -1,4 +1,4 @@
-require 'scripts/lib/es/states/state'
+require 'scripts/lib/es/states/base'
 require 'scripts/lib/es/states/shutdown'
 require 'scripts/lib/es/states/splash'
 require 'scripts/lib/es/states/title'
