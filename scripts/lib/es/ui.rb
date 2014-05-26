@@ -10,3 +10,5 @@ require 'scripts/lib/es/ui/awesome_button'
 require 'scripts/lib/es/ui/map_editor'
 
 require 'scripts/lib/es/ui/selection_tile_rect'
+
+require 'scripts/lib/es/ui/notifications'
