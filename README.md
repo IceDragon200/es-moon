@@ -1,7 +1,8 @@
 es-moon
 =======
+[![Code Climate](https://codeclimate.com/github/IceDragon200/es-moon.png)](https://codeclimate.com/github/IceDragon200/es-moon)
 
-Earthen - Smiths built atop moon
+Earthen - Smiths built atop [moon](https://github.com/archSeer/moon)
 
 So we need to symlink/ or copy the core data into ./core
 
