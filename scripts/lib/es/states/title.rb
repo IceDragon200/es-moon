@@ -5,6 +5,7 @@ module ES
       def init
         super
         @title_menu = ES::UI::TitleMenu.new
+        @title_sprite = ES.cache.system "title_text.png"
         register_events
       end
 
@@ -28,6 +29,9 @@ module ES
 
       def render
         @title_menu.render 0, 0, 0
+        @title_sprite.render Screen.width - @title_sprite.width,
+                             Screen.height - @title_sprite.height,
+                             0
         super
       end
 

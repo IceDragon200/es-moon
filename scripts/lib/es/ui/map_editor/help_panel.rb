@@ -4,7 +4,7 @@ module ES
 
       def initialize
         super
-        @text = Text.new "", Cache.font("uni0553", 16)
+        @text = Text.new "", ES.cache.font("uni0553", 16)
         @text.string = "" +
           "'Right Click' to erase current tile\n" +
           "'Middle Click' to select current tile\n" +

@@ -62,7 +62,7 @@ module ES
 
       def create_tilemaps
         filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
-        @tileset = Cache.tileset filename, 32, 32
+        @tileset = ES.cache.tileset filename, 32, 32
 
         @tilemaps = @map.visible_chunks.map do |chunk|
           Tilemap.new do |tilemap|
@@ -76,7 +76,7 @@ module ES
 
       def create_entity_sprite
         filename = "oryx_lofi_fantasy/3x/lofi_char_3x.png"
-        @entity_sp = Cache.tileset filename, 24, 24
+        @entity_sp = ES.cache.tileset filename, 24, 24
         @entity_voffset =
           Vector3.new @tileset.cell_width - @entity_sp.cell_width,
                       @tileset.cell_height - @entity_sp.cell_height,
@@ -86,7 +86,7 @@ module ES
 
       def create_particles
         filename = "oryx_lofi_fantasy/lofi_obj.png"
-        spritesheet = Cache.tileset filename, 8, 8
+        spritesheet = ES.cache.tileset filename, 8, 8
         @particles = ParticleSystem.new(spritesheet)
         @particles.ticks = 30
 

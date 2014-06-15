@@ -6,7 +6,7 @@ module ES
 
       def initialize
         super
-        @text = Text.new "", Cache.font("awesome", 32)
+        @text = Text.new "", ES.cache.font("awesome", 32)
       end
 
       def width

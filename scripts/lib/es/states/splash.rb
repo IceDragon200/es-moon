@@ -3,12 +3,12 @@ module ES
     class Splash < Base
 
       def init
-        font = Cache.font "uni0553", 16
-        @text = Text.new("Earthen : Smiths #{ES::Version::STRING}", font)
+        super
+        font = ES.cache.font "uni0553", 16
+        @text = Text.new "Earthen : Smiths #{ES::Version::STRING}", font
         add_task 2 do
           State.pop
         end
-        super
       end
 
       def update(delta)

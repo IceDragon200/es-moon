@@ -9,6 +9,8 @@ require 'scripts/lib'
 
 require 'scripts/data'
 
+ES.cache = ES::Cache.new
+
 State.push ES::States::Shutdown
 State.push ES::States::Title
 State.push ES::States::Splash

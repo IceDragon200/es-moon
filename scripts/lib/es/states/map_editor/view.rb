@@ -7,7 +7,7 @@ class MapEditorView < RenderLayer
   def initialize
     super
 
-    @font = Cache.font "uni0553", 16
+    @font = ES.cache.font "uni0553", 16
 
     @hud = RenderLayer.new
 
@@ -26,8 +26,8 @@ class MapEditorView < RenderLayer
 
     @tileselection_rect = ES::UI::SelectionTileRect.new
 
-    @cursor_ss  = Cache.block "e032x032.png", 32, 32
-    @passage_ss = Cache.block "passage_blocks.png", 32, 32
+    @cursor_ss  = ES.cache.block "e032x032.png", 32, 32
+    @passage_ss = ES.cache.block "passage_blocks.png", 32, 32
 
     @tile_preview.tileset = @tileset
 

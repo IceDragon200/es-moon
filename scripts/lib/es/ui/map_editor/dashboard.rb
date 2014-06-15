@@ -7,7 +7,7 @@ module ES
 
       def initialize
         super
-        pal = Cache.palette
+        pal = ES.cache.palette
         @default_color = pal["white"]
         @info_color    = pal["system/info"]
         @ok_color      = pal["system/ok"]
@@ -32,7 +32,7 @@ module ES
 
       def add_button(icon_name)
         button = AwesomeButton.new
-        button.text.string = Cache.charmap("awesome.yml")[icon_name]
+        button.text.string = ES.cache.charmap("awesome.yml")[icon_name]
         button.position.set @elements.size * button.width, 0, 0
         add button
         button
