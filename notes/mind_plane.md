@@ -4,7 +4,7 @@ Mind Plane
 Oh hi, what brings you to my notes?
 
 Whatever it may be, welcome to the es-moon notes, this is just an extract
-from IceDragon's ever messy EDOS notes.
+from IceDragon's ever messy EDOS/ES notes.
 
 
 ## What is a Mind Plane?
