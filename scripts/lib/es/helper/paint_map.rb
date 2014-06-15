@@ -39,9 +39,9 @@ module ES
       end
 
       def fill(opts)
-        rect  = opts[:rect]
-        value = opts[:value]
-        layer = opts[:layer] || @layer
+        rect  = opts.fetch(:rect)
+        value = opts.fetch(:value)
+        layer = opts.fetch(:layer, @layer)
 
         if rect
           # so we can support Arrays as well
@@ -69,10 +69,10 @@ module ES
       end
 
       def stroke(opts) # value, weight, rect
-        rect = opts[:rect]
-        weight = opts[:weight] || 1
-        value = opts[:value]
-        layer = opts[:layer] || @layer
+        rect   = opts.fetch(:rect)
+        weight = opts.fetch(:weight, 1)
+        value  = opts.fetch(:value)
+        layer  = opts.fetch(:layer, @layer)
 
         rx, ry, rw, rh = *rect
         rx2 = rx + rw
