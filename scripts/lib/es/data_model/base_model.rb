@@ -7,6 +7,8 @@ module ES
   module DataModel
     class BaseModel
 
+      include Queryable
+
       class MissingOption < StandardError
 
         def initialize(type)
@@ -15,19 +17,31 @@ module ES
 
       end
 
+      ###
+      # @return [Array<Symbol>]
+      ###
       def self.fields
         (@fields ||= [])
       end
 
+      ###
+      # Traverses all parent classes and returns every field every defined
+      # in the object chain
+      # @return [Array<Symbol>]
+      ###
       def self.all_fields
-        ancestors.reverse.inject([]) do |r, c|
-          c.respond_to?(:fields) ? r + c.fields : r
+        ancestors.reverse.each_with_object([]) do |c, r|
+          r.concat c.fields if c.respond_to?(:fields)
         end + fields
       end
 
+      ###
+      # define a new field
+      # @return [Symbol]
+      ###
       def self.field(sym, options)
         raise MissingOption.new(:type) unless options.key?(:type)
-        fields << [sym, options]
+        fields << [sym.to_sym, options]
 
         type = options[:type]
         allow_nil = options[:allow_nil]
@@ -57,6 +71,8 @@ module ES
           end
           send(setter, obj)
         end
+
+        sym.to_sym
       end
 
       @@dmid = 0
@@ -95,13 +111,20 @@ module ES
         send "#{key}=", value
       end
 
+      ###
+      # A recursive version of to_h
+      # @return [Hash<Symbol, Object>]
+      ###
       def to_h
         hsh = {}
         self.class.all_fields.each { |k, d| hsh[k] = send(k) }
         hsh
       end
 
-      # recursive
+      ###
+      # A recursive version of to_h
+      # @return [Hash<Symbol, Object>]
+      ###
       def to_h_r
         hsh = {}
         self.class.all_fields.each do |k, d|
@@ -114,7 +137,6 @@ module ES
             obj = obj.each_with_object({}) do |a, hash|
               k, v = a
               hash[k] = v.respond_to?(:to_h) ? v.to_h : v
-              hash
             end
           else
             obj = obj.to_h if obj.respond_to?(:to_h)
@@ -124,6 +146,9 @@ module ES
         hsh
       end
 
+      ###
+      # @return [Hash|Array]
+      ###
       def export_obj(obj)
         if obj.is_a?(Array)
           obj.map { |o| export_obj(o) }
@@ -137,6 +162,9 @@ module ES
         end
       end
 
+      ###
+      # @return [Hash]
+      ###
       def export
         hsh = {}
         self.class.all_fields.each do |k, d|
@@ -145,6 +173,9 @@ module ES
         hsh.stringify_keys
       end
 
+      ###
+      # @param [Object] obj
+      ###
       def import_obj(obj)
         if obj.is_a?(Array)
           obj.map { |o| import_obj(o) }
@@ -165,6 +196,9 @@ module ES
         end
       end
 
+      ###
+      # @param [Hash] data
+      ###
       def import(data)
         self.class.all_fields.each do |k, d|
           self[k] = import_obj(data[k.to_s])
@@ -172,13 +206,12 @@ module ES
       end
 
       ###
-      # Honestly, I had no idea what to call this method at all.
-      # This is a search function used by Database::where
+      # When questionin the model about its properties this is used.
       # @param [String|Symbol] key
       # @param [Object] value
       # @return [Boolean]
       ###
-      def where_match?(key, value)
+      def query(key, value)
         # tags and meta are special cases
         case key.to_s
         ###
@@ -197,14 +230,20 @@ module ES
         when "meta"
           value.all? { |k, v| @meta[k.to_s] == v }
         else
-          self[key] == value
+          super key, value
         end
       end
 
+      ###
+      # @return [String]
+      ###
       def self.basepath
         "data/"
       end
 
+      ###
+      #
+      ###
       def save_file
         path = (self.class.basepath + name).split("/")
         basename = path.pop
@@ -214,6 +253,9 @@ module ES
         YAML.save_file(pathname, export)
       end
 
+      ###
+      #
+      ###
       def self.load(data)
         instance = new
         instance.import data
