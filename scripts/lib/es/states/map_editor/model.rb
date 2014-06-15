@@ -1,4 +1,4 @@
-require "scripts/lib/es/states/map_editor/cam_cursor"
+require "scripts/lib/es/states/map_editor/camera_cursor"
 
 class MapEditorModel
 
@@ -13,7 +13,7 @@ class MapEditorModel
   attr_accessor :zoom
 
   def initialize
-    @cam_cursor = CamCursor.new
+    @cam_cursor = CameraCursor.new
 
     @cursor_position = Vector3.new
     @cursor_position_map_pos = Vector3.new

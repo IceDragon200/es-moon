@@ -125,10 +125,6 @@ class MapEditorController
     transition_transform(@zoom*2.0)
   end
 
-  def update(delta)
-    @model.cam_cursor.update delta
-  end
-
   def update_edit_mode(delta)
     mp = Mouse.position.xyz
     @cursor_position_map_pos = screen_pos_to_map_pos mp
@@ -152,6 +148,10 @@ class MapEditorController
         @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
       end
     end
+  end
+
+  def update(delta)
+    @model.cam_cursor.update delta
   end
 
 end

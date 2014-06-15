@@ -1,4 +1,4 @@
-class CamCursor
+class CameraCursor
 
   attr_accessor :position
   attr_accessor :velocity
