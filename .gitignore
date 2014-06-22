@@ -33,5 +33,10 @@
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
-# restricted licensed material
+# restricted licensed material and derived work
 media/tilesets/oryx_lofi_fantasy
+media/tilesets/es-oryx
+
+# build stuff thats too much to upload
+build/font-awesome-4.1.0
+build/*.zip
