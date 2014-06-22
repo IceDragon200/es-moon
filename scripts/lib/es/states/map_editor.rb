@@ -1,7 +1,6 @@
 require "scripts/lib/es/states/map_editor/controller"
 require "scripts/lib/es/states/map_editor/model"
 require "scripts/lib/es/states/map_editor/view"
-require "scripts/lib/es/states/map_editor/input_context"
 require "scripts/lib/es/states/map_editor/mode_stack"
 
 module ES

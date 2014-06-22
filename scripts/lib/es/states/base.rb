@@ -1,3 +1,5 @@
+require "scripts/lib/es/states/base/input_context"
+
 module ES
   module States
     class Base < State
