@@ -1,6 +1,6 @@
 module ES
   module DataModel
-    class Map < BaseModel
+    class Map < ::DataModel::Base
 
       ##
       # Array<Hash> chunks lookup table

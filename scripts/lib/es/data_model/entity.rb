@@ -1,6 +1,6 @@
 module ES
   module DataModel
-    class Entity < BaseModel
+    class Entity < ::DataModel::Base
 
       #field
 

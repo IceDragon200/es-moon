@@ -1,6 +1,6 @@
 module ES
   module DataModel
-    class Chunk < BaseModel
+    class Chunk < ::DataModel::Base
 
       field :data,     type: DataMatrix, allow_nil: true, default: nil
       field :flags,    type: DataMatrix, allow_nil: true, default: nil
