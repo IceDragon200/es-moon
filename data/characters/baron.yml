@@ -171,7 +171,7 @@ poses:
     cell_width: 32
     cell_height: 32
     sequence:
-    - index: 8
+    - index: 4
       ox: 0
       oy: 0
       x: 0
@@ -181,7 +181,7 @@ poses:
         y: 0
         width: 32
         height: 32
-    - index: 9
+    - index: 5
       ox: 0
       oy: 0
       x: 0

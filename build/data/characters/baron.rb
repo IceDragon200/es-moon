@@ -61,7 +61,7 @@ STDOUT.puts(YAML.dump(Character.new do |c|
     end
     pb.pose "walk.d" do |p|
       p.setup_sequence do |s|
-        s.keyframe(index: 8, ox: 0, oy: 0, x: 0, y: 0,
+        s.keyframe(index: 4, ox: 0, oy: 0, x: 0, y: 0,
                    bounding_box: Moon::Rect.new(0, 0, 32, 32))
         s.incr(:index)
       end
