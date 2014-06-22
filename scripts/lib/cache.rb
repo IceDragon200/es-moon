@@ -6,10 +6,7 @@ module ES
 
     branch :palette do
       lambda do |*args|
-        YAML.load(File.read("data/palette.yml")).each_with_object({}) do |a, r|
-          k, v = *a
-          r[k] = Vector4[v]
-        end
+        Aach.load_palette(YAML.load(File.read("data/palette.yml")))
       end
     end
 
