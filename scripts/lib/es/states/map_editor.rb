@@ -18,7 +18,7 @@ module ES
 
         create_autosave_interval
 
-        @controller.set_layer -1
+        @controller.set_layer(-1)
 
         register_events
 
@@ -31,7 +31,7 @@ module ES
       end
 
       def create_autosave_interval
-        @autosave_interval = add_interval 60 * 3 do
+        @autosave_interval = add_interval(60 * 3) do
           @controller.save_map
           @view.notifications.notify string: "Autosaved!"
         end
@@ -236,18 +236,18 @@ module ES
           input.on :press, Moon::Input::V do
             @mode.change :view
             @camera.follow @entity
-            @ui_posmon.obj = @entity
+            @view.ui_posmon.obj = @entity
           end
 
           ## layer toggle
           input.on :press, Moon::Input::GRAVE_ACCENT do
-            @controller.set_layer -1
+            @controller.set_layer(-1)
           end
           input.on :press, Moon::Input::N1 do
-            @controller.set_layer 0
+            @controller.set_layer(0)
           end
           input.on :press, Moon::Input::N2 do
-            @controller.set_layer 1
+            @controller.set_layer(1)
           end
         end
         modespace :view do |input|
