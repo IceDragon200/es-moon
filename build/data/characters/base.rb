@@ -4,9 +4,9 @@ require_relative '../sequence_builder'
 module Moon
   class Rect < Moon::DataModel::Metal
 
-    field :x, type: Integer, default: 0
-    field :y, type: Integer, default: 0
-    field :width, type: Integer, default: 0
+    field :x,      type: Integer, default: 0
+    field :y,      type: Integer, default: 0
+    field :width,  type: Integer, default: 0
     field :height, type: Integer, default: 0
 
     def initialize(x, y, width, height, &block)
@@ -18,23 +18,23 @@ end
 require_relative '../../../core/rect'
 
 class SequenceFrame < Moon::DataModel::Metal
-  field :index, type: Integer, allow_nil: true
-  field :ox, type: Integer, allow_nil: true
-  field :oy, type: Integer, allow_nil: true
-  field :x, type: Integer, allow_nil: true
-  field :y, type: Integer, allow_nil: true
+  field :index,        type: Integer, allow_nil: true
+  field :ox,           type: Integer, allow_nil: true
+  field :oy,           type: Integer, allow_nil: true
+  field :x,            type: Integer, allow_nil: true
+  field :y,            type: Integer, allow_nil: true
   field :bounding_box, type: Moon::Rect, allow_nil: true
 end
 
 class Pose < Moon::DataModel::Metal
-  field :filename, type: String, default: ""
-  field :cell_width, type: Integer, default: 32
+  field :filename,    type: String, default: ""
+  field :cell_width,  type: Integer, default: 32
   field :cell_height, type: Integer, default: 32
-  field :sequence, type: [SequenceFrame], default: proc {[]}
+  field :sequence,    type: [SequenceFrame], default: proc {[]}
 end
 
 class Character < Moon::DataModel::Metal
-  field :name, type: String, default: ""
+  field :name,  type: String, default: ""
   field :poses, type: {String=>Pose}, default: proc {{}}
 end
 
