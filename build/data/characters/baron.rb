@@ -8,12 +8,20 @@ STDOUT.puts(YAML.dump(Character.new do |c|
     pb.default_options[:cell_height] = 32
 
     pb.pose "idle" do |p|
+      p.frame_rate = 2
+      p.setup_sequence do |s|
+        s.keyframe(index: 12, ox: 0, oy: 0, x: 0, y: 0,
+                   bounding_box: Moon::Rect.new(0, 12, 32, 20))
+        s.incr(:index)
+      end
+    end
+    pb.pose "dead" do |p|
+      p.frame_rate = 1
       p.setup_sequence do |s|
         s.keyframe(index: 12, ox: 0, oy: 0, x: 0, y: 0,
                    bounding_box: Moon::Rect.new(0, 12, 32, 20))
       end
     end
-    pb.copy_pose "idle", "dead"
     pb.pose "stand.l" do |p|
       p.setup_sequence do |s|
         s.keyframe(index: 6, ox: 0, oy: 0, x: 0, y: 0,

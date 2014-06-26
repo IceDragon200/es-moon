@@ -30,6 +30,7 @@ class Pose < Moon::DataModel::Metal
   field :filename,    type: String, default: ""
   field :cell_width,  type: Integer, default: 32
   field :cell_height, type: Integer, default: 32
+  field :frame_rate,  type: Integer, default: 8
   field :sequence,    type: [SequenceFrame], default: proc {[]}
 end
 
@@ -45,11 +46,13 @@ class PoseBuilder
   delegate :filename, to: :@_pose
   delegate :cell_width, to: :@_pose
   delegate :cell_height, to: :@_pose
+  delegate :frame_rate, to: :@_pose
   delegate :sequence, to: :@_pose
 
   delegate :filename=, to: :@_pose
   delegate :cell_width=, to: :@_pose
   delegate :cell_height=, to: :@_pose
+  delegate :frame_rate=, to: :@_pose
   delegate :sequence=, to: :@_pose
 
   def initialize(pose=nil)
