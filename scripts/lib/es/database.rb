@@ -16,8 +16,7 @@ module ES
     def self.create(sub, options={})
       entries = (@data[sub] ||= [])
 
-      klass = @class_reg[sub]
-      raise IndexError, "could not find data class #{sub}" unless klass
+      klass = @class_reg.fetch(sub)
       obj = klass.new({ id: entries.size }.merge(options))
 
       entries[obj.id] = obj
