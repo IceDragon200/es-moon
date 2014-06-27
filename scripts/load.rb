@@ -1,6 +1,6 @@
 include Moon
 
-require 'entity'
+#require 'entity'
 
 require 'scripts/config'
 require 'scripts/lib'
@@ -13,4 +13,6 @@ ES.cache = ES::Cache.new
 
 State.push ES::States::Shutdown
 State.push ES::States::Title
-State.push ES::States::Splash
+State.push State::CharacterWalkTest
+State.push State::LarchTest01
+#State.push ES::States::Splash
