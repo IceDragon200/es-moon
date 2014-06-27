@@ -1,4 +1,4 @@
-require 'scripts/lib/es/core/lotus-ext'
+require 'scripts/lib/es/core/larch-ext'
 require 'scripts/lib/es/core/bitmap_font'
 require 'scripts/lib/es/core/camera2'
 require 'scripts/lib/es/core/countdown'
