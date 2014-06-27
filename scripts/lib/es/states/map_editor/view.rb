@@ -1,4 +1,4 @@
-class MapEditorView < RenderLayer
+class MapEditorView < RenderContainer
 
   attr_accessor :notifications
 
@@ -9,7 +9,7 @@ class MapEditorView < RenderLayer
 
     @font = ES.cache.font "uni0553", 16
 
-    @hud = RenderLayer.new
+    @hud = RenderContainer.new
 
     @help_panel       = ES::UI::MapEditorHelpPanel.new
 

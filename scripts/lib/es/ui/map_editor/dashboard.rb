@@ -1,7 +1,7 @@
 module ES
   module UI
 
-    class MapEditorDashboard < RenderLayer
+    class MapEditorDashboard < RenderContainer
 
       attr_accessor :default_color
 
