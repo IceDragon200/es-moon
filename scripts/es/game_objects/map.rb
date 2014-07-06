@@ -91,6 +91,7 @@ module ES
       end
 
       def update(delta)
+        return
         collision_test = []
         #interaction_test = []
 
@@ -177,7 +178,7 @@ module ES
       def tile_data(x, y)
         data = {
           data_position: [x, y],
-          passage: @passages[x, y] || 0,
+          passage: @passages[x, y] || 0
         }
         chunk_index = @chunk_map[x, y]
         return data if chunk_index == -1
@@ -198,7 +199,7 @@ module ES
           chunk_map: @chunk_map,
           passages: @passages,
           entities: @entities,
-          dmap: @dmap,
+          dmap: @dmap
         }
       end
 

@@ -39,14 +39,14 @@ module ES
           chunk_position = chunk ? chunk.position.to_a : [-1, -1]
           chunk_data_pos = data.fetch(:chunk_data_position, [-1, -1])
 
-          @text.string = "" +
-                                "position:       #{data_position}\n" +
-                                "chunk_id:       #{chunk_id}\n" +
-                                "chunk_name:     #{chunk_name}\n" +
-                                "chunk_data_pos: #{chunk_data_pos}\n" +
-                                "chunk_position: #{chunk_position}\n" +
-                                "passage:        #{passage}\n" +
-                                "" # placeholder
+          @text.string ="" +
+                        "position:       #{data_position}\n" +
+                        "chunk_id:       #{chunk_id}\n" +
+                        "chunk_name:     #{chunk_name}\n" +
+                        "chunk_data_pos: #{chunk_data_pos}\n" +
+                        "chunk_position: #{chunk_position}\n" +
+                        "passage:        #{passage}\n" +
+                        "" # placeholder
 
           @text.render px, py, pz
           py += @text.height

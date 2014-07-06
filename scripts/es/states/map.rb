@@ -4,6 +4,7 @@ module ES
 
       def init
         super
+        create_world
         create_map
         create_entity
 
@@ -13,9 +14,9 @@ module ES
         create_entity_sprite
         #create_particles
 
-        @entity.moveto(1, 1)
+        @entity.add position: { x: 0, y: 0 }
 
-        @camera.follow(@entity)
+        @camera.follow(EntityPositionAdaptor.new(@entity))
 
         #@pss_spritesheet8x = Moon::Spritesheet.new("resources/blocks/e008x008.png", 8, 8)
         #@pss_spritesheet = Moon::Spritesheet.new("resources/blocks/e032x032.png", 32, 32)
@@ -46,13 +47,18 @@ module ES
         end
       end
 
+      def create_world
+        @world = World.new
+        @world.register(:movement)
+      end
+
       def create_map
         @map = ES::GameObject::Map.new
         @map.setup(Database.find :map, name: "school_f1")
       end
 
       def create_entity
-        @entity = ES::GameObject::Actor.new
+        @entity = @world.spawn
         @map.entities.push @entity
       end
 
@@ -126,7 +132,8 @@ module ES
 
       def render
         campos = -@camera.view.floor
-        charpos = (campos + (@entity.position * 32) + @entity_voffset).floor
+        charpos = @entity[:position]
+        charpos = (campos + (Vector3[charpos.x, charpos.y, 0] * 32) + @entity_voffset).floor
 
         @tilemaps.each do |tilemap|
           tilemap.render(*campos, transform: @transform)

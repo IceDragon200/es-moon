@@ -1,4 +1,4 @@
-require "scripts/lib/es/states/base/input_context"
+require "scripts/es/states/base/input_context"
 
 module ES
   module States

@@ -1,7 +1,7 @@
-require "scripts/lib/es/states/map_editor/controller"
-require "scripts/lib/es/states/map_editor/model"
-require "scripts/lib/es/states/map_editor/view"
-require "scripts/lib/es/states/map_editor/mode_stack"
+require "scripts/es/states/map_editor/controller"
+require "scripts/es/states/map_editor/model"
+require "scripts/es/states/map_editor/view"
+require "scripts/es/states/map_editor/mode_stack"
 
 module ES
   module States
@@ -254,7 +254,7 @@ module ES
           ## mode toggle
           input.on :press, Moon::Input::E do
             @camera.follow @cam_cursor
-            @ui_posmon.obj = @cam_cursor
+            @view.ui_posmon.obj = @cam_cursor
             @mode.change :edit
           end
 
