@@ -3,7 +3,7 @@ require "yaml"
 require "fileutils"
 
 result = {
-  ""=>""
+  "" => ""
 }
 
 vars = File.read File.expand_path("font-awesome-4.1.0/less/variables.less", File.dirname(__FILE__))

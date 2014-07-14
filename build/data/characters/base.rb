@@ -1,23 +1,6 @@
 require_relative '../sequence_builder'
 
-# No, this is not actually the rect class, but its done for exporting
-module Moon
-  class Rect < Moon::DataModel::Metal
-
-    field :x,      type: Integer, default: 0
-    field :y,      type: Integer, default: 0
-    field :width,  type: Integer, default: 0
-    field :height, type: Integer, default: 0
-
-    def initialize(x, y, width, height, &block)
-      super x: x, y: y, width: width, height: height, &block
-    end
-
-  end
-end
-require_relative '../../../core/rect'
-
-class SequenceFrame < Moon::DataModel::Metal
+class CharacterSequenceFrame < Moon::DataModel::Metal
   field :index,        type: Integer, allow_nil: true
   field :ox,           type: Integer, allow_nil: true
   field :oy,           type: Integer, allow_nil: true
@@ -27,15 +10,16 @@ class SequenceFrame < Moon::DataModel::Metal
 end
 
 class Pose < Moon::DataModel::Metal
-  field :filename,    type: String, default: ""
+  field :filename,    type: String,  default: ""
   field :cell_width,  type: Integer, default: 32
   field :cell_height, type: Integer, default: 32
   field :frame_rate,  type: Integer, default: 8
-  field :sequence,    type: [SequenceFrame], default: proc {[]}
+  field :sequence,    type: [CharacterSequenceFrame], default: proc {[]}
 end
 
 class Character < Moon::DataModel::Metal
   field :name,  type: String, default: ""
+  field :uri,   type: String, default: ""
   field :poses, type: {String=>Pose}, default: proc {{}}
 end
 
@@ -60,7 +44,7 @@ class PoseBuilder
   end
 
   def setup_sequence
-    builder = SequenceBuilder.new
+    builder = SequenceBuilder.new(CharacterSequenceFrame)
     yield builder
     @_pose.sequence = builder.frames
   end

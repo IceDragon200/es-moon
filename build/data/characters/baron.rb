@@ -1,7 +1,8 @@
 require_relative "base"
 
-STDOUT.puts(YAML.dump(Character.new do |c|
+pool(Character.new do |c|
   c.name = "baron"
+  c.uri = "/characters/baron"
   c.poses = render_pose_list do |pb| # pb = pose_builder
     pb.default_options[:filename] = "es-oryx/4x/character_4x.png"
     pb.default_options[:cell_width] = 32
@@ -75,4 +76,4 @@ STDOUT.puts(YAML.dump(Character.new do |c|
       end
     end
   end
-end.export))
+end)

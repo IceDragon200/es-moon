@@ -1,6 +1,7 @@
-ES::Database.create :entity do |entity|
+pool(ES::DataModel::Entity.new do |entity|
 
   entity.name = "ellisia"
+  entity.uri = "/entities/actors/ellisia"
   entity
 
-end
+end)

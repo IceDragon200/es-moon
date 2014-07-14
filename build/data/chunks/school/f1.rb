@@ -1,6 +1,7 @@
-ES::Database.create :chunk do |chunk|
+pool(ES::DataModel::Chunk.new do |chunk|
 
-  chunk.name = "school_f1/room/baron"
+  chunk.name = "Baron's School Room"
+  chunk.uri = "/chunks/school/f1/room/baron"
 
   chunk.data = DataMatrix.new(8, 6, 2, default: -1) do |dm|
     pnt = ES::Helper::PaintMap.new(dm)
@@ -45,11 +46,12 @@ ES::Database.create :chunk do |chunk|
     table.set_from_strmap(pss, ES::Passage::STRMAP)
   end
 
-end
+end)
 
-ES::Database.create :chunk do |chunk|
+pool(ES::DataModel::Chunk.new do |chunk|
 
-  chunk.name = "school_f1/hallway"
+  chunk.name = "School F1 Hallway"
+  chunk.uri = "/chunks/school/f1/hallway"
 
   chunk.data = DataMatrix.new(7, 12, 2) do |dm| dm.clear(-1)
     dm.default = -1
@@ -86,4 +88,4 @@ ES::Database.create :chunk do |chunk|
     table.set_from_strmap(pss, ES::Passage::STRMAP)
   end
 
-end
+end)

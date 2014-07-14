@@ -1,1 +1,1 @@
-require 'build/data/entities/actors'
+require_relative 'entities/actors'

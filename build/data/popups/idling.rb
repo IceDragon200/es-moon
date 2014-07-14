@@ -1,12 +1,13 @@
 require_relative "base"
 
-STDOUT.puts(YAML.dump(Popup.new do |popup|
+pool(Popup.new do |popup|
   popup.name = "idling"
+  popup.uri = "popups/idling"
   popup.filename = "lil-icons_3x.png"
   popup.cell_width = 30
   popup.cell_height = 30
   popup.frame_rate = 60 #16
-  popup.sequence = render_sequence do |builder|
+  popup.sequence = render_popup_sequence do |builder|
     easer = Easer::Linear
     rock = 28 #45
     bounce = 4
@@ -16,4 +17,4 @@ STDOUT.puts(YAML.dump(Popup.new do |popup|
     builder.tween_to(easer, 15, angle: -rock, y: bounce)
     builder.tween_to(easer, 15, angle: 0, y: -2)
   end
-end.export))
+end)

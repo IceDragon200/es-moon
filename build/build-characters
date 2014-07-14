@@ -1,2 +1,0 @@
-#!/bin/bash
-ruby "data/characters/baron.rb" > "../data/characters/baron.yml"
