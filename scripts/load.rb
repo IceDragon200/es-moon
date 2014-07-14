@@ -19,5 +19,5 @@ ES.cache = ES::Cache.new
 State.push ES::States::Shutdown
 State.push ES::States::Title
 State.push State::CharacterWalkTest
-State.push State::LarchTest01
+#State.push State::UITest01
 #State.push ES::States::Splash

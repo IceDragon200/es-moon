@@ -1,4 +1,4 @@
-class State::LarchTest01 < State
+class State::UITest01 < State
 
   class SpriteContainer < RenderContainer
 

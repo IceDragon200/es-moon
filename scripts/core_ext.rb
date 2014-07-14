@@ -17,3 +17,4 @@ require 'scripts/core_ext/moon-vector4'
 # moon core
 require 'scripts/core_ext/moon-table'
 require 'scripts/core_ext/moon-data_matrix'
+require 'scripts/core_ext/moon-ui-ext'
