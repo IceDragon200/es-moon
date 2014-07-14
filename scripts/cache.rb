@@ -6,7 +6,7 @@ module ES
 
     branch :palette do
       lambda do |*args|
-        Aach.load_palette(YAML.load(File.read("data/palette.yml")))
+        PaletteParser.load_palette(YAML.load(File.read("data/palette.yml")))
       end
     end
 
