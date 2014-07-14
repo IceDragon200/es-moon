@@ -1,0 +1,1 @@
+require "scripts/renderers/character"

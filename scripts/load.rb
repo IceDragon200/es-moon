@@ -6,6 +6,7 @@ require 'scripts/config'
 require 'scripts/mixin'
 require 'scripts/core_ext'
 require 'scripts/cache'
+require 'scripts/renderers'
 require 'scripts/ui'
 require 'scripts/es'
 ##
