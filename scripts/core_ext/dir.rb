@@ -1,5 +1,4 @@
 class Dir
-
   def self.mkdir_p(path)
     dirs = path.split("/")
     dirs.size.times do |i|
@@ -7,5 +6,4 @@ class Dir
       Dir.mkdir pth unless Dir.exist? pth
     end
   end
-
 end

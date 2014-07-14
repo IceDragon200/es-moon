@@ -1,5 +1,4 @@
 module YAML
-
   def self.load_file(filename)
     load(File.read(filename))
   end
@@ -7,5 +6,4 @@ module YAML
   def self.save_file(filename, obj)
     File.open(filename, "w") { |f| f.write(dump(obj)) }
   end
-
 end

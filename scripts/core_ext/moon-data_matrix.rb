@@ -1,5 +1,4 @@
 class DataMatrix
-
   ###
   # Determines if position is inside the DataMatrix
   # @overload xy_pos_inside?(x, y)
@@ -21,5 +20,4 @@ class DataMatrix
     px, py, pz = *Moon::Vector3.extract(args.size > 1 ? args : args.first)
     px.between?(0, xsize) && py.between?(0, ysize) && pz.between?(0, zsize)
   end
-
 end
