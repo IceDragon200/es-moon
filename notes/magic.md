@@ -1,5 +1,5 @@
-Earthen
-=======
+Magic
+=====
 
 Oh hi, what brings you to my notes?
 
