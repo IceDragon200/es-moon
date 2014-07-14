@@ -1,7 +1,6 @@
 module Moon
   module DataModel
     class Metal
-
       include Queryable
 
       ###
@@ -41,14 +40,19 @@ module Moon
       end
 
       ###
-      #
+      # @param [String] rootname
+      #   @optional
       ###
-      def save_file
-        path = (self.class.basepath + name).split("/")
-        basename = path.pop
-        pathname = "#{path.join("/")}/#{basename}.yml"
+      def save_file(rootname=nil)
+        warn "no uri set, skipping saving of #{self["name"]}" unless self["uri"]
 
-        Dir.mkdir_p path.join("/")
+        path = File.join(self.class.basepath, self["uri"])
+        path = File.join(rootname, path) if rootname
+        path = path.split("/")
+        basename = path.pop
+        pathname = File.join(path.join("/"), "#{basename}.yml")
+
+        Dir.mkdir_p(File.dirname(pathname))
         YAML.save_file(pathname, export)
       end
 
