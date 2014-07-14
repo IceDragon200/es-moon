@@ -39,7 +39,7 @@ module ES
       end
 
       def fill(opts)
-        rect  = opts.fetch(:rect)
+        rect  = opts[:rect]
         value = opts.fetch(:value)
         layer = opts.fetch(:layer, @layer)
 
