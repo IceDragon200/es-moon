@@ -1,6 +1,10 @@
 module Visibility
+  attr_writer :visible
 
-  attr_accessor :visible
+  def visible
+    @visible = true if @visible.nil?
+    @visible
+  end
 
   def hide
     @visible = false
@@ -11,5 +15,4 @@ module Visibility
     @visible = true
     self
   end
-
 end
