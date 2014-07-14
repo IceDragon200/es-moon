@@ -9,6 +9,7 @@ require 'scripts/core_ext/yaml'
 
 # moon builtin core
 require 'scripts/core_ext/moon-rect'
+require 'scripts/core_ext/moon-sprite'
 require 'scripts/core_ext/moon-spritesheet'
 require 'scripts/core_ext/moon-vector2'
 require 'scripts/core_ext/moon-vector3'

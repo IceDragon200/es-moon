@@ -1,7 +1,5 @@
 module Moon
-  class RenderContainer
-    include Visibility
-
+  class Sprite
     def containerize
       container = RenderContainer.new
       container.add(self)
