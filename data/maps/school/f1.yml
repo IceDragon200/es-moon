@@ -1,0 +1,20 @@
+---
+id: 0
+name: School F1
+note: ''
+tags: []
+meta: {}
+uri: "/maps/school/f1"
+chunks:
+- uri: "/chunks/school/f1/hallway"
+  position:
+    x: 0
+    y: 0
+    z: 0
+    "&class": Moon::Vector3
+- uri: "/chunks/school/f1/room/baron"
+  position:
+    x: 7
+    y: 0
+    z: 0
+    "&class": Moon::Vector3

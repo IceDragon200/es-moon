@@ -1,12 +1,24 @@
 ---
 name: baron
+uri: "/characters/baron"
 poses:
   idle:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 2
     sequence:
     - index: 12
+      ox: 0
+      oy: 0
+      x: 0
+      y: 0
+      bounding_box:
+        x: 0
+        y: 12
+        width: 32
+        height: 20
+    - index: 13
       ox: 0
       oy: 0
       x: 0
@@ -20,6 +32,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 1
     sequence:
     - index: 12
       ox: 0
@@ -35,6 +48,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 6
       ox: 0
@@ -50,6 +64,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 0
       ox: 0
@@ -65,6 +80,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 9
       ox: 0
@@ -80,6 +96,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 3
       ox: 0
@@ -95,6 +112,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 7
       ox: 0
@@ -120,6 +138,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 1
       ox: 0
@@ -145,6 +164,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 10
       ox: 0
@@ -170,6 +190,7 @@ poses:
     filename: es-oryx/4x/character_4x.png
     cell_width: 32
     cell_height: 32
+    frame_rate: 8
     sequence:
     - index: 4
       ox: 0
