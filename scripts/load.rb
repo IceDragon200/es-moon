@@ -3,6 +3,7 @@ include Moon
 #require 'entity'
 
 require 'scripts/config'
+require 'scripts/mixin'
 require 'scripts/core_ext'
 require 'scripts/cache'
 require 'scripts/es'

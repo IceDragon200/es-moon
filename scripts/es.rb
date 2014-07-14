@@ -1,5 +1,4 @@
 require 'scripts/es/version'
-require 'scripts/es/mixin'
 require 'scripts/es/core'
 require 'scripts/es/const'
 require 'scripts/es/data_model'
