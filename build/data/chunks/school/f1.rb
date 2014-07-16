@@ -1,7 +1,15 @@
+tileset = {
+  filename: "oryx_lofi_fantasy/4x/lofi_environment_4x.png",
+  cell_width: 32,
+  cell_height: 32
+}
+
 pool(ES::DataModel::Chunk.new do |chunk|
 
   chunk.name = "Baron's School Room"
   chunk.uri = "/chunks/school/f1/room/baron"
+
+  chunk.tileset.set(tileset)
 
   chunk.data = DataMatrix.new(8, 6, 2, default: -1) do |dm|
     pnt = ES::Helper::PaintMap.new(dm)
@@ -52,6 +60,8 @@ pool(ES::DataModel::Chunk.new do |chunk|
 
   chunk.name = "School F1 Hallway"
   chunk.uri = "/chunks/school/f1/hallway"
+
+  chunk.tileset.set(tileset)
 
   chunk.data = DataMatrix.new(7, 12, 2) do |dm| dm.clear(-1)
     dm.default = -1
