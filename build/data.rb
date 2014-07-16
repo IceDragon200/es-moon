@@ -123,11 +123,11 @@ include Moon
 
 
 require 'scripts/mixin/queryable'
-require 'scripts/es/data_model'
-require 'scripts/es/helpers'
+require 'scripts/data_model'
+require 'scripts/helpers'
 require 'scripts/mixin'
 require 'scripts/core_ext'
-require 'scripts/es/const'
+require 'scripts/const'
 
 @pool = []
 

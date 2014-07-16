@@ -5,10 +5,10 @@ require "yaml"
 $: << File.expand_path("../../", File.dirname(__FILE__))
 
 require 'core/data_model'
-require 'core/core/easer'
+require 'core/animation/easer'
 require 'scripts/mixin/queryable'
-require 'scripts/es/data_model/metal-ext'
-require 'scripts/es/data_model/base-ext'
+require 'scripts/data_model/metal-ext'
+require 'scripts/data_model/base-ext'
 
 class SequenceBuilder
 
