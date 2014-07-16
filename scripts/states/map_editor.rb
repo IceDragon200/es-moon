@@ -1,7 +1,7 @@
-require "scripts/es/states/map_editor/controller"
-require "scripts/es/states/map_editor/model"
-require "scripts/es/states/map_editor/view"
-require "scripts/es/states/map_editor/mode_stack"
+require "scripts/states/map_editor/controller"
+require "scripts/states/map_editor/model"
+require "scripts/states/map_editor/view"
+require "scripts/states/map_editor/mode_stack"
 
 module ES
   module States

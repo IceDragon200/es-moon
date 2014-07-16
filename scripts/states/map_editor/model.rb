@@ -1,4 +1,4 @@
-require "scripts/es/states/map_editor/camera_cursor"
+require "scripts/states/map_editor/camera_cursor"
 
 class MapEditorModel
 
