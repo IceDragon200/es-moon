@@ -1,6 +1,0 @@
-require 'scripts/es/data_model/metal-ext'
-require 'scripts/es/data_model/base-ext'
-require 'scripts/es/data_model/chunk'
-require 'scripts/es/data_model/chunk_head'
-require 'scripts/es/data_model/entity'
-require 'scripts/es/data_model/map'

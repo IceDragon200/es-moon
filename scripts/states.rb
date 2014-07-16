@@ -1,0 +1,6 @@
+require 'scripts/states/base'
+require 'scripts/states/shutdown'
+require 'scripts/states/splash'
+require 'scripts/states/title'
+require 'scripts/states/map'
+require 'scripts/states/map_editor'
