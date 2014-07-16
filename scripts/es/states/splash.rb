@@ -9,7 +9,7 @@ module ES
         @moon_logo = Moon::Sprite.new("resources/splash/moon-logo.png")
         @moon_logo.ox = @moon_logo.width / 2
         @moon_logo.oy = @moon_logo.height / 2
-        add_task 2 do
+        @scheduler.in "2s" do
           State.pop
         end
       end
