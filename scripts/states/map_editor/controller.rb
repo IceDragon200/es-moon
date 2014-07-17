@@ -13,15 +13,24 @@ class MapEditorController
   # @param [Vector3] screen_pos
   ###
   def screen_pos_to_map_pos(screen_pos)
-    (screen_pos + @camera.view.floor) / 32
+    (screen_pos + @model.camera.view.floor) / 32
   end
 
   def map_pos_to_screen_pos(map_pos)
-    map_pos * 32 - @camera.view.floor
+    map_pos * 32 - @model.camera.view.floor
   end
 
   def screen_pos_map_reduce(screen_pos)
-    screen_pos_to_map_pos(screen_pos).floor * 32 - @camera.view.floor
+    screen_pos_to_map_pos(screen_pos).floor * 32 - @model.camera.view.floor
+  end
+
+  def camera_follow(obj)
+    @model.camera.follow obj
+    @view.ui_camera_posmon.obj = obj
+  end
+
+  def follow(obj)
+    @view.ui_posmon.obj = obj
   end
 
   def new_map
@@ -57,21 +66,29 @@ class MapEditorController
   end
 
   def place_tile(tile_id)
-    info = @tile_info.info
-    if chunk = info[:chunk]
-      dx, dy, _ = *info[:chunk_data_position]
+    tile_data = @view.tile_info.tile_data
+    if chunk = tile_data.chunk
+      dx, dy, _ = *tile_data.chunk_data_position
       chunk.data[dx, dy, @model.layer] = tile_id
     end
   end
 
+  def place_current_tile
+    place_tile @view.tile_panel.tile_id
+  end
+
   def copy_tile
-    data = @tile_info.info[:data]
-    tile_id = data.reject { |n| n == -1 }.last || -1
-    @tile_panel.tile_id = tile_id
+    tile_ids = @view.tile_info.tile_data.tile_ids
+    tile_id = tile_ids.reject { |n| n == -1 }.last || -1
+    @view.tile_panel.tile_id = tile_id
   end
 
   def erase_tile
     place_tile(-1)
+  end
+
+  def select_tile(pos)
+    @view.tile_panel.select_tile(pos)
   end
 
   def create_chunk(rect, data)
@@ -125,39 +142,79 @@ class MapEditorController
   end
 
   def show_help
-    @dashboard.enable 0
+    @view.dashboard.enable 0
   end
 
   def hide_help
-    @dashboard.disable 0
+    @view.dashboard.disable 0
+  end
+
+  def show_tile_info
+    @view.tile_info.show
+  end
+
+  def hide_tile_info
+    @view.tile_info.hide
+  end
+
+  def show_tile_panel
+    @view.tile_panel.show
+  end
+
+  def hide_tile_panel
+    @view.tile_panel.hide
+  end
+
+  def show_tile_preview
+    @view.tile_preview.show
+  end
+
+  def hide_tile_preview
+    @view.tile_preview.hide
+  end
+
+  def get_tile_data(position)
+    map = @model.map
+    chunk = map.chunks.find do |c|
+      c.bounds.inside?(position)
+    end
+    tile_data = ES::DataModel::TileData.new
+    if chunk
+      tile_data.chunk = chunk
+      tile_data.data_position = position.xyz
+      tile_data.chunk_data_position = position.xyz - chunk.position.xyz
+      tile_data.tile_ids = chunk.data.pillar_a(*position)
+      tile_data.passage = chunk.passages[*tile_data.chunk_data_position.xy]
+    end
+    tile_data
   end
 
   def update_edit_mode(delta)
-    mp = Mouse.position.xyz
-    @cursor_position_map_pos = screen_pos_to_map_pos mp
-    @tile_info.tile_position.set @cursor_position_map_pos.xy
-    @cursor_position.set screen_pos_map_reduce(mp)
+    mp = Input::Mouse.position.xyz
+    @model.map_cursor.position = screen_pos_to_map_pos mp
+    @view.tile_info.tile_data = get_tile_data(@model.map_cursor.position.xy)
+    @model.cursor_position.set screen_pos_map_reduce(mp)
 
-    @hud.update delta
-    @tile_preview.tile_id = @tile_panel.tile_id
+    @view.hud.update delta
+    @view.tile_preview.tile_id = @view.tile_panel.tile_id
 
     h = Moon::Screen.height
     w = Moon::Screen.width
-    @ui_posmon.position.set w - @ui_posmon.width - 48, 0, 0
-    @ui_camera_posmon.position.set((w - @ui_camera_posmon.width) / 2,
-                                    h - @ui_camera_posmon.height,
+    @view.ui_posmon.position.set w - @view.ui_posmon.width - 48, 0, 0
+    @view.ui_camera_posmon.position.set((w - @view.ui_camera_posmon.width) / 2,
+                                    h - @view.ui_camera_posmon.height,
                                     0)
 
-    if @tileselection_rect.active?
-      @tileselection_rect.position.set map_pos_to_screen_pos(@tileselection_rect.tile_rect.xyz)
+    if @view.tileselection_rect.active?
+      @view.tileselection_rect.position.set map_pos_to_screen_pos(@view.tileselection_rect.tile_rect.xyz)
 
       if @selection_stage == 2
-        @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+        @view.tileselection_rect.tile_rect.whd = @model.map_cursor.position - @view.tileselection_rect.tile_rect.xyz
       end
     end
   end
 
   def update(delta)
-    @model.cam_cursor.update delta
+    @model.update(delta)
   end
 end

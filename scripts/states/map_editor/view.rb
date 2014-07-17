@@ -1,11 +1,22 @@
 class MapEditorView < RenderContainer
   attr_accessor :notifications
+  attr_accessor :model
 
+  attr_reader :tileset
+
+  attr_reader :dashboard
+  attr_reader :hud
   attr_reader :layer_view
+  attr_reader :tile_info
+  attr_reader :tile_panel
+  attr_reader :tile_preview
+  attr_reader :tileselection_rect
+  attr_reader :ui_camera_posmon
   attr_reader :ui_posmon
 
-  def initialize
-    super
+  def initialize(model)
+    @model = model
+    super()
 
     @font = ES.cache.font "uni0553", 16
 
@@ -26,15 +37,9 @@ class MapEditorView < RenderContainer
 
     @tileselection_rect = ES::UI::SelectionTileRect.new
 
+    @map_cursor = Sprite.new("media/ui/map_editor_cursor.png")
     @cursor_ss  = ES.cache.block "e032x032.png", 32, 32
     @passage_ss = ES.cache.block "passage_blocks.png", 32, 32
-
-    @tile_preview.tileset = @tileset
-
-    @tile_info.map = @map
-    @tile_info.tileset = @tileset
-
-    @tile_panel.tileset = @tileset
 
     color = Vector4.new 0.1059, 0.6314, 0.8863, 1.0000
     color += color
@@ -62,10 +67,14 @@ class MapEditorView < RenderContainer
     @hud.add @ui_posmon
     @hud.add @notifications
 
-    @ui_posmon.obj = @entity
-    @ui_camera_posmon.obj = @camera
-
     create_passage_layer
+  end
+
+  def tileset=(tileset)
+    @tileset = tileset
+    @tile_preview.tileset = @tileset
+    @tile_info.tileset = @tileset
+    @tile_panel.tileset = @tileset
   end
 
   def create_passage_layer
@@ -86,11 +95,9 @@ class MapEditorView < RenderContainer
   end
 
   def render_edit_mode
-    #@cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1, transform: @transform)
-    #@tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
-    #if @controller.mode.is? :show_chunk_labels
-    #  render_chunk_labels
-    #end
+    @map_cursor.render(*(@model.cursor_position+[0, 0, 0]))#, transform: @transform)
+    @tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
+    render_chunk_labels if @model.flag_show_chunk_labels
     @hud.render
   end
 end

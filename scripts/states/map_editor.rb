@@ -8,7 +8,10 @@ module ES
     class MapEditor < Base
       def init
         super
-        create_camera
+        @model = MapEditorModel.new
+        @view = MapEditorView.new @model
+        @controller = MapEditorController.new @model, @view
+
         create_world
         create_map
 
@@ -19,11 +22,12 @@ module ES
         @mode_icon_rect = Rect.new(0, 0, 32, 32)
         LayoutHelper.align("bottom right", @mode_icon_rect, Screen.rect.contract(16))
 
-        @model = MapEditorModel.new
-        @view = MapEditorView.new
-        @controller = MapEditorController.new @model, @view
+
+        @mode_icon_color = Vector4.new(1, 1, 1, 1)
+        @mode_icon = ""
 
         @mode = ModeStack.new
+        @mode.on_mode_change = ->(mode){ on_mode_change(mode) }
         @mode.push :view
 
         create_autosave_interval
@@ -32,14 +36,10 @@ module ES
 
         register_events
 
-        @camera.follow @cam_cursor
-        @view.ui_posmon.obj = @cam_cursor
+        @controller.camera_follow @model.cam_cursor
+        @controller.follow @model.map_cursor
 
         @transform_transition = nil
-      end
-
-      def create_camera
-        @camera = Camera2.new
       end
 
       def create_world
@@ -47,16 +47,20 @@ module ES
       end
 
       def create_map
-        @map = ES::DataModel::Map.new
-        @map.import(Database.find(:map, uri: "/maps/school/f1"))
+        map = Database.find(:map, uri: "/maps/school/f1")
+        @model.map = map.to_editor_map
+        @model.map.chunks = map.chunks.map do |chunk_head|
+          editor_chunk = Database.find(:chunk, uri: chunk_head.uri).to_editor_chunk
+          editor_chunk.position = chunk_head.position
+          editor_chunk
+        end
       end
 
       def create_tilemaps
-        @chunk_renderers = @map.chunks.map do |refhead|
-          chunk = Database.find(:chunk, uri: refhead["uri"])
+        @chunk_renderers = @model.map.chunks.map do |chunk|
           renderer = ChunkRenderer.new
           renderer.chunk = chunk
-          renderer.position.set(refhead["position"])
+          renderer.position.set(chunk.position)
           renderer.layer_opacity = @layer_opacity
           renderer
         end
@@ -91,28 +95,30 @@ module ES
 
       def register_actor_move
         @cam_move_speed = 8
-        @input.on :press, Moon::Input::LEFT do
-          @cam_cursor.velocity.x = -1 * @cam_move_speed
+        @input.on :press, :left do
+          @model.cam_cursor.velocity.x = -1 * @cam_move_speed
         end
-        @input.on :press, Moon::Input::RIGHT do
-          @cam_cursor.velocity.x = 1 * @cam_move_speed
+        @input.on :press, :right do
+          @model.cam_cursor.velocity.x = 1 * @cam_move_speed
         end
-        @input.on :release, Moon::Input::LEFT, Moon::Input::RIGHT do
-          @cam_cursor.velocity.x = 0
+        @input.on :release, :left, :right do
+          @model.cam_cursor.velocity.x = 0
         end
 
-        @input.on :press, Moon::Input::UP do
-          @cam_cursor.velocity.y = -1 * @cam_move_speed
+        @input.on :press, :up do
+          @model.cam_cursor.velocity.y = -1 * @cam_move_speed
         end
-        @input.on :press, Moon::Input::DOWN do
-          @cam_cursor.velocity.y = 1 * @cam_move_speed
+        @input.on :press, :down do
+          @model.cam_cursor.velocity.y = 1 * @cam_move_speed
         end
-        @input.on :release, Moon::Input::UP, Moon::Input::DOWN do
-          @cam_cursor.velocity.y = 0
+        @input.on :release, :up, :down do
+          @model.cam_cursor.velocity.y = 0
         end
       end
 
       def register_events
+        register_actor_move
+
         # These are the commands tof the edit mode, currently most commands
         # are broken due to the MVC movement, some actions require access
         # to both the model and controller, as a result its hard to determine
@@ -122,37 +128,37 @@ module ES
         # At no point should the state directly communicate with the Model
         # or View
         modespace :edit do |input|
-          input.on :press, Moon::Input::N0 do
+          input.on :press, :n0 do
             @controller.zoom_reset
           end
 
-          input.on :press, Moon::Input::MINUS do
+          input.on :press, :minus do
             @controller.zoom_out
           end
 
-          input.on :press, Moon::Input::EQUAL do
+          input.on :press, :equal do
             @controller.zoom_in
           end
 
           ## copy tile
-          input.on :press, Moon::Input::MOUSE_MIDDLE do
+          input.on :press, :mouse_middle do
             @controller.copy_tile
           end
 
           ## erase tile
-          input.on :press, Moon::Input::MOUSE_RIGHT do
+          input.on :press, :mouse_right do
             @controller.erase_tile
           end
 
           ## help
-          input.on :press, Moon::Input::F1 do
+          input.on :press, :f1 do
             @mode.push :help
             @controller.show_help
             @notifications.notify string: "Help"
           end
 
           modespace :help do |inp2|
-            inp2.on :release, Moon::Input::F1 do
+            inp2.on :release, :f1 do
               @mode.pop
               @controller.hide_help
               @notifications.clear
@@ -186,14 +192,14 @@ module ES
           modespace :create_chunk do |inp2|
             inp2.on :press, Moon::Input::MOUSE_LEFT do
               if @selection_stage == 1
-                @tileselection_rect.tile_rect.xyz = @cursor_position_map_pos
+                @tileselection_rect.tile_rect.xyz = @model.map_cursor.position
 
                 @tileselection_rect.activate
                 @selection_stage += 1
               elsif @selection_stage == 2
-                @tileselection_rect.tile_rect.whd = @cursor_position_map_pos - @tileselection_rect.tile_rect.xyz
+                @tileselection_rect.tile_rect.whd = @model.map_cursor.position - @tileselection_rect.tile_rect.xyz
 
-                id = @map.chunks.size+1
+                id = @model.map.chunks.size+1
                 create_chunk @tileselection_rect.tile_rect, id: id, name: "new/chunk-#{id}"
                 create_tilemaps
 
@@ -239,14 +245,16 @@ module ES
           ## Show Chunk Labels
           input.on :press, Moon::Input::F10 do
             @dashboard.enable 9
+            @model.flag_show_chunk_labels = true
             @mode.push :show_chunk_labels
-            @tile_info.hide
+            @controller.hide_tile_info
           end
 
           modespace :show_chunk_labels do |inp2|
             inp2.on :release, Moon::Input::F10 do
               @dashboard.disable 9
-              @tile_info.show
+              @model.flag_show_chunk_labels = false
+              @controller.show_tile_info
               @mode.pop
             end
           end
@@ -254,47 +262,69 @@ module ES
           ## tile panel
           input.on :press, Moon::Input::TAB do
             @mode.push :tile_select
-            @tile_panel.show
-            @tile_preview.hide
+            @controller.show_tile_panel
+            @controller.hide_tile_preview
           end
 
           modespace :tile_select do |inp2|
-            inp2.on :release, Moon::Input::TAB do
+            inp2.on :release, :tab do
               @mode.pop
-              @tile_panel.hide
-              @tile_preview.show
+              @controller.hide_tile_panel
+              @controller.show_tile_preview
             end
-            inp2.on :press, Moon::Input::MOUSE_LEFT do
-              @tile_panel.select_tile(Mouse.pos-[0,16])
+            inp2.on :press, :mouse_left do
+              @controller.select_tile(Input::Mouse.pos-[0,16])
             end
           end
 
-          input.on :press, Moon::Input::MOUSE_LEFT do
-            @controller.place_tile @tile_panel.tile_id
+          input.on :press, :mouse_left do
+            @controller.place_current_tile
           end
 
-          input.on :press, Moon::Input::V do
+          input.on :press, :v do
             @mode.change :view
           end
 
           ## layer toggle
-          input.on :press, Moon::Input::GRAVE_ACCENT do
+          input.on :press, :grave_accent do
             @controller.set_layer(-1)
           end
-          input.on :press, Moon::Input::N1 do
+          input.on :press, :n1 do
             @controller.set_layer(0)
           end
-          input.on :press, Moon::Input::N2 do
+          input.on :press, :n2 do
             @controller.set_layer(1)
           end
         end
 
         modespace :view do |input|
           ## mode toggle
-          input.on :press, Moon::Input::E do
+          input.on :press, :e do
             @mode.change :edit
           end
         end
+      end
+
+      def switch_mode_icon(mode)
+        time = "150"
+        @scheduler.in time do
+          add_transition @mode_icon_color, Vector4.new(1, 1, 1, 1), time do |value|
+            @mode_icon_color = value
+          end
+          case mode
+          when :view
+            @mode_icon = "film"
+          when :edit
+            @mode_icon = "gear"
+          end
+        end
+        add_transition @mode_icon_color, Vector4.new(0, 0, 0, 0), time do |value|
+          @mode_icon_color = value
+        end
+      end
+
+      def on_mode_change(mode)
+        switch_mode_icon(mode)
       end
 
       def update_world(delta)
@@ -304,23 +334,26 @@ module ES
 
       def update(delta)
         @controller.update(delta)
+        if @mode.is?(:edit)
+          @controller.update_edit_mode(delta)
+        end
         update_world(delta)
         super delta
       end
 
       def render_map
+        pos = -@model.camera.view.floor
         @chunk_renderers.each do |renderer|
-          renderer.render
+          renderer.render(*pos)
         end
       end
 
       def render_mode_icon
-        case @mode.current
-        when :view
-          @font_awesome.render(@mode_icon_rect.x, @mode_icon_rect.y, 0, @charmap_awesome["film"])
-        when :edit
-          @font_awesome.render(@mode_icon_rect.x, @mode_icon_rect.y, 0, @charmap_awesome["gear"])
-        end
+        @font_awesome.render(@mode_icon_rect.x,
+                             @mode_icon_rect.y,
+                             0,
+                             @charmap_awesome[@mode_icon],
+                             @mode_icon_color)
       end
 
       def render
