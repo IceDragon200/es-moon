@@ -11,9 +11,6 @@ module ES
 
         create_tilemaps
         create_entity_sprite
-        #create_particles
-
-        @entity.add position: { x: 0, y: 0 }
 
         @camera.follow(EntityPositionAdaptor.new(@entity))
 
@@ -89,37 +86,9 @@ module ES
         @entity_voffset /= 2
       end
 
-      def create_particles
-        filename = "oryx_lofi_fantasy/lofi_obj.png"
-        spritesheet = ES.cache.tileset filename, 8, 8
-        @particles = ParticleSystem.new(spritesheet)
-        @particles.ticks = 30
-
-        device = Moon::Input::Keyboard
-        @spawn = InputHandle.new(device, device::Keys::SPACE)
-      end
-
-      def update_particles(delta)
-        if @spawn.held?
-          x = (rand * 2.0) / 8.0
-          y = (rand * 2.0) / 8.0
-          x = -x if rand(2) == 0
-
-          @particles.add(
-            cell_index: 137,
-            position: @entity.position * 32,
-            accel: [x, y, 0.0],
-            velocity: [0.0, -2.0, 0.0]
-          )
-        end
-
-        @particles.update delta
-      end
-
       def update_map(delta)
         @map.update delta
 
-        #update_particles
         @camera.update delta
       end
 
@@ -138,42 +107,6 @@ module ES
           tilemap.render(*campos, transform: @transform)
         end
         @entity_sp.render(*charpos, 0, transform: @transform)
-
-        #rad = Math::PI * 2 * ((@ticks % 120) / 120.0)
-        #rad = (Moon::Input::Mouse.pos - charpos.xy).rad
-        #sqpos = Vector2[32, 0].rotate(rad).xyz + @entity_voffset
-        #@pss_spritesheet8x.render(*(charpos + sqpos), 1)
-
-        ##
-        # Passage debug
-        #chp = @entity.position
-        #x = chp.x.round
-        #y = chp.y.round
-        #x2 = x - 1
-        #y2 = y - 1
-        #x3 = x + 1
-        #y3 = y + 1
-        #@pss_spritesheet.render(campos.x + x * 32, campos.y + y  *  32, 0,
-        #                        @map.passages[x, y] == ES::Passage::NONE ? 2 : 1)
-        #@pss_spritesheet.render(campos.x + x * 32, campos.y + y2 *  32, 0,
-        #                        @map.passages[x, y2] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x * 32, campos.y + y3 *  32, 0,
-        #                        @map.passages[x, y3] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x2 * 32, campos.y + y *  32, 0,
-        #                        @map.passages[x2, y] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x2 * 32, campos.y + y2 * 32, 0,
-        #                        @map.passages[x2, y2] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x2 * 32, campos.y + y3 * 32, 0,
-        #                        @map.passages[x2, y3] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x3 * 32, campos.y + y *  32, 0,
-        #                        @map.passages[x3, y] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x3 * 32, campos.y + y2 * 32, 0,
-        #                        @map.passages[x3, y2] == ES::Passage::NONE ? 8 : 9)
-        #@pss_spritesheet.render(campos.x + x3 * 32, campos.y + y3 * 32, 0,
-        #                        @map.passages[x3, y3] == ES::Passage::NONE ? 8 : 9)
-
-        #@particles.render(*campos)
-
         super
       end
     end
