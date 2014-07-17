@@ -10,6 +10,19 @@ module ES
       def bounds
         Rect.new(position.x, position.y, data.xsize, data.ysize)
       end
+
+      def to_chunk
+        chunk = Chunk.new
+        chunk.set(to_h.exclude(:position))
+        chunk
+      end
+
+      def to_chunk_head
+        chunk_head = ChunkHead.new
+        chunk_head.position = position
+        chunk_head.uri = uri
+        chunk_head
+      end
     end
   end
 end
