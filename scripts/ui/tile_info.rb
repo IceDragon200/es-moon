@@ -2,14 +2,12 @@ module ES
   module UI
     class TileInfo < RenderContainer
 
-      attr_accessor :map           # GameObject::Map
-      attr_accessor :tile_position # Vector2
       attr_accessor :tileset       # Spritesheet
+      attr_accessor :tile_data     # DataModel::TileData
 
       def initialize
         super
-        @map = nil
-        @tile_position = Vector2.new(0, 0)
+        @tile_data = nil
         @tileset = nil # spritesheet
         @text = Text.new "", ES.cache.font("uni0553", 16)
 
@@ -17,18 +15,16 @@ module ES
         #@block_ss = ES.cache.block "e016x016.png", 16, 16
       end
 
-      def info
-        @map.tile_data(*@tile_position.floor)
-      end
-
       def render(x=0, y=0, z=0)
-        if @map && @tileset
+        if @tileset
+          data = @tile_data
+          return unless data
+
           px = x + @position.x
           py = y + @position.y
           pz = z + @position.z
 
-          data = self.info
-          tile_data = data[:data] || []
+          tile_ids = data[:tile_ids] || []
           chunk = data[:chunk]
           passage = data[:passage]
 
@@ -86,7 +82,7 @@ module ES
           end
           py += @block_ss.cell_height * 3
 
-          tile_data.each_with_index do |tile_id, i|
+          tile_ids.each_with_index do |tile_id, i|
             next if tile_id < 0
             xo = @tileset.cell_width * i
 

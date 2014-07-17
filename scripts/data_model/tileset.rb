@@ -6,7 +6,7 @@ module ES
       field :cell_height, type: Integer, default: 32
 
       def export
-        to_h.merge("&class" => self.class.to_s).stringify_keys
+        super.merge("&class" => self.class.to_s).stringify_keys
       end
     end
   end
