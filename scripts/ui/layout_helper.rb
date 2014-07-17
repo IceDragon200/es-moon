@@ -1,8 +1,6 @@
 module LayoutHelper
-
   def self.align(str, rect, surface)
-    commands = str.split(" ")
-    commands.each do |command|
+    str.split(" ").each do |command|
       case command
       when "center"
         rect.cx = surface.cx
