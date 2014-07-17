@@ -14,6 +14,7 @@ require 'scripts/core_ext/moon-spritesheet'
 require 'scripts/core_ext/moon-vector2'
 require 'scripts/core_ext/moon-vector3'
 require 'scripts/core_ext/moon-vector4'
+require 'scripts/core_ext/moon-screen'
 
 # moon core
 require 'scripts/core_ext/moon-table'
