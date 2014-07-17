@@ -1,8 +1,8 @@
 class MapEditorView < RenderContainer
-
   attr_accessor :notifications
 
   attr_reader :layer_view
+  attr_reader :ui_posmon
 
   def initialize
     super
@@ -76,18 +76,21 @@ class MapEditorView < RenderContainer
     end
   end
 
-  def render_edit_mode
-    @cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1, transform: @transform)
-    @tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
-    if @mode.is? :show_chunk_labels
-      color = Vector4::WHITE
-      oy = @font.size
-      @map.chunks.each do |chunk|
-        x, y, z = *map_pos_to_screen_pos(chunk.position)
-        @font.render x, y-oy, z, chunk.name, color, outline: 0, transform: @transform
-      end
+  def render_chunk_labels
+    color = Vector4::WHITE
+    oy = @font.size
+    @map.chunks.each do |chunk|
+      x, y, z = *map_pos_to_screen_pos(chunk.position)
+      @font.render x, y-oy, z, chunk.name, color, outline: 0, transform: @transform
     end
-    @hud.render
   end
 
+  def render_edit_mode
+    #@cursor_ss.render(*(@cursor_position+[0, 0, 0]), 1, transform: @transform)
+    #@tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
+    #if @controller.mode.is? :show_chunk_labels
+    #  render_chunk_labels
+    #end
+    @hud.render
+  end
 end
