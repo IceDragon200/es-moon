@@ -22,4 +22,11 @@ module LayoutHelper
     rect
   end
 
+  def self.contract(rect, x, y=x)
+    rect.x += x
+    rect.y += y
+    rect.width -= x * 2
+    rect.height -= y * 2
+    rect
+  end
 end
