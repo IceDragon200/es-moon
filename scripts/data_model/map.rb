@@ -3,7 +3,7 @@ module ES
     class Map < ::DataModel::Base
       ##
       # Array<Hash> chunks refhead
-      field :chunks,         type: [Hash],    default: proc {[]}
+      field :chunks,         type: [ChunkHead],    default: proc {[]}
     end
   end
 end
