@@ -41,10 +41,7 @@ class State::UITest01 < State
     @sprite2.clip_rect = Rect.new(96, 32, 32, 32)
     @sprite3 = SpriteContainer.new("resources/blocks/e032x032.png")
     @sprite3.clip_rect = Rect.new(64, 64, 32, 32)
-    @container = RenderContainer.new
-    @container.width = 128
-    @container.height = 128
-    @container.move 32, 32
+    @container = RenderContainer.new.resize(128, 128).move(32, 32)
 
     container = RenderContainer.new.resize(32, 32).move(12, 12)
     container.add(@sprite1)
