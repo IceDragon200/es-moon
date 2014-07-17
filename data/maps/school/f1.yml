@@ -12,9 +12,11 @@ chunks:
     y: 0
     z: 0
     "&class": Moon::Vector3
+  "&class": ES::DataModel::ChunkHead
 - uri: "/chunks/school/f1/room/baron"
   position:
     x: 7
     y: 0
     z: 0
     "&class": Moon::Vector3
+  "&class": ES::DataModel::ChunkHead
