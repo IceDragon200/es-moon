@@ -1,8 +1,0 @@
-require 'scripts/version'
-require 'scripts/core'
-require 'scripts/const'
-require 'scripts/data_model'
-require 'scripts/database'
-require 'scripts/states'
-require 'scripts/helpers'
-require 'scripts/adaptors'
