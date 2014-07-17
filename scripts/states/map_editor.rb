@@ -17,7 +17,7 @@ module ES
         @font_awesome = ES.cache.font("awesome", 32)
         @charmap_awesome = ES.cache.charmap("awesome.yml")
         @mode_icon_rect = Rect.new(0, 0, 32, 32)
-        LayoutHelper.align("bottom right", @mode_icon_rect, Screen.rect)
+        LayoutHelper.align("bottom right", @mode_icon_rect, Screen.rect.contract(16))
 
         @model = MapEditorModel.new
         @view = MapEditorView.new
@@ -113,6 +113,14 @@ module ES
       end
 
       def register_events
+        # These are the commands tof the edit mode, currently most commands
+        # are broken due to the MVC movement, some actions require access
+        # to both the model and controller, as a result its hard to determine
+        # how to properly and cleanly port the code.
+        # The idea is:
+        #   State <-> Controller <-> Model <-> Controller <-> View
+        # At no point should the state directly communicate with the Model
+        # or View
         modespace :edit do |input|
           input.on :press, Moon::Input::N0 do
             @controller.zoom_reset
@@ -138,15 +146,15 @@ module ES
 
           ## help
           input.on :press, Moon::Input::F1 do
-            @dashboard.enable 0
             @mode.push :help
+            @controller.show_help
             @notifications.notify string: "Help"
           end
 
           modespace :help do |inp2|
             inp2.on :release, Moon::Input::F1 do
-              @dashboard.disable 0
               @mode.pop
+              @controller.hide_help
               @notifications.clear
             end
           end
@@ -280,6 +288,7 @@ module ES
             @controller.set_layer(1)
           end
         end
+
         modespace :view do |input|
           ## mode toggle
           input.on :press, Moon::Input::E do

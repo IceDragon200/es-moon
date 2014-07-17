@@ -1,5 +1,4 @@
 class MapEditorController
-
   attr_accessor :state
   attr_accessor :model
   attr_accessor :view
@@ -125,6 +124,14 @@ class MapEditorController
     transition_transform(@zoom*2.0)
   end
 
+  def show_help
+    @dashboard.enable 0
+  end
+
+  def hide_help
+    @dashboard.disable 0
+  end
+
   def update_edit_mode(delta)
     mp = Mouse.position.xyz
     @cursor_position_map_pos = screen_pos_to_map_pos mp
@@ -153,5 +160,4 @@ class MapEditorController
   def update(delta)
     @model.cam_cursor.update delta
   end
-
 end
