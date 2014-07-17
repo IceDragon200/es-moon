@@ -117,8 +117,8 @@ class MapEditorController
   end
 
   def animate_map_zoom(dest)
-    zoom = @zoom
-    @zoom = dest
+    zoom = @model.zoom
+    @model.zoom = dest
     #if @state
       #@transform_transition = add_transition(zoom, dest, 0.15) do |v|
       #  @model.transform = Transform.scale(v, v, 1.0)
@@ -135,11 +135,11 @@ class MapEditorController
   end
 
   def zoom_out
-    animate_map_zoom(@zoom/2.0)
+    animate_map_zoom(@model.zoom/2.0)
   end
 
   def zoom_in
-    animate_map_zoom(@zoom*2.0)
+    animate_map_zoom(@model.zoom*2.0)
   end
 
   def show_help
