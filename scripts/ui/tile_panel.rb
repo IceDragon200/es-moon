@@ -52,12 +52,14 @@ module ES
       def render(x=0, y=0, z=0)
         px, py, pz = *(@position + [x, y, z])
 
-        vis = @visible_rows * @visible_cols
-        @tileset.cell_count.times do |i|
-          break if i >= vis
-          tx = (i % @visible_cols) * @tileset.cell_width
-          ty = (i / @visible_cols).floor * @tileset.cell_height
-          @tileset.render px + tx, py + ty + 16, pz, @row_index + i
+        if @tileset
+          vis = @visible_rows * @visible_cols
+          @tileset.cell_count.times do |i|
+            break if i >= vis
+            tx = (i % @visible_cols) * @tileset.cell_width
+            ty = (i / @visible_cols).floor * @tileset.cell_height
+            @tileset.render px + tx, py + ty + 16, pz, @row_index + i
+          end
         end
 
         if relative_pos_inside?(@cursor_pos)
