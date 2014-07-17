@@ -8,6 +8,12 @@ module ES
       def export
         super.merge("&class" => self.class.to_s).stringify_keys
       end
+
+      def to_tileset_head
+        tileset_head = TilesetHead.new
+        tileset_head.set(self.permit(:uri))
+        tileset_head
+      end
     end
   end
 end

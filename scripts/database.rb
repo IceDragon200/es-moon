@@ -5,6 +5,7 @@ module ES
       chunk: ES::DataModel::Chunk,
       entity: ES::DataModel::Entity,
       map: ES::DataModel::Map,
+      tileset: ES::DataModel::Tileset,
     }
 
     @data = {}

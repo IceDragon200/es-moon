@@ -13,7 +13,8 @@ module ES
 
       def to_chunk
         chunk = Chunk.new
-        chunk.set(to_h.exclude(:position))
+        chunk.set(to_h.exclude(:position, :tileset))
+        chunk.tileset = tileset.to_tileset_head
         chunk
       end
 

@@ -50,8 +50,10 @@ module ES
         map = Database.find(:map, uri: "/maps/school/f1")
         @model.map = map.to_editor_map
         @model.map.chunks = map.chunks.map do |chunk_head|
-          editor_chunk = Database.find(:chunk, uri: chunk_head.uri).to_editor_chunk
+          chunk = Database.find(:chunk, uri: chunk_head.uri)
+          editor_chunk = chunk.to_editor_chunk
           editor_chunk.position = chunk_head.position
+          editor_chunk.tileset = Database.find(:tileset, uri: chunk.tileset.uri)
           editor_chunk
         end
       end
