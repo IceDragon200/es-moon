@@ -21,13 +21,14 @@ class CharacterRenderer
     end
   end
 
-  def render(x=0, y=0, z=0)
+  def render(x=0, y=0, z=0, options={})
     return unless @character_attr
     return unless @position_attr
     check_spritesheet
     return unless @spritesheet
     @spritesheet.render(x + @position_attr.x * 32,
                         y + @position_attr.y * 32,
-                        z, @character_attr.index)
+                        z, @character_attr.index,
+                        options)
   end
 end
