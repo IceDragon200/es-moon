@@ -1,6 +1,9 @@
 class ModeStack
+  attr_accessor :on_mode_change
+
   def initialize
     @list = []
+    @on_mode_change = nil
   end
 
   def current
@@ -9,16 +12,19 @@ class ModeStack
 
   def push(mode)
     @list.push mode
+    @on_mode_change.try(:call, mode)
     puts @list
   end
 
   def change(mode)
     @list[-1] = mode
+    @on_mode_change.try(:call, mode)
     puts @list
   end
 
   def pop
     @list.pop
+    @on_mode_change.try(:call, @list.last)
     puts @list
   end
 
