@@ -3,9 +3,10 @@ require "rm-macl/fallback/color"
 Color = MACL::Fallback::Color
 require "rm-macl/mtk/colors"
 require "rm-macl/xpan/palette/export"
+require "yaml"
 
 filename = File.expand_path("../data/palette.yml", File.dirname(__FILE__))
-MACL::Palette.new do |pal|
+data = MACL::Palette.new do |pal|
   pal.set_color "transparent",       0,   0,   0,   0
   pal.set_color "black",             0,   0,   0, 255
   pal.set_color "white",           255, 255, 255, 255
@@ -30,4 +31,9 @@ MACL::Palette.new do |pal|
   pal.set_color "element/atmos",   208, 176,  72, 255
   pal.set_color "element/lumi",    178, 215, 229, 255
   pal.set_color "element/shadow",   81,  64,  83, 255
-end.save_file_normalized_yaml(filename)
+end.to_basic_normalized_h
+
+File.write(filename, {
+  "format" => "float[rgba]",
+  "colors" => data,
+}.to_yaml)
