@@ -12,3 +12,5 @@ require 'scripts/ui/map_editor'
 require 'scripts/ui/selection_tile_rect'
 
 require 'scripts/ui/notifications'
+
+require 'scripts/ui/layout_helper'
