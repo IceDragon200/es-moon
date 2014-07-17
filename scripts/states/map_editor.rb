@@ -5,11 +5,21 @@ require "scripts/states/map_editor/mode_stack"
 
 module ES
   module States
-    class MapEditor < Map
-
+    class MapEditor < Base
       def init
-        @model = MapEditorModel.new
         super
+        create_camera
+        create_world
+        create_map
+
+        create_tilemaps
+
+        @font_awesome = ES.cache.font("awesome", 32)
+        @charmap_awesome = ES.cache.charmap("awesome.yml")
+        @mode_icon_rect = Rect.new(0, 0, 32, 32)
+        LayoutHelper.align("bottom right", @mode_icon_rect, Screen.rect)
+
+        @model = MapEditorModel.new
         @view = MapEditorView.new
         @controller = MapEditorController.new @model, @view
 
@@ -22,16 +32,38 @@ module ES
 
         register_events
 
+        @camera.follow @cam_cursor
+        @view.ui_posmon.obj = @cam_cursor
+
         @transform_transition = nil
       end
 
+      def create_camera
+        @camera = Camera2.new
+      end
+
+      def create_world
+        @world = World.new
+      end
+
+      def create_map
+        @map = ES::DataModel::Map.new
+        @map.import(Database.find(:map, uri: "/maps/school/f1"))
+      end
+
       def create_tilemaps
-        super
-        @tilemaps.each { |t| t.layer_opacity = @model.layer_opacity }
+        @chunk_renderers = @map.chunks.map do |refhead|
+          chunk = Database.find(:chunk, uri: refhead["uri"])
+          renderer = ChunkRenderer.new
+          renderer.chunk = chunk
+          renderer.position.set(refhead["position"])
+          renderer.layer_opacity = @layer_opacity
+          renderer
+        end
       end
 
       def create_autosave_interval
-        @autosave_interval = add_interval(60 * 3) do
+        @autosave_interval = @scheduler.every(60 * 3) do
           @controller.save_map
           @view.notifications.notify string: "Autosaved!"
         end
@@ -60,23 +92,23 @@ module ES
       def register_actor_move
         @cam_move_speed = 8
         @input.on :press, Moon::Input::LEFT do
-          @cam_cursor.velocity.x = -1 * @cam_move_speed if @mode.starts_with? :edit
+          @cam_cursor.velocity.x = -1 * @cam_move_speed
         end
         @input.on :press, Moon::Input::RIGHT do
-          @cam_cursor.velocity.x = 1 * @cam_move_speed if @mode.starts_with? :edit
+          @cam_cursor.velocity.x = 1 * @cam_move_speed
         end
         @input.on :release, Moon::Input::LEFT, Moon::Input::RIGHT do
-          @cam_cursor.velocity.x = 0 if @mode.starts_with? :edit
+          @cam_cursor.velocity.x = 0
         end
 
         @input.on :press, Moon::Input::UP do
-          @cam_cursor.velocity.y = -1 * @cam_move_speed if @mode.starts_with? :edit
+          @cam_cursor.velocity.y = -1 * @cam_move_speed
         end
         @input.on :press, Moon::Input::DOWN do
-          @cam_cursor.velocity.y = 1 * @cam_move_speed if @mode.starts_with? :edit
+          @cam_cursor.velocity.y = 1 * @cam_move_speed
         end
         @input.on :release, Moon::Input::UP, Moon::Input::DOWN do
-          @cam_cursor.velocity.y = 0 if @mode.starts_with? :edit
+          @cam_cursor.velocity.y = 0
         end
       end
 
@@ -235,8 +267,6 @@ module ES
 
           input.on :press, Moon::Input::V do
             @mode.change :view
-            @camera.follow @entity
-            @view.ui_posmon.obj = @entity
           end
 
           ## layer toggle
@@ -253,52 +283,47 @@ module ES
         modespace :view do |input|
           ## mode toggle
           input.on :press, Moon::Input::E do
-            @camera.follow @cam_cursor
-            @view.ui_posmon.obj = @cam_cursor
             @mode.change :edit
-          end
-
-          input.on :press, Moon::Input::LEFT do
-            @entity.velocity.x = -1 * @entity.move_speed
-          end
-          input.on :press, Moon::Input::RIGHT do
-            @entity.velocity.x = 1 * @entity.move_speed
-          end
-          input.on :release, Moon::Input::LEFT, Moon::Input::RIGHT do
-            @entity.velocity.x = 0
-          end
-
-          input.on :press, Moon::Input::UP do
-            @entity.velocity.y = -1 * @entity.move_speed
-          end
-          input.on :press, Moon::Input::DOWN do
-            @entity.velocity.y = 1 * @entity.move_speed
-          end
-          input.on :release, Moon::Input::UP, Moon::Input::DOWN do
-            @entity.velocity.y = 0
           end
         end
       end
 
-      def update_map(delta)
+      def update_world(delta)
         return if @mode.is? :help
-        super delta
+        @world.update(delta)
       end
 
       def update(delta)
-        @controller.update delta
+        @controller.update(delta)
+        update_world(delta)
         super delta
       end
 
+      def render_map
+        @chunk_renderers.each do |renderer|
+          renderer.render
+        end
+      end
+
+      def render_mode_icon
+        case @mode.current
+        when :view
+          @font_awesome.render(@mode_icon_rect.x, @mode_icon_rect.y, 0, @charmap_awesome["film"])
+        when :edit
+          @font_awesome.render(@mode_icon_rect.x, @mode_icon_rect.y, 0, @charmap_awesome["gear"])
+        end
+      end
+
       def render
-        super
+        render_map
         if @mode.is? :help
           @help_panel.render
         elsif @mode.has? :edit
           @view.render_edit_mode
         end
+        render_mode_icon
+        super
       end
-
     end
   end
 end
