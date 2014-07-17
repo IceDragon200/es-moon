@@ -1,5 +1,4 @@
 module Activatable
-
   attr_accessor :active
 
   def activate
@@ -11,5 +10,4 @@ module Activatable
   end
 
   alias :active? :active
-
 end

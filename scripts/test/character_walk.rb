@@ -1,5 +1,4 @@
 class State::CharacterWalkTest < State
-
   def init
     super
     @popup = YAML.load_file("data/popups/idling.yml")
@@ -140,5 +139,4 @@ class State::CharacterWalkTest < State
     end
     super
   end
-
 end

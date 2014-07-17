@@ -1,7 +1,6 @@
 module ES
   module States
     class Shutdown < Base
-
       def init
         super
       end
@@ -10,7 +9,6 @@ module ES
         quit
         super delta
       end
-
     end
   end
 end

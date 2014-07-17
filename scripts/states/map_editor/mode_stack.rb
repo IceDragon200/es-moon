@@ -1,5 +1,4 @@
 class ModeStack
-
   def initialize
     @list = []
   end
@@ -44,5 +43,4 @@ class ModeStack
   def [](index)
     @list[index]
   end
-
 end

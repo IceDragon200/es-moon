@@ -1,7 +1,5 @@
 class State::UITest01 < State
-
   class SpriteContainer < RenderContainer
-
     attr_reader :sprite
 
     def initialize(*args, &block)
@@ -30,7 +28,6 @@ class State::UITest01 < State
     def clip_rect=(clip_rect)
       @sprite.clip_rect = clip_rect
     end
-
   end
 
   def init
@@ -79,5 +76,4 @@ class State::UITest01 < State
     @container.render
     super
   end
-
 end

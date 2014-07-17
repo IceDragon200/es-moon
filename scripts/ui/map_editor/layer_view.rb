@@ -1,7 +1,6 @@
 module ES
   module UI
     class MapEditorLayerView < RenderContainer
-
       attr_accessor :index
       attr_accessor :layer_count
 
@@ -38,7 +37,6 @@ module ES
                          13
         super
       end
-
     end
   end
 end

@@ -1,5 +1,4 @@
 class Camera2
-
   attr_accessor :position
   attr_accessor :speed
   attr_reader :obj
@@ -27,5 +26,4 @@ class Camera2
     end
     @ticks += 1
   end
-
 end

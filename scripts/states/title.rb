@@ -1,7 +1,6 @@
 module ES
   module States
     class Title < Base
-
       def init
         super
         @title_menu = ES::UI::TitleMenu.new
@@ -43,7 +42,6 @@ module ES
           State.pop
         end
       end
-
     end
   end
 end

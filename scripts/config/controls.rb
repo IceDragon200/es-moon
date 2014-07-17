@@ -1,6 +1,5 @@
 module ES
   module Config
-
     keys = Moon::Input
     @controls = {
       up:     [keys::UP,     keys::W],
@@ -19,6 +18,5 @@ module ES
     class << self
       attr_accessor :controls
     end
-
   end
 end

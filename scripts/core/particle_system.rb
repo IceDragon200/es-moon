@@ -1,7 +1,5 @@
 class ParticleSystem < RenderContainer
-
   class Particle
-
     attr_accessor :color # ?
 
     attr_accessor :cell_index
@@ -59,7 +57,6 @@ class ParticleSystem < RenderContainer
       @ticks -= 1 if active?
       self
     end
-
   end
 
   ###
@@ -125,5 +122,4 @@ class ParticleSystem < RenderContainer
     end
     super x, y, z
   end
-
 end

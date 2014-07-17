@@ -1,7 +1,6 @@
 module ES
   module UI
     class MapEditorHelpPanel < RenderContainer
-
       def initialize
         super
         @text = Text.new "", ES.cache.font("uni0553", 16)
@@ -25,7 +24,6 @@ module ES
         @text.render(*(@position + [x, y, z]))
         super x, y, z
       end
-
     end
   end
 end

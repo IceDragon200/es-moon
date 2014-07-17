@@ -1,7 +1,6 @@
 require "scripts/states/map_editor/camera_cursor"
 
 class MapEditorModel
-
   attr_accessor :cam_cursor
   attr_accessor :cursor_position
   attr_accessor :cursor_position_map_pos
@@ -27,7 +26,6 @@ class MapEditorModel
   end
 
   def init
-
+    #
   end
-
 end

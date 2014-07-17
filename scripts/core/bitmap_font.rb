@@ -1,5 +1,4 @@
 class BitmapFont < RenderContainer
-
   attr_reader :string
   def string=(n)
     @string = n != nil ? n.to_s : nil
@@ -63,5 +62,4 @@ class BitmapFont < RenderContainer
     end
     super x, y, z
   end
-
 end

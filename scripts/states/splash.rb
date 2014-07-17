@@ -1,7 +1,6 @@
 module ES
   module States
     class Splash < Base
-
       def init
         super
         font = ES.cache.font "uni0553", 16
@@ -28,7 +27,6 @@ module ES
         @text.render(x, y, 0)
         super
       end
-
     end
   end
 end

@@ -1,5 +1,4 @@
 class CameraCursor
-
   attr_accessor :position
   attr_accessor :velocity
 
@@ -11,5 +10,4 @@ class CameraCursor
   def update(delta)
     @position += @velocity * delta
   end
-
 end

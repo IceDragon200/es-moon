@@ -1,8 +1,6 @@
 module ES
   module UI
-
     class MapEditorDashboard < RenderContainer
-
       attr_accessor :default_color
 
       def initialize
@@ -68,7 +66,6 @@ module ES
       end
 
       alias :enable :ok
-
     end
   end
 end

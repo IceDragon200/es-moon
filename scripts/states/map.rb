@@ -1,7 +1,6 @@
 module ES
   module States
     class Map < Base
-
       def init
         super
         create_world
@@ -177,7 +176,6 @@ module ES
 
         super
       end
-
     end
   end
 end

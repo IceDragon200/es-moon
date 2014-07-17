@@ -1,7 +1,6 @@
 module ES
   module Helper
     class PaintMap
-
       VERSION = "2.0.0"
 
       attr_accessor :layer
@@ -94,7 +93,6 @@ module ES
         end
         self
       end
-
     end
   end
 end

@@ -1,5 +1,4 @@
 class Countdown
-
   attr_reader :ticks
   attr_reader :ticks_max
 
@@ -26,5 +25,4 @@ class Countdown
   def rate
     1 - (@ticks.to_f / @ticks_max)
   end
-
 end
