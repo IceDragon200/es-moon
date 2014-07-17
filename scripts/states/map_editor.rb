@@ -154,14 +154,12 @@ module ES
           input.on :press, :f1 do
             @mode.push :help
             @controller.show_help
-            @notifications.notify string: "Help"
           end
 
           modespace :help do |inp2|
             inp2.on :release, :f1 do
               @mode.pop
               @controller.hide_help
-              @notifications.clear
             end
           end
 
@@ -311,12 +309,12 @@ module ES
           add_transition @mode_icon_color, Vector4.new(1, 1, 1, 1), time do |value|
             @mode_icon_color = value
           end
-          case mode
-          when :view
-            @mode_icon = "film"
-          when :edit
-            @mode_icon = "gear"
-          end
+          @mode_icon = case mode
+                       when :view then "film"
+                       when :edit then "gear"
+                       when :help then "book"
+                       #when :help then "book"
+                       end
         end
         add_transition @mode_icon_color, Vector4.new(0, 0, 0, 0), time do |value|
           @mode_icon_color = value
@@ -359,7 +357,7 @@ module ES
       def render
         render_map
         if @mode.is? :help
-          @help_panel.render
+          @view.render_help_mode
         elsif @mode.has? :edit
           @view.render_edit_mode
         end

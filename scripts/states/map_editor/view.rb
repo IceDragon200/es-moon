@@ -100,4 +100,8 @@ class MapEditorView < RenderContainer
     render_chunk_labels if @model.flag_show_chunk_labels
     @hud.render
   end
+
+  def render_help_mode
+    @help_panel.render
+  end
 end

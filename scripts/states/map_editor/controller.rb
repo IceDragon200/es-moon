@@ -144,10 +144,12 @@ class MapEditorController
 
   def show_help
     @view.dashboard.enable 0
+    @view.notifications.notify string: "Help"
   end
 
   def hide_help
     @view.dashboard.disable 0
+    @view.notifications.clear
   end
 
   def show_tile_info
