@@ -7,7 +7,8 @@ module ES
 
       def initialize
         super
-        @cursor_ss = ES.cache.block "e064x064.png", 64, 64
+        @micro_ss = ES.cache.block "e008x008.png", 8, 8
+        @background_ss = ES.cache.block "e064x064.png", 64, 64
 
         @text = Text.new "", ES.cache.font("uni0553", 16)
 
@@ -16,19 +17,19 @@ module ES
       end
 
       def width
-        @cursor_ss.cell_width
+        @background_ss.cell_width
       end
 
       def height
-        @cursor_ss.cell_height
+        @background_ss.cell_height
       end
 
       def render(x=0, y=0, z=0)
-        if @tileset
-          px, py, pz = *(@position + [x, y, z])
-          @cursor_ss.render px, py, pz, 1
+        px, py, pz = *(@position + [x, y, z])
+        @background_ss.render px, py, pz, 1
 
-          diff = (@cursor_ss.cell_size - @tileset.cell_size) / 2
+        if @tileset
+          diff = (@background_ss.cell_size - @tileset.cell_size) / 2
 
           if @tile_id >= 0
             @tileset.render diff.x + px, diff.y + py, pz, @tile_id
@@ -38,6 +39,8 @@ module ES
           @text.render diff.x + px,
                        diff.y + py + @tileset.cell_height,
                        pz
+        else
+          @micro_ss.render px, py, pz, 8
         end
         super x, y, z
       end

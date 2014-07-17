@@ -13,15 +13,15 @@ class MapEditorController
   # @param [Vector3] screen_pos
   ###
   def screen_pos_to_map_pos(screen_pos)
-    (screen_pos + @model.camera.view.floor) / 32
+    @view.screen_pos_to_map_pos(screen_pos)
   end
 
   def map_pos_to_screen_pos(map_pos)
-    map_pos * 32 - @model.camera.view.floor
+    @view.map_pos_to_screen_pos(map_pos)
   end
 
   def screen_pos_map_reduce(screen_pos)
-    screen_pos_to_map_pos(screen_pos).floor * 32 - @model.camera.view.floor
+    @view.screen_pos_map_reduce(screen_pos)
   end
 
   def camera_follow(obj)
@@ -34,24 +34,75 @@ class MapEditorController
   end
 
   def new_map
+    @view.dashboard.enable 1
+    @view.notifications.notify string: "New Map (NYI)"
+  end
+
+  def on_new_map_release
+    @view.dashboard.disable 1
+    @view.notifications.clear
   end
 
   def save_map
-    @map.dmap.save_file
+    @view.dashboard.ok 4
+    @model.map.to_map.save_file
     save_chunks
+    @view.notifications.notify string: "Saved"
+  end
+
+  def on_save_map_release
+    @view.dashboard.disable 4
+    @view.notifications.clear
   end
 
   def new_chunk
+    @view.dashboard.enable 2
+    @view.notifications.notify string: "New Chunk"
+    @model.selection_stage = 1
   end
 
   def save_chunks
-    @map.chunks.each { |chunk| chunk.dchunk.save_file }
+    @model.map.chunks.each { |chunk| chunk.to_chunk.save_file }
+  end
+
+  def load_chunks
+    @view.dashboard.ok 5
+    @view.notifications.notify string: "Loading ... (NYI)"
+  end
+
+  def on_load_chunks_release
+    @view.dashboard.disable 5
   end
 
   def rename_chunk(chunk, new_name)
   end
 
   def move_chunk(chunk, new_position)
+  end
+
+  def create_chunk(rect, data)
+    size = Vector3.new(*rect.wh, 2)
+
+    data[:data] = begin
+      dm = DataMatrix.new(*size, default: -1)
+      dm
+    end
+    data[:flags] = begin
+      dm = DataMatrix.new(*size)
+      dm
+    end
+    data[:passages] = Table.new(*size.xy)
+
+    dchunk = ES::DataModel::Chunk.new data
+
+    chunk = ES::GameObject::Chunk.new
+    chunk.setup(dchunk)
+
+    @map.chunks << chunk
+    @map.dmap.chunks << { name: dchunk.name }
+    chunk_p = @map.dmap.chunk_position
+    chunk_p[chunk_p.size] = rect.xyz
+    @map.refresh
   end
 
   def set_layer(layer)
@@ -89,31 +140,6 @@ class MapEditorController
 
   def select_tile(pos)
     @view.tile_panel.select_tile(pos)
-  end
-
-  def create_chunk(rect, data)
-    size = Vector3.new(*rect.wh, 2)
-
-    data[:data] = begin
-      dm = DataMatrix.new(*size, default: -1)
-      dm
-    end
-    data[:flags] = begin
-      dm = DataMatrix.new(*size)
-      dm
-    end
-    data[:passages] = Table.new(*size.xy)
-
-    dchunk = ES::DataModel::Chunk.new data
-
-    chunk = ES::GameObject::Chunk.new
-    chunk.setup(dchunk)
-
-    @map.chunks << chunk
-    @map.dmap.chunks << { name: dchunk.name }
-    chunk_p = @map.dmap.chunk_position
-    chunk_p[chunk_p.size] = rect.xyz
-    @map.refresh
   end
 
   def animate_map_zoom(dest)
@@ -176,7 +202,18 @@ class MapEditorController
     @view.tile_preview.hide
   end
 
+  def show_chunk_labels
+    @view.dashboard.enable 9
+    @model.flag_show_chunk_labels = true
+  end
+
+  def hide_chunk_labels
+    @view.dashboard.disable 9
+    @model.flag_show_chunk_labels = false
+  end
+
   def get_tile_data(position)
+    position = position.floor
     map = @model.map
     chunk = map.chunks.find do |c|
       c.bounds.inside?(position)

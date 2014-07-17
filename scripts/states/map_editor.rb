@@ -165,55 +165,52 @@ module ES
 
           ## New Map
           input.on :press, Moon::Input::F2 do
-            @dashboard.enable 1
-            @mode.push :create_map
-            @notifications.notify string: "Create Map"
+            @controller.new_map
+            @mode.push :new_map
           end
 
-          modespace :create_map do |inp2|
+          modespace :new_map do |inp2|
             inp2.on :release, Moon::Input::F2 do
-              @dashboard.disable 1
+              @controller.on_new_map_release
               @mode.pop
-              @notifications.clear
             end
           end
 
           ## New Chunk
           input.on :press, Moon::Input::F3 do
-            @dashboard.enable 2
-            @mode.push :create_chunk
-            @selection_stage = 1
-            @notifications.notify string: "Create Chunk"
+            @mode.push :new_chunk
+            @controller.new_chunk
           end
 
           @selection_stage = 0
-          modespace :create_chunk do |inp2|
-            inp2.on :press, Moon::Input::MOUSE_LEFT do
+          modespace :new_chunk do |inp2|
+            inp2.on :press, :mouse_left do
               if @selection_stage == 1
-                @tileselection_rect.tile_rect.xyz = @model.map_cursor.position
+                @view.tileselection_rect.tile_rect.xyz = @model.map_cursor.position
 
-                @tileselection_rect.activate
+                @view.tileselection_rect.activate
                 @selection_stage += 1
               elsif @selection_stage == 2
-                @tileselection_rect.tile_rect.whd = @model.map_cursor.position - @tileselection_rect.tile_rect.xyz
+                @view.tileselection_rect.tile_rect.whd = @model.map_cursor.position - @view.tileselection_rect.tile_rect.xyz
 
                 id = @model.map.chunks.size+1
-                create_chunk @tileselection_rect.tile_rect, id: id, name: "new/chunk-#{id}"
+                new_chunk @view.tileselection_rect.tile_rect,
+                          id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
                 create_tilemaps
 
                 @selection_stage = 0
-                @tileselection_rect.deactivate
-                @dashboard.disable 2
+                @view.tileselection_rect.deactivate
+                @view.dashboard.disable 2
                 @mode.pop
-                @notifications.clear
+                @view.notifications.clear
               end
             end
-            inp2.on :press, Moon::Input::MOUSE_RIGHT do
-              if @selection_stage == 1
-                @selection_stage = 0
+            inp2.on :press, :mouse_right do
+              if @view.selection_stage == 1
+                @view.selection_stage = 0
                 @dashboard.disable 2
                 @mode.pop
-                @notifications.clear
+                @view.notifications.clear
               elsif @selection_stage == 2
                 @selection_stage -= 1
                 @tileselection_rect.deactivate
@@ -221,44 +218,39 @@ module ES
             end
           end
 
-          input.on :press, Moon::Input::F5 do
-            @dashboard.ok 4
+          input.on :press, :f5 do
             @controller.save_map
-            @notifications.notify string: "Saved"
           end
 
-          input.on :release, Moon::Input::F5 do
-            @dashboard.disable 4
+          input.on :release, :f5 do
+            @controller.on_save_map_release
           end
 
-          input.on :press, Moon::Input::F6 do
-            @dashboard.ok 5
-            @notifications.notify string: "Loading ..."
+          input.on :press, :f6 do
+            @controller.load_chunks
           end
 
-          input.on :release, Moon::Input::F6 do
-            @dashboard.disable 5
+          input.on :release, :f6 do
+            @controller.on_load_chunks_release
           end
 
           ## Show Chunk Labels
-          input.on :press, Moon::Input::F10 do
-            @dashboard.enable 9
-            @model.flag_show_chunk_labels = true
-            @mode.push :show_chunk_labels
+          input.on :press, :f10 do
+            @controller.show_chunk_labels
             @controller.hide_tile_info
+            @mode.push :show_chunk_labels
           end
 
           modespace :show_chunk_labels do |inp2|
-            inp2.on :release, Moon::Input::F10 do
-              @dashboard.disable 9
-              @model.flag_show_chunk_labels = false
+            inp2.on :release, :f10 do
+              @controller.hide_chunk_labels
               @controller.show_tile_info
               @mode.pop
             end
           end
 
           ## tile panel
-          input.on :press, Moon::Input::TAB do
+          input.on :press, :tab do
             @mode.push :tile_select
             @controller.show_tile_panel
             @controller.hide_tile_preview

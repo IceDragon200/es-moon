@@ -70,6 +70,21 @@ class MapEditorView < RenderContainer
     create_passage_layer
   end
 
+  ###
+  # @param [Vector3] screen_pos
+  ###
+  def screen_pos_to_map_pos(screen_pos)
+    (screen_pos + @model.camera.view.floor) / 32
+  end
+
+  def map_pos_to_screen_pos(map_pos)
+    map_pos * 32 - @model.camera.view.floor
+  end
+
+  def screen_pos_map_reduce(screen_pos)
+    screen_pos_to_map_pos(screen_pos).floor * 32 - @model.camera.view.floor
+  end
+
   def tileset=(tileset)
     @tileset = tileset
     @tile_preview.tileset = @tileset
@@ -88,9 +103,9 @@ class MapEditorView < RenderContainer
   def render_chunk_labels
     color = Vector4::WHITE
     oy = @font.size
-    @map.chunks.each do |chunk|
+    @model.map.chunks.each do |chunk|
       x, y, z = *map_pos_to_screen_pos(chunk.position)
-      @font.render x, y-oy, z, chunk.name, color, outline: 0, transform: @transform
+      @font.render x, y-oy, z, chunk.name, color, outline: 0
     end
   end
 
@@ -103,5 +118,10 @@ class MapEditorView < RenderContainer
 
   def render_help_mode
     @help_panel.render
+  end
+
+  def update(delta)
+    super(delta)
+    @dashboard.update(delta)
   end
 end

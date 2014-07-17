@@ -16,72 +16,73 @@ module ES
       end
 
       def render(x=0, y=0, z=0)
+        return unless @tile_data
+
+        px = x + @position.x
+        py = y + @position.y
+        pz = z + @position.z
+
+        tile_ids = @tile_data[:tile_ids] || []
+        chunk = @tile_data[:chunk]
+        passage = @tile_data[:passage]
+
+        data_position = @tile_data[:data_position]
+
+        chunk_id = chunk ? chunk.id : -1
+        chunk_name = chunk ? chunk.name : ""
+        chunk_uri = chunk ? chunk.uri : ""
+        chunk_position = chunk ? chunk.position.to_a : [-1, -1]
+        chunk_data_pos = @tile_data[:chunk_data_position] || [-1, -1]
+
+        @text.string ="" +
+                      "position:       #{data_position.to_a}\n" +
+                      "chunk_id:       #{chunk_id}\n" +
+                      "chunk_name:     #{chunk_name}\n" +
+                      "chunk_uri:      #{chunk_uri}\n" +
+                      "chunk_data_pos: #{chunk_data_pos.to_a}\n" +
+                      "chunk_position: #{chunk_position.to_a}\n" +
+                      "passage:        #{passage}\n" +
+                      "" # placeholder
+
+        @text.render px, py, pz
+        py += @text.height
+
+
+        # draw blocks for passage
+        if passage == ES::Passage::NONE
+          @block_ss.render px + @block_ss.cell_width,
+                           py + @block_ss.cell_height,
+                           pz,
+                           8
+        else
+          @block_ss.render px + @block_ss.cell_width,
+                           py,
+                           pz,
+                           passage.masked?(ES::Passage::UP) ? 9 : 8
+          #
+          @block_ss.render px,
+                           py + @block_ss.cell_height,
+                           pz,
+                           passage.masked?(ES::Passage::LEFT) ? 9 : 8
+          #
+          @block_ss.render px + @block_ss.cell_width,
+                           py + @block_ss.cell_height,
+                           pz,
+                           passage.masked?(ES::Passage::ABOVE) ? 12 : 1
+          #
+          @block_ss.render px + @block_ss.cell_width * 2,
+                           py + @block_ss.cell_height,
+                           pz,
+                           passage.masked?(ES::Passage::RIGHT) ? 9 : 8
+          #
+          @block_ss.render px + @block_ss.cell_width,
+                           py + @block_ss.cell_height * 2,
+                           pz,
+                           passage.masked?(ES::Passage::DOWN) ? 9 : 8
+        end
+
         if @tileset
-          data = @tile_data
-          return unless data
-
-          px = x + @position.x
-          py = y + @position.y
-          pz = z + @position.z
-
-          tile_ids = data[:tile_ids] || []
-          chunk = data[:chunk]
-          passage = data[:passage]
-
-          data_position = data[:data_position]
-
-          chunk_id = chunk ? chunk.id : -1
-          chunk_name = chunk ? chunk.name : ""
-          chunk_position = chunk ? chunk.position.to_a : [-1, -1]
-          chunk_data_pos = data.fetch(:chunk_data_position, [-1, -1])
-
-          @text.string ="" +
-                        "position:       #{data_position}\n" +
-                        "chunk_id:       #{chunk_id}\n" +
-                        "chunk_name:     #{chunk_name}\n" +
-                        "chunk_data_pos: #{chunk_data_pos}\n" +
-                        "chunk_position: #{chunk_position}\n" +
-                        "passage:        #{passage}\n" +
-                        "" # placeholder
-
-          @text.render px, py, pz
-          py += @text.height
-
-
-          # draw blocks for passage
-          if passage == ES::Passage::NONE
-            @block_ss.render px + @block_ss.cell_width,
-                             py + @block_ss.cell_height,
-                             pz,
-                             8
-          else
-            @block_ss.render px + @block_ss.cell_width,
-                             py,
-                             pz,
-                             passage.masked?(ES::Passage::UP) ? 9 : 8
-            #
-            @block_ss.render px,
-                             py + @block_ss.cell_height,
-                             pz,
-                             passage.masked?(ES::Passage::LEFT) ? 9 : 8
-            #
-            @block_ss.render px + @block_ss.cell_width,
-                             py + @block_ss.cell_height,
-                             pz,
-                             passage.masked?(ES::Passage::ABOVE) ? 12 : 1
-            #
-            @block_ss.render px + @block_ss.cell_width * 2,
-                             py + @block_ss.cell_height,
-                             pz,
-                             passage.masked?(ES::Passage::RIGHT) ? 9 : 8
-            #
-            @block_ss.render px + @block_ss.cell_width,
-                             py + @block_ss.cell_height * 2,
-                             pz,
-                             passage.masked?(ES::Passage::DOWN) ? 9 : 8
-          end
           py += @block_ss.cell_height * 3
-
           tile_ids.each_with_index do |tile_id, i|
             next if tile_id < 0
             xo = @tileset.cell_width * i
