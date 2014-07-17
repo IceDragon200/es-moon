@@ -116,29 +116,30 @@ class MapEditorController
     @map.refresh
   end
 
-  def transition_transform(dest)
+  def animate_map_zoom(dest)
     zoom = @zoom
     @zoom = dest
-    if @state
-      @transform_transition = add_transition(zoom, dest, 0.15) do |v|
-        @model.transform = Transform.scale(v, v, 1.0)
-      end
-    else
-      @model.zoom = dest
-      @model.transform = Transform.scale(@model.zoom, @model.zoom, 1.0)
-    end
+    #if @state
+      #@transform_transition = add_transition(zoom, dest, 0.15) do |v|
+      #  @model.transform = Transform.scale(v, v, 1.0)
+      #end
+    #else
+      #@model.zoom = dest
+      #@model.transform = Transform.scale(@model.zoom, @model.zoom, 1.0)
+    #end
+    puts "Zoom has been disabled"
   end
 
   def zoom_reset
-    transition_transform(1.0)
+    animate_map_zoom(1.0)
   end
 
   def zoom_out
-    transition_transform(@zoom/2.0)
+    animate_map_zoom(@zoom/2.0)
   end
 
   def zoom_in
-    transition_transform(@zoom*2.0)
+    animate_map_zoom(@zoom*2.0)
   end
 
   def show_help
