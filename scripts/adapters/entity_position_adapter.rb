@@ -1,5 +1,4 @@
-class EntityPositionAdaptor
-
+class EntityPositionAdapter
   def initialize(obj)
     @obj = obj
     @position = Vector3.new(0, 0, 0)
@@ -11,5 +10,4 @@ class EntityPositionAdaptor
     @position.y = pos.y
     @position
   end
-
 end
