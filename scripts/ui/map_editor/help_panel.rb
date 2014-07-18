@@ -9,6 +9,12 @@ module ES
           "'Middle Click' to select current tile\n" +
           "'Left Click' to place tile\n" +
           "'Tab' opens Tile Panel\n" +
+          "'1' selects the base layer for editing\n" +
+          "'2' selects the detail layer for editing\n" +
+          "'~' deactivates layer editing\n" +
+          "'+' increase Zoom Level\n" +
+          "'-' descrease Zoom Level\n" +
+          "'0' reset Zoom Level\n" +
           ""
       end
 
@@ -21,7 +27,7 @@ module ES
       end
 
       def render(x=0, y=0, z=0)
-        @text.render(*(@position + [x, y, z]))
+        @text.render(*(@position + [x, y, z]), outline: 2)
         super x, y, z
       end
     end
