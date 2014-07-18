@@ -1,10 +1,17 @@
 class ChunkRenderer
   attr_reader :chunk
-  attr_accessor :position
 
-  def initialize
+  def initialize(chunk)
     @tilemap = Tilemap.new
-    @position = Vector3.new(0, 0, 0)
+    self.chunk = chunk
+  end
+
+  def position
+    @chunk.position
+  end
+
+  def position=(position)
+    @chunk.position = position
   end
 
   def layer_opacity
@@ -30,6 +37,6 @@ class ChunkRenderer
   end
 
   def render(x=0, y=0, z=0, options={})
-    @tilemap.render(*((@position*@size) + [x, y, z]), options)
+    @tilemap.render(*((position*@size) + [x, y, z]), options)
   end
 end

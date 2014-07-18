@@ -238,11 +238,13 @@ class MapEditorController
   def show_chunk_labels
     @view.dashboard.enable 9
     @model.flag_show_chunk_labels = true
+    @view.notifications.notify string: "Showing Chunk Labels"
   end
 
   def hide_chunk_labels
     @view.dashboard.disable 9
     @model.flag_show_chunk_labels = false
+    @view.notifications.clear
   end
 
   def get_tile_data(position)

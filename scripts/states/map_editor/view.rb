@@ -104,7 +104,7 @@ class MapEditorView < RenderContainer
 
   def render_chunk_labels
     color = Vector4::WHITE
-    oy = @font.size
+    oy = @font.size+8
     @model.map.chunks.each do |chunk|
       x, y, z = *map_pos_to_screen_pos(chunk.position)
       @font.render x, y-oy, z, chunk.name, color, outline: 0
@@ -124,6 +124,7 @@ class MapEditorView < RenderContainer
 
   def update(delta)
     super(delta)
+    @hud.update(delta)
     @dashboard.update(delta)
   end
 end
