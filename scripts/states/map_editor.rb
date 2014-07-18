@@ -157,6 +157,10 @@ module ES
             @controller.erase_tile
           end
 
+          input.on :press, @control_map["place_tile"] do
+            @controller.place_current_tile
+          end
+
           ## help
           input.on :press, @control_map["help"] do
             @mode.push :help
@@ -278,11 +282,7 @@ module ES
             end
           end
 
-          input.on :press, @control_map["place_tile"] do
-            @controller.place_current_tile
-          end
-
-          input.on :press, @control_map["place_tile"] do
+          input.on :press, @control_map["enter_view_mode"] do
             @mode.change :view
           end
 
