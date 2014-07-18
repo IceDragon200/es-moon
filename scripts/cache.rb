@@ -16,7 +16,9 @@ module ES
 
     branch :palette do
       lambda do |*args|
-        PaletteParser.load_palette(YAML.load(File.read("data/palette.yml")))
+        FetchOnlyHash.new(PaletteParser.load_palette(YAML.load(File.read("data/palette.yml"))))
+      end
+    end
 
     branch :controlmap do
       lambda do |filename, *args|
