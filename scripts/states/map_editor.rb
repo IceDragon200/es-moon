@@ -8,6 +8,8 @@ module ES
     class MapEditor < Base
       def init
         super
+        @control_map = ES.cache.controlmap("map_editor.yml")
+
         @model = MapEditorModel.new
         @view = MapEditorView.new @model
         @controller = MapEditorController.new @model, @view
@@ -100,23 +102,23 @@ module ES
 
       def register_actor_move
         @cam_move_speed = 8
-        @input.on :press, :left do
+        @input.on :press, @control_map["move_camera_left"] do
           @model.cam_cursor.velocity.x = -1 * @cam_move_speed
         end
-        @input.on :press, :right do
+        @input.on :press, @control_map["move_camera_right"] do
           @model.cam_cursor.velocity.x = 1 * @cam_move_speed
         end
-        @input.on :release, :left, :right do
+        @input.on :release, @control_map["move_camera_left"], @control_map["move_camera_right"] do
           @model.cam_cursor.velocity.x = 0
         end
 
-        @input.on :press, :up do
+        @input.on :press, @control_map["move_camera_up"] do
           @model.cam_cursor.velocity.y = -1 * @cam_move_speed
         end
-        @input.on :press, :down do
+        @input.on :press, @control_map["move_camera_down"] do
           @model.cam_cursor.velocity.y = 1 * @cam_move_speed
         end
-        @input.on :release, :up, :down do
+        @input.on :release, @control_map["move_camera_up"], @control_map["move_camera_down"] do
           @model.cam_cursor.velocity.y = 0
         end
       end
@@ -133,69 +135,69 @@ module ES
         # At no point should the state directly communicate with the Model
         # or View
         modespace :edit do |input|
-          input.on :press, :n0 do
+          input.on :press, @control_map["zoom_reset"] do
             @controller.zoom_reset
           end
 
-          input.on :press, :minus do
+          input.on :press, @control_map["zoom_out"] do
             @controller.zoom_out
           end
 
-          input.on :press, :equal do
+          input.on :press, @control_map["zoom_in"] do
             @controller.zoom_in
           end
 
           ## copy tile
-          input.on :press, :mouse_middle do
+          input.on :press, @control_map["copy_tile"] do
             @controller.copy_tile
           end
 
           ## erase tile
-          input.on :press, :mouse_right do
+          input.on :press, @control_map["erase_tile"] do
             @controller.erase_tile
           end
 
           ## help
-          input.on :press, :f1 do
+          input.on :press, @control_map["help"] do
             @mode.push :help
             @controller.show_help
           end
 
           modespace :help do |inp2|
-            inp2.on :release, :f1 do
+            inp2.on :release, @control_map["help"] do
               @mode.pop
               @controller.hide_help
             end
           end
 
           ## New Map
-          input.on :press, Moon::Input::F2 do
+          input.on :press, @control_map["new_map"] do
             @controller.new_map
             @mode.push :new_map
           end
 
           modespace :new_map do |inp2|
-            inp2.on :release, Moon::Input::F2 do
+            inp2.on :release, @control_map["new_map"] do
               @controller.on_new_map_release
               @mode.pop
             end
           end
 
           ## New Chunk
-          input.on :press, Moon::Input::F3 do
+          input.on :press, @control_map["new_chunk"] do
             @mode.push :new_chunk
             @controller.new_chunk
           end
 
-          @selection_stage = 0
+          @model.selection_stage = 0
           modespace :new_chunk do |inp2|
-            inp2.on :press, :mouse_left do
-              if @selection_stage == 1
+            inp2.on :press, @control_map["place_tile"] do
+              if @model.selection_stage == 1
                 @view.tileselection_rect.tile_rect.xyz = @model.map_cursor.position
 
                 @view.tileselection_rect.activate
-                @selection_stage += 1
-              elsif @selection_stage == 2
+                @model.selection_stage += 1
+              elsif @model.selection_stage == 2
                 @view.tileselection_rect.tile_rect.whd = @model.map_cursor.position - @view.tileselection_rect.tile_rect.xyz
 
                 id = @model.map.chunks.size+1
@@ -203,51 +205,55 @@ module ES
                           id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
                 create_tilemaps
 
-                @selection_stage = 0
+                @model.selection_stage = 0
                 @view.tileselection_rect.deactivate
                 @view.dashboard.disable 2
                 @mode.pop
                 @view.notifications.clear
               end
             end
-            inp2.on :press, :mouse_right do
-              if @view.selection_stage == 1
-                @view.selection_stage = 0
-                @dashboard.disable 2
+            inp2.on :press, @control_map["erase_tile"] do
+              if @model.selection_stage == 1
+                @model.selection_stage = 0
+                @view.dashboard.disable 2
                 @mode.pop
                 @view.notifications.clear
-              elsif @selection_stage == 2
-                @selection_stage -= 1
+              elsif @model.selection_stage == 2
+                @model.selection_stage -= 1
                 @tileselection_rect.deactivate
               end
             end
           end
 
-          input.on :press, :f5 do
+          input.on :press, @control_map["save_map"] do
             @controller.save_map
           end
 
-          input.on :release, :f5 do
+          input.on :release, @control_map["save_map"] do
             @controller.on_save_map_release
           end
 
-          input.on :press, :f6 do
+          input.on :press, @control_map["load_chunks"] do
             @controller.load_chunks
           end
 
-          input.on :release, :f6 do
+          input.on :release, @control_map["load_chunks"] do
             @controller.on_load_chunks_release
           end
 
+          input.on :press, @control_map["toggle_keyboard_mode"] do
+            @controller.toggle_keyboard_mode
+          end
+
           ## Show Chunk Labels
-          input.on :press, :f10 do
+          input.on :press, @control_map["show_chunk_labels"] do
             @controller.show_chunk_labels
             @controller.hide_tile_info
             @mode.push :show_chunk_labels
           end
 
           modespace :show_chunk_labels do |inp2|
-            inp2.on :release, :f10 do
+            inp2.on :release, @control_map["show_chunk_labels"] do
               @controller.hide_chunk_labels
               @controller.show_tile_info
               @mode.pop
@@ -255,46 +261,46 @@ module ES
           end
 
           ## tile panel
-          input.on :press, :tab do
+          input.on :press, @control_map["show_tile_panel"] do
             @mode.push :tile_select
             @controller.show_tile_panel
             @controller.hide_tile_preview
           end
 
           modespace :tile_select do |inp2|
-            inp2.on :release, :tab do
+            inp2.on :press, @control_map["show_tile_panel"] do
               @mode.pop
               @controller.hide_tile_panel
               @controller.show_tile_preview
             end
-            inp2.on :press, :mouse_left do
+            inp2.on :press, @control_map["place_tile"] do
               @controller.select_tile(Input::Mouse.pos-[0,16])
             end
           end
 
-          input.on :press, :mouse_left do
+          input.on :press, @control_map["place_tile"] do
             @controller.place_current_tile
           end
 
-          input.on :press, :v do
+          input.on :press, @control_map["place_tile"] do
             @mode.change :view
           end
 
           ## layer toggle
-          input.on :press, :grave_accent do
+          input.on :press, @control_map["deactivate_layer_edit"] do
             @controller.set_layer(-1)
           end
-          input.on :press, :n1 do
+          input.on :press, @control_map["edit_layer_0"] do
             @controller.set_layer(0)
           end
-          input.on :press, :n2 do
+          input.on :press, @control_map["edit_layer_1"] do
             @controller.set_layer(1)
           end
         end
 
         modespace :view do |input|
           ## mode toggle
-          input.on :press, :e do
+          input.on :press, @control_map["enter_edit_mode"] do
             @mode.change :edit
           end
         end
