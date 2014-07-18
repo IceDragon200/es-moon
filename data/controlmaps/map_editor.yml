@@ -17,15 +17,22 @@ zoom_reset: n0
 zoom_in: plus
 zoom_out: minus
 
+center_on_map: home
+
+move_chunk_down: i
+move_chunk_left: u
+move_chunk_right: p
+move_chunk_up: o
+
+move_camera_down: down
 move_camera_left: left
 move_camera_right: right
 move_camera_up: up
-move_camera_down: down
 
+move_cursor_down: j
 move_cursor_left: h
 move_cursor_right: l
 move_cursor_up: k
-move_cursor_down: j
 
 place_tile:
 - mouse_left

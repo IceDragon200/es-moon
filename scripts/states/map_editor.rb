@@ -158,6 +158,12 @@ module ES
       def register_events
         register_actor_move
 
+        @input.on :press, @control_map["center_on_map"] do
+          bounds = @model.map.bounds
+          p bounds.to_h
+          @model.cam_cursor.position.set(bounds.cx, bounds.cy, 0)
+        end
+
         # These are the commands tof the edit mode, currently most commands
         # are broken due to the MVC movement, some actions require access
         # to both the model and controller, as a result its hard to determine
@@ -168,6 +174,22 @@ module ES
         # or View
         modespace :edit do |input|
           cursor_freq = "200"
+
+          input.on :press, @control_map["move_chunk_left"] do
+            @controller.move_chunk(-1, 0)
+          end
+
+          input.on :press, @control_map["move_chunk_right"] do
+            @controller.move_chunk(1, 0)
+          end
+
+          input.on :press, @control_map["move_chunk_up"] do
+            @controller.move_chunk(0, -1)
+          end
+
+          input.on :press, @control_map["move_chunk_down"] do
+            @controller.move_chunk(0, 1)
+          end
 
           input.on :press, @control_map["move_cursor_left"] do
             @controller.move_cursor(-1, 0)

@@ -84,12 +84,18 @@ class MapEditorController
     @view.dashboard.disable 5
   end
 
-  def rename_chunk(chunk, new_name)
-    #
+  def rename_chunk(new_name)
+    if chunk = chunk_at_position(@model.map_cursor.position.floor)
+      chunk.name = new_name
+    end
   end
 
-  def move_chunk(chunk, new_position)
-    #
+  def move_chunk(x, y)
+    if chunk = chunk_at_position(@model.map_cursor.position.xy.floor)
+      pos = [x, y, 0]
+      chunk.position += pos
+      @model.map_cursor.position += pos
+    end
   end
 
   def create_chunk(rect, data)
@@ -247,12 +253,16 @@ class MapEditorController
     @view.notifications.clear
   end
 
-  def get_tile_data(position)
-    position = position.floor
+  def chunk_at_position(position)
     map = @model.map
     chunk = map.chunks.find do |c|
       c.bounds.inside?(position)
     end
+  end
+
+  def get_tile_data(position)
+    position = position.floor
+    chunk = chunk_at_position(position)
     tile_data = ES::DataModel::TileData.new
     if chunk
       tile_data.chunk = chunk
