@@ -1,7 +1,5 @@
 tileset = {
-  filename: "oryx_lofi_fantasy/4x/lofi_environment_4x.png",
-  cell_width: 32,
-  cell_height: 32
+  uri: "/tilesets/common"
 }
 
 pool(ES::DataModel::Chunk.new do |chunk|

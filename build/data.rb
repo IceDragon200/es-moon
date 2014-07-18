@@ -5,6 +5,7 @@ $: << File.expand_path("../", File.dirname(__FILE__))
 
 require "yaml"
 
+require 'core/core_ext'
 require 'core/data_model'
 
 # Duck typing
@@ -29,7 +30,6 @@ module Moon
     def to_a
       return x, y
     end
-
   end
   class Vector3 < Moon::DataModel::Metal
 
@@ -118,7 +118,6 @@ require 'core/table'
 
 require 'core/tilemap'
 
-
 include Moon
 
 
@@ -136,11 +135,14 @@ def pool(obj)
 end
 
 require_relative 'data/characters'
-require_relative 'data/entities'
 require_relative 'data/chunks'
+require_relative 'data/entities'
 require_relative 'data/maps'
 require_relative 'data/popups'
+require_relative 'data/tilesets'
 
 Dir.chdir("../") do
-  @pool.each(&:save_file)
+  @pool.each do |obj|
+    obj.save_file
+  end
 end
