@@ -6,7 +6,6 @@ class MapEditorModel
   attr_accessor :camera
   attr_accessor :cam_cursor
   attr_accessor :map_cursor
-  attr_accessor :cursor_position
 
   attr_accessor :selection_stage
 
@@ -27,8 +26,6 @@ class MapEditorModel
     @map_cursor = MapCursor.new
 
     @selection_stage = -1
-
-    @cursor_position = Vector3.new
 
     @layer = -1
     @layer_opacity = [1.0, 1.0]

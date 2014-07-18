@@ -112,7 +112,7 @@ class MapEditorView < RenderContainer
   end
 
   def render_edit_mode
-    @map_cursor.render(*(@model.cursor_position+[0, 0, 0]))#, transform: @transform)
+    @map_cursor.render(*@model.map_cursor.position*32-@model.camera.view.floor)#, transform: @transform)
     @tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
     render_chunk_labels if @model.flag_show_chunk_labels
     @hud.render

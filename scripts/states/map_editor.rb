@@ -38,8 +38,7 @@ module ES
 
         register_events
 
-        @controller.camera_follow @model.cam_cursor
-        @controller.follow @model.map_cursor
+        @controller.refresh_follow
 
         tileset = Database.find(:tileset, uri: "/tilesets/common")
         @view.tileset = ES.cache.tileset(tileset.filename,
@@ -135,6 +134,48 @@ module ES
         # At no point should the state directly communicate with the Model
         # or View
         modespace :edit do |input|
+          cursor_freq = "200"
+
+          input.on :press, @control_map["move_cursor_left"] do
+            @controller.move_cursor(-1, 0)
+            @scheduler.clear(@horz_move_job)
+            @horz_move_job = @scheduler.every cursor_freq do
+              @controller.move_cursor(-1, 0)
+            end
+          end
+
+          input.on :press, @control_map["move_cursor_right"] do
+            @controller.move_cursor(1, 0)
+            @scheduler.clear(@horz_move_job)
+            @horz_move_job = @scheduler.every cursor_freq do
+              @controller.move_cursor(1, 0)
+            end
+          end
+
+          input.on :release, @control_map["move_cursor_left"], @control_map["move_cursor_right"] do
+            @scheduler.clear(@horz_move_job)
+          end
+
+          input.on :press, @control_map["move_cursor_up"] do
+            @controller.move_cursor(0, -1)
+            @scheduler.clear(@vert_move_job)
+            @vert_move_job = @scheduler.every cursor_freq do
+              @controller.move_cursor(0, -1)
+            end
+          end
+
+          input.on :press, @control_map["move_cursor_down"] do
+            @controller.move_cursor(0, 1)
+            @scheduler.clear(@vert_move_job)
+            @vert_move_job = @scheduler.every cursor_freq do
+              @controller.move_cursor(0, 1)
+            end
+          end
+
+          input.on :release, @control_map["move_cursor_up"], @control_map["move_cursor_down"] do
+            @scheduler.clear(@vert_move_job)
+          end
+
           input.on :press, @control_map["zoom_reset"] do
             @controller.zoom_reset
           end

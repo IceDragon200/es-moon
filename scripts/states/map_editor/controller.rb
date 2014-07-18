@@ -33,6 +33,16 @@ class MapEditorController
     @view.ui_posmon.obj = obj
   end
 
+  def refresh_follow
+    if @model.keyboard_only_mode
+      camera_follow @model.map_cursor
+      follow @model.map_cursor
+    else
+      camera_follow @model.cam_cursor
+      follow @model.map_cursor
+    end
+  end
+
   def new_map
     @view.dashboard.enable 1
     @view.notifications.notify string: "New Map (NYI)"
@@ -75,9 +85,11 @@ class MapEditorController
   end
 
   def rename_chunk(chunk, new_name)
+    #
   end
 
   def move_chunk(chunk, new_position)
+    #
   end
 
   def create_chunk(rect, data)
@@ -114,6 +126,7 @@ class MapEditorController
       @view.dashboard.disable(8)
       @view.notifications.notify string: "Keyboard Only Mode : DISABLED"
     end
+    refresh_follow
   end
 
   def set_layer(layer)
@@ -126,7 +139,7 @@ class MapEditorController
       @model.layer_opacity[@model.layer] = 1.0
     end
     if layer < 0
-      @view.notifications.notify string: "Layer editing disabled"
+      @view.notifications.notify string: "Layer editing deactivated"
     else
       @view.notifications.notify string: "Layer #{layer} set for editing"
     end
@@ -156,6 +169,10 @@ class MapEditorController
 
   def select_tile(pos)
     @view.tile_panel.select_tile(pos)
+  end
+
+  def move_cursor(xv, yv)
+    @model.map_cursor.position += [xv, yv, 0]
   end
 
   def animate_map_zoom(dest)
@@ -245,11 +262,15 @@ class MapEditorController
     tile_data
   end
 
-  def update_edit_mode(delta)
-    mp = Input::Mouse.position.xyz
-    @model.map_cursor.position = screen_pos_to_map_pos mp
+  def update_cursor_position(delta)
+    unless @model.keyboard_only_mode
+      @model.map_cursor.position = screen_pos_to_map_pos(Input::Mouse.position.xyz).floor
+    end
     @view.tile_info.tile_data = get_tile_data(@model.map_cursor.position.xy)
-    @model.cursor_position.set screen_pos_map_reduce(mp)
+  end
+
+  def update_edit_mode(delta)
+    update_cursor_position(delta)
 
     @view.hud.update delta
     @view.tile_preview.tile_id = @view.tile_panel.tile_id
