@@ -39,6 +39,9 @@ module ES
         @controller.camera_follow @model.cam_cursor
         @controller.follow @model.map_cursor
 
+        tileset = Database.find(:tileset, uri: "/tilesets/common")
+        @view.tileset = ES.cache.tileset(tileset.filename,
+                                         tileset.cell_width, tileset.cell_height)
         @transform_transition = nil
       end
 
@@ -307,6 +310,8 @@ module ES
                        when :view then "film"
                        when :edit then "gear"
                        when :help then "book"
+                       else
+                         @mode_icon
                        #when :help then "book"
                        end
         end
@@ -325,6 +330,7 @@ module ES
       end
 
       def update(delta)
+        @view.update(delta)
         @controller.update(delta)
         if @mode.is?(:edit)
           @controller.update_edit_mode(delta)

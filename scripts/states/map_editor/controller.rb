@@ -114,6 +114,11 @@ class MapEditorController
       @model.layer_opacity.map! { 0.3 }
       @model.layer_opacity[@model.layer] = 1.0
     end
+    if layer < 0
+      @view.notifications.notify string: "Layer editing disabled"
+    else
+      @view.notifications.notify string: "Layer #{layer} set for editing"
+    end
   end
 
   def place_tile(tile_id)
@@ -223,7 +228,7 @@ class MapEditorController
       tile_data.chunk = chunk
       tile_data.data_position = position.xyz
       tile_data.chunk_data_position = position.xyz - chunk.position.xyz
-      tile_data.tile_ids = chunk.data.pillar_a(*position)
+      tile_data.tile_ids = chunk.data.pillar_a(*tile_data.chunk_data_position.xy)
       tile_data.passage = chunk.passages[*tile_data.chunk_data_position.xy]
     end
     tile_data
