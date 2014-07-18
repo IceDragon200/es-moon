@@ -23,9 +23,9 @@ move_camera_up: up
 move_camera_down: down
 
 move_cursor_left: h
-move_cursor_right: j
+move_cursor_right: l
 move_cursor_up: k
-move_cursor_down: l
+move_cursor_down: j
 
 place_tile:
 - mouse_left
