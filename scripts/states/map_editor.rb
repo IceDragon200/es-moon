@@ -348,21 +348,27 @@ module ES
       end
 
       def switch_mode_icon(mode)
+        @__mode_icon_map ||= {
+          view: "film",
+          edit: "gear",
+          help: "book",
+          show_chunk_labels: "search"
+        }
+
         time = "150"
-        @scheduler.in time do
+
+        fade_color = Vector4.new(0, 0, 0, 0)
+
+        @scheduler.clear(@mode_icon_job)
+        @mode_icon_job = @scheduler.in time do
           add_transition @mode_icon_color, Vector4.new(1, 1, 1, 1), time do |value|
             @mode_icon_color = value
           end
-          @mode_icon = case mode
-                       when :view then "film"
-                       when :edit then "gear"
-                       when :help then "book"
-                       else
-                         @mode_icon
-                       #when :help then "book"
-                       end
+          @mode_icon = @__mode_icon_map[mode] || @mode_icon
         end
-        add_transition @mode_icon_color, Vector4.new(0, 0, 0, 0), time do |value|
+
+        remove_transition(@mode_icon_transition)
+        @mode_icon_transition = add_transition @mode_icon_color, fade_color, time do |value|
           @mode_icon_color = value
         end
       end
