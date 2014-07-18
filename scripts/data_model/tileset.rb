@@ -11,7 +11,7 @@ module ES
 
       def to_tileset_head
         tileset_head = TilesetHead.new
-        tileset_head.set(self.permit(:uri))
+        tileset_head.set(self.to_h.permit(:uri))
         tileset_head
       end
     end
