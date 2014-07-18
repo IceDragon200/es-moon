@@ -1,5 +1,6 @@
 require "scripts/test/character_walk"
 require "scripts/test/ui_test01"
+require "scripts/test/typing_test"
 require "scripts/test/roadmap-0001"
 require "scripts/test/roadmap-0002"
 require "scripts/test/roadmap-0003"
