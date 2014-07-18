@@ -1,21 +1,30 @@
 module ES
   module UI
     class MapEditorHelpPanel < RenderContainer
-      def initialize
-        super
-        @text = Text.new "", ES.cache.font("uni0553", 16)
+      attr_accessor :controlmap
+
+      def initialize(controlmap)
+        @controlmap = controlmap
+        super()
+
+
+        @text = Text.new "", ES.cache.font("uni0553", 24) #16)
         @text.string = "" +
-          "'Right Click' to erase current tile\n" +
-          "'Middle Click' to select current tile\n" +
-          "'Left Click' to place tile\n" +
-          "'Tab' opens Tile Panel\n" +
-          "'1' selects the base layer for editing\n" +
-          "'2' selects the detail layer for editing\n" +
-          "'~' deactivates layer editing\n" +
-          "'+' increase Zoom Level\n" +
-          "'-' descrease Zoom Level\n" +
-          "'0' reset Zoom Level\n" +
+          "#{human_key(@controlmap["erase_tile"])} to erase current tile\n" +
+          "#{human_key(@controlmap["copy_tile"])} to select current tile\n" +
+          "#{human_key(@controlmap["place_tile"])} to place tile\n" +
+          "#{human_key(@controlmap["show_tile_panel"])} opens Tile Panel\n" +
+          "#{human_key(@controlmap["edit_layer_0"])} selects the base layer for editing\n" +
+          "#{human_key(@controlmap["edit_layer_1"])} selects the detail layer for editing\n" +
+          "#{human_key(@controlmap["deactivate_layer_edit"])} deactivates layer editing\n" +
+          "#{human_key(@controlmap["zoom_in"])} increase Zoom Level\n" +
+          "#{human_key(@controlmap["zoom_out"])} descrease Zoom Level\n" +
+          "#{human_key(@controlmap["zoom_reset"])} reset Zoom Level\n" +
           ""
+      end
+
+      def human_key(*keys)
+        keys.flatten.map { |key| Input.key_to_human_readable(key).first }.join(" or ").dump
       end
 
       def width
@@ -30,6 +39,8 @@ module ES
         @text.render(*(@position + [x, y, z]), outline: 2)
         super x, y, z
       end
+
+      private :human_key
     end
   end
 end

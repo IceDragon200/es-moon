@@ -12,18 +12,18 @@ module ES
         @warning_color = pal["system/warning"]
         @error_color   = pal["system/error"]
 
-        @help       = add_button "book"                                   # F1
-        @new_map    = add_button "square-o"                               # F2
-        @new_chunk  = add_button "plus-square"                            # F3
-        @reserved4  = add_button ""                                       # F4
-        @reserved5  = add_button "download"                               # F5
-        @reserved6  = add_button "upload"                                 # F6
-        @reserved7  = add_button ""                                       # F7
-        @reserved8  = add_button ""                                       # F8
-        @reserved9  = add_button ""                                       # F9
-        @show_chunk = add_button "search"                                 # F10
-        @reserved11 = add_button ""                                       # F11
-        @reserved12 = add_button ""                                       # F12
+        @help       = add_button "book"                              # F1  # 0
+        @new_map    = add_button "square-o"                          # F2  # 1
+        @new_chunk  = add_button "plus-square"                       # F3  # 2
+        @reserved4  = add_button ""                                  # F4  # 3
+        @reserved5  = add_button "download"                          # F5  # 4
+        @reserved6  = add_button "upload"                            # F6  # 5
+        @reserved7  = add_button ""                                  # F7  # 6
+        @reserved8  = add_button ""                                  # F8  # 7
+        @keyboard   = add_button "keyboard-o"                        # F9  # 8
+        @show_chunk = add_button "search"                            # F10 # 9
+        @reserved11 = add_button ""                                  # F11 # 10
+        @reserved12 = add_button ""                                  # F12 # 11
 
         disable
       end

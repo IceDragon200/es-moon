@@ -16,6 +16,7 @@ require 'scripts/core_ext/moon-vector2'
 require 'scripts/core_ext/moon-vector3'
 require 'scripts/core_ext/moon-vector4'
 require 'scripts/core_ext/moon-screen'
+require 'scripts/core_ext/moon-input'
 
 # moon core
 require 'scripts/core_ext/moon-table'

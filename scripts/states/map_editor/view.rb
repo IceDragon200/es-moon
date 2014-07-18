@@ -22,7 +22,7 @@ class MapEditorView < RenderContainer
 
     @hud = RenderContainer.new
 
-    @help_panel       = ES::UI::MapEditorHelpPanel.new
+    @help_panel       = ES::UI::MapEditorHelpPanel.new(ES.cache.controlmap("map_editor.yml"))
     rect = LayoutHelper.align("center", @help_panel.to_rect, Screen.rect)
     @help_panel.position.set(rect.xyz)
 

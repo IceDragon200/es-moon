@@ -4,9 +4,23 @@ module ES
   end
   class Cache < CacheBase
 
+    class FetchOnlyHash
+      def initialize(hash)
+        @hash = hash
+      end
+
+      def [](key)
+        @hash.fetch(key)
+      end
+    end
+
     branch :palette do
       lambda do |*args|
         PaletteParser.load_palette(YAML.load(File.read("data/palette.yml")))
+
+    branch :controlmap do
+      lambda do |filename, *args|
+        FetchOnlyHash.new(YAML.load(File.read("data/controlmaps/#{filename}")))
       end
     end
 

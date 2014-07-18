@@ -16,6 +16,8 @@ class MapEditorModel
 
   attr_accessor :flag_show_chunk_labels
 
+  attr_accessor :keyboard_only_mode
+
   def initialize
     @map = nil
     @camera = Camera2.new
@@ -30,6 +32,8 @@ class MapEditorModel
 
     @zoom = 1.0
     @flag_show_chunk_labels = false
+
+    @keyboard_only_mode = false
 
     init
   end

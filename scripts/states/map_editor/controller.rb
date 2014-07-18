@@ -105,6 +105,17 @@ class MapEditorController
     @map.refresh
   end
 
+  def toggle_keyboard_mode
+    @model.keyboard_only_mode = !@model.keyboard_only_mode
+    if @model.keyboard_only_mode
+      @view.dashboard.ok(8)
+      @view.notifications.notify string: "Keyboard Only Mode : ENABLED"
+    else
+      @view.dashboard.disable(8)
+      @view.notifications.notify string: "Keyboard Only Mode : DISABLED"
+    end
+  end
+
   def set_layer(layer)
     @model.layer = layer
     @view.layer_view.index = @model.layer
