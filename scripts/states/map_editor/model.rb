@@ -8,6 +8,8 @@ class MapEditorModel
   attr_accessor :map_cursor
   attr_accessor :cursor_position
 
+  attr_accessor :selection_stage
+
   attr_accessor :layer
   attr_accessor :layer_opacity
   attr_accessor :layer_count
@@ -23,6 +25,8 @@ class MapEditorModel
     @camera = Camera2.new
     @cam_cursor = CameraCursor.new
     @map_cursor = MapCursor.new
+
+    @selection_stage = -1
 
     @cursor_position = Vector3.new
 

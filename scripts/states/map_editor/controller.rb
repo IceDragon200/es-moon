@@ -264,7 +264,7 @@ class MapEditorController
     if @view.tileselection_rect.active?
       @view.tileselection_rect.position.set map_pos_to_screen_pos(@view.tileselection_rect.tile_rect.xyz)
 
-      if @selection_stage == 2
+      if @model.selection_stage == 2
         @view.tileselection_rect.tile_rect.whd = @model.map_cursor.position - @view.tileselection_rect.tile_rect.xyz
       end
     end
