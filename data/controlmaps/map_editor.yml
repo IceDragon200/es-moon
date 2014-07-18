@@ -1,0 +1,42 @@
+---
+help: f1
+new_map: f2
+new_chunk: f3
+save_map: f5
+load_chunks: f6
+toggle_keyboard_mode: f9
+show_chunk_labels: f10
+
+show_tile_panel: tab
+
+deactivate_layer_edit: grave_accent
+edit_layer_0: n1
+edit_layer_1: n2
+
+zoom_reset: n0
+zoom_in: plus
+zoom_out: minus
+
+move_camera_left: left
+move_camera_right: right
+move_camera_up: up
+move_camera_down: down
+
+move_cursor_left: h
+move_cursor_right: j
+move_cursor_up: k
+move_cursor_down: l
+
+place_tile:
+- mouse_left
+- z
+erase_tile:
+- mouse_right
+- x
+copy_tile:
+- mouse_middle
+- c
+
+enter_view_mode: v
+enter_edit_mode: e
+...
