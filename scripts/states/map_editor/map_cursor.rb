@@ -1,7 +1,3 @@
-class MapCursor
-  attr_accessor :position
-
-  def initialize
-    @position = Vector3.new
-  end
+class MapCursor < ::DataModel::Metal
+  field :position, type: Vector3, default: proc{Vector3.new}
 end

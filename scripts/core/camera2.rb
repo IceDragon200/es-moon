@@ -1,15 +1,12 @@
-class Camera2
-  attr_accessor :position
-  attr_accessor :speed
-  attr_reader :obj
-
-  def initialize
-    @position = Vector3.new 0, 0, 0
-    @viewport = Moon::Rect.new(-Moon::Screen.width/2, -Moon::Screen.height/2,
-                               Moon::Screen.width/2,  Moon::Screen.height/2)
-    @speed = 4
-    @ticks = 0
-  end
+class Camera2 < ::DataModel::Metal
+  field :position, type: Vector3, default: proc{Vector3.new}
+  field :speed,    type: Integer, default: 4
+  field :ticks,    type: Integer, default: 0
+  field :obj,      type: Object,  allow_nil: true, default: nil
+  field :viewport, type: Rect,    default: (proc do
+    Rect.new(-Moon::Screen.width/2, -Moon::Screen.height/2,
+              Moon::Screen.width/2,  Moon::Screen.height/2)
+  end)
 
   def follow(obj)
     @obj = obj

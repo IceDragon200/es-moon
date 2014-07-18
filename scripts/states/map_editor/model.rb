@@ -1,47 +1,18 @@
 require "scripts/states/map_editor/camera_cursor"
 require "scripts/states/map_editor/map_cursor"
 
-class MapEditorModel
-  attr_accessor :map
-  attr_accessor :camera
-  attr_accessor :cam_cursor
-  attr_accessor :map_cursor
-
-  attr_accessor :selection_stage
-
-  attr_accessor :layer
-  attr_accessor :layer_opacity
-  attr_accessor :layer_count
-
-  attr_accessor :zoom
-
-  attr_accessor :flag_show_chunk_labels
-
-  attr_accessor :keyboard_only_mode
-
-  def initialize
-    @map = nil
-    @camera = Camera2.new
-    @cam_cursor = CameraCursor.new
-    @map_cursor = MapCursor.new
-
-    @selection_stage = -1
-
-    @layer = -1
-    @layer_opacity = [1.0, 1.0]
-    @layer_count = @layer_opacity.size
-
-    @zoom = 1.0
-    @flag_show_chunk_labels = false
-
-    @keyboard_only_mode = false
-
-    init
-  end
-
-  def init
-    #
-  end
+class MapEditorModel < ::DataModel::Metal
+  field :map,             type: ES::DataModel::EditorMap, allow_nil: true, default: nil
+  field :camera,          type: Camera2,        default: proc{Camera2.new}
+  field :cam_cursor,      type: CameraCursor,   default: proc{CameraCursor.new}
+  field :map_cursor,      type: MapCursor,      default: proc{MapCursor.new}
+  field :selection_stage, type: Integer,        default: 0
+  field :layer,           type: Integer,        default: 1
+  field :layer_opacity,   type: [Float],        default: proc{[1.0, 1.0]}
+  field :layer_count,     type: Integer,        default: 2
+  field :zoom,            type: Float,          default: 1.0
+  field :flag_show_chunk_labels, type: Boolean, default: false
+  field :keyboard_only_mode, type: Boolean,     default: false
 
   def update(delta)
     @cam_cursor.update delta
