@@ -166,25 +166,52 @@ module ES
         end
       end
 
-      def register_events
-        register_actor_move
+      def register_cursor_move
+        cursor_freq = "200"
 
-        @input.on :press, @control_map["center_on_map"] do
-          bounds = @model.map.bounds
-          @model.cam_cursor.position.set(bounds.cx, bounds.cy, 0)
+        @input.on :press, @control_map["move_cursor_left"] do
+          @controller.move_cursor(-1, 0)
+          @scheduler.clear(@horz_move_job)
+          @horz_move_job = @scheduler.every cursor_freq do
+            @controller.move_cursor(-1, 0)
+          end
         end
 
-        # These are the commands tof the edit mode, currently most commands
-        # are broken due to the MVC movement, some actions require access
-        # to both the model and controller, as a result its hard to determine
-        # how to properly and cleanly port the code.
-        # The idea is:
-        #   State <-> Controller <-> Model <-> Controller <-> View
-        # At no point should the state directly communicate with the Model
-        # or View
-        modespace :edit do |input|
-          cursor_freq = "200"
+        @input.on :press, @control_map["move_cursor_right"] do
+          @controller.move_cursor(1, 0)
+          @scheduler.clear(@horz_move_job)
+          @horz_move_job = @scheduler.every cursor_freq do
+            @controller.move_cursor(1, 0)
+          end
+        end
 
+        @input.on :release, @control_map["move_cursor_left"], @control_map["move_cursor_right"] do
+          @scheduler.clear(@horz_move_job)
+        end
+
+        @input.on :press, @control_map["move_cursor_up"] do
+          @controller.move_cursor(0, -1)
+          @scheduler.clear(@vert_move_job)
+          @vert_move_job = @scheduler.every cursor_freq do
+            @controller.move_cursor(0, -1)
+          end
+        end
+
+        @input.on :press, @control_map["move_cursor_down"] do
+          @controller.move_cursor(0, 1)
+          @scheduler.clear(@vert_move_job)
+          @vert_move_job = @scheduler.every cursor_freq do
+            @controller.move_cursor(0, 1)
+          end
+        end
+
+        @input.on :release, @control_map["move_cursor_up"], @control_map["move_cursor_down"] do
+          @scheduler.clear(@vert_move_job)
+        end
+      end
+
+      def register_chunk_move
+        modespace :edit do |input|
           input.on :press, @control_map["move_chunk_left"] do
             @controller.move_chunk(-1, 0)
           end
@@ -200,47 +227,11 @@ module ES
           input.on :press, @control_map["move_chunk_down"] do
             @controller.move_chunk(0, 1)
           end
+        end
+      end
 
-          input.on :press, @control_map["move_cursor_left"] do
-            @controller.move_cursor(-1, 0)
-            @scheduler.clear(@horz_move_job)
-            @horz_move_job = @scheduler.every cursor_freq do
-              @controller.move_cursor(-1, 0)
-            end
-          end
-
-          input.on :press, @control_map["move_cursor_right"] do
-            @controller.move_cursor(1, 0)
-            @scheduler.clear(@horz_move_job)
-            @horz_move_job = @scheduler.every cursor_freq do
-              @controller.move_cursor(1, 0)
-            end
-          end
-
-          input.on :release, @control_map["move_cursor_left"], @control_map["move_cursor_right"] do
-            @scheduler.clear(@horz_move_job)
-          end
-
-          input.on :press, @control_map["move_cursor_up"] do
-            @controller.move_cursor(0, -1)
-            @scheduler.clear(@vert_move_job)
-            @vert_move_job = @scheduler.every cursor_freq do
-              @controller.move_cursor(0, -1)
-            end
-          end
-
-          input.on :press, @control_map["move_cursor_down"] do
-            @controller.move_cursor(0, 1)
-            @scheduler.clear(@vert_move_job)
-            @vert_move_job = @scheduler.every cursor_freq do
-              @controller.move_cursor(0, 1)
-            end
-          end
-
-          input.on :release, @control_map["move_cursor_up"], @control_map["move_cursor_down"] do
-            @scheduler.clear(@vert_move_job)
-          end
-
+      def register_zoom_controls
+        modespace :edit do |input|
           input.on :press, @control_map["zoom_reset"] do
             @controller.zoom_reset
           end
@@ -252,7 +243,11 @@ module ES
           input.on :press, @control_map["zoom_in"] do
             @controller.zoom_in
           end
+        end
+      end
 
+      def register_tile_edit
+        modespace :edit do |input|
           ## copy tile
           input.on :press, @control_map["copy_tile"] do
             @controller.copy_tile
@@ -267,6 +262,23 @@ module ES
             @controller.place_current_tile
           end
 
+          ## layer toggle
+          input.on :press, @control_map["deactivate_layer_edit"] do
+            @controller.set_layer(-1)
+          end
+
+          input.on :press, @control_map["edit_layer_0"] do
+            @controller.set_layer(0)
+          end
+
+          input.on :press, @control_map["edit_layer_1"] do
+            @controller.set_layer(1)
+          end
+        end
+      end
+
+      def register_dashboard_help
+        modespace :edit do |input|
           ## help
           input.on :press, @control_map["help"] do
             @mode.push :help
@@ -279,7 +291,11 @@ module ES
               @controller.hide_help
             end
           end
+        end
+      end
 
+      def register_dashboard_new_map
+        modespace :edit do |input|
           ## New Map
           input.on :press, @control_map["new_map"] do
             @controller.new_map
@@ -292,7 +308,11 @@ module ES
               @mode.pop
             end
           end
+        end
+      end
 
+      def register_dashboard_new_chunk
+        modespace :edit do
           ## New Chunk
           input.on :press, @control_map["new_chunk"] do
             @mode.push :new_chunk
@@ -327,7 +347,15 @@ module ES
               end
             end
           end
+        end
+      end
 
+      def register_dashboard_controls
+        register_dashboard_help
+        register_dashboard_new_map
+        register_dashboard_new_chunk
+
+        modespace :edit do
           input.on :press, @control_map["save_map"] do
             @controller.save_map
           end
@@ -362,6 +390,41 @@ module ES
               @mode.pop
             end
           end
+        end
+      end
+
+      def register_events
+        register_actor_move
+        register_cursor_move
+        register_chunk_move
+        register_zoom_controls
+        register_tile_edit
+        register_dashboard_controls
+
+        @input.on :press, @control_map["center_on_map"] do
+          bounds = @model.map.bounds
+          @model.cam_cursor.position.set(bounds.cx, bounds.cy, 0)
+        end
+
+        modespace :view do |input|
+          ## mode toggle
+          input.on :press, @control_map["enter_edit_mode"] do
+            @mode.change :edit
+          end
+        end
+
+        # These are the commands tof the edit mode, currently most commands
+        # are broken due to the MVC movement, some actions require access
+        # to both the model and controller, as a result its hard to determine
+        # how to properly and cleanly port the code.
+        # The idea is:
+        #   State <-> Controller <-> Model <-> Controller <-> View
+        # At no point should the state directly communicate with the Model
+        # or View
+        modespace :edit do |input|
+          input.on :press, @control_map["enter_view_mode"] do
+            @mode.change :view
+          end
 
           ## tile panel
           input.on :press, @control_map["show_tile_panel"] do
@@ -379,28 +442,6 @@ module ES
             inp2.on :press, @control_map["place_tile"] do
               @controller.select_tile(Input::Mouse.pos-[0,16])
             end
-          end
-
-          input.on :press, @control_map["enter_view_mode"] do
-            @mode.change :view
-          end
-
-          ## layer toggle
-          input.on :press, @control_map["deactivate_layer_edit"] do
-            @controller.set_layer(-1)
-          end
-          input.on :press, @control_map["edit_layer_0"] do
-            @controller.set_layer(0)
-          end
-          input.on :press, @control_map["edit_layer_1"] do
-            @controller.set_layer(1)
-          end
-        end
-
-        modespace :view do |input|
-          ## mode toggle
-          input.on :press, @control_map["enter_edit_mode"] do
-            @mode.change :edit
           end
         end
       end
