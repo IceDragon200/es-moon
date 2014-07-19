@@ -1,28 +1,5 @@
 require_relative '../sequence_builder'
 
-class CharacterSequenceFrame < Moon::DataModel::Metal
-  field :index,        type: Integer, allow_nil: true
-  field :ox,           type: Integer, allow_nil: true
-  field :oy,           type: Integer, allow_nil: true
-  field :x,            type: Integer, allow_nil: true
-  field :y,            type: Integer, allow_nil: true
-  field :bounding_box, type: Moon::Rect, allow_nil: true
-end
-
-class Pose < Moon::DataModel::Metal
-  field :filename,    type: String,  default: ""
-  field :cell_width,  type: Integer, default: 32
-  field :cell_height, type: Integer, default: 32
-  field :frame_rate,  type: Integer, default: 8
-  field :sequence,    type: [CharacterSequenceFrame], default: proc {[]}
-end
-
-class Character < Moon::DataModel::Metal
-  field :name,  type: String, default: ""
-  field :uri,   type: String, default: ""
-  field :poses, type: {String=>Pose}, default: proc {{}}
-end
-
 class PoseBuilder
 
   attr_reader :_pose
@@ -40,11 +17,11 @@ class PoseBuilder
   delegate :sequence=, to: :@_pose
 
   def initialize(pose=nil)
-    @_pose = pose || Pose.new
+    @_pose = pose || ES::DataModel::Pose.new
   end
 
   def setup_sequence
-    builder = SequenceBuilder.new(CharacterSequenceFrame)
+    builder = SequenceBuilder.new(ES::DataModel::CharacterSequenceFrame)
     yield builder
     @_pose.sequence = builder.frames
   end
@@ -62,7 +39,7 @@ class PoseListBuilder
   end
 
   def pose(key)
-    builder = PoseBuilder.new(Pose.new(@default_options))
+    builder = PoseBuilder.new(ES::DataModel::Pose.new(@default_options))
     yield builder
     @list[key] = builder._pose
   end

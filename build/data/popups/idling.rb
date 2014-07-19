@@ -1,6 +1,6 @@
 require_relative "base"
 
-pool(Popup.new do |popup|
+pool(ES::DataModel::Popup.new do |popup|
   popup.name = "idling"
   popup.uri = "popups/idling"
   popup.filename = "lil-icons_3x.png"
