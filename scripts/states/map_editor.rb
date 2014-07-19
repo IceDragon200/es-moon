@@ -107,9 +107,8 @@ module ES
       end
 
       def create_autosave_interval
-        @autosave_interval = @scheduler.every(60 * 3) do
-          @controller.save_map
-          @view.notifications.notify string: "Autosaved!"
+        @autosave_interval = @scheduler.every("3m") do
+          @controller.autosave
         end
       end
 

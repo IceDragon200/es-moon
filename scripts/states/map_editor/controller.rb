@@ -207,6 +207,11 @@ class MapEditorController
     animate_map_zoom(@model.zoom*2.0)
   end
 
+  def autosave
+    save_map
+    @view.notifications.notify string: "Autosaved!"
+  end
+
   def show_help
     @view.dashboard.enable 0
     @view.notifications.notify string: "Help"
