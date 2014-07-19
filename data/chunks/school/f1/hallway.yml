@@ -448,3 +448,4 @@ passages:
 tileset:
   uri: "/tilesets/common"
   "&class": ES::DataModel::TilesetHead
+"&class": ES::DataModel::Chunk

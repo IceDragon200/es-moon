@@ -5,3 +5,4 @@ note: ''
 tags: []
 meta: {}
 uri: "/entities/actors/vesper"
+"&class": ES::DataModel::Entity

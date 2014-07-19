@@ -5,3 +5,4 @@ note: ''
 tags: []
 meta: {}
 uri: "/entities/actors/cogan"
+"&class": ES::DataModel::Entity

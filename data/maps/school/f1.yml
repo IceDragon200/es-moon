@@ -20,3 +20,4 @@ chunks:
     z: 0
     "&class": Moon::Vector3
   "&class": ES::DataModel::ChunkHead
+"&class": ES::DataModel::Map

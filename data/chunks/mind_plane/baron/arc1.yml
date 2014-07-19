@@ -528,3 +528,4 @@ passages:
 tileset:
   uri: ''
   "&class": ES::DataModel::TilesetHead
+"&class": ES::DataModel::Chunk

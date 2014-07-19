@@ -5,3 +5,4 @@ note: ''
 tags: []
 meta: {}
 uri: "/entities/actors/ilaria"
+"&class": ES::DataModel::Entity
