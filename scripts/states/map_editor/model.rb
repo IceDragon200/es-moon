@@ -6,6 +6,7 @@ class MapEditorModel < ::DataModel::Metal
   field :camera,          type: Camera2,        default: proc{Camera2.new}
   field :cam_cursor,      type: CameraCursor,   default: proc{CameraCursor.new}
   field :map_cursor,      type: MapCursor,      default: proc{MapCursor.new}
+  field :selection_rect,  type: Rect,           default: proc{Rect.new(0,0,0,0)}
   field :selection_stage, type: Integer,        default: 0
   field :layer,           type: Integer,        default: 1
   field :layer_opacity,   type: [Float],        default: proc{[1.0, 1.0]}

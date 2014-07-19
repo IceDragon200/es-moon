@@ -17,6 +17,7 @@ class MapEditorView < RenderContainer
   def initialize(model)
     @model = model
     super()
+    @palette = ES.cache.palette
 
     @font = ES.cache.font "uni0553", 16
 
@@ -43,10 +44,10 @@ class MapEditorView < RenderContainer
     @cursor_ss  = ES.cache.block "e032x032.png", 32, 32
     @passage_ss = ES.cache.block "passage_blocks.png", 32, 32
 
-    color = Vector4.new 0.1059, 0.6314, 0.8863, 1.0000
+    color = @palette["system/info"]
     color += color
     @tileselection_rect.spritesheet = @cursor_ss
-    @tileselection_rect.color.set color
+    @tileselection_rect.color = color
 
     @notifications.font = @font
 
@@ -103,7 +104,7 @@ class MapEditorView < RenderContainer
   end
 
   def render_chunk_labels
-    color = Vector4::WHITE
+    color = @palette["white"]
     oy = @font.size+8
     @model.map.chunks.each do |chunk|
       x, y, z = *map_pos_to_screen_pos(chunk.position)
@@ -112,8 +113,13 @@ class MapEditorView < RenderContainer
   end
 
   def render_edit_mode
-    @map_cursor.render(*@model.map_cursor.position*32-@model.camera.view.floor)#, transform: @transform)
-    @tileselection_rect.render 0, 0, 0, transform: @transform if @tileselection_rect.active?
+    campos = @model.camera.view.floor
+    @map_cursor.render(*@model.map_cursor.position*32-campos)
+
+    if @model.selection_stage > 0
+      @tileselection_rect.render(*(-campos))
+    end
+
     render_chunk_labels if @model.flag_show_chunk_labels
     @hud.render
   end

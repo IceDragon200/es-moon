@@ -1,9 +1,6 @@
 module ES
   module UI
     class SelectionTileRect < RenderContainer
-
-      include Activatable
-
       attr_accessor :tile_rect
       attr_accessor :color
       attr_accessor :spritesheet
@@ -26,14 +23,15 @@ module ES
         @spritesheet.cell_height * @tile_rect.h
       end
 
-      def render(x, y, z, options={})
+      def render(x=0, y=0, z=0, options={})
         if @spritesheet
-          px, py, pz = *(@position + [x, y, z])# + @tile_rect.xyz)
+          cw, ch = @spritesheet.cell_width, @spritesheet.cell_height
+          px, py, pz = *(@position + [x, y, z] + @tile_rect.xyz * [cw, ch, 1])
           render_options = { color: @color }.merge(options)
           @tile_rect.h.times do |i|
             @tile_rect.w.times do |j|
-              @spritesheet.render px + j * @spritesheet.cell_width,
-                                  py + i * @spritesheet.cell_height,
+              @spritesheet.render px + j * cw,
+                                  py + i * ch,
                                   pz,
                                   1, render_options
             end
@@ -41,7 +39,6 @@ module ES
         end
         super x, y, z
       end
-
     end
   end
 end

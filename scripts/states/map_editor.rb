@@ -53,6 +53,10 @@ module ES
 
         @font_awesome = ES.cache.font("awesome", 32)
         @charmap_awesome = ES.cache.charmap("awesome.yml")
+        @grid_underlay = Sprite.new("media/ui/grid_32x32_ff777777.png")
+        @grid_overlay  = Sprite.new("media/ui/grid_32x32_ffffffff.png")
+        @chunk_borders = Spritesheet.new("media/ui/chunk_outline_3x3.png", 32, 32)
+
         @mode_icon_rect = Rect.new(0, 0, 32, 32)
         LayoutHelper.align("bottom right", @mode_icon_rect, Screen.rect.contract(16))
 
@@ -95,9 +99,6 @@ module ES
       end
 
       def create_tilemaps
-        @grid_underlay = Sprite.new("media/ui/grid_32x32_ff777777.png")
-        @grid_overlay  = Sprite.new("media/ui/grid_32x32_ffffffff.png")
-        @chunk_borders = Spritesheet.new("media/ui/chunk_outline_3x3.png", 32, 32)
         @chunk_renderers = @model.map.chunks.map do |chunk|
           renderer = ChunkRenderer.new(chunk)
           renderer.layer_opacity = @layer_opacity
@@ -110,6 +111,17 @@ module ES
           @controller.save_map
           @view.notifications.notify string: "Autosaved!"
         end
+      end
+
+      def create_chunk(bounds, data)
+        chunk          = ES::DataModel::EditorChunk.new(data)
+        chunk.position = bounds.xyz
+        chunk.data     = DataMatrix.new(bounds.w, bounds.h, 2, default: -1)
+        chunk.passages = Table.new(bounds.w, bounds.h)
+        chunk.flags    = DataMatrix.new(bounds.w, bounds.h, 2)
+        chunk.tileset  = Database.find(:tileset, uri: "/tilesets/common")
+        @model.map.chunks << chunk
+        create_tilemaps
       end
 
       def modespace(mode)
@@ -160,7 +172,6 @@ module ES
 
         @input.on :press, @control_map["center_on_map"] do
           bounds = @model.map.bounds
-          p bounds.to_h
           @model.cam_cursor.position.set(bounds.cx, bounds.cy, 0)
         end
 
@@ -293,20 +304,13 @@ module ES
           modespace :new_chunk do |inp2|
             inp2.on :press, @control_map["place_tile"] do
               if @model.selection_stage == 1
-                @view.tileselection_rect.tile_rect.xyz = @model.map_cursor.position
-
-                @view.tileselection_rect.activate
                 @model.selection_stage += 1
               elsif @model.selection_stage == 2
-                @view.tileselection_rect.tile_rect.whd = @model.map_cursor.position - @view.tileselection_rect.tile_rect.xyz
-
                 id = @model.map.chunks.size+1
-                new_chunk @view.tileselection_rect.tile_rect,
-                          id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
-                create_tilemaps
+                create_chunk @view.tileselection_rect.tile_rect,
+                             id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
 
                 @model.selection_stage = 0
-                @view.tileselection_rect.deactivate
                 @view.dashboard.disable 2
                 @mode.pop
                 @view.notifications.clear
@@ -319,8 +323,8 @@ module ES
                 @mode.pop
                 @view.notifications.clear
               elsif @model.selection_stage == 2
+                @model.selection_rect.clear
                 @model.selection_stage -= 1
-                @tileselection_rect.deactivate
               end
             end
           end
@@ -440,9 +444,11 @@ module ES
       def update(delta)
         pressure = @edge_pressure.calc(Input::Mouse.position)
         @model.cam_cursor.position += pressure.xyz * delta * 8
+
         @view.update(delta)
         @controller.update(delta)
-        if @mode.is?(:edit)
+
+        if @mode.has?(:edit)
           @controller.update_edit_mode(delta)
         end
         update_world(delta)

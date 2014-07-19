@@ -284,7 +284,6 @@ class MapEditorController
   def update_edit_mode(delta)
     update_cursor_position(delta)
 
-    @view.hud.update delta
     @view.tile_preview.tile_id = @view.tile_panel.tile_id
 
     h = Moon::Screen.height
@@ -293,14 +292,13 @@ class MapEditorController
     @view.ui_camera_posmon.position.set((w - @view.ui_camera_posmon.width) / 2,
                                     h - @view.ui_camera_posmon.height,
                                     0)
-
-    if @view.tileselection_rect.active?
-      @view.tileselection_rect.position.set map_pos_to_screen_pos(@view.tileselection_rect.tile_rect.xyz)
-
-      if @model.selection_stage == 2
-        @view.tileselection_rect.tile_rect.whd = @model.map_cursor.position - @view.tileselection_rect.tile_rect.xyz
-      end
+    if @model.selection_stage == 1
+      @model.selection_rect.xyz = @model.map_cursor.position
+    elsif @model.selection_stage == 2
+      @model.selection_rect.whd = @model.map_cursor.position -
+                                  @model.selection_rect.xyz
     end
+    @view.tileselection_rect.tile_rect = @model.selection_rect
   end
 
   def update(delta)
