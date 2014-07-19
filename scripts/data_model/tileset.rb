@@ -5,10 +5,6 @@ module ES
       field :cell_width,  type: Integer, default: 32
       field :cell_height, type: Integer, default: 32
 
-      def export
-        super.merge("&class" => self.class.to_s).stringify_keys
-      end
-
       def to_tileset_head
         tileset_head = TilesetHead.new
         tileset_head.set(self.to_h.permit(:uri))
