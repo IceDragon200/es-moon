@@ -23,7 +23,7 @@ module ES
         @keyboard   = add_button "keyboard-o"                        # F9  # 8
         @show_chunk = add_button "search"                            # F10 # 9
         @reserved11 = add_button ""                                  # F11 # 10
-        @reserved12 = add_button ""                                  # F12 # 11
+        @edit       = add_button "edit"                              # F12 # 11
 
         disable
       end

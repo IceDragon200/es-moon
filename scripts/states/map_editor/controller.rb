@@ -258,6 +258,10 @@ class MapEditorController
     @view.notifications.clear
   end
 
+  def edit_tile_palette
+    State.push(ES::States::TilePaletteEditor)
+  end
+
   def chunk_at_position(position)
     map = @model.map
     chunk = map.chunks.find do |c|

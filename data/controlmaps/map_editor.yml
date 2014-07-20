@@ -6,6 +6,7 @@ save_map: f5
 load_chunks: f6
 toggle_keyboard_mode: f9
 show_chunk_labels: f10
+edit_tile_palette: f12
 
 show_tile_panel: tab
 

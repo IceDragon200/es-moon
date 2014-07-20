@@ -390,6 +390,11 @@ module ES
               @mode.pop
             end
           end
+
+          ## Edit Tile Palette
+          input.on :press, @control_map["edit_tile_palette"] do
+            @controller.edit_tile_palette
+          end
         end
       end
 
