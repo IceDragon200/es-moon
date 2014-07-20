@@ -4,7 +4,7 @@ module ES
       field :data,     type: DataMatrix,  allow_nil: true, default: nil
       field :flags,    type: DataMatrix,  allow_nil: true, default: nil
       field :passages, type: Table,       allow_nil: true, default: nil
-      field :tileset,  type: TilesetHead, allow_nil: true, default: proc{TilesetHead.new}
+      field :tileset,  type: TilesetHead, allow_nil: true, default: proc{|t|t.new}
 
       def to_editor_chunk
         editor_chunk = ES::DataModel::EditorChunk.new
