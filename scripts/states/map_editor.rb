@@ -393,6 +393,7 @@ module ES
 
           ## Edit Tile Palette
           input.on :press, @control_map["edit_tile_palette"] do
+            cvar["tile_palette"] = @model.tile_palette
             @controller.edit_tile_palette
           end
         end

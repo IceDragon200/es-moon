@@ -90,6 +90,8 @@ module ES
         @model = TilePaletteEditorModel.new
         @view = TilePaletteEditorView.new(@model)
         @controller = TilePaletteEditorController.new(@model, @view)
+
+        @model.tile_palette = cvar["tile_palette"]
       end
 
       def update(delta)
