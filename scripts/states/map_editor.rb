@@ -171,7 +171,7 @@ module ES
 
         @input.on :press, @control_map["move_cursor_left"] do
           @controller.move_cursor(-1, 0)
-          @scheduler.clear(@horz_move_job)
+          @scheduler.remove(@horz_move_job)
           @horz_move_job = @scheduler.every cursor_freq do
             @controller.move_cursor(-1, 0)
           end
@@ -179,19 +179,19 @@ module ES
 
         @input.on :press, @control_map["move_cursor_right"] do
           @controller.move_cursor(1, 0)
-          @scheduler.clear(@horz_move_job)
+          @scheduler.remove(@horz_move_job)
           @horz_move_job = @scheduler.every cursor_freq do
             @controller.move_cursor(1, 0)
           end
         end
 
         @input.on :release, @control_map["move_cursor_left"], @control_map["move_cursor_right"] do
-          @scheduler.clear(@horz_move_job)
+          @scheduler.remove(@horz_move_job)
         end
 
         @input.on :press, @control_map["move_cursor_up"] do
           @controller.move_cursor(0, -1)
-          @scheduler.clear(@vert_move_job)
+          @scheduler.remove(@vert_move_job)
           @vert_move_job = @scheduler.every cursor_freq do
             @controller.move_cursor(0, -1)
           end
@@ -199,14 +199,14 @@ module ES
 
         @input.on :press, @control_map["move_cursor_down"] do
           @controller.move_cursor(0, 1)
-          @scheduler.clear(@vert_move_job)
+          @scheduler.remove(@vert_move_job)
           @vert_move_job = @scheduler.every cursor_freq do
             @controller.move_cursor(0, 1)
           end
         end
 
         @input.on :release, @control_map["move_cursor_up"], @control_map["move_cursor_down"] do
-          @scheduler.clear(@vert_move_job)
+          @scheduler.remove(@vert_move_job)
         end
       end
 
@@ -463,7 +463,7 @@ module ES
 
         fade_color = Vector4.new(0, 0, 0, 0)
 
-        @scheduler.clear(@mode_icon_job)
+        @scheduler.remove(@mode_icon_job)
         @mode_icon_job = @scheduler.in time do
           add_transition @mode_icon_color, Vector4.new(1, 1, 1, 1), time do |value|
             @mode_icon_color = value
