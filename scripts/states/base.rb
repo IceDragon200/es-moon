@@ -1,4 +1,7 @@
 require "scripts/states/base/input_context"
+require "scripts/states/base/state_model"
+require "scripts/states/base/state_view"
+require "scripts/states/base/state_controller"
 
 module ES
   module States

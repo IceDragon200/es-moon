@@ -1,3 +1,27 @@
+class TilePaletteEditorModel < StateModel
+  def update_model(delta)
+    super(delta)
+  end
+end
+
+class TilePaletteEditorView < StateView
+  def init_view
+  end
+
+  def update_view(delta)
+    super(delta)
+  end
+end
+
+class TilePaletteEditorController < StateController
+  def init_controller
+  end
+
+  def update_controller(delta)
+    super(delta)
+  end
+end
+
 class TilePalettePanel < RenderContainer
   attr_reader :tile_palette # EditorTilePalette
 
@@ -50,7 +74,11 @@ class TilesetPanel < RenderContainer
   end
 
   def render(x=0, y=0, z=0, options={})
-    super
+    if @tileset_sprite
+      pos = [x, y, z] + @position
+      @tileset_sprite.render(*pos)
+    end
+    super x, y, z, options
   end
 end
 
@@ -59,9 +87,13 @@ module ES
     class TilePaletteEditor < Base
       def init
         super
+        @model = TilePaletteEditorModel.new
+        @view = TilePaletteEditorView.new(@model)
+        @controller = TilePaletteEditorController.new(@model, @view)
       end
 
       def update(delta)
+        @controller.update
         super(delta)
       end
 
