@@ -445,7 +445,7 @@ module ES
               @controller.show_tile_preview
             end
             inp2.on :press, @control_map["place_tile"] do
-              @controller.select_tile(Input::Mouse.pos-[0,16])
+              @controller.select_tile(Input::Mouse.position-[0,16])
             end
           end
         end
