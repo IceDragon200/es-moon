@@ -95,11 +95,12 @@ module ES
       end
 
       def update(delta)
-        @controller.update
+        @controller.update(delta)
         super(delta)
       end
 
       def render
+        @view.render
         super
       end
     end
