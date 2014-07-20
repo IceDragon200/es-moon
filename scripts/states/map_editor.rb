@@ -109,7 +109,7 @@ module ES
       def create_autosave_interval
         @autosave_interval = @scheduler.every("3m") do
           @controller.autosave
-        end
+        end.tag("autosave")
       end
 
       def create_chunk(bounds, data)
@@ -406,6 +406,10 @@ module ES
         register_zoom_controls
         register_tile_edit
         register_dashboard_controls
+
+        @input.on :press, :left_bracket do
+          @scheduler.p_job_table
+        end
 
         @input.on :press, @control_map["center_on_map"] do
           bounds = @model.map.bounds
