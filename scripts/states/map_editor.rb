@@ -3,6 +3,37 @@ require "scripts/states/map_editor/model"
 require "scripts/states/map_editor/view"
 require "scripts/states/map_editor/mode_stack"
 
+class SkinSlice3x < RenderContainer
+  attr_accessor :horz       # Boolean
+  attr_accessor :windowskin # Spritesheet
+
+  def initialize
+    super
+    @horz = true
+    @windowskin = nil
+  end
+
+  def render(ix=0, iy=0, iz=0, options={})
+    if @windowskin
+      x, y, z = *(@position + [ix, iy, iz])
+      cw, ch = @windowskin.cell_width, @windowskin.cell_height
+
+      if @horz
+        (width/cw).to_i.times do |w|
+          @windowskin.render(x+w*cw, y, z, 1)
+          @windowskin.render(x+w*cw, y+height-ch, z, 7)
+        end
+      else
+        (height/ch).to_i.times do |h|
+          @windowskin.render(x, y+h*ch, z, 3)
+          @windowskin.render(x+width-cw, y+h*ch, z, 5)
+        end
+      end
+    end
+    super
+  end
+end
+
 class SkinSlice3x3 < RenderContainer
   attr_accessor :rect
   attr_accessor :windowskin # Spritesheet
@@ -60,6 +91,9 @@ class DebugShell < RenderContainer
     @input_background = SkinSlice3x3.new
     @input_background.windowskin = Spritesheet.new("media/ui/console_windowskin_dark_16x16.png", 16, 16)
 
+    @seperator = SkinSlice3x.new
+    @seperator.windowskin = Spritesheet.new("media/ui/line_96x1_ff777777.png", 32, 1)
+
     @history = []
     @contents = []
     @input_text = Text.new("", font)
@@ -73,11 +107,15 @@ class DebugShell < RenderContainer
     @input_background.rect = to_rect
     @input_background.rect.x = 0
     @input_background.rect.y = 0
+    @seperator.width = width
+    @seperator.height = 1
 
     @log_text.position.set(4, 4-8, 0)
     @input_text.position.set(4,5*height/6+4-8, 0)
+    @seperator.position.set(0, @input_text.y, 0)
 
     add(@input_background)
+    add(@seperator)
     add(@input_text)
     add(@log_text)
   end
@@ -436,6 +474,7 @@ module ES
                              id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
 
                 @model.selection_stage = 0
+                @model.selection_rect.clear
                 @view.dashboard.disable 2
                 @mode.pop
                 @view.notifications.clear
