@@ -3,6 +3,115 @@ require "scripts/states/map_editor/model"
 require "scripts/states/map_editor/view"
 require "scripts/states/map_editor/mode_stack"
 
+class SkinSlice3x3 < RenderContainer
+  attr_accessor :rect
+  attr_accessor :windowskin # Spritesheet
+
+  def initialize
+    super
+    @rect = nil
+    @windowskin = nil
+  end
+
+  def render(ix=0, iy=0, iz=0, options={})
+    if @windowskin && @rect
+      x, y, z = *(@position + [ix, iy, iz])
+      cw, ch = @windowskin.cell_width, @windowskin.cell_height
+
+      # render the windowskin (background)
+      (@rect.width/cw).to_i.times do |w|
+        (@rect.height/ch).to_i.times do |h|
+          @windowskin.render(x+w*cw, y+h*ch, z, 4)
+        end
+      end
+      # edges (top/bottom)
+      (@rect.width/cw).to_i.times do |w|
+        @windowskin.render(x+w*cw, y, z, 1)
+        @windowskin.render(x+w*cw, y+@rect.height-ch, z, 7)
+      end
+      # edges (left/right)
+      (@rect.height/ch).to_i.times do |h|
+        @windowskin.render(x, y+h*ch, z, 3)
+        @windowskin.render(x+@rect.width-cw, y+h*ch, z, 5)
+      end
+      # corners
+      @windowskin.render(x, y, z, 0)
+      @windowskin.render(x+@rect.width-cw, y, z, 2)
+      @windowskin.render(x, y+@rect.height-ch, z, 6)
+      @windowskin.render(x+@rect.width-cw, y+@rect.height-ch, z, 8)
+    end
+    super
+  end
+end
+
+class DebugShell < RenderContainer
+  class DebugContext
+    def exec(string)
+      eval(string)
+    end
+  end
+
+  def initialize
+    super
+    font = ES.cache.font("uni0553", 16)
+    self.width = Screen.width
+    self.height = 16 * 2
+
+    @log_background = SkinSlice3x3.new
+    @log_background.windowskin = Spritesheet.new("media/ui/console_windowskin_light_16x16.png", 16, 16)
+
+    @input_background = SkinSlice3x3.new
+    @input_background.windowskin = Spritesheet.new("media/ui/console_windowskin_dark_16x16.png", 16, 16)
+
+    @history = []
+    @input_text = Text.new("", font)
+    @log_text = Text.new("", font)
+    @context = DebugContext.new
+
+    @input_text.color = Vector4.new(1, 1, 1, 1)
+    @log_text.color = Vector4.new(0, 0, 0, 1)
+
+    @log_background.rect = to_rect
+    @log_background.rect.x = 0
+    @log_background.rect.y = 0
+    @log_background.rect.height /= 2
+    @input_background.rect = @log_background.rect.dup
+
+    @log_text.position.set(4, 4-8, 0)
+    @input_text.position.set(4, height/2+4-8, 0)
+    @input_background.position.set(0, height/2, 0)
+
+    add(@log_background)
+    add(@input_background)
+    add(@input_text)
+    add(@log_text)
+  end
+
+  def string
+    @input_text.string
+  end
+
+  def string=(string)
+    @input_text.string = string
+    @input_text.color.set(1, 1, 1, 1)
+  end
+
+  def exec
+    begin
+      @log_text.string = @context.exec(string).to_s
+      @history << string
+      self.string = ""
+    rescue Exception => ex
+      @log_text.string = ex.message
+      @input_text.color.set(1, 0, 0, 1)
+    end
+  end
+
+  def render(x=0, y=0, z=0, options={})
+    super
+  end
+end
+
 class RectEdgePressureDetector
   attr_accessor :rect
   attr_accessor :range
@@ -128,12 +237,9 @@ module ES
         (@_modes ||=[]).push mode
         modes = @_modes.dup
 
-        wrapper = InputContext.new(@input) do |i, *a, &b|
-          i.on(*a) { |*a2, &b2| b.call(*a2, &b2) if @mode.trace?(modes) }
+        wrapper = InputContext.new(@input) do |f, i, *a, &b|
+          i.send(f, *a) { |*a2, &b2| b.call(*a2, &b2) if @mode.trace?(modes) }
         end
-        #wrapper = InputContext.new(@_wrappers.last||@input) do |i, *a, &b|
-        #  i.on(*a) { |*a2, &b2| b.call(*a2, &b2) if @mode.trace?(modes) }
-        #end
 
         @_wrappers.push wrapper
 
@@ -399,6 +505,15 @@ module ES
         end
       end
 
+      def launch_debug_shell
+        @debug_shell = DebugShell.new
+        @debug_shell.position.set(0, Screen.height - @debug_shell.height, 0)
+      end
+
+      def stop_debug_shell
+        @debug_shell = nil
+      end
+
       def register_events
         register_actor_move
         register_cursor_move
@@ -409,6 +524,28 @@ module ES
 
         @input.on :press, :left_bracket do
           @scheduler.p_job_table
+        end
+
+        @input.on :press, :backslash do
+          if @mode.is?(:debug_shell)
+            @mode.pop
+            stop_debug_shell
+          else
+            launch_debug_shell
+            @mode.push :debug_shell
+          end
+        end
+
+        @input.typing do |e|
+          @debug_shell.string += e.char if @mode.is?(:debug_shell)
+        end
+
+        @input.on :press, :backspace do
+          @debug_shell.string = @debug_shell.string[0, @debug_shell.string.size-1] if @mode.is?(:debug_shell)
+        end
+
+        @input.on :press, :enter do
+          @debug_shell.exec if @mode.is?(:debug_shell)
         end
 
         @input.on :press, @control_map["center_on_map"] do
@@ -539,6 +676,7 @@ module ES
           @view.render_edit_mode
         end
         render_mode_icon
+        @debug_shell.render if @debug_shell
         super
       end
     end
