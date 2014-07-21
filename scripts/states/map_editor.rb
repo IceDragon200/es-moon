@@ -73,6 +73,28 @@ class SkinSlice3x3 < RenderContainer
   end
 end
 
+class Caret < RenderContainer
+  def initialize
+    super
+    @index = 0
+    @spritesheet = Spritesheet.new("media/ui/caret_8x16_ffffffff.png", 8, 16)
+  end
+
+  def width
+    @width ||= @spritesheet.cell_width
+  end
+
+  def height
+    @height ||= @spritesheet.cell_height
+  end
+
+  def render(x=0, y=0, z=0, options={})
+    px, py, pz = *(@position + [x, y, z])
+    @spritesheet.render(px, py, pz, @index, options)
+    super
+  end
+end
+
 class DebugShell < RenderContainer
   class DebugContext
     def exec(string)
@@ -92,6 +114,8 @@ class DebugShell < RenderContainer
     @seperator = SkinSlice3x.new
     @seperator.windowskin = Spritesheet.new("media/ui/line_96x1_ff777777.png", 32, 1)
 
+    @caret = Caret.new
+
     @history = []
     @contents = []
     @input_text = Text.new("", font)
@@ -110,11 +134,13 @@ class DebugShell < RenderContainer
     @log_text.position.set(4, 4-8, 0)
     @input_text.position.set(4,5*height/6+4-8, 0)
     @seperator.position.set(0, @input_text.y, 0)
+    @caret.position.set(@input_text.x, @input_text.position.y+4, 0)
 
     add(@input_background)
     add(@seperator)
     add(@input_text)
     add(@log_text)
+    add(@caret)
   end
 
   def string
@@ -124,6 +150,7 @@ class DebugShell < RenderContainer
   def string=(string)
     @input_text.string = string
     @input_text.color.set(1, 1, 1, 1)
+    @caret.position.x = @input_text.x + @input_text.width
   end
 
   def exec
