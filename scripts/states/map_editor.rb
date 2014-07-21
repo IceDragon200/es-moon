@@ -55,33 +55,28 @@ class DebugShell < RenderContainer
     super
     font = ES.cache.font("uni0553", 16)
     self.width = Screen.width
-    self.height = 16 * 2
-
-    @log_background = SkinSlice3x3.new
-    @log_background.windowskin = Spritesheet.new("media/ui/console_windowskin_light_16x16.png", 16, 16)
+    self.height = 16 * 6
 
     @input_background = SkinSlice3x3.new
     @input_background.windowskin = Spritesheet.new("media/ui/console_windowskin_dark_16x16.png", 16, 16)
 
     @history = []
+    @contents = []
     @input_text = Text.new("", font)
     @log_text = Text.new("", font)
+    @log_text.line_height = 1
     @context = DebugContext.new
 
     @input_text.color = Vector4.new(1, 1, 1, 1)
-    @log_text.color = Vector4.new(0, 0, 0, 1)
+    @log_text.color = Vector4.new(1, 1, 1, 1)
 
-    @log_background.rect = to_rect
-    @log_background.rect.x = 0
-    @log_background.rect.y = 0
-    @log_background.rect.height /= 2
-    @input_background.rect = @log_background.rect.dup
+    @input_background.rect = to_rect
+    @input_background.rect.x = 0
+    @input_background.rect.y = 0
 
     @log_text.position.set(4, 4-8, 0)
-    @input_text.position.set(4, height/2+4-8, 0)
-    @input_background.position.set(0, height/2, 0)
+    @input_text.position.set(4,5*height/6+4-8, 0)
 
-    add(@log_background)
     add(@input_background)
     add(@input_text)
     add(@log_text)
@@ -98,13 +93,18 @@ class DebugShell < RenderContainer
 
   def exec
     begin
-      @log_text.string = @context.exec(string).to_s
-      @history << string
+      @contents << ">> #{string}"
+      result = @context.exec(string).to_s
+      @history << result
+      @contents << result
       self.string = ""
     rescue Exception => ex
-      @log_text.string = ex.message
+      @contents << ex.message
       @input_text.color.set(1, 0, 0, 1)
     end
+
+    @contents = @contents.last(5)
+    @log_text.string = @contents.join("\n")
   end
 
   def render(x=0, y=0, z=0, options={})
@@ -507,7 +507,7 @@ module ES
 
       def launch_debug_shell
         @debug_shell = DebugShell.new
-        @debug_shell.position.set(0, Screen.height - @debug_shell.height, 0)
+        @debug_shell.position.set(0, 0, 0)
       end
 
       def stop_debug_shell
