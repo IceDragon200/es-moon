@@ -604,11 +604,11 @@ module ES
         end
 
         @input.on :press, :backspace do
-          @debug_shell.string.chop! if @mode.is?(:debug_shell)
+          @debug_shell.string = @debug_shell.string.chop if @mode.is?(:debug_shell)
         end
 
         @input.on :repeat, :backspace do
-          @debug_shell.string.chop! if @mode.is?(:debug_shell)
+          @debug_shell.string = @debug_shell.string.chop if @mode.is?(:debug_shell)
         end
 
         @input.on :press, :enter do
