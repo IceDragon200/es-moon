@@ -35,41 +35,39 @@ class SkinSlice3x < RenderContainer
 end
 
 class SkinSlice3x3 < RenderContainer
-  attr_accessor :rect
   attr_accessor :windowskin # Spritesheet
 
   def initialize
     super
-    @rect = nil
     @windowskin = nil
   end
 
   def render(ix=0, iy=0, iz=0, options={})
-    if @windowskin && @rect
+    if @windowskin
       x, y, z = *(@position + [ix, iy, iz])
       cw, ch = @windowskin.cell_width, @windowskin.cell_height
 
       # render the windowskin (background)
-      (@rect.width/cw).to_i.times do |w|
-        (@rect.height/ch).to_i.times do |h|
+      (width/cw).to_i.times do |w|
+        (height/ch).to_i.times do |h|
           @windowskin.render(x+w*cw, y+h*ch, z, 4)
         end
       end
       # edges (top/bottom)
-      (@rect.width/cw).to_i.times do |w|
+      (width/cw).to_i.times do |w|
         @windowskin.render(x+w*cw, y, z, 1)
-        @windowskin.render(x+w*cw, y+@rect.height-ch, z, 7)
+        @windowskin.render(x+w*cw, y+height-ch, z, 7)
       end
       # edges (left/right)
-      (@rect.height/ch).to_i.times do |h|
+      (height/ch).to_i.times do |h|
         @windowskin.render(x, y+h*ch, z, 3)
-        @windowskin.render(x+@rect.width-cw, y+h*ch, z, 5)
+        @windowskin.render(x+width-cw, y+h*ch, z, 5)
       end
       # corners
       @windowskin.render(x, y, z, 0)
-      @windowskin.render(x+@rect.width-cw, y, z, 2)
-      @windowskin.render(x, y+@rect.height-ch, z, 6)
-      @windowskin.render(x+@rect.width-cw, y+@rect.height-ch, z, 8)
+      @windowskin.render(x+width-cw, y, z, 2)
+      @windowskin.render(x, y+height-ch, z, 6)
+      @windowskin.render(x+width-cw, y+height-ch, z, 8)
     end
     super
   end
@@ -104,9 +102,8 @@ class DebugShell < RenderContainer
     @input_text.color = Vector4.new(1, 1, 1, 1)
     @log_text.color = Vector4.new(1, 1, 1, 1)
 
-    @input_background.rect = to_rect
-    @input_background.rect.x = 0
-    @input_background.rect.y = 0
+    @input_background.width = width
+    @input_background.height = height
     @seperator.width = width
     @seperator.height = 1
 
