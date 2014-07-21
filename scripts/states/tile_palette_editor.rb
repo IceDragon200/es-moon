@@ -1,27 +1,3 @@
-class TilePaletteEditorModel < StateModel
-  def update_model(delta)
-    super(delta)
-  end
-end
-
-class TilePaletteEditorView < StateView
-  def init_view
-  end
-
-  def update_view(delta)
-    super(delta)
-  end
-end
-
-class TilePaletteEditorController < StateController
-  def init_controller
-  end
-
-  def update_controller(delta)
-    super(delta)
-  end
-end
-
 class TilePalettePanel < RenderContainer
   attr_reader :tile_palette # EditorTilePalette
 
@@ -79,6 +55,36 @@ class TilesetPanel < RenderContainer
       @tileset_sprite.render(*pos)
     end
     super x, y, z, options
+  end
+end
+
+class TilePaletteEditorModel < StateModel
+  field :tile_palette, type: ES::DataModel::EditorTilePalette, allow_nil: true, default: nil
+
+  def update_model(delta)
+    super(delta)
+  end
+end
+
+class TilePaletteEditorView < StateView
+  def init_view
+    super
+
+  end
+
+  def update_view(delta)
+    super(delta)
+  end
+end
+
+class TilePaletteEditorController < StateController
+  def init_controller
+    super
+
+  end
+
+  def update_controller(delta)
+    super(delta)
   end
 end
 
