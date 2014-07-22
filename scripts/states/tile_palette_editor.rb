@@ -24,7 +24,7 @@ class TilePalettePanel < RenderContainer
   end
 
   def update(delta)
-    super delta
+    super
   end
 
   def render(x=0, y=0, z=0, options={})
@@ -112,7 +112,7 @@ class TilePaletteEditorModel < StateModel
   field :tileset,      type: ES::DataModel::Tileset, allow_nil: true, default: nil
 
   def update_model(delta)
-    super(delta)
+    super
   end
 end
 
@@ -174,7 +174,7 @@ class TilePaletteEditorController < StateController
   end
 
   def update_controller(delta)
-    super(delta)
+    super
   end
 end
 
@@ -244,7 +244,7 @@ module ES
 
       def update(delta)
         @controller.update(delta)
-        super(delta)
+        super
       end
 
       def render
