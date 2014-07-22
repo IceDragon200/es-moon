@@ -119,7 +119,7 @@ class DebugShell < RenderContainer
     @input_text = Text.new("", font)
     @log_text = Text.new("", font)
     @log_text.line_height = 1
-    @context = DebugContext.new
+    @context = Moon::Context.new
 
     @input_text.color = Vector4.new(1, 1, 1, 1)
     @log_text.color = Vector4.new(1, 1, 1, 1)
@@ -154,7 +154,7 @@ class DebugShell < RenderContainer
   def exec
     begin
       @contents << ">> #{string}"
-      result = @context.instance_eval(string).to_s
+      result = @context.eval(string).to_s
       @history << result
       @contents << result
       self.string = ""
