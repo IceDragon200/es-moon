@@ -97,9 +97,7 @@ end
 
 class DebugShell < RenderContainer
   class DebugContext
-    def exec(string)
-      eval(string)
-    end
+    #
   end
 
   def initialize
@@ -134,7 +132,7 @@ class DebugShell < RenderContainer
     @log_text.position.set(4, 4-8, 0)
     @input_text.position.set(4,5*height/6+4-8, 0)
     @seperator.position.set(0, @input_text.y, 0)
-    @caret.position.set(@input_text.x, @input_text.position.y+4, 0)
+    @caret.position.set(@input_text.x, @input_text.position.y+2, 0)
 
     add(@input_background)
     add(@seperator)
@@ -156,7 +154,7 @@ class DebugShell < RenderContainer
   def exec
     begin
       @contents << ">> #{string}"
-      result = @context.exec(string).to_s
+      result = @context.instance_eval(string).to_s
       @history << result
       @contents << result
       self.string = ""
