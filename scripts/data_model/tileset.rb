@@ -1,9 +1,10 @@
 module ES
   module DataModel
     class Tileset < ::DataModel::Base
-      field :filename,    type: String, default: ""
+      field :filename,    type: String,  default: ""
       field :cell_width,  type: Integer, default: 32
       field :cell_height, type: Integer, default: 32
+      field :columns,     type: Integer, default: 16
 
       def to_tileset_head
         tileset_head = TilesetHead.new

@@ -29,13 +29,13 @@ class TilePalettePanel < RenderContainer
       px, py, pz = *(@position + [x, y, z])
       cw, ch = @spritesheet.cell_width, @spritesheet.cell_height
       cols = @tile_palette.columns
-      rows = @tile_palette.tiles.size / cols + [1, @tile_palette.tiles.size % cols].min
+      rows = (@tile_palette.tiles.size / cols).to_i + [1, @tile_palette.tiles.size % cols].min
       @background.clip_rect = Rect.new(0, 0, cols * cw, rows * ch)
 
       @background.render(px, py, pz)
 
-      @tile_palette.tiles.each do |i|
-        @spritesheet.render(px + cw * (i % cols), py + ch * (i / cols), pz, i)
+      @tile_palette.tiles.each_with_index do |i, index|
+        @spritesheet.render(px + cw * (index % cols), py + ch * (index / cols).to_i, pz, i)
       end
 
       @cursor.render(*(@cursor_position * [cw, ch, 1] + [px, py, pz]))
@@ -73,12 +73,16 @@ class TilesetPanel < RenderContainer
   end
 
   def render(x=0, y=0, z=0, options={})
-    px, py, pz = *(@position + [x, y, z])
     if @tileset_sprite
-      @background.clip_rect = Rect.new(0, 0, @tileset_sprite.width, @tileset_sprite.height)
+      px, py, pz = *(@position + [x, y, z])
+      cw, ch = @tileset.cell_width, @tileset.cell_height
+      page_y = @cursor_position.y * ch
+
+      @tileset_sprite.clip_rect = Rect.new(0, page_y, @tileset_sprite.texture.width, Screen.height - @position.y)
+      @background.clip_rect = Rect.new(0, @tileset_sprite.clip_rect.y%ch, @tileset_sprite.width, @tileset_sprite.height)
       @background.render(px, py, pz)
       @tileset_sprite.render(px, py, pz)
-      @cursor.render(*(@cursor_position * [@tileset.cell_width, @tileset.cell_height, 1] + [px, py, pz]))
+      @cursor.render(*(@cursor_position * [cw, ch, 1] + [px, py-page_y, pz]))
     end
     super
   end
@@ -92,6 +96,7 @@ class TilePaletteEditorModel < StateModel
   field :pallete_cursor, type: TileCursor, default: proc{|t|t.new}
   field :tileset_cursor, type: TileCursor, default: proc{|t|t.new}
   field :tile_palette, type: ES::DataModel::EditorTilePalette, allow_nil: true, default: nil
+  field :tileset,      type: ES::DataModel::Tileset, allow_nil: true, default: nil
 
   def update_model(delta)
     super(delta)
@@ -129,12 +134,12 @@ class TilePaletteEditorController < StateController
   end
 
   def tileset_cursor_to_tile_id
-
+    @model.tileset_cursor.position.x + @model.tileset_cursor.position.y * @model.tileset.columns
   end
 
   def move_tileset_cursor(x, y)
     @model.tileset_cursor.position += [x, y, 0]
-    @model.tileset_cursor.position.x = 0 if @model.tileset_cursor.position.x < 0
+    @model.tileset_cursor.position.x = [[@model.tileset_cursor.position.x, 0].max, @model.tileset.columns].min
     @model.tileset_cursor.position.y = 0 if @model.tileset_cursor.position.y < 0
   end
 
@@ -164,6 +169,7 @@ module ES
         @controller = TilePaletteEditorController.new(@model, @view)
 
         @model.tile_palette = cvar["tile_palette"]
+        @model.tileset = @model.tile_palette.tileset
         @view.refresh
 
         register_input
