@@ -6,7 +6,10 @@ class TilePalettePanel < RenderContainer
     super
     @background = Sprite.new("media/ui/grid_32x32_ff777777.png")
     @cursor = Sprite.new("media/ui/map_editor_cursor.png")
+    @text = Text.new("", ES.cache.font("uni0553", 8))
     @tile_palette = nil
+
+    @text.align = :right
   end
 
   def tile_palette=(tile_palette)
@@ -38,7 +41,17 @@ class TilePalettePanel < RenderContainer
         @spritesheet.render(px + cw * (index % cols), py + ch * (index / cols).to_i, pz, i)
       end
 
-      @cursor.render(*(@cursor_position * [cw, ch, 1] + [px, py, pz]))
+      curpos = @cursor_position * [cw, ch, 1] + [px, py, pz]
+      txtpos = curpos + [@cursor.width-8, 0, 0]
+      txtpos2 = txtpos + [0, @cursor.height-12, 0]
+
+      tile_index = (@cursor_position.x + @cursor_position.y * cols).to_i
+
+      @cursor.render(*curpos)
+      @text.string = "#{tile_index}"
+      @text.render(*txtpos)
+      @text.string = "#{@tile_palette.tiles[tile_index]}"
+      @text.render(*txtpos2)
     end
     super
   end
@@ -93,7 +106,7 @@ class TileCursor < ::DataModel::Metal
 end
 
 class TilePaletteEditorModel < StateModel
-  field :pallete_cursor, type: TileCursor, default: proc{|t|t.new}
+  field :palette_cursor, type: TileCursor, default: proc{|t|t.new}
   field :tileset_cursor, type: TileCursor, default: proc{|t|t.new}
   field :tile_palette, type: ES::DataModel::EditorTilePalette, allow_nil: true, default: nil
   field :tileset,      type: ES::DataModel::Tileset, allow_nil: true, default: nil
@@ -121,7 +134,7 @@ class TilePaletteEditorView < StateView
   end
 
   def update_view(delta)
-    @tile_palette_panel.cursor_position = @model.pallete_cursor.position
+    @tile_palette_panel.cursor_position = @model.palette_cursor.position
     @tileset_panel.cursor_position = @model.tileset_cursor.position
     super(delta)
   end
@@ -134,13 +147,19 @@ class TilePaletteEditorController < StateController
   end
 
   def tileset_cursor_to_tile_id
-    @model.tileset_cursor.position.x + @model.tileset_cursor.position.y * @model.tileset.columns
+    (@model.tileset_cursor.position.x + @model.tileset_cursor.position.y * @model.tileset.columns).to_i
   end
 
   def move_tileset_cursor(x, y)
     @model.tileset_cursor.position += [x, y, 0]
-    @model.tileset_cursor.position.x = [[@model.tileset_cursor.position.x, 0].max, @model.tileset.columns].min
+    @model.tileset_cursor.position.x = [[@model.tileset_cursor.position.x, 0].max, @model.tileset.columns-1].min
     @model.tileset_cursor.position.y = 0 if @model.tileset_cursor.position.y < 0
+  end
+
+  def move_palette_cursor(x, y)
+    @model.palette_cursor.position += [x, y, 0]
+    @model.palette_cursor.position.x = [[@model.palette_cursor.position.x, 0].max, @model.tile_palette.columns-1].min
+    @model.palette_cursor.position.y = 0 if @model.palette_cursor.position.y < 0
   end
 
   def add_to_palette
@@ -176,6 +195,7 @@ module ES
       end
 
       def register_input
+        # move tileset cursor
         @input.on :press, :h do
           @controller.move_tileset_cursor(-1, 0)
         end
@@ -202,6 +222,23 @@ module ES
 
         @input.on :press, :c do
           @controller.jump_to_tile
+        end
+
+        # move palette cursor
+        @input.on :press, :left do
+          @controller.move_palette_cursor(-1, 0)
+        end
+
+        @input.on :press, :down do
+          @controller.move_palette_cursor(0, 1)
+        end
+
+        @input.on :press, :up do
+          @controller.move_palette_cursor(0, -1)
+        end
+
+        @input.on :press, :right do
+          @controller.move_palette_cursor(1, 0)
         end
       end
 
