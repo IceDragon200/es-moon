@@ -159,7 +159,7 @@ class TilePaletteEditorController < StateController
   def move_palette_cursor(x, y)
     @model.palette_cursor.position += [x, y, 0]
     @model.palette_cursor.position.x = [[@model.palette_cursor.position.x, 0].max, @model.tile_palette.columns-1].min
-    @model.palette_cursor.position.y = 0 if @model.palette_cursor.position.y < 0
+    @model.palette_cursor.position.y = [[@model.palette_cursor.position.y, 0].max, @model.tile_palette.rows-1].min
   end
 
   def add_to_palette
