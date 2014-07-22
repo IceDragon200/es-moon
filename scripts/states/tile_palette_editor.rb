@@ -1,8 +1,11 @@
 class TilePalettePanel < RenderContainer
+  attr_accessor :cursor_position # Vector3
   attr_reader :tile_palette # EditorTilePalette
 
   def initialize
     super
+    @background = Sprite.new("media/ui/grid_32x32_ff777777.png")
+    @cursor = Sprite.new("media/ui/map_editor_cursor.png")
     @tile_palette = nil
   end
 
@@ -12,7 +15,9 @@ class TilePalettePanel < RenderContainer
   end
 
   def refresh_tile_palette
-    #
+    tileset = @tile_palette.tileset
+    @spritesheet = ES.cache.tileset(tileset.filename,
+                                    tileset.cell_width, tileset.cell_height)
   end
 
   def update(delta)
@@ -20,15 +25,33 @@ class TilePalettePanel < RenderContainer
   end
 
   def render(x=0, y=0, z=0, options={})
+    if @spritesheet
+      px, py, pz = *(@position + [x, y, z])
+      cw, ch = @spritesheet.cell_width, @spritesheet.cell_height
+      cols = @tile_palette.columns
+      rows = @tile_palette.tiles.size / cols + [1, @tile_palette.tiles.size % cols].min
+      @background.clip_rect = Rect.new(0, 0, cols * cw, rows * ch)
+
+      @background.render(px, py, pz)
+
+      @tile_palette.tiles.each do |i|
+        @spritesheet.render(px + cw * (i % cols), py + ch * (i / cols), pz, i)
+      end
+
+      @cursor.render(*(@cursor_position * [cw, ch, 1] + [px, py, pz]))
+    end
     super
   end
 end
 
 class TilesetPanel < RenderContainer
+  attr_accessor :cursor_position # Vector3
   attr_reader :tileset # Tileset
 
   def initialize
     super
+    @background = Sprite.new("media/ui/grid_32x32_ff777777.png")
+    @cursor = Sprite.new("media/ui/map_editor_cursor.png")
     @tileset = nil
   end
 
@@ -39,7 +62,7 @@ class TilesetPanel < RenderContainer
 
   def refresh_tileset
     if @tileset
-      @tileset_sprite = Sprite.new(@tileset.filename)
+      @tileset_sprite = Sprite.new("media/tilesets/#{@tileset.filename}")
     else
       @tileset_sprite = nil
     end
@@ -50,15 +73,24 @@ class TilesetPanel < RenderContainer
   end
 
   def render(x=0, y=0, z=0, options={})
+    px, py, pz = *(@position + [x, y, z])
     if @tileset_sprite
-      pos = [x, y, z] + @position
-      @tileset_sprite.render(*pos)
+      @background.clip_rect = Rect.new(0, 0, @tileset_sprite.width, @tileset_sprite.height)
+      @background.render(px, py, pz)
+      @tileset_sprite.render(px, py, pz)
+      @cursor.render(*(@cursor_position * [@tileset.cell_width, @tileset.cell_height, 1] + [px, py, pz]))
     end
-    super x, y, z, options
+    super
   end
 end
 
+class TileCursor < ::DataModel::Metal
+  field :position, type: Vector3, default: proc{|t|t.new}
+end
+
 class TilePaletteEditorModel < StateModel
+  field :pallete_cursor, type: TileCursor, default: proc{|t|t.new}
+  field :tileset_cursor, type: TileCursor, default: proc{|t|t.new}
   field :tile_palette, type: ES::DataModel::EditorTilePalette, allow_nil: true, default: nil
 
   def update_model(delta)
@@ -69,10 +101,23 @@ end
 class TilePaletteEditorView < StateView
   def init_view
     super
+    @tile_palette_panel = TilePalettePanel.new
+    @tileset_panel = TilesetPanel.new
 
+    @tileset_panel.position.set(0, 128, 0)
+
+    add(@tile_palette_panel)
+    add(@tileset_panel)
+  end
+
+  def refresh
+    @tile_palette_panel.tile_palette = @model.tile_palette
+    @tileset_panel.tileset = @model.tile_palette.tileset
   end
 
   def update_view(delta)
+    @tile_palette_panel.cursor_position = @model.pallete_cursor.position
+    @tileset_panel.cursor_position = @model.tileset_cursor.position
     super(delta)
   end
 end
@@ -98,6 +143,7 @@ module ES
         @controller = TilePaletteEditorController.new(@model, @view)
 
         @model.tile_palette = cvar["tile_palette"]
+        @view.refresh
       end
 
       def update(delta)
