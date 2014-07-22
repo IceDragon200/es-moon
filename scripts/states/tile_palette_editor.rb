@@ -128,6 +128,27 @@ class TilePaletteEditorController < StateController
 
   end
 
+  def tileset_cursor_to_tile_id
+
+  end
+
+  def move_tileset_cursor(x, y)
+    @model.tileset_cursor.position += [x, y, 0]
+    @model.tileset_cursor.position.x = 0 if @model.tileset_cursor.position.x < 0
+    @model.tileset_cursor.position.y = 0 if @model.tileset_cursor.position.y < 0
+  end
+
+  def add_to_palette
+    @model.tile_palette.tiles << tileset_cursor_to_tile_id
+  end
+
+  def remove_from_palette
+    @model.tile_palette.tiles.delete(tileset_cursor_to_tile_id)
+  end
+
+  def jump_to_tile
+  end
+
   def update_controller(delta)
     super(delta)
   end
@@ -144,6 +165,38 @@ module ES
 
         @model.tile_palette = cvar["tile_palette"]
         @view.refresh
+
+        register_input
+      end
+
+      def register_input
+        @input.on :press, :h do
+          @controller.move_tileset_cursor(-1, 0)
+        end
+
+        @input.on :press, :j do
+          @controller.move_tileset_cursor(0, 1)
+        end
+
+        @input.on :press, :k do
+          @controller.move_tileset_cursor(0, -1)
+        end
+
+        @input.on :press, :l do
+          @controller.move_tileset_cursor(1, 0)
+        end
+
+        @input.on :press, :z do
+          @controller.add_to_palette
+        end
+
+        @input.on :press, :x do
+          @controller.remove_from_palette
+        end
+
+        @input.on :press, :c do
+          @controller.jump_to_tile
+        end
       end
 
       def update(delta)
