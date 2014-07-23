@@ -186,14 +186,6 @@ class MapEditorController < StateController
   def animate_map_zoom(dest)
     zoom = @model.zoom
     @model.zoom = dest
-    #if @state
-      #@transform_transition = add_transition(zoom, dest, 0.15) do |v|
-      #  @model.transform = Transform.scale(v, v, 1.0)
-      #end
-    #else
-      #@model.zoom = dest
-      #@model.transform = Transform.scale(@model.zoom, @model.zoom, 1.0)
-    #end
     puts "Zoom has been disabled"
   end
 
@@ -297,12 +289,6 @@ class MapEditorController < StateController
 
     @view.tile_preview.tile_id = @view.tile_panel.tile_id
 
-    h = Moon::Screen.height
-    w = Moon::Screen.width
-    @view.ui_posmon.position.set w - @view.ui_posmon.width - 48, 0, 0
-    @view.ui_camera_posmon.position.set((w - @view.ui_camera_posmon.width) / 2,
-                                    h - @view.ui_camera_posmon.height,
-                                    0)
     if @model.selection_stage == 1
       @model.selection_rect.xyz = @model.map_cursor.position
     elsif @model.selection_stage == 2

@@ -248,7 +248,6 @@ module ES
         @model.tile_palette.tileset = tileset
         @view.tileset = ES.cache.tileset(tileset.filename,
                                          tileset.cell_width, tileset.cell_height)
-        @transform_transition = nil
       end
 
       def create_world
