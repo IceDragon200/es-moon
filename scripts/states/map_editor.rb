@@ -240,7 +240,6 @@ module ES
         @mode = StateMachine.new
         @mode.on_mode_change = ->(mode){ on_mode_change(mode) }
 
-        @edge_pressure = RectEdgePressureDetector.new(Screen.rect, 24)
         @model = MapEditorModel.new
         @view = MapEditorView.new @model
         @controller = MapEditorController.new @model, @view
@@ -705,9 +704,6 @@ module ES
       end
 
       def update(delta)
-        pressure = @edge_pressure.calc(Input::Mouse.position)
-        @model.cam_cursor.position += pressure.xyz * delta * 8
-
         @view.update(delta)
         @controller.update(delta)
 
