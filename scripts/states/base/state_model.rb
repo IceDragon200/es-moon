@@ -1,4 +1,8 @@
 class StateModel < ::DataModel::Metal
+  def post_init
+    #
+  end
+
   def update_model(delta)
     #
   end

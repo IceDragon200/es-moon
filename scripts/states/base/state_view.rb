@@ -9,6 +9,11 @@ class StateView < RenderContainer
     #
   end
 
+  # called by controller
+  def post_init
+    #
+  end
+
   def update_view(delta)
     #
   end

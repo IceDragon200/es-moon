@@ -11,6 +11,11 @@ class StateController
     #
   end
 
+  def post_init
+    @model.post_init
+    @view.post_init
+  end
+
   def update_controller(delta)
     #
   end
