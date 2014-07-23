@@ -1,4 +1,4 @@
-class ModeStack
+class StateMachine
   attr_accessor :on_mode_change
 
   def initialize

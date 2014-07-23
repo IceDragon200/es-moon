@@ -237,7 +237,7 @@ module ES
         @screen_rect = Screen.rect.contract(16)
         @control_map = ES.cache.controlmap("map_editor.yml")
 
-        @mode = ModeStack.new
+        @mode = StateMachine.new
         @mode.on_mode_change = ->(mode){ on_mode_change(mode) }
 
         @edge_pressure = RectEdgePressureDetector.new(Screen.rect, 24)
