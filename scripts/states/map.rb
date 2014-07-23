@@ -50,7 +50,7 @@ module ES
 
       def create_map
         @map = ES::GameObject::Map.new
-        @map.setup(Database.find :map, name: "school_f1")
+        @map.setup(Database.find(:map, name: "school_f1"))
       end
 
       def create_entity
