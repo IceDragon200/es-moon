@@ -25,6 +25,11 @@ move_chunk_left: u
 move_chunk_right: p
 move_chunk_up: o
 
+resize_chunk_horz_plus: period
+resize_chunk_horz_minus: n
+resize_chunk_vert_plus: m
+resize_chunk_vert_minus: comma
+
 move_camera_down: down
 move_camera_left: left
 move_camera_right: right
@@ -44,7 +49,4 @@ erase_tile:
 copy_tile:
 - mouse_middle
 - c
-
-enter_view_mode: v
-enter_edit_mode: e
 ...

@@ -12,10 +12,11 @@ data = MACL::Palette.new do |pal|
   pal.set_color "white",           255, 255, 255, 255
 
   # system
-  pal.set_color "system/ok",        80, 200, 120, 255
-  pal.set_color "system/info",      15,  82, 186, 255
-  pal.set_color "system/warning",  236, 233, 162, 255
-  pal.set_color "system/error",    194,  55,  65, 255
+  pal.set_color "system/ok",         80, 200, 120, 255
+  pal.set_color "system/info",       15,  82, 186, 255
+  pal.set_color "system/warning",   236, 233, 162, 255
+  pal.set_color "system/error",     194,  55,  65, 255
+  pal.set_color "system/selection",  51, 181, 229, 255
 
   # attribute
   pal.set_color "attr/hp",          91, 179,  59, 255

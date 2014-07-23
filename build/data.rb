@@ -155,6 +155,7 @@ require_relative 'data/tilesets'
 
 Dir.chdir("../") do
   @pool.each do |obj|
+    obj.validate
     obj.save_file
   end
 end
