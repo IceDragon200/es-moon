@@ -204,15 +204,6 @@ class MapEditorInputDelegate < StateInputDelegate
       @model.cam_cursor.position.set(bounds.cx, bounds.cy, 0)
     end
 
-    ## mode toggle
-    input.on :press, @control_map["enter_edit_mode"] do
-      @controller.enter_edit_mode
-    end
-
-    input.on :press, @control_map["enter_view_mode"] do
-      @controller.enter_view_mode
-    end
-
     ## tile panel
     input.on :press, @control_map["show_tile_panel"] do
       @controller.show_tile_panel

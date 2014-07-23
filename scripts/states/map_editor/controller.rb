@@ -15,14 +15,6 @@ class MapEditorController < StateController
     @view.screen_pos_map_reduce(screen_pos)
   end
 
-  def enter_edit_mode
-    #
-  end
-
-  def enter_view_mode
-    #
-  end
-
   def camera_follow(obj)
     @model.camera.follow obj
     @view.ui_camera_posmon.obj = obj
