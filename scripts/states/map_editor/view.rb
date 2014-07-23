@@ -54,6 +54,7 @@ class MapEditorView < StateView
 
     @dashboard.show
     @tile_panel.hide
+    @help_panel.hide
 
     @hud.add @dashboard
     @hud.add @layer_view
@@ -63,7 +64,9 @@ class MapEditorView < StateView
     @hud.add @ui_camera_posmon
     @hud.add @ui_posmon
     @hud.add @notifications
+    @hud.add @help_panel
 
+    add(@hud)
     create_passage_layer
   end
 
@@ -131,8 +134,9 @@ class MapEditorView < StateView
     @hud.render
   end
 
-  def render_help_mode
-    @help_panel.render
+  def render(x=0, y=0, z=0, options={})
+    render_edit_mode
+    super
   end
 
   def update_view(delta)

@@ -15,6 +15,14 @@ class MapEditorController < StateController
     @view.screen_pos_map_reduce(screen_pos)
   end
 
+  def enter_edit_mode
+    #
+  end
+
+  def enter_view_mode
+    #
+  end
+
   def camera_follow(obj)
     @model.camera.follow obj
     @view.ui_camera_posmon.obj = obj
@@ -289,7 +297,7 @@ class MapEditorController < StateController
     @view.tile_info.tile_data = get_tile_data(@model.map_cursor.position.xy)
   end
 
-  def update_edit_mode(delta)
+  def update(delta)
     update_cursor_position(delta)
 
     @view.tile_preview.tile_id = @view.tile_panel.tile_id
@@ -301,9 +309,6 @@ class MapEditorController < StateController
                                   @model.selection_rect.xyz
     end
     @view.tileselection_rect.tile_rect = @model.selection_rect
-  end
-
-  def update(delta)
-    @model.update(delta)
+    super
   end
 end
