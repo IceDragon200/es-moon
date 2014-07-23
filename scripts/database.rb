@@ -16,9 +16,9 @@ module Database
     entries = (@data[sub] ||= [])
 
     klass = @class_reg.fetch(sub)
-    obj = klass.new({ id: entries.size }.merge(options))
+    obj = klass.new(options)
 
-    entries[obj.id] = obj
+    entries << obj
 
     yield obj if block_given?
 
