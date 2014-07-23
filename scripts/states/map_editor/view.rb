@@ -1,6 +1,6 @@
-class MapEditorView < RenderContainer
+class MapEditorView < StateView
   attr_accessor :notifications
-  attr_accessor :model
+  attr_reader :screen_rect
 
   attr_reader :tileset
 
@@ -14,18 +14,17 @@ class MapEditorView < RenderContainer
   attr_reader :ui_camera_posmon
   attr_reader :ui_posmon
 
-  def initialize(model)
-    @model = model
-    super()
-    @palette = ES.cache.palette
+  def init_view
+    @screen_rect = Screen.rect.contract(16)
 
+    @palette = ES.cache.palette
     @font = ES.cache.font "uni0553", 16
+    @controlmap = ES.cache.controlmap("map_editor.yml")
 
     @hud = RenderContainer.new
 
-    @help_panel       = ES::UI::MapEditorHelpPanel.new(ES.cache.controlmap("map_editor.yml"))
-    rect = LayoutHelper.align("center", @help_panel.to_rect, Screen.rect)
-    @help_panel.position.set(rect.xyz)
+    @help_panel       = ES::UI::MapEditorHelpPanel.new(@controlmap)
+    @help_panel.position.set(@help_panel.to_rect.align("center", @screen_rect).xyz)
 
     @dashboard        = ES::UI::MapEditorDashboard.new
     @layer_view       = ES::UI::MapEditorLayerView.new
@@ -51,12 +50,7 @@ class MapEditorView < RenderContainer
 
     @notifications.font = @font
 
-    @dashboard.position.set 0, 0, 0
-    @tile_info.position.set 0, @dashboard.y2 + 16, 0
-    @tile_preview.position.set Screen.width - @tile_preview.width, @dashboard.y2, 0
-    @tile_panel.position.set 0, Screen.height - 32 * @tile_panel.visible_rows - 16, 0
-    @layer_view.position.set @tile_preview.x, @tile_preview.y2, 0
-    @notifications.position.set @font.size, Screen.height - @font.size*2, 0
+    refresh_position
 
     @dashboard.show
     @tile_panel.hide
@@ -71,6 +65,19 @@ class MapEditorView < RenderContainer
     @hud.add @notifications
 
     create_passage_layer
+  end
+
+  def refresh_position
+    @dashboard.position.set @screen_rect.x, @screen_rect.y, 0
+    @tile_info.position.set @screen_rect.x, @dashboard.y2 + 16, 0
+    @tile_preview.position.set @screen_rect.x2 - @tile_preview.width, @dashboard.y2, 0
+    @tile_panel.position.set @screen_rect.x, @screen_rect.y2 - 32 * @tile_panel.visible_rows - 16, 0
+    @layer_view.position.set @tile_preview.x, @tile_preview.y2, 0
+    @notifications.position.set @font.size, @screen_rect.y2 - @font.size*2, 0
+    @ui_posmon.position.set @screen_rect.x2 - @ui_posmon.width - 96, @screen_rect.y, 0
+    @ui_camera_posmon.position.set (@screen_rect.width - @ui_camera_posmon.width) / 2,
+                                    @screen_rect.y2 - @font.size,
+                                    0
   end
 
   ###
@@ -128,9 +135,9 @@ class MapEditorView < RenderContainer
     @help_panel.render
   end
 
-  def update(delta)
-    super(delta)
+  def update_view(delta)
     @hud.update(delta)
     @dashboard.update(delta)
+    super(delta)
   end
 end

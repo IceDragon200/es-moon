@@ -226,9 +226,8 @@ module ES
         @grid_overlay  = Sprite.new("media/ui/grid_32x32_ffffffff.png")
         @chunk_borders = Spritesheet.new("media/ui/chunk_outline_3x3.png", 32, 32)
 
-        @mode_icon_rect = Rect.new(0, 0, 32, 32)
-        LayoutHelper.align("bottom right", @mode_icon_rect, Screen.rect.contract(16))
-
+        @screen_rect = Screen.rect.contract(16)
+        @mode_icon_rect = Rect.new(0, 0, 32, 32).align("bottom right", @screen_rect)
 
         @mode_icon_color = Vector4.new(1, 1, 1, 1)
         @mode_icon = ""
