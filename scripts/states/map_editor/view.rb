@@ -48,8 +48,7 @@ class MapEditorView < StateView
     @grid_overlay  = Sprite.new("media/ui/grid_32x32_ffffffff.png")
     @chunk_borders = Spritesheet.new("media/ui/chunk_outline_3x3.png", 32, 32)
 
-    color = @palette["system/info"]
-    color += color
+    color = @palette["system/selection"]
     @tileselection_rect.spritesheet = @cursor_ss
     @tileselection_rect.color = color
 

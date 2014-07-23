@@ -36,7 +36,10 @@ class MapEditorController < StateController
 
   def new_map
     @view.dashboard.enable 1
-    @view.notifications.notify string: "New Map (NYI)"
+    @view.notifications.notify string: "New Map"
+    @model.map = create_map(name: "New Map")
+    @model.map.uri = "/maps/new/map-#{@model.map.id}"
+    create_chunk(Rect.new(0, 0, 4, 4), name: "New Chunk #{@model.map.chunks.size}")
   end
 
   def on_new_map_release
@@ -67,8 +70,9 @@ class MapEditorController < StateController
       @model.selection_stage += 1
     elsif @model.selection_stage == 2
       id = @model.map.chunks.size+1
-      create_chunk @view.tileselection_rect.tile_rect,
-                   id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
+      chunk = create_chunk @view.tileselection_rect.tile_rect,
+                   name: "New Chunk #{id}"
+      chunk.uri = "/chunks/new/chunk-#{chunk.id}"
 
       @model.selection_stage = 0
       @model.selection_rect.clear
@@ -97,6 +101,12 @@ class MapEditorController < StateController
     chunk.tileset  = Database.find(:tileset, uri: "/tilesets/common")
     @model.map.chunks << chunk
     @view.refresh_tilemaps
+    chunk
+  end
+
+  def create_map(data)
+    map = ES::DataModel::EditorMap.new(data)
+    map
   end
 
   def save_chunks
@@ -272,8 +282,7 @@ class MapEditorController < StateController
   end
 
   def chunk_at_position(position)
-    map = @model.map
-    chunk = map.chunks.find do |c|
+    chunk = @model.map.chunks.find do |c|
       c.bounds.inside?(position)
     end
   end
