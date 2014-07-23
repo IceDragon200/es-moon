@@ -1,5 +1,7 @@
 include Moon
 
+#Moon::Screen.resize(800, 600)
+
 require 'scripts/mixin'
 require 'scripts/core_ext'
 require 'scripts/version'

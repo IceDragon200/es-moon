@@ -4,9 +4,9 @@ module ES
   end
   class Cache < CacheBase
 
-    def debug
-      #
-    end
+    #def debug
+    #  #
+    #end
 
     class FetchOnlyHash
       def initialize(hash)

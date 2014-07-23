@@ -1,4 +1,4 @@
-class State::UITest01 < State
+class StateUITest01 < State
   class SpriteContainer < RenderContainer
     attr_reader :sprite
 

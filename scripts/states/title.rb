@@ -5,20 +5,23 @@ module ES
         super
         @title_menu = ES::UI::TitleMenu.new
         @title_sprite = ES.cache.system "title_text.png"
+
+        @title_menu.position.set(8, 4, 0)
+
         register_events
       end
 
       def register_events
-        @input.on :press, *ES::Config.controls[:up] do
+        @input.on :press, :up do
           @title_menu.index -= 1
         end
-        @input.on :press, *ES::Config.controls[:down] do
+        @input.on :press, :down do
           @title_menu.index += 1
         end
-        @input.on :press, *ES::Config.controls[:accept] do
+        @input.on :press, :enter, :z do
           on_title_menu_accept
         end
-        #@input.on :press, *ES::Config.controls[:cancel] do
+        #@input.on :press, :x do
         #end
       end
 

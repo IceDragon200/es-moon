@@ -55,7 +55,7 @@ module ES
 
       def create_entity
         @entity = @world.spawn
-        @map.entities.push @entity
+        @entity.add(position: { x: 0, y: 0 })
       end
 
       def create_camera

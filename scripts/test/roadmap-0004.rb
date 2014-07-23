@@ -3,9 +3,9 @@ module Roadmap
     def init
       super
       @tilemaps = []
-      @map = ES::Database.find(:map, uri: "/maps/school/f1")
+      @map = Database.find(:map, uri: "/maps/school/f1")
       @map.chunks.each_with_index do |refhead, i|
-        chunk = ES::Database.find(:chunk, uri: refhead.fetch("uri"))
+        chunk = Database.find(:chunk, uri: refhead.fetch("uri"))
         @tilemaps << Tilemap.new do |t|
           filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
           t.tileset = ES.cache.tileset filename, 32, 32
@@ -24,6 +24,7 @@ module Roadmap
     end
 
     def update(delta)
+      @world.update(delta)
       super delta
     end
 

@@ -33,7 +33,7 @@ module ES
               @spritesheet.render px + j * cw,
                                   py + i * ch,
                                   pz,
-                                  1, render_options
+                                  6, render_options
             end
           end
         end

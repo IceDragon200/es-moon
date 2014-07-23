@@ -1,4 +1,4 @@
-class State::CharacterWalkTest < State
+class StateCharacterWalkTest < State
   def init
     super
     @popup = YAML.load_file("data/popups/idling.yml")
