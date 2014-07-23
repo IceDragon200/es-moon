@@ -4,4 +4,5 @@ pool(ES::DataModel::Tileset.new do |t|
   t.filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"
   t.cell_width = 32
   t.cell_height = 32
+  t.columns = 16
 end)
