@@ -34,15 +34,18 @@ module ES
         chunk_position = chunk ? chunk.position.to_a : [-1, -1]
         chunk_data_pos = @tile_data[:chunk_data_position] || [-1, -1]
 
-        @text.string ="" +
-                      "position:       #{data_position.to_a}\n" +
-                      "chunk_id:       #{chunk_id}\n" +
-                      "chunk_name:     #{chunk_name}\n" +
-                      "chunk_uri:      #{chunk_uri}\n" +
-                      "chunk_data_pos: #{chunk_data_pos.to_a}\n" +
-                      "chunk_position: #{chunk_position.to_a}\n" +
-                      "passage:        #{passage}\n" +
-                      "" # placeholder
+
+        @text.string = "#{chunk_id} -- #{chunk_name} (#{chunk_uri})"
+        ## verbose
+        #@text.string ="" +
+        #              "position:       #{data_position.to_a}\n" +
+        #              "chunk_id:       #{chunk_id}\n" +
+        #              "chunk_name:     #{chunk_name}\n" +
+        #              "chunk_uri:      #{chunk_uri}\n" +
+        #              "chunk_data_pos: #{chunk_data_pos.to_a}\n" +
+        #              "chunk_position: #{chunk_position.to_a}\n" +
+        #              "passage:        #{passage}\n" +
+        #              "" # placeholder
 
         @text.render px, py, pz
         py += @text.height
