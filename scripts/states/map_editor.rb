@@ -6,6 +6,10 @@ require "scripts/states/map_editor/input_delegate"
 module ES
   module States
     class MapEditor < Base
+      attr_reader :model
+      attr_reader :controller
+      attr_reader :view
+
       def init
         super
         @screen_rect = Screen.rect.contract(16)
