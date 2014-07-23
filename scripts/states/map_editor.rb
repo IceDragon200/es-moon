@@ -3,6 +3,32 @@ require "scripts/states/map_editor/model"
 require "scripts/states/map_editor/view"
 require "scripts/states/map_editor/mode_stack"
 
+class ModeIcon < RenderContainer
+  attr_reader :mode
+
+  def initialize(icons)
+    super()
+    @icons = icons
+    @font_awesome = ES.cache.font("awesome", 32)
+    @charmap_awesome = ES.cache.charmap("awesome.yml")
+    @text = Text.new("", @font_awesome)
+    add(@text)
+  end
+
+  def color
+    @text.color
+  end
+
+  def color=(color)
+    @text.color = color
+  end
+
+  def mode=(name)
+    @mode = name
+    @text.string = @charmap_awesome[@icons[@mode]] || ""
+  end
+end
+
 class SkinSlice3x < RenderContainer
   attr_accessor :horz       # Boolean
   attr_accessor :windowskin # Spritesheet
@@ -208,8 +234,12 @@ module ES
     class MapEditor < Base
       def init
         super
+        @screen_rect = Screen.rect.contract(16)
         @edge_pressure = RectEdgePressureDetector.new(Screen.rect, 24)
         @control_map = ES.cache.controlmap("map_editor.yml")
+
+        @mode = ModeStack.new
+        @mode.on_mode_change = ->(mode){ on_mode_change(mode) }
 
         @model = MapEditorModel.new
         @view = MapEditorView.new @model
@@ -220,21 +250,19 @@ module ES
 
         create_tilemaps
 
-        @font_awesome = ES.cache.font("awesome", 32)
-        @charmap_awesome = ES.cache.charmap("awesome.yml")
         @grid_underlay = Sprite.new("media/ui/grid_32x32_ff777777.png")
         @grid_overlay  = Sprite.new("media/ui/grid_32x32_ffffffff.png")
         @chunk_borders = Spritesheet.new("media/ui/chunk_outline_3x3.png", 32, 32)
+        @mode_icon = ModeIcon.new({
+          view: "film",
+          edit: "gear",
+          help: "book",
+          show_chunk_labels: "search",
+          debug_shell: "dashboard"
+        })
 
-        @screen_rect = Screen.rect.contract(16)
-        @mode_icon_rect = Rect.new(0, 0, 32, 32).align("bottom right", @screen_rect)
-
-        @mode_icon_color = Vector4.new(1, 1, 1, 1)
-        @mode_icon = ""
-
-        @mode = ModeStack.new
-        @mode.on_mode_change = ->(mode){ on_mode_change(mode) }
-        @mode.push :view
+        @mode_icon.position.set(Rect.new(0, 0, 32, 32).align("bottom right", @screen_rect).xyz)
+        @mode_icon.color = Vector4.new(1, 1, 1, 1)
 
         create_autosave_interval
 
@@ -248,6 +276,7 @@ module ES
         @model.tile_palette.tileset = tileset
         @view.tileset = ES.cache.tileset(tileset.filename,
                                          tileset.cell_width, tileset.cell_height)
+        @mode.push :view
       end
 
       def create_world
@@ -647,28 +676,21 @@ module ES
       end
 
       def switch_mode_icon(mode)
-        @__mode_icon_map ||= {
-          view: "film",
-          edit: "gear",
-          help: "book",
-          show_chunk_labels: "search"
-        }
-
         time = "150"
-
         fade_color = Vector4.new(0, 0, 0, 0)
+        base_color = Vector4.new(1, 1, 1, 1)
 
         @scheduler.remove(@mode_icon_job)
         @mode_icon_job = @scheduler.in time do
-          add_transition @mode_icon_color, Vector4.new(1, 1, 1, 1), time do |value|
-            @mode_icon_color = value
+          add_transition @mode_icon.color, base_color, time do |value|
+            @mode_icon.color = value
           end
-          @mode_icon = @__mode_icon_map[mode] || @mode_icon
+          @mode_icon.mode = mode
         end
 
         remove_transition(@mode_icon_transition)
-        @mode_icon_transition = add_transition @mode_icon_color, fade_color, time do |value|
-          @mode_icon_color = value
+        @mode_icon_transition = add_transition @mode_icon.color, fade_color, time do |value|
+          @mode_icon.color = value
         end
       end
 
@@ -713,14 +735,6 @@ module ES
         end
       end
 
-      def render_mode_icon
-        @font_awesome.render(@mode_icon_rect.x,
-                             @mode_icon_rect.y,
-                             0,
-                             @charmap_awesome[@mode_icon],
-                             @mode_icon_color)
-      end
-
       def render
         render_map
         if @mode.is? :help
@@ -728,7 +742,7 @@ module ES
         elsif @mode.has? :edit
           @view.render_edit_mode
         end
-        render_mode_icon
+        @mode_icon.render
         @debug_shell.render if @debug_shell
         super
       end
