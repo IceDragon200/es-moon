@@ -7,8 +7,22 @@ module ES
       field :passages, type: Table,      allow_nil: true, default: nil
       field :tileset,  type: Tileset,    allow_nil: true, default: nil
 
+      def resize(x, y)
+        data.resize(x, y, data.zsize) if data
+        flags.resize(x, y, flags.zsize) if flags
+        passages.resize(x, y) if passages
+      end
+
+      def width
+        data.xsize
+      end
+
+      def height
+        data.ysize
+      end
+
       def bounds
-        Rect.new(position.x, position.y, data.xsize, data.ysize)
+        Rect.new(position.x, position.y, width, height)
       end
 
       def to_chunk
