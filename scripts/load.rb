@@ -1,6 +1,5 @@
 include Moon
 
-require 'scripts/config'
 require 'scripts/mixin'
 require 'scripts/core_ext'
 require 'scripts/version'
