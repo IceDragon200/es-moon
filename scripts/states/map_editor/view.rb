@@ -7,6 +7,7 @@ class MapEditorView < StateView
   attr_reader :dashboard
   attr_reader :hud
   attr_reader :layer_view
+  attr_reader :help_panel
   attr_reader :tile_info
   attr_reader :tile_panel
   attr_reader :tile_preview
@@ -43,6 +44,10 @@ class MapEditorView < StateView
     @cursor_ss  = ES.cache.block "e032x032.png", 32, 32
     @passage_ss = ES.cache.block "passage_blocks.png", 32, 32
 
+    @grid_underlay = Sprite.new("media/ui/grid_32x32_ff777777.png")
+    @grid_overlay  = Sprite.new("media/ui/grid_32x32_ffffffff.png")
+    @chunk_borders = Spritesheet.new("media/ui/chunk_outline_3x3.png", 32, 32)
+
     color = @palette["system/info"]
     color += color
     @tileselection_rect.spritesheet = @cursor_ss
@@ -70,6 +75,10 @@ class MapEditorView < StateView
     create_passage_layer
   end
 
+  def post_init
+    refresh_tilemaps
+  end
+
   def refresh_position
     @dashboard.position.set @screen_rect.x, @screen_rect.y, 0
     @tile_info.position.set @screen_rect.x, @dashboard.y2 + 16, 0
@@ -81,6 +90,14 @@ class MapEditorView < StateView
     @ui_camera_posmon.position.set (@screen_rect.width - @ui_camera_posmon.width) / 2,
                                     @screen_rect.y2 - @font.size,
                                     0
+  end
+
+  def refresh_tilemaps
+    @chunk_renderers = @model.map.chunks.map do |chunk|
+      renderer = ChunkRenderer.new(chunk)
+      renderer.layer_opacity = @model.layer_opacity
+      renderer
+    end
   end
 
   ###
@@ -113,6 +130,24 @@ class MapEditorView < StateView
     end
   end
 
+  def render_map
+    pos = -@model.camera.view.floor
+    @chunk_renderers.each do |renderer|
+      lp = (pos + renderer.position * 32)
+      @grid_underlay.clip_rect = Rect.new(0, 0, *(renderer.chunk.bounds.wh*32))
+      @grid_underlay.render(*lp)
+      renderer.render(*pos)
+      if @model.flag_show_chunk_labels
+        @chunk_borders.render(*lp, 0)
+        @chunk_borders.render(*lp+[@grid_underlay.clip_rect.width-32,0,0], 2)
+        @chunk_borders.render(*lp+[0,@grid_underlay.clip_rect.height-32,0], 6)
+        @chunk_borders.render(*lp+(@grid_underlay.clip_rect.whd-[32,32,0]), 8)
+      end
+      #@grid_overlay.clip_rect = Rect.new(0, 0, *@grid_underlay.clip_rect.wh)
+      #@grid_overlay.render(*pos)
+    end
+  end
+
   def render_chunk_labels
     color = @palette["white"]
     oy = @font.size+8
@@ -135,6 +170,7 @@ class MapEditorView < StateView
   end
 
   def render(x=0, y=0, z=0, options={})
+    render_map
     render_edit_mode
     super
   end

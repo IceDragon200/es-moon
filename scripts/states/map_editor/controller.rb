@@ -70,6 +70,32 @@ class MapEditorController < StateController
     @model.selection_stage = 1
   end
 
+  def new_chunk_stage
+    if @model.selection_stage == 1
+      @model.selection_stage += 1
+    elsif @model.selection_stage == 2
+      id = @model.map.chunks.size+1
+      create_chunk @view.tileselection_rect.tile_rect,
+                   id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
+
+      @model.selection_stage = 0
+      @model.selection_rect.clear
+      @view.dashboard.disable 2
+      @view.notifications.clear
+    end
+  end
+
+  def new_chunk_revert
+    if @model.selection_stage == 1
+      @model.selection_stage = 0
+      @view.dashboard.disable 2
+      @view.notifications.clear
+    elsif @model.selection_stage == 2
+      @model.selection_rect.clear
+      @model.selection_stage -= 1
+    end
+  end
+
   def create_chunk(bounds, data)
     chunk          = ES::DataModel::EditorChunk.new(data)
     chunk.position = bounds.xyz
@@ -78,7 +104,7 @@ class MapEditorController < StateController
     chunk.flags    = DataMatrix.new(bounds.w, bounds.h, 2)
     chunk.tileset  = Database.find(:tileset, uri: "/tilesets/common")
     @model.map.chunks << chunk
-    #create_tilemaps
+    @view.refresh_tilemaps
   end
 
   def save_chunks
@@ -106,31 +132,6 @@ class MapEditorController < StateController
       chunk.position += pos
       @model.map_cursor.position += pos
     end
-  end
-
-  def create_chunk(rect, data)
-    size = Vector3.new(*rect.wh, 2)
-
-    data[:data] = begin
-      dm = DataMatrix.new(*size, default: -1)
-      dm
-    end
-    data[:flags] = begin
-      dm = DataMatrix.new(*size)
-      dm
-    end
-    data[:passages] = Table.new(*size.xy)
-
-    dchunk = ES::DataModel::Chunk.new data
-
-    chunk = ES::GameObject::Chunk.new
-    chunk.setup(dchunk)
-
-    @map.chunks << chunk
-    @map.dmap.chunks << { name: dchunk.name }
-    chunk_p = @map.dmap.chunk_position
-    chunk_p[chunk_p.size] = rect.xyz
-    @map.refresh
   end
 
   def toggle_keyboard_mode
@@ -169,17 +170,24 @@ class MapEditorController < StateController
     end
   end
 
+  def rect_selection?
+    @model.selection_stage > 0
+  end
+
   def place_current_tile
+    return if rect_selection?
     place_tile @view.tile_panel.tile_id
   end
 
   def copy_tile
+    return if rect_selection?
     tile_ids = @view.tile_info.tile_data.tile_ids
     tile_id = tile_ids.reject { |n| n == -1 }.last || -1
     @view.tile_panel.tile_id = tile_id
   end
 
   def erase_tile
+    return if rect_selection?
     place_tile(-1)
   end
 
@@ -222,11 +230,13 @@ class MapEditorController < StateController
   def show_help
     @view.dashboard.enable 0
     @view.notifications.notify string: "Help"
+    @view.help_panel.show
   end
 
   def hide_help
     @view.dashboard.disable 0
     @view.notifications.clear
+    @view.help_panel.hide
   end
 
   def show_tile_info

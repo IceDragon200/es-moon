@@ -1,7 +1,7 @@
 require "scripts/states/map_editor/camera_cursor"
 require "scripts/states/map_editor/map_cursor"
 
-class MapEditorModel < ::DataModel::Metal
+class MapEditorModel < StateModel
   field :map,               type: ES::DataModel::EditorMap, allow_nil: true, default: nil
   field :camera_move_speed, type: Vector3,        default: proc{|t|t.new(8,8,0)}
   field :camera,            type: Camera2,        default: proc{|t|t.new}

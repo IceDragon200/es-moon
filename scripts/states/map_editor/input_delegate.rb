@@ -140,28 +140,11 @@ class MapEditorInputDelegate < StateInputDelegate
     end
 
     input.on :press, @control_map["place_tile"] do
-      if @model.selection_stage == 1
-        @model.selection_stage += 1
-      elsif @model.selection_stage == 2
-        id = @model.map.chunks.size+1
-        @controller.create_chunk @view.tileselection_rect.tile_rect,
-                     id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
-
-        @model.selection_stage = 0
-        @model.selection_rect.clear
-        @view.dashboard.disable 2
-        @view.notifications.clear
-      end
+      @controller.new_chunk_stage
     end
+
     input.on :press, @control_map["erase_tile"] do
-      if @model.selection_stage == 1
-        @model.selection_stage = 0
-        @view.dashboard.disable 2
-        @view.notifications.clear
-      elsif @model.selection_stage == 2
-        @model.selection_rect.clear
-        @model.selection_stage -= 1
-      end
+      @controller.new_chunk_revert
     end
   end
 
