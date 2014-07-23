@@ -183,6 +183,11 @@ class MapEditorController < StateController
     @model.map_cursor.position += [xv, yv, 0]
   end
 
+  def set_camera_velocity(x, y)
+    @model.cam_cursor.velocity.x = x * @model.camera_move_speed.x if x
+    @model.cam_cursor.velocity.y = y * @model.camera_move_speed.y if y
+  end
+
   def animate_map_zoom(dest)
     zoom = @model.zoom
     @model.zoom = dest
