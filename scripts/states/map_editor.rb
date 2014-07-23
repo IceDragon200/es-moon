@@ -235,12 +235,12 @@ module ES
       def init
         super
         @screen_rect = Screen.rect.contract(16)
-        @edge_pressure = RectEdgePressureDetector.new(Screen.rect, 24)
         @control_map = ES.cache.controlmap("map_editor.yml")
 
         @mode = ModeStack.new
         @mode.on_mode_change = ->(mode){ on_mode_change(mode) }
 
+        @edge_pressure = RectEdgePressureDetector.new(Screen.rect, 24)
         @model = MapEditorModel.new
         @view = MapEditorView.new @model
         @controller = MapEditorController.new @model, @view
@@ -266,16 +266,17 @@ module ES
 
         create_autosave_interval
 
-        @controller.set_layer(-1)
 
         register_events
 
-        @controller.refresh_follow
 
         tileset = Database.find(:tileset, uri: "/tilesets/common")
         @model.tile_palette.tileset = tileset
         @view.tileset = ES.cache.tileset(tileset.filename,
                                          tileset.cell_width, tileset.cell_height)
+
+        @controller.set_layer(-1)
+        @controller.refresh_follow
         @mode.push :view
       end
 
