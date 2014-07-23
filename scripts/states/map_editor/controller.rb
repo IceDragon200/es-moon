@@ -136,6 +136,12 @@ class MapEditorController < StateController
     end
   end
 
+  def resize_chunk(x, y)
+    if chunk = chunk_at_position(@model.map_cursor.position.xy.floor)
+      chunk.resize(chunk.width + x, chunk.height + y)
+    end
+  end
+
   def toggle_keyboard_mode
     @model.keyboard_only_mode = !@model.keyboard_only_mode
     if @model.keyboard_only_mode

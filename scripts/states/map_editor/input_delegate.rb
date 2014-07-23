@@ -68,6 +68,25 @@ class MapEditorInputDelegate < StateInputDelegate
     end
   end
 
+  def register_chunk_resize(input)
+    input.on :press, @control_map["resize_chunk_horz_plus"] do
+      @controller.resize_chunk(1, 0)
+    end
+
+    input.on :press, @control_map["resize_chunk_horz_minus"] do
+      @controller.resize_chunk(-1, 0)
+    end
+
+    input.on :press, @control_map["resize_chunk_vert_plus"] do
+      @controller.resize_chunk(0, 1)
+    end
+
+    input.on :press, @control_map["resize_chunk_vert_minus"] do
+      @controller.resize_chunk(0, -1)
+    end
+
+  end
+
   def register_zoom_controls(input)
     input.on :press, @control_map["zoom_reset"] do
       @controller.zoom_reset
@@ -195,6 +214,7 @@ class MapEditorInputDelegate < StateInputDelegate
     register_actor_move(input)
     register_cursor_move(input)
     register_chunk_move(input)
+    register_chunk_resize(input)
     register_zoom_controls(input)
     register_tile_edit(input)
     register_dashboard_controls(input)
