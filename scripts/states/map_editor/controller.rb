@@ -62,6 +62,17 @@ class MapEditorController < StateController
     @model.selection_stage = 1
   end
 
+  def create_chunk(bounds, data)
+    chunk          = ES::DataModel::EditorChunk.new(data)
+    chunk.position = bounds.xyz
+    chunk.data     = DataMatrix.new(bounds.w, bounds.h, 2, default: -1)
+    chunk.passages = Table.new(bounds.w, bounds.h)
+    chunk.flags    = DataMatrix.new(bounds.w, bounds.h, 2)
+    chunk.tileset  = Database.find(:tileset, uri: "/tilesets/common")
+    @model.map.chunks << chunk
+    #create_tilemaps
+  end
+
   def save_chunks
     @model.map.chunks.each { |chunk| chunk.to_chunk.save_file }
   end

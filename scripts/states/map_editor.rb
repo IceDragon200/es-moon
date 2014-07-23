@@ -281,17 +281,6 @@ module ES
         end.tag("autosave")
       end
 
-      def create_chunk(bounds, data)
-        chunk          = ES::DataModel::EditorChunk.new(data)
-        chunk.position = bounds.xyz
-        chunk.data     = DataMatrix.new(bounds.w, bounds.h, 2, default: -1)
-        chunk.passages = Table.new(bounds.w, bounds.h)
-        chunk.flags    = DataMatrix.new(bounds.w, bounds.h, 2)
-        chunk.tileset  = Database.find(:tileset, uri: "/tilesets/common")
-        @model.map.chunks << chunk
-        create_tilemaps
-      end
-
       def modespace(mode)
         @_wrappers ||= []
         (@_modes ||=[]).push mode
@@ -492,7 +481,7 @@ module ES
                 @model.selection_stage += 1
               elsif @model.selection_stage == 2
                 id = @model.map.chunks.size+1
-                create_chunk @view.tileselection_rect.tile_rect,
+                @controller.create_chunk @view.tileselection_rect.tile_rect,
                              id: id, name: "New Chunk #{id}", uri: "/chunks/new/chunk-#{id}"
 
                 @model.selection_stage = 0
