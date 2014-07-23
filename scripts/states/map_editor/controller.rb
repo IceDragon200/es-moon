@@ -1,13 +1,4 @@
-class MapEditorController
-  attr_accessor :state
-  attr_accessor :model
-  attr_accessor :view
-
-  def initialize(model, view)
-    @state = nil
-    @model = model
-    @view = view
-  end
+class MapEditorController < StateController
 
   ###
   # @param [Vector3] screen_pos
