@@ -20,17 +20,18 @@ require 'scripts/adapters'
 require 'scripts/test'
 require 'scripts/data'
 
-ES.cache = ES::Cache.new
+ES.init_caches
 
 State.push ES::States::Shutdown
 State.push ES::States::Title
-#State.push StateMusicLayering
-#State.push State::CharacterWalkTest
 #State.push Roadmap::StateGridBasedCharacterMovement
 #State.push Roadmap::StateCharacterMovement
 #State.push Roadmap::StateDisplaySpriteOnTilemap
 #State.push Roadmap::StateDisplayTilemapWithChunks
 #State.push Roadmap::StateDisplayChunk
 #State.push Roadmap::StateDisplaySpriteOnScreen
-#State.push State::UITest01
-State.push ES::States::Splash
+#State.push StateMusicLayering
+#State.push StateCharacterWalkTest
+#State.push StateTypingTest
+#State.push StateUITest01
+#State.push ES::States::Splash

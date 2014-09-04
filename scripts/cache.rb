@@ -1,99 +1,99 @@
 module ES
-  class << self
-    attr_accessor :cache
+  class FetchOnlyHash
+    def initialize(hash)
+      @hash = hash
+    end
+
+    def [](key)
+      @hash.fetch(key)
+    end
   end
-  class Cache < CacheBase
 
-    #def debug
-    #  #
-    #end
+  class EsCache < Moon::CacheBase
+  end
 
-    class FetchOnlyHash
-      def initialize(hash)
-        @hash = hash
-      end
-
-      def [](key)
-        @hash.fetch(key)
-      end
+  class TextureCache < EsCache
+    private def load_texture(filename)
+      Moon::Texture.new(filename)
     end
 
-    branch :palette do
-      lambda do |*args|
-        FetchOnlyHash.new(PaletteParser.load_palette(YAML.load(File.read("data/palette.yml"))))
-      end
+    cache def block(filename)
+      load_texture("resources/blocks/" + filename)
     end
 
-    branch :controlmap do
-      lambda do |filename, *args|
-        FetchOnlyHash.new(YAML.load(File.read("data/controlmaps/#{filename}")))
-      end
+    cache def icon(filename)
+      load_texture("resources/icons_64x64/" + filename)
     end
 
-    branch :charmap do
-      lambda do |filename, *args|
-        YAML.load(File.read("data/charmap/#{filename}"))
-      end
+    cache def bmpfont(filename)
+      load_texture("resources/bmpfont/" + filename)
     end
 
-    branch :block do
-      lambda do |filename, *args|
-        Moon::Spritesheet.new("media/blocks/" + filename, *args)
-      end
+    cache def tileset(filename)
+      load_texture("resources/tilesets/" + filename)
     end
 
-    branch :icon do
-      lambda do |filename, *args|
-        Moon::Sprite.new("media/icons_64x64/" + filename)
-      end
+    cache def system(filename)
+      load_texture("resources/system/" + filename)
+    end
+  end
+
+  class FontCache < EsCache
+    def post_init
+      super
+      @aliases = {}
+
+      @aliases["awesome"] = "fontawesome-webfont.ttf"
+
+      @aliases["foundation"] = "general_foundicons.ttf"
+      @aliases["foundation_enclosed"] = "general_enclosed_foundicons.ttf"
+
+      @aliases["uni0553"] = "uni0553/uni0553-webfont.ttf"
+      @aliases["uni0554"] = "uni0554/uni0554-webfont.ttf"
+      @aliases["uni0563"] = "uni0563/uni0563-webfont.ttf"
+      @aliases["uni0564"] = "uni0564/uni0564-webfont.ttf"
+
+      @aliases["ipaexg"] = "ipaexg00201/ipaexg.ttf"
+
+      @aliases["vera"] = "vera/Vera.ttf"
+      @aliases["vera_mono"] = "vera/VeraMono.ttf"
+      @aliases["vera_mono_bold_italic"] = "vera/VeraMoBI.ttf"
+      @aliases["vera_mono_bold"] = "vera/VeraMoBd.ttf"
+      @aliases["vera_mono_italic"] = "vera/VeraMoIt.ttf"
     end
 
-    branch :bmpfont do
-      lambda do |filename, *args|
-        Moon::Spritesheet.new("media/bmpfont/" + filename, *args)
-      end
+    cache def f(filename, size)
+      Moon::Font.new("resources/fonts/" + filename, size)
     end
 
-    branch :tileset do
-      lambda do |filename, *args|
-        Moon::Spritesheet.new("media/tilesets/" + filename, *args)
-      end
+    def font(subname, size)
+      f(@aliases[subname] || subname, size)
+    end
+  end
+
+  class DataCache < EsCache
+    cache def palette
+      FetchOnlyHash.new(PaletteParser.load_palette(DataSerializer.load_file("palette")))
     end
 
-    branch :system do
-      lambda do |filename, *args|
-        Moon::Sprite.new "media/system/" + filename
-      end
+    cache def controlmap(filename)
+      FetchOnlyHash.new(DataSerializer.load_file("controlmaps/#{filename}"))
     end
 
-    branch :font do
-
-      hsh = {}
-
-      loader = lambda do |filename|
-        ->(size) { Moon::Font.new(filename, size) }
-      end
-
-      hsh["awesome"] = loader.("resources/fonts/fontawesome-webfont.ttf")
-
-      hsh["foundation"] = loader.("resources/fonts/general_foundicons.ttf")
-      hsh["foundation_enclosed"] = loader.("resources/fonts/general_enclosed_foundicons.ttf")
-
-      hsh["uni0553"] = loader.("resources/fonts/uni0553/uni0553-webfont.ttf")
-      hsh["uni0554"] = loader.("resources/fonts/uni0554/uni0554-webfont.ttf")
-      hsh["uni0563"] = loader.("resources/fonts/uni0563/uni0563-webfont.ttf")
-      hsh["uni0564"] = loader.("resources/fonts/uni0564/uni0564-webfont.ttf")
-
-      hsh["ipaexg"] = loader.("resources/fonts/ipaexg00201/ipaexg.ttf")
-
-      hsh["vera"] = loader.("resources/fonts/vera/Vera.ttf")
-      hsh["vera_mono"] = loader.("resources/fonts/vera/VeraMono.ttf")
-      hsh["vera_mono_bold_italic"] = loader.("resources/fonts/vera/VeraMoBI.ttf")
-      hsh["vera_mono_bold"] = loader.("resources/fonts/vera/VeraMoBd.ttf")
-      hsh["vera_mono_italic"] = loader.("resources/fonts/vera/VeraMoIt.ttf")
-
-      hsh
+    cache def charmap(filename)
+      DataSerializer.load_file("charmap/#{filename}")
     end
+  end
 
+  class << self
+    attr_accessor :texture_cache
+    attr_accessor :data_cache
+    attr_accessor :font_cache
+  end
+
+  def self.init_caches
+    @texture_cache = TextureCache.new("Texture")
+    @data_cache = DataCache.new("Data")
+    @font_cache = FontCache.new("Font")
   end
 end
