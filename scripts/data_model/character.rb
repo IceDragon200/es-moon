@@ -14,7 +14,7 @@ module ES
       field :cell_width,  type: Integer, default: 32
       field :cell_height, type: Integer, default: 32
       field :frame_rate,  type: Integer, default: 8
-      field :sequence,    type: [CharacterSequenceFrame], default: proc {[]}
+      array :sequence,    type: CharacterSequenceFrame
     end
 
     class Character < ::DataModel::Metal

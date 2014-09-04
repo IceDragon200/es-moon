@@ -1,7 +1,7 @@
 module ES
   module DataModel
     class EditorMap < ::DataModel::Base
-      field :chunks, type: [EditorChunk], default: proc{[]}
+      array :chunks, type: EditorChunk
 
       def bounds
         l, r, t, b = nil, nil, nil, nil
