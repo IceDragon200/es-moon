@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-fn="game-icons.net.png.zip"
-uri="http://game-icons.net/archives/png/zip/$fn"
-curl "$uri" -O "$fn"
-unzip "$fn"
