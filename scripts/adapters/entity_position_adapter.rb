@@ -1,7 +1,7 @@
 class EntityPositionAdapter
   def initialize(obj)
     @obj = obj
-    @position = Vector3.new(0, 0, 0)
+    @position = Moon::Vector3.new(0, 0, 0)
   end
 
   def position
