@@ -13,12 +13,15 @@ module States
     def create_title_menu
       @title_menu = UI::TitleMenu.new
       @title_menu.add_entry(:newgame, "New Game")
+      @title_menu.add_entry(:continue, "Continue")
+      @title_menu.add_entry(:map_viewer, "Map Viewer")
       @title_menu.add_entry(:map_editor, "Map Editor")
-      #@title_menu.add_entry(:continue, "Continue")
       @title_menu.add_entry(:quit, "Quit")
       #
       @title_menu.align!("center", Moon::Screen.rect)
       @title_menu.position = Moon::Vector3.new(8, 4, 0)
+
+      @gui.add @title_menu
     end
 
     def register_events
@@ -38,24 +41,14 @@ module States
       #end
     end
 
-    def update(delta)
-      super delta
-    end
-
-    def render
-      @title_menu.render 0, 0, 0
-      #@title_sprite.render Screen.width - @title_sprite.width,
-      #                     Screen.height - @title_sprite.height,
-      #                     0
-      super
-    end
-
     def on_title_menu_accept
       case @title_menu.current_item[:id]
       when :newgame
-        State.change(ES::States::Map)
+        State.change States::Map
+      when :map_viewer
+        State.change States::MapViewer
       when :map_editor
-        State.change(EsMapEditor)
+        State.change EsMapEditor
       when :quit
         State.pop
       end

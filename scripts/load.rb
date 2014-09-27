@@ -22,8 +22,8 @@ TextureCache = ES::TextureCacheClass.new
 FontCache = ES::FontCacheClass.new
 DataCache = ES::DataCacheClass.new
 
-State.push ES::States::Shutdown
-State.push ES::States::Title
+State.push States::Shutdown
+State.push States::Title
 #State.push Roadmap::StateGridBasedCharacterMovement
 #State.push Roadmap::StateCharacterMovement
 #State.push Roadmap::StateDisplaySpriteOnTilemap
