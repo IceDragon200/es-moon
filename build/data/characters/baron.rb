@@ -1,6 +1,6 @@
 require_relative "base"
 
-pool(ES::DataModel::Character.new do |c|
+pool(ES::Character.new do |c|
   c.name = "baron"
   c.uri = "/characters/baron"
   c.poses = render_pose_list do |pb| # pb = pose_builder

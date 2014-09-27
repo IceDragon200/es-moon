@@ -17,11 +17,11 @@ class PoseBuilder
   delegate :sequence=, to: :@_pose
 
   def initialize(pose=nil)
-    @_pose = pose || ES::DataModel::Pose.new
+    @_pose = pose || ES::Pose.new
   end
 
   def setup_sequence
-    builder = SequenceBuilder.new(ES::DataModel::CharacterSequenceFrame)
+    builder = SequenceBuilder.new(ES::CharacterSequenceFrame)
     yield builder
     @_pose.sequence = builder.frames
   end
@@ -39,7 +39,7 @@ class PoseListBuilder
   end
 
   def pose(key)
-    builder = PoseBuilder.new(ES::DataModel::Pose.new(@default_options))
+    builder = PoseBuilder.new(ES::Pose.new(@default_options))
     yield builder
     @list[key] = builder._pose
   end

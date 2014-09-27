@@ -1,6 +1,6 @@
 require_relative "base"
 
-pool(ES::DataModel::Popup.new do |popup|
+pool(ES::Popup.new do |popup|
   popup.name = "idling"
   popup.uri = "popups/idling"
   popup.filename = "lil-icons_3x.png"
@@ -8,7 +8,7 @@ pool(ES::DataModel::Popup.new do |popup|
   popup.cell_height = 30
   popup.frame_rate = 60 #16
   popup.sequence = render_popup_sequence do |builder|
-    easer = Easer::Linear
+    easer = Easing::CubicInOut
     rock = 28 #45
     bounce = 4
     builder.keyframe(index: 15, angle: 0, x: 0, y: -2, ox: popup.cell_width/2, oy: popup.cell_height*4/5)

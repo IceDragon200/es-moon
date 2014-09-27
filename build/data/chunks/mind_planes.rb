@@ -1,4 +1,4 @@
-pool(ES::DataModel::Chunk.new do |chunk|
+pool(ES::Chunk.new do |chunk|
 
   chunk.name = "Baron's Mind Plane - Arc 1"
   chunk.uri = "/chunks/mind_plane/baron/arc1"

@@ -1,4 +1,4 @@
-pool(ES::DataModel::Tileset.new do |t|
+pool(ES::Tileset.new do |t|
   t.uri = "/tilesets/common"
   t.name = "Common Tileset"
   t.filename = "oryx_lofi_fantasy/4x/lofi_environment_4x.png"

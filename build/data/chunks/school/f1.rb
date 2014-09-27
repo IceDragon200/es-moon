@@ -2,7 +2,7 @@ tileset = {
   uri: "/tilesets/common"
 }
 
-pool(ES::DataModel::Chunk.new do |chunk|
+pool(ES::Chunk.new do |chunk|
 
   chunk.name = "Baron's School Room"
   chunk.uri = "/chunks/school/f1/room/baron"
@@ -54,7 +54,7 @@ pool(ES::DataModel::Chunk.new do |chunk|
 
 end)
 
-pool(ES::DataModel::Chunk.new do |chunk|
+pool(ES::Chunk.new do |chunk|
 
   chunk.name = "School F1 Hallway"
   chunk.uri = "/chunks/school/f1/hallway"

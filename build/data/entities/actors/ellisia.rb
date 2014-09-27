@@ -1,4 +1,4 @@
-pool(ES::DataModel::Entity.new do |entity|
+pool(ES::Entity.new do |entity|
 
   entity.name = "ellisia"
   entity.uri = "/entities/actors/ellisia"
