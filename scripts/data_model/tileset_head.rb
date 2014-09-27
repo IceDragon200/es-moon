@@ -1,7 +1,5 @@
 module ES
-  module DataModel
-    class TilesetHead < ::DataModel::Metal
-      field :uri,      type: String,  default: ""
-    end
+  class TilesetHead < Moon::DataModel::Metal
+    field :uri,      type: String,  default: ""
   end
 end

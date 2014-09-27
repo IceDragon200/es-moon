@@ -1,9 +1,9 @@
 module Database
   @class_reg = {
-    chunk: ES::DataModel::Chunk,
-    entity: ES::DataModel::Entity,
-    map: ES::DataModel::Map,
-    tileset: ES::DataModel::Tileset,
+    chunk: ES::Chunk,
+    entity: ES::Entity,
+    map: ES::Map,
+    tileset: ES::Tileset,
   }
 
   @data = {}

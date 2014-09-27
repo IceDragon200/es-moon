@@ -1,7 +1,5 @@
 module ES
-  module DataModel
-    class Entity < ::DataModel::Base
-      #
-    end
+  class Entity < Moon::DataModel::Base
+    #
   end
 end
