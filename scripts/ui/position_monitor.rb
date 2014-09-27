@@ -1,12 +1,11 @@
 module ES
   module UI
     class PositionMonitor < Moon::Text
-
       attr_accessor :visible
       attr_accessor :obj
 
       def initialize
-        super "", ES.cache.font("uni0553", 16)
+        super "", FontCache.font("uni0553", 16)
         @visible = true
         @obj = nil
       end
@@ -21,7 +20,6 @@ module ES
           self.string = "x: -.-, y: -.-"
         end
       end
-
     end
   end
 end

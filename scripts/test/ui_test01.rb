@@ -1,5 +1,5 @@
 class StateUITest01 < State
-  class SpriteContainer < RenderContainer
+  class SpriteContainer < Moon::RenderContext
     attr_reader :sprite
 
     def initialize(*args, &block)
@@ -15,10 +15,9 @@ class StateUITest01 < State
       @sprite.height
     end
 
-    def render(x, y, z)
-      px, py, pz = *(@position+[x, y, z])
-      @sprite.render(px, py, pz)
-      super x, y, z
+    def render_content(x, y, z)
+      @sprite.render x, y, z
+      super
     end
 
     def clip_rect

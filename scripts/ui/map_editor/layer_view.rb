@@ -1,6 +1,6 @@
 module ES
   module UI
-    class MapEditorLayerView < RenderContainer
+    class MapEditorLayerView < Moon::RenderContext
       attr_accessor :index
       attr_accessor :layer_count
 
@@ -19,21 +19,20 @@ module ES
         @height ||= @layer_ss.cell_height * 2
       end
 
-      def render(x=0, y=0, z=0)
-        px, py, pz = *(@position + [x, y, z])
+      def render_content(x, y, z, options)
         w = @layer_ss.cell_width
         h = @layer_ss.cell_height
 
         @layer_count.times do |i|
-          @layer_ss.render px + i * w,
-                           py,
-                           pz,
+          @layer_ss.render x + i * w,
+                           y,
+                           z,
                            i == @index ? 12 : 1
         end
 
-        @layer_ss.render px,
-                         py + h,
-                         pz,
+        @layer_ss.render x,
+                         y + h,
+                         z,
                          13
         super
       end

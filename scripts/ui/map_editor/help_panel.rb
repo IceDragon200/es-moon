@@ -1,6 +1,6 @@
 module ES
   module UI
-    class MapEditorHelpPanel < Window
+    class MapEditorHelpPanel < Moon::Window
       attr_accessor :controlmap
 
       def initialize(controlmap)
@@ -10,9 +10,9 @@ module ES
 
       def init_elements
         super
-        @background.windowskin = Spritesheet.new("media/ui/console_windowskin_dark_16x16.png", 16, 16)
+        @background.windowskin = Moon::Spritesheet.new("resources/ui/console_windowskin_dark_16x16.png", 16, 16)
 
-        @text = Text.new "", ES.cache.font("uni0553", 16) #16)
+        @text = Moon::Text.new "", FontCache.font("uni0553", 16) #16)
         @text.string = "" +
           "#{human_key(@controlmap["erase_tile"])} to erase current tile\n" +
           "#{human_key(@controlmap["copy_tile"])} to select current tile\n" +
@@ -29,7 +29,7 @@ module ES
       end
 
       def human_key(*keys)
-        keys.flatten.map { |key| Input.key_to_human_readable(key).first }.join(" or ").dump
+        keys.flatten.map { |key| Moon::Input.key_to_human_readable(key).first }.join(" or ").dump
       end
 
       private :human_key

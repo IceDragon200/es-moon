@@ -1,5 +1,5 @@
 class HealthAttribute
-  include Component
+  include Moon::Component
   register :health
 
   field :value, type: Integer, default: 0

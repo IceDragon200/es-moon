@@ -1,12 +1,11 @@
 module ES
   module UI
-    class AwesomeButton < RenderContainer
-
+    class AwesomeButton < Moon::RenderContext
       attr_reader :text
 
       def initialize
         super
-        @text = Text.new "", ES.cache.font("awesome", 32)
+        @text = Moon::Text.new "", FontCache.font("awesome", 32)
       end
 
       def width
@@ -17,13 +16,12 @@ module ES
         32
       end
 
-      def render(x=0, y=0, z=0)
-        return if @text.string.empty?
-        px, py, pz = *(@position + [x, y, z])
-        @text.render px + (width-@text.font.size)/2,
-                     py + (height-@text.font.size)/2,
-                     pz
-        super x, y, z
+      def render_content(x, y, z, options)
+        return unless @text.string.presence
+        @text.render x + (width-@text.font.size)/2,
+                     y + (height-@text.font.size)/2,
+                     z
+        super
       end
 
     end

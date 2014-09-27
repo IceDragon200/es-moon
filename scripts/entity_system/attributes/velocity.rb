@@ -1,5 +1,5 @@
 class VelocityAttribute
-  include Component
+  include Moon::Component
   register :velocity
 
   field :x, type: Integer, default: 0

@@ -1,9 +1,6 @@
 module ES
   module UI
-    class AnimatedText < Text
-
-      include Visibility
-
+    class AnimatedText < Moon::Text
       attr_accessor :target_text
 
       def arm(duration)
@@ -33,10 +30,8 @@ module ES
         end
         self
       end
-
     end
     class Notifications < AnimatedText
-
       def initialize(*args, &block)
         @time = 1.0
         @duration = 1.0
@@ -62,7 +57,6 @@ module ES
         set options
         arm options.fetch(:duration, 0.25)
       end
-
     end
   end
 end

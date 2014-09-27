@@ -1,5 +1,5 @@
 module MovementSystem
-  extend System
+  extend Moon::System
   register :movement
 
   def self.process(delta, world)

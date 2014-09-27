@@ -1,16 +1,17 @@
 module ES
   module UI
-    class TilePreview < RenderContainer
-
+    class TilePreview < Moon::RenderContainer
       attr_accessor :tile_id       # Integer
       attr_accessor :tileset       # Spritesheet
 
       def initialize
         super
-        @micro_ss = ES.cache.block "e008x008.png", 8, 8
-        @background_ss = ES.cache.block "e064x064.png", 64, 64
+        texture = TextureCache.block "e008x008.png"
+        @micro_ss = Moon::Spritesheet.new texture, 8, 8
+        texture = TextureCache.block "e064x064.png"
+        @background_ss = Moon::Spritesheet.new texture, 64, 64
 
-        @text = Text.new "", ES.cache.font("uni0553", 16)
+        @text = Moon::Text.new "", FontCache.font("uni0553", 16)
 
         @tileset = nil
         @tile_id = -1
@@ -24,27 +25,25 @@ module ES
         @background_ss.cell_height
       end
 
-      def render(x=0, y=0, z=0)
-        px, py, pz = *(@position + [x, y, z])
-        @background_ss.render px, py, pz, 1
+      def render_content(x, y, z, options)
+        @background_ss.render x, y, z, 1
 
         if @tileset
           diff = (@background_ss.cell_size - @tileset.cell_size) / 2
 
           if @tile_id >= 0
-            @tileset.render diff.x + px, diff.y + py, pz, @tile_id
+            @tileset.render diff.x + x, diff.y + y, z, @tile_id
           end
 
-          @text.string = @tile_id
-          @text.render diff.x + px,
-                       diff.y + py + @tileset.cell_height,
-                       pz
+          @text.string = @tile_id.to_s
+          @text.render diff.x + x,
+                       diff.y + y + @tileset.cell_height,
+                       z
         else
-          @micro_ss.render px, py, pz, 8
+          @micro_ss.render x, y, z, 8
         end
-        super x, y, z
+        super
       end
-
     end
   end
 end

@@ -1,16 +1,16 @@
 module ES
   module UI
-    class SelectionTileRect < RenderContainer
+    class SelectionTileRect < Moon::RenderContainer
       attr_accessor :tile_rect
       attr_accessor :color
       attr_accessor :spritesheet
 
-      def initialize
+      def initialize(options={})
         super
         @active = false
-        @tile_rect = Rect.new 0, 0, 0, 0
+        @tile_rect = Moon::Rect.new 0, 0, 0, 0
         @spritesheet = nil
-        @color = Vector4.new 1.0, 1.0, 1.0, 1.0
+        @color = Moon::Vector4.new 1.0, 1.0, 1.0, 1.0
       end
 
       def width
@@ -23,10 +23,10 @@ module ES
         @spritesheet.cell_height * @tile_rect.h
       end
 
-      def render(x=0, y=0, z=0, options={})
+      def render_content(x, y, z, options)
         if @spritesheet
           cw, ch = @spritesheet.cell_width, @spritesheet.cell_height
-          px, py, pz = *(@position + [x, y, z] + @tile_rect.xyz * [cw, ch, 1])
+          px, py, pz = *(@tile_rect.xyz * [cw, ch, 1] + [x, y, z])
           render_options = { color: @color }.merge(options)
           @tile_rect.h.times do |i|
             @tile_rect.w.times do |j|
@@ -37,7 +37,7 @@ module ES
             end
           end
         end
-        super x, y, z
+        super
       end
     end
   end

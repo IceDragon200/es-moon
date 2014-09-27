@@ -1,4 +1,4 @@
-class ModeIcon < RenderContainer
+class ModeIcon < Moon::RenderContainer
   attr_reader :mode
 
   def initialize(icons)
@@ -6,7 +6,8 @@ class ModeIcon < RenderContainer
     @icons = icons
     @font_awesome = ES.cache.font("awesome", 32)
     @charmap_awesome = ES.cache.charmap("awesome.yml")
-    @text = Text.new("", @font_awesome)
+    @text = Moon::Text.new("", @font_awesome)
+
     add(@text)
   end
 

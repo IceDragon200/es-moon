@@ -1,11 +1,11 @@
 module ES
   module UI
-    class MapEditorDashboard < RenderContainer
+    class MapEditorDashboard < Moon::RenderContainer
       attr_accessor :default_color
 
       def initialize
         super
-        pal = ES.cache.palette
+        pal = DataCache.palette
         @default_color = pal["white"]
         @info_color    = pal["system/info"]
         @ok_color      = pal["system/ok"]
@@ -19,7 +19,7 @@ module ES
         @reserved5  = add_button "download"                          # F5  # 4
         @reserved6  = add_button "upload"                            # F6  # 5
         @reserved7  = add_button ""                                  # F7  # 6
-        @reserved8  = add_button ""                                  # F8  # 7
+        @grid       = add_button "table"                             # F8  # 7
         @keyboard   = add_button "keyboard-o"                        # F9  # 8
         @show_chunk = add_button "search"                            # F10 # 9
         @reserved11 = add_button ""                                  # F11 # 10
@@ -30,8 +30,8 @@ module ES
 
       def add_button(icon_name)
         button = AwesomeButton.new
-        button.text.string = ES.cache.charmap("awesome.yml")[icon_name]
-        button.position.set @elements.size * button.width, 0, 0
+        button.text.string = DataCache.charmap("awesome")[icon_name]
+        button.position = Moon::Vector3[@elements.size * button.width, 0, 0]
         add button
         button
       end
@@ -63,6 +63,10 @@ module ES
 
       def disable(index=nil)
         state @default_color, index
+      end
+
+      def toggle(index, bool)
+        bool ? enable(index) : disable(index)
       end
 
       alias :enable :ok

@@ -1,5 +1,5 @@
 class CharacterAttribute
-  include Component
+  include Moon::Component
   register :character
 
   field :filename,    type: String,  default: ""

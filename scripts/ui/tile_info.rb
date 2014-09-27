@@ -1,7 +1,6 @@
 module ES
   module UI
-    class TileInfo < RenderContainer
-
+    class TileInfo < Moon::RenderContext
       attr_accessor :tileset       # Spritesheet
       attr_accessor :tile_data     # DataModel::TileData
 
@@ -9,18 +8,14 @@ module ES
         super
         @tile_data = nil
         @tileset = nil # spritesheet
-        @text = Text.new "", ES.cache.font("uni0553", 16)
+        @text = Moon::Text.new "", FontCache.font("uni0553", 16)
 
-        @block_ss = ES.cache.block "e008x008.png", 8, 8
-        #@block_ss = ES.cache.block "e016x016.png", 16, 16
+        texture = TextureCache.block "e008x008.png"
+        @block_ss = Moon::Spritesheet.new(texture, 8, 8)
       end
 
-      def render(x=0, y=0, z=0)
+      def render_content(x, y, z, options)
         return unless @tile_data
-
-        px = x + @position.x
-        py = y + @position.y
-        pz = z + @position.z
 
         tile_ids = @tile_data[:tile_ids] || []
         chunk = @tile_data[:chunk]
@@ -47,59 +42,58 @@ module ES
         #              "passage:        #{passage}\n" +
         #              "" # placeholder
 
-        @text.render px, py, pz
-        py += @text.height
+        @text.render x, y, z
+        y += @text.height
 
 
         # draw blocks for passage
         if passage == ES::Passage::NONE
-          @block_ss.render px + @block_ss.cell_width,
-                           py + @block_ss.cell_height,
-                           pz,
+          @block_ss.render x + @block_ss.cell_width,
+                           y + @block_ss.cell_height,
+                           z,
                            8
         else
-          @block_ss.render px + @block_ss.cell_width,
-                           py,
-                           pz,
+          @block_ss.render x + @block_ss.cell_width,
+                           y,
+                           z,
                            passage.masked?(ES::Passage::UP) ? 9 : 8
           #
-          @block_ss.render px,
-                           py + @block_ss.cell_height,
-                           pz,
+          @block_ss.render x,
+                           y + @block_ss.cell_height,
+                           z,
                            passage.masked?(ES::Passage::LEFT) ? 9 : 8
           #
-          @block_ss.render px + @block_ss.cell_width,
-                           py + @block_ss.cell_height,
-                           pz,
+          @block_ss.render x + @block_ss.cell_width,
+                           y + @block_ss.cell_height,
+                           z,
                            passage.masked?(ES::Passage::ABOVE) ? 12 : 1
           #
-          @block_ss.render px + @block_ss.cell_width * 2,
-                           py + @block_ss.cell_height,
-                           pz,
+          @block_ss.render x + @block_ss.cell_width * 2,
+                           y + @block_ss.cell_height,
+                           z,
                            passage.masked?(ES::Passage::RIGHT) ? 9 : 8
           #
-          @block_ss.render px + @block_ss.cell_width,
-                           py + @block_ss.cell_height * 2,
-                           pz,
+          @block_ss.render x + @block_ss.cell_width,
+                           y + @block_ss.cell_height * 2,
+                           z,
                            passage.masked?(ES::Passage::DOWN) ? 9 : 8
         end
 
         if @tileset
-          py += @block_ss.cell_height * 3
+          y += @block_ss.cell_height * 3
           tile_ids.each_with_index do |tile_id, i|
             next if tile_id < 0
             xo = @tileset.cell_width * i
 
 
-            @tileset.render px + xo, py, pz, tile_id
+            @tileset.render x + xo, y, z, tile_id
 
             @text.string = tile_id.to_s
-            @text.render px + xo, py + @tileset.cell_height, pz
+            @text.render x + xo, y + @tileset.cell_height, z
           end
         end
-        super x, y, z
+        super
       end
-
     end
   end
 end

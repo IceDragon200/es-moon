@@ -1,7 +1,6 @@
 module ES
   module UI
-    class TilePanel < RenderContainer
-
+    class TilePanel < Moon::RenderContext
       attr_accessor :tileset       # Spritesheet
       attr_accessor :visible_rows
       attr_reader :tile_id         # Integer
@@ -12,12 +11,13 @@ module ES
         @visible_rows = 4
         @visible_cols = 8
 
-        @tilesize = Vector2.new 32, 32
-        @cursor_pos = Vector2.new 0, 0
+        @tilesize = Moon::Vector2.new 32, 32
+        @cursor_pos = Moon::Vector2.new 0, 0
 
-        @text = Text.new "", ES.cache.font("uni0553", 16)
+        @text = Moon::Text.new "", FontCache.font("uni0553", 16)
 
-        @block_ss = ES.cache.block "e032x032.png", 32, 32
+        texture = TextureCache.block "e032x032.png"
+        @block_ss = Moon::Spritesheet.new texture, 32, 32
 
         @tile_id = 0
         @row_index = 0
@@ -49,28 +49,25 @@ module ES
         end
       end
 
-      def render(x=0, y=0, z=0)
-        px, py, pz = *(@position + [x, y, z])
-
+      def render_content(x, y, z, options)
         if @tileset
           vis = @visible_rows * @visible_cols
           @tileset.cell_count.times do |i|
             break if i >= vis
             tx = (i % @visible_cols) * @tileset.cell_width
             ty = (i / @visible_cols).floor * @tileset.cell_height
-            @tileset.render px + tx, py + ty + 16, pz, @row_index + i
+            @tileset.render x + tx, y + ty + 16, z, @row_index + i
           end
         end
 
         if relative_pos_inside?(@cursor_pos)
           @text.string = "tile #{@tile_id}"
-          @text.render px, py, pz
-          @block_ss.render px + @cursor_pos.x, py + @cursor_pos.y + 16, pz, 1
+          @text.render x, y, z
+          @block_ss.render x + @cursor_pos.x, y + @cursor_pos.y + 16, z, 1
         end
 
-        super x, y, z
+        super
       end
-
     end
   end
 end

@@ -1,5 +1,5 @@
 class PositionAttribute
-  include Component
+  include Moon::Component
   register :position
 
   field :x, type: Integer, default: 0
