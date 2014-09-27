@@ -9,10 +9,10 @@ module ES
     end
   end
 
-  class EsCache < Moon::CacheBase
+  class EsCacheClass < Moon::CacheBase
   end
 
-  class TextureCache < EsCache
+  class TextureCacheClass < EsCacheClass
     private def load_texture(filename)
       Moon::Texture.new(filename)
     end
@@ -38,7 +38,7 @@ module ES
     end
   end
 
-  class FontCache < EsCache
+  class FontCacheClass < EsCacheClass
     def post_init
       super
       @aliases = {}
@@ -71,7 +71,7 @@ module ES
     end
   end
 
-  class DataCache < EsCache
+  class DataCacheClass < EsCacheClass
     cache def palette
       FetchOnlyHash.new(PaletteParser.load_palette(DataSerializer.load_file("palette")))
     end
@@ -83,17 +83,5 @@ module ES
     cache def charmap(filename)
       DataSerializer.load_file("charmap/#{filename}")
     end
-  end
-
-  class << self
-    attr_accessor :texture_cache
-    attr_accessor :data_cache
-    attr_accessor :font_cache
-  end
-
-  def self.init_caches
-    @texture_cache = TextureCache.new("Texture")
-    @data_cache = DataCache.new("Data")
-    @font_cache = FontCache.new("Font")
   end
 end

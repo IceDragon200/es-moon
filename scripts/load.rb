@@ -1,11 +1,9 @@
-include Moon
-
 #Moon::Screen.resize(800, 600)
 
 require 'scripts/mixin'
 require 'scripts/core_ext'
 require 'scripts/version'
-require 'scripts/cache'
+require 'scripts/caches'
 require 'scripts/entity_system'
 require 'scripts/renderers'
 require 'scripts/ui'
@@ -20,7 +18,9 @@ require 'scripts/adapters'
 require 'scripts/test'
 require 'scripts/data'
 
-ES.init_caches
+TextureCache = ES::TextureCacheClass.new
+FontCache = ES::FontCacheClass.new
+DataCache = ES::DataCacheClass.new
 
 State.push ES::States::Shutdown
 State.push ES::States::Title
