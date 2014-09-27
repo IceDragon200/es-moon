@@ -11,7 +11,26 @@ module ES
       end
 
       def [](*args)
-        @data[*args]
+        case args.size
+        # [[x, y, z]]= value
+        # [vec2]= value
+        # [vec3]= value
+        when 1
+          pos, = *args
+          x, y, layer = *pos
+          layer ||= @layer
+        # [x, y]
+        when 2
+          layer = @layer
+          x, y = *args
+        # [x, y, layer]
+        when 3
+          x, y, layer = *args
+        else
+          raise ArgumentError,
+                "wrong argument count #{args.size} (expected 2, 3, or 4)"
+        end
+        @data[x, y, layer]
       end
 
       def []=(*args)
