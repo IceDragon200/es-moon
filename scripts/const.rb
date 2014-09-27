@@ -1,6 +1,5 @@
 module ES
   module Passage
-
     NONE      = 0                                # 0000 0000
     UP        = 1                                # 0000 0001
     LEFT      = 2                                # 0000 0010
@@ -23,6 +22,5 @@ module ES
       "o" => ALL,
       "x" => NONE,
     }
-
   end
 end
