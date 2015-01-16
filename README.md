@@ -1,5 +1,4 @@
-es-moon
-=======
+# [![Moon](https://raw.githubusercontent.com/IceDragon200/es-moon/master/es-logo-128x.png)](https://raw.githubusercontent.com/IceDragon200/es-moon/master/es-logo-128x.png) es-moon
 [![Code Climate](https://codeclimate.com/github/IceDragon200/es-moon.png)](https://codeclimate.com/github/IceDragon200/es-moon)
 
 Earthen - Smiths built atop [moon](https://github.com/archSeer/moon)
