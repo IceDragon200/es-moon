@@ -44,3 +44,4 @@ build/resources
 build/*.zip
 
 /resources
+/packages
