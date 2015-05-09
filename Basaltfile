@@ -1,0 +1,26 @@
+set pkgdir: 'packages'
+
+pkg 'data_bags'
+pkg 'data_model'
+pkg 'data_painter' # Data manipulation package
+pkg 'dataman'
+pkg 'debug'
+pkg 'duck' # stub base class package
+pkg 'entity_system'
+pkg 'es'
+pkg 'es-aux' # ES auxillary package, various prototypes
+pkg 'es_map_editor'
+pkg 'lunar_ui'
+pkg 'moon-inflector'
+pkg 'moon-logfmt'
+pkg 'moon-null_io'
+pkg 'moon-prototype'
+pkg 'moon-serializable'
+pkg 'nui' # NanoVG UI package
+pkg 'render_primitives'
+pkg 'scheduler'
+pkg 'splash' # splash screen package
+pkg 'state_middleware'
+pkg 'state_mvc'
+pkg 'std' # standard library
+pkg 'twod'
