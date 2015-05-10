@@ -1,0 +1,16 @@
+---
+id: qaxLDbbq3dcTXXJQ
+name: New Map
+note: 
+tags: []
+meta: {}
+uri: "/maps/new/map-qaxLDbbq3dcTXXJQ"
+chunks:
+- uri: 
+  position:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    "&class": Moon::Vector3
+  "&class": ES::ChunkHead
+"&class": ES::Map

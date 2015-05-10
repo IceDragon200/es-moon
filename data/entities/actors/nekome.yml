@@ -5,4 +5,4 @@ note: ''
 tags: []
 meta: {}
 uri: "/entities/actors/nekome"
-"&class": ES::DataModel::Entity
+"&class": ES::Entity

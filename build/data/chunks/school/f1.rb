@@ -3,7 +3,6 @@ tileset = {
 }
 
 pool(ES::Chunk.new do |chunk|
-
   chunk.name = "Baron's School Room"
   chunk.uri = "/chunks/school/f1/room/baron"
 
@@ -30,18 +29,6 @@ pool(ES::Chunk.new do |chunk|
     pnt[5, 3] = 137                                            # right chair
   end
 
-  chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
-    dm.clear(Tilemap::DataFlag::NONE)
-    # shift the bed a quater tile up
-    dm[1, 1, 1] = Tilemap::DataFlag::QUART_OFF_TILE |
-                  Tilemap::DataFlag::OFF_DOWN
-
-    # we shift that bookshelf a half tile upwards so it looks like its
-    # against the wall instead of off the wall
-    dm[4, 1, 1] = Tilemap::DataFlag::HALF_OFF_TILE |
-                  Tilemap::DataFlag::OFF_UP
-  end
-
   chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
     pss = "xxxxxxxx" +
           "xoooooox" +
@@ -51,11 +38,9 @@ pool(ES::Chunk.new do |chunk|
           "xxxxxxxx"
     table.set_from_strmap(pss, ES::Passage::STRMAP)
   end
-
 end)
 
 pool(ES::Chunk.new do |chunk|
-
   chunk.name = "School F1 Hallway"
   chunk.uri = "/chunks/school/f1/hallway"
 
@@ -76,10 +61,6 @@ pool(ES::Chunk.new do |chunk|
     pnt.layer = 1
   end
 
-  chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
-    dm.clear(Tilemap::DataFlag::NONE)
-  end
-
   chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
     pss = "xxxxxxx" +
           "xxoooxx" +
@@ -95,5 +76,4 @@ pool(ES::Chunk.new do |chunk|
           "xxxxxxx"
     table.set_from_strmap(pss, ES::Passage::STRMAP)
   end
-
 end)

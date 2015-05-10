@@ -66,21 +66,21 @@ data:
   - 12
   - 12
   - 0
+  - 1
   - -1
+  - 0
+  - 12
+  - 12
+  - 12
+  - 12
+  - 12
   - -1
   - 0
   - 12
   - 12
   - 12
   - 0
-  - -1
-  - -1
-  - 0
-  - 12
-  - 12
-  - 12
-  - 0
-  - -1
+  - 1
   - -1
   - 0
   - 12
@@ -447,5 +447,5 @@ passages:
   "&class": Moon::Table
 tileset:
   uri: "/tilesets/common"
-  "&class": ES::DataModel::TilesetHead
-"&class": ES::DataModel::Chunk
+  "&class": ES::TilesetHead
+"&class": ES::Chunk

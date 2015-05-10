@@ -1,6 +1,6 @@
 ---
-name: baron
-uri: "/characters/baron"
+name: chika
+uri: "/characters/chika"
 poses:
   idle:
     filename: 4x/characters_4x.png
@@ -8,7 +8,7 @@ poses:
     cell_height: 32
     frame_rate: 2
     sequence:
-    - index: 67
+    - index: 73
       ox: 0
       oy: 0
       x: 0
@@ -20,7 +20,7 @@ poses:
         h: 20
         "&class": Moon::Rect
       "&class": ES::CharacterSequenceFrame
-    - index: 68
+    - index: 74
       ox: 0
       oy: 0
       x: 0
@@ -39,7 +39,7 @@ poses:
     cell_height: 32
     frame_rate: 1
     sequence:
-    - index: 67
+    - index: 73
       ox: 0
       oy: 0
       x: 0
@@ -58,7 +58,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 35
+    - index: 41
       ox: 0
       oy: 0
       x: 0
@@ -77,7 +77,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 3
+    - index: 9
       ox: 0
       oy: 0
       x: 0
@@ -96,7 +96,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 51
+    - index: 57
       ox: 0
       oy: 0
       x: 0
@@ -115,7 +115,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 19
+    - index: 25
       ox: 0
       oy: 0
       x: 0
@@ -134,7 +134,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 36
+    - index: 42
       ox: 0
       oy: 0
       x: 0
@@ -146,7 +146,7 @@ poses:
         h: 32
         "&class": Moon::Rect
       "&class": ES::CharacterSequenceFrame
-    - index: 37
+    - index: 43
       ox: 0
       oy: 0
       x: 0
@@ -165,7 +165,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 4
+    - index: 10
       ox: 0
       oy: 0
       x: 0
@@ -177,7 +177,7 @@ poses:
         h: 32
         "&class": Moon::Rect
       "&class": ES::CharacterSequenceFrame
-    - index: 5
+    - index: 11
       ox: 0
       oy: 0
       x: 0
@@ -196,7 +196,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 52
+    - index: 58
       ox: 0
       oy: 0
       x: 0
@@ -208,7 +208,7 @@ poses:
         h: 32
         "&class": Moon::Rect
       "&class": ES::CharacterSequenceFrame
-    - index: 53
+    - index: 59
       ox: 0
       oy: 0
       x: 0
@@ -227,7 +227,7 @@ poses:
     cell_height: 32
     frame_rate: 8
     sequence:
-    - index: 20
+    - index: 26
       ox: 0
       oy: 0
       x: 0
@@ -239,7 +239,7 @@ poses:
         h: 32
         "&class": Moon::Rect
       "&class": ES::CharacterSequenceFrame
-    - index: 21
+    - index: 27
       ox: 0
       oy: 0
       x: 0

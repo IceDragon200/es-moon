@@ -527,5 +527,5 @@ passages:
   "&class": Moon::Table
 tileset:
   uri: ''
-  "&class": ES::DataModel::TilesetHead
-"&class": ES::DataModel::Chunk
+  "&class": ES::TilesetHead
+"&class": ES::Chunk

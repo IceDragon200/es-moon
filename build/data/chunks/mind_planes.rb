@@ -7,11 +7,6 @@ pool(ES::Chunk.new do |chunk|
     pnt = ES::Helper::PaintMap.new(dm)
   end
 
-  chunk.flags = DataMatrix.new(*chunk.data.size) do |dm|
-    dm.clear(Tilemap::DataFlag::NONE)
-  end
-
   chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
   end
-
 end)

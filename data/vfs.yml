@@ -1,0 +1,21 @@
+---
+data:
+  characters:
+    baron: "/characters/baron.yml"
+    baron_backpack: "/characters/baron+backpack.yml"
+    chika: "/characters/chika.yml"
+    cogan: "/characters/cogan.yml"
+    cyrus: "/characters/cyrus.yml"
+    nixe: "/characters/nixe.yml"
+    spyet: "/characters/spyet.yml"
+  charmaps:
+    awesome: "/charmap/awesome.yml"
+  chunks:
+    mind_plane_baron_arc1: "/chunks/mind_plane/baron/arc1.yml"
+    school_f1_room_baron: "/chunks/school/f1/room/baron.yml"
+    school_f1_hallway: "/chunks/school/f1/hallway.yml"
+  maps:
+    school_f1: "/maps/school/f1.yml"
+assets:
+  backgrounds:
+    crash: "/backgrounds/crash.png"

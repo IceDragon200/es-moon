@@ -1,5 +1,5 @@
 ---
-id: d/W3mYbFeZMpPHa7
+id: d-W3mYbFeZMpPHa7
 name: School F1
 note: ''
 tags: []
@@ -8,16 +8,23 @@ uri: "/maps/school/f1"
 chunks:
 - uri: "/chunks/school/f1/hallway"
   position:
-    x: 0
-    y: 0
-    z: 0
+    x: 0.0
+    y: 0.0
+    z: 0.0
     "&class": Moon::Vector3
-  "&class": ES::DataModel::ChunkHead
+  "&class": ES::ChunkHead
 - uri: "/chunks/school/f1/room/baron"
   position:
-    x: 7
-    y: 0
-    z: 0
+    x: 7.0
+    y: 0.0
+    z: 0.0
     "&class": Moon::Vector3
-  "&class": ES::DataModel::ChunkHead
-"&class": ES::DataModel::Map
+  "&class": ES::ChunkHead
+- uri: "/chunks/new/chunk-UZP3jXECIgxsuvCu"
+  position:
+    x: 7.0
+    y: 6.0
+    z: 0.0
+    "&class": Moon::Vector3
+  "&class": ES::ChunkHead
+"&class": ES::Map

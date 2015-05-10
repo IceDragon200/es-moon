@@ -1,9 +1,9 @@
-require_relative "base"
+require_relative 'base'
 
 pool(ES::Popup.new do |popup|
-  popup.name = "idling"
-  popup.uri = "popups/idling"
-  popup.filename = "lil-icons_3x.png"
+  popup.name = 'idling'
+  popup.uri = 'popups/idling'
+  popup.filename = 'lil-icons_3x.png'
   popup.cell_width = 30
   popup.cell_height = 30
   popup.frame_rate = 60 #16

@@ -1,16 +1,16 @@
 #!/usr/bin/bash
 fontawesome_version="4.2.0"
-fontawesome_basename="font-awesome-$fontawesome_version"
-fontawesome_dirname="$fontawesome_basename"
-fontawesome_filename="$fontawesome_basename.zip"
-fontawesome="http://fortawesome.github.io/Font-Awesome/assets/$fontawesome_filename"
+fontawesome_basename="font-awesome-${fontawesome_version}"
+fontawesome_dirname="${fontawesome_basename}"
+fontawesome_filename="${fontawesome_basename}.zip"
+fontawesome="http://fortawesome.github.io/Font-Awesome/assets/${fontawesome_filename}"
 
-if ! [ -f "$fontawesome_filename" ]; then
-  curl "$fontawesome" -O "$fontawesome_filename"
+if ! [ -f "${fontawesome_filename}" ]; then
+  curl "${fontawesome}" -O "${fontawesome_filename}"
 fi
 
-if ! [ -d "$fontawesome_dirname" ]; then
-  unzip "$fontawesome_filename"
+if ! [ -d "${fontawesome_dirname}" ]; then
+  unzip "${fontawesome_filename}"
 fi
 
-ruby fontmap-awesome.rb "$fontawesome_version"
+ruby fontmap-awesome.rb "${fontawesome_version}"

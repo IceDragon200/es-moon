@@ -4,42 +4,34 @@ new_map: f2
 new_chunk: f3
 save_map: f5
 load_chunks: f6
+toggle_grid: f8
 toggle_keyboard_mode: f9
 show_chunk_labels: f10
 edit_tile_palette: f12
-
 show_tile_panel: tab
-
 deactivate_layer_edit: grave_accent
 edit_layer_0: n1
 edit_layer_1: n2
-
 zoom_reset: n0
-zoom_in: plus
+zoom_in: equal
 zoom_out: minus
-
 center_on_map: home
-
 move_chunk_down: i
 move_chunk_left: u
 move_chunk_right: p
 move_chunk_up: o
-
 resize_chunk_horz_plus: period
 resize_chunk_horz_minus: n
 resize_chunk_vert_plus: m
 resize_chunk_vert_minus: comma
-
 move_camera_down: down
 move_camera_left: left
 move_camera_right: right
 move_camera_up: up
-
 move_cursor_down: j
 move_cursor_left: h
 move_cursor_right: l
 move_cursor_up: k
-
 place_tile:
 - mouse_left
 - z
@@ -49,4 +41,3 @@ erase_tile:
 copy_tile:
 - mouse_middle
 - c
-...

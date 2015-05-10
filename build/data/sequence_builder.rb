@@ -1,17 +1,10 @@
-require "active_support/core_ext/string"
-require "active_support/core_ext/module/delegation"
-require "yaml"
+require 'active_support/core_ext/string'
+require 'active_support/core_ext/module/delegation'
+require 'yaml'
 
-$: << File.expand_path("../../", File.dirname(__FILE__))
-
-require 'core/data_model'
-require 'core/animation/easer'
-require 'scripts/mixin/queryable'
-require 'scripts/data_model/metal-ext'
-require 'scripts/data_model/base-ext'
+$: << File.expand_path('../../', File.dirname(__FILE__))
 
 class SequenceBuilder
-
   attr_reader :frames
 
   def initialize(frame_klass)
@@ -52,7 +45,6 @@ class SequenceBuilder
       keyframe(frame_options)
     end
   end
-
 end
 
 def render_sequence(*args)
