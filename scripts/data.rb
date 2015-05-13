@@ -1,12 +1,30 @@
 ## maps
-Database.load_data_file :map, "maps/school/f1"
+assets = {}
+vfs = YAML.load_file('data/vfs.yml')['data']
 
-Database.where(:map).each do |map|
+character_assets = assets[:character] = {}
+vfs['characters'].each do |key, file|
+  character_assets[key] = ES::Character.load_file file.gsub('.yml', '')
+end
+
+chunk_assets = assets[:chunk] = {}
+vfs['chunks'].each do |key, file|
+  chunk_assets[key] = ES::Chunk.load_file file.gsub('.yml', '')
+end
+
+map_assets = assets[:map] = {}
+vfs['maps'].each do |key, file|
+  map_assets[key] = ES::Map.load_file file.gsub('.yml', '')
+end
+
+# recursive load
+ES::Map.all.each do |map|
   map.chunks.each do |refhead|
-    Database.load_data_file :chunk, refhead.uri
+    ES::Chunk.load_file refhead.uri
   end
 end
 
-Database.where(:chunk).each do |chunk|
-  Database.load_data_file :tileset, chunk.tileset.uri
+ES::Chunk.all.each do |chunk|
+  next if chunk.tileset.uri.blank?
+  ES::Tileset.load_file chunk.tileset.uri
 end
