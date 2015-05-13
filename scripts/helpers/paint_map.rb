@@ -1,10 +1,9 @@
 module ES
   module Helper
     class PaintMap
-      VERSION = "2.0.0"
-
       attr_accessor :layer
 
+      # @param [Moon::DataMatrix] data
       def initialize(data)
         @data = data
         @layer = 0
@@ -81,8 +80,8 @@ module ES
         self
       end
 
-      def clear(opts={})
-        fill({value: -1}.merge(opts))
+      def clear(opts = {})
+        fill({ value: -1 }.merge(opts))
         self
       end
 
@@ -96,18 +95,16 @@ module ES
         rx2 = rx + rw
         ry2 = ry + rh
 
-        (rw+weight*2).times do |x|
-          weight.times do |y|
+        weight.times do |w|
+          (rw + weight * 2).times do |x|
             dx = rx + x - weight
-            @data[dx, ry-1-y, layer] = value
-            @data[dx, ry2+y, layer] = value
+            @data[dx, ry - 1 - w, layer] = value
+            @data[dx, ry2 + w, layer] = value
           end
-        end
-        weight.times do |x|
-          (rh+weight*2).times do |y|
+          (rh + weight * 2).times do |y|
             dy = ry + y - weight
-            @data[rx-1-x, dy, layer] = value
-            @data[rx2+x,  dy, layer] = value
+            @data[rx - 1 - w, dy, layer] = value
+            @data[rx2 + w,  dy, layer] = value
           end
         end
         self
