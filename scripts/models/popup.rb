@@ -12,8 +12,8 @@ module ES
     field :name,        type: String,  default: ""
     field :uri,         type: String,  default: ""
     field :filename,    type: String,  default: ""
-    field :cell_width,  type: Integer, default: 40
-    field :cell_height, type: Integer, default: 40
+    field :cell_w,  type: Integer, default: 40
+    field :cell_h, type: Integer, default: 40
     field :frame_rate,  type: Integer, default: 16
     array :sequence,    type: PopupSequenceFrame
 
@@ -21,7 +21,7 @@ module ES
 
     def export
       data =__export__
-      data["sequence"].each do |hsh|
+      data['sequence'].each do |hsh|
         hsh.keys.each do |key|
           hsh.delete(key) if hsh[key].nil?
         end

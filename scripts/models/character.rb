@@ -9,16 +9,16 @@ module ES
   end
 
   class Pose < Moon::DataModel::Metal
-    field :filename,    type: String,  default: ""
-    field :cell_width,  type: Integer, default: 32
-    field :cell_height, type: Integer, default: 32
+    field :filename,    type: String,  default: ''
+    field :cell_w,  type: Integer, default: 32
+    field :cell_h, type: Integer, default: 32
     field :frame_rate,  type: Integer, default: 8
     array :sequence,    type: CharacterSequenceFrame
   end
 
   class Character < Moon::DataModel::Metal
-    field :name,  type: String, default: ""
-    field :uri,   type: String, default: ""
-    field :poses, type: {String=>Pose}, default: proc {{}}
+    field :name,  type: String, default: ''
+    field :uri,   type: String, default: ''
+    dict :poses,  key: String, value: Pose
   end
 end

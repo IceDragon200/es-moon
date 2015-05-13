@@ -1,7 +1,7 @@
 module Moon
   module DataModel
     class Metal
-      include Queryable
+      include Database::Record
 
       ###
       # When questionin the model about its properties this is used.
@@ -17,15 +17,15 @@ module Moon
         # tags: ["red", "herb", "thing"]
         # tag: "herb"
         ###
-        when "tags", "tag"
+        when 'tags', 'tag'
           value = [value] unless value.is_a?(Array)
           (meta & value) == value
         ###
         # NOTE* Key Symbols will be converted to Strings
         # EG:
-        # meta: { x: "hi" }
+        # meta: { x: 'hi' }
         ###
-        when "meta"
+        when 'meta'
           value.all? { |k, v| @meta[k.to_s] == v }
         else
           super key, value
@@ -36,26 +36,25 @@ module Moon
       # @return [String]
       ###
       def self.basepath
-        "data/"
+        'data/'
       end
 
       ###
       # @param [String] rootname
       #   @optional
       ###
-      def save_file(rootname=nil)
-        warn "no uri set, skipping saving of #{self["name"]}" unless self["uri"]
+      def save_file(rootname = nil)
+        warn "no uri set, skipping saving of #{self["name"]}" unless self['uri']
 
-        path = File.join(self.class.basepath, self["uri"])
+        path = File.join(self.class.basepath, self['uri'])
         path = File.join(rootname, path) if rootname
-        path = path.split("/")
+        path = path.split('/')
         basename = path.pop
-        pathname = File.join(path.join("/"), "#{basename}.yml")
+        pathname = File.join(path.join('/'), "#{basename}.yml")
 
-        Dir.mkdir_p(File.dirname(pathname))
+        FileUtils.mkdir_p(File.dirname(pathname))
         YAML.save_file(pathname, export)
       end
-
     end
   end
 end
