@@ -5,9 +5,10 @@ class EntityPositionAdapter
   end
 
   def position
-    pos = @obj[:position]
+    pos = @obj[:transform].position
     @position.x = pos.x
     @position.y = pos.y
+    @position.z = pos.z
     @position
   end
 end
