@@ -6,32 +6,32 @@ module ES
 
       def initialize
         super
-        @layer_ss = Moon::Spritesheet.new("resources/blocks/b016x016.png", 16, 16)
+        @layer_ss = Moon::Spritesheet.new('resources/blocks/b016x016.png', 16, 16)
         @layer_count = 2
         @index = -1
       end
 
-      def width
-        @width ||= @layer_ss.cell_width * 4
+      def w
+        @w ||= @layer_ss.cell_w * 4
       end
 
-      def height
-        @height ||= @layer_ss.cell_height * 2
+      def h
+        @h ||= @layer_ss.cell_h * 2
       end
 
       def render_content(x, y, z, options)
-        w = @layer_ss.cell_width
-        h = @layer_ss.cell_height
+        cw = @layer_ss.cell_w
+        ch = @layer_ss.cell_h
 
         @layer_count.times do |i|
-          @layer_ss.render x + i * w,
+          @layer_ss.render x + i * cw,
                            y,
                            z,
                            i == @index ? 12 : 1
         end
 
         @layer_ss.render x,
-                         y + h,
+                         y + ch,
                          z,
                          13
         super
