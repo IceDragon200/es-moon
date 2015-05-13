@@ -4,14 +4,14 @@ class PoseBuilder
   attr_reader :_pose
 
   delegate :filename, to: :@_pose
-  delegate :cell_width, to: :@_pose
-  delegate :cell_height, to: :@_pose
+  delegate :cell_w, to: :@_pose
+  delegate :cell_h, to: :@_pose
   delegate :frame_rate, to: :@_pose
   delegate :sequence, to: :@_pose
 
   delegate :filename=, to: :@_pose
-  delegate :cell_width=, to: :@_pose
-  delegate :cell_height=, to: :@_pose
+  delegate :cell_w=, to: :@_pose
+  delegate :cell_h=, to: :@_pose
   delegate :frame_rate=, to: :@_pose
   delegate :sequence=, to: :@_pose
 
@@ -62,8 +62,8 @@ def render_generic_pose(cl, rw = 0)
   row = rw * 5
   render_pose_list do |pb| # pb = pose_builder
     pb.default_options[:filename] = '4x/characters_4x.png'
-    pb.default_options[:cell_width] = 32
-    pb.default_options[:cell_height] = 32
+    pb.default_options[:cell_w] = 32
+    pb.default_options[:cell_h] = 32
 
     pb.pose 'idle' do |p|
       p.frame_rate = 2

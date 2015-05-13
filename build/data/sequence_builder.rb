@@ -19,7 +19,7 @@ class SequenceBuilder
   end
 
   def keyframe(options)
-    @frames << @frame_klass.new.set!(options)
+    @frames << @frame_klass.new.update_fields!(options)
   end
 
   def incr(*keys)
