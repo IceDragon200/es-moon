@@ -5,7 +5,7 @@ module States
     end
 
     def update(delta)
-      quit
+      engine.quit
       super delta
     end
   end
