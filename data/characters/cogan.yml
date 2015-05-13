@@ -4,8 +4,8 @@ uri: "/characters/cogan"
 poses:
   idle:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 2
     sequence:
     - index: 144
@@ -35,8 +35,8 @@ poses:
     "&class": ES::Pose
   dead:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 1
     sequence:
     - index: 144
@@ -54,8 +54,8 @@ poses:
     "&class": ES::Pose
   stand.l:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 112
@@ -73,8 +73,8 @@ poses:
     "&class": ES::Pose
   stand.r:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 80
@@ -92,8 +92,8 @@ poses:
     "&class": ES::Pose
   stand.u:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 128
@@ -111,8 +111,8 @@ poses:
     "&class": ES::Pose
   stand.d:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 96
@@ -130,8 +130,8 @@ poses:
     "&class": ES::Pose
   walk.l:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 113
@@ -161,8 +161,8 @@ poses:
     "&class": ES::Pose
   walk.r:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 81
@@ -192,8 +192,8 @@ poses:
     "&class": ES::Pose
   walk.u:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 129
@@ -223,8 +223,8 @@ poses:
     "&class": ES::Pose
   walk.d:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 97

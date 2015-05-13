@@ -4,8 +4,8 @@ uri: "/characters/baron"
 poses:
   idle:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 2
     sequence:
     - index: 67
@@ -35,8 +35,8 @@ poses:
     "&class": ES::Pose
   dead:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 1
     sequence:
     - index: 67
@@ -54,8 +54,8 @@ poses:
     "&class": ES::Pose
   stand.l:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 35
@@ -73,8 +73,8 @@ poses:
     "&class": ES::Pose
   stand.r:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 3
@@ -92,8 +92,8 @@ poses:
     "&class": ES::Pose
   stand.u:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 51
@@ -111,8 +111,8 @@ poses:
     "&class": ES::Pose
   stand.d:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 19
@@ -130,8 +130,8 @@ poses:
     "&class": ES::Pose
   walk.l:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 36
@@ -161,8 +161,8 @@ poses:
     "&class": ES::Pose
   walk.r:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 4
@@ -192,8 +192,8 @@ poses:
     "&class": ES::Pose
   walk.u:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 52
@@ -223,8 +223,8 @@ poses:
     "&class": ES::Pose
   walk.d:
     filename: 4x/characters_4x.png
-    cell_width: 32
-    cell_height: 32
+    cell_w: 32
+    cell_h: 32
     frame_rate: 8
     sequence:
     - index: 20
