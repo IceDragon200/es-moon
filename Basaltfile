@@ -1,4 +1,5 @@
 set pkgdir: 'packages'
+#set automatic_deps: true
 
 pkg 'data_bags'
 pkg 'data_model'
@@ -11,6 +12,8 @@ pkg 'es'
 pkg 'es-aux' # ES auxillary package, various prototypes
 pkg 'es_map_editor'
 pkg 'lunar_ui'
+pkg 'moon-safe_copy'
+pkg 'moon-boolean'
 pkg 'moon-inflector'
 pkg 'moon-logfmt'
 pkg 'moon-null_io'
