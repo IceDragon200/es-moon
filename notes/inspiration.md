@@ -14,3 +14,4 @@ Deko
 Summon Night SwordCraft Story series
 Izuna
 Rune Factory series
+DOTA2
