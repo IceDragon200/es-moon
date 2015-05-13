@@ -1,5 +1,5 @@
 module Moon
-  module Input
+  class Input
     KEY_TO_HUMAN = {
       space: %w[Spacebar],
       apostrophe: %w[' "],
@@ -135,8 +135,7 @@ module Moon
     }
 
     def self.key_to_human_readable(key)
-      #(@key_to_human ||= ES.cache.locale("input.yml"))[convert_key(key)]
-      KEY_TO_HUMAN.fetch(convert_key(key))
+      KEY_TO_HUMAN.fetch(key.to_sym)
     end
   end
 end
