@@ -4,7 +4,7 @@ class StateCharacterWalkTest < State
     @popup = YAML.load_file("data/popups/idling.yml")
     @data = YAML.load_file("data/characters/baron.yml")
 
-    @popup_ss = ES.cache.tileset(@popup["filename"], @popup["cell_width"], @popup["cell_height"])
+    @popup_ss = ES.cache.tileset(@popup["filename"], @popup["cell_w"], @popup["cell_h"])
     @spritesheet = nil
 
     @popup_frame_rate = @popup["frame_rate"]
@@ -72,8 +72,8 @@ class StateCharacterWalkTest < State
     @pose_frame_rate = @pose_data["frame_rate"]
     @pose_sequence = @pose_data["sequence"]
     @spritesheet = ES.cache.tileset(@pose_data["filename"],
-                                    @pose_data["cell_width"],
-                                    @pose_data["cell_height"])
+                                    @pose_data["cell_w"],
+                                    @pose_data["cell_h"])
     refresh_pose
   end
 

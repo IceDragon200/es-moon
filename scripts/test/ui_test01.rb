@@ -7,12 +7,12 @@ class StateUITest01 < State
       @sprite = Sprite.new(*args, &block)
     end
 
-    def width
-      @sprite.width
+    def w
+      @sprite.w
     end
 
-    def height
-      @sprite.height
+    def h
+      @sprite.h
     end
 
     def render_content(x, y, z)

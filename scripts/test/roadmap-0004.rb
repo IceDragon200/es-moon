@@ -18,8 +18,8 @@ module Roadmap
       @char_renderer = CharacterRenderer.new
       @char_renderer.character_attr = @char.add(:character,
                                                 filename: "es-oryx/4x/character_4x.png",
-                                                cell_width: 32,
-                                                cell_height: 32)
+                                                cell_w: 32,
+                                                cell_h: 32)
       @char_renderer.position_attr = @char.add(:position)
     end
 
