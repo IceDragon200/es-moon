@@ -1,1 +1,1 @@
-require 'scripts/mixin/activatable'
+
