@@ -10,7 +10,7 @@ class Countdown
     @ticks = @ticks_max = n.to_i
   end
 
-  def reset
+  def restart
     @ticks = @ticks_max
   end
 
