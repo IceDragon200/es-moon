@@ -1,9 +1,6 @@
 module ES
   module Version
-    MAJOR = 0
-    MINOR = 1
-    PATCH = 0
-    BUILD = "alpha"
-    STRING = [MAJOR, MINOR, PATCH, BUILD].join(".")
+    MAJOR, MINOR, TEENY, PATCH = 0, 2, 0, 'alpha'
+    STRING = [MAJOR, MINOR, TEENY, PATCH].join('.')
   end
 end
