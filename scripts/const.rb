@@ -10,17 +10,17 @@ module ES
     ALL_ABOVE = LEFT | RIGHT | UP | DOWN | ABOVE # 0001 1111
 
     STRMAP = {
-      "*" => ALL_ABOVE,
-      "," => DOWN,
-      "<" => LEFT,
-      ">" => RIGHT,
-      "^" => UP,
-      "`" => UP | ABOVE,
-      "." => DOWN | ABOVE,
-      "(" => LEFT | ABOVE,
-      ")" => RIGHT | ABOVE,
-      "o" => ALL,
-      "x" => NONE,
+      '*' => ALL_ABOVE,
+      ',' => DOWN,
+      '<' => LEFT,
+      '>' => RIGHT,
+      '^' => UP,
+      '`' => UP | ABOVE,
+      '.' => DOWN | ABOVE,
+      '(' => LEFT | ABOVE,
+      ')' => RIGHT | ABOVE,
+      'o' => ALL,
+      'x' => NONE,
     }
   end
 end

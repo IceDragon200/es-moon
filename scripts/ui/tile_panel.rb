@@ -14,21 +14,21 @@ module ES
         @tilesize = Moon::Vector2.new 32, 32
         @cursor_pos = Moon::Vector2.new 0, 0
 
-        @text = Moon::Text.new "", FontCache.font("uni0553", 16)
+        @text = Moon::Text.new '', FontCache.font('uni0553', 16)
 
-        texture = TextureCache.block "e032x032.png"
+        texture = TextureCache.block 'e032x032.png'
         @block_ss = Moon::Spritesheet.new texture, 32, 32
 
         @tile_id = 0
         @row_index = 0
       end
 
-      def width
-        @tileset ? @tileset.cell_width * @visible_cols : 0
+      def w
+        @tileset ? @tileset.cell_w * @visible_cols : 0
       end
 
-      def height
-        16 + (@tileset ? @tileset.cell_height * @visible_rows : 0)
+      def h
+        16 + (@tileset ? @tileset.cell_h * @visible_rows : 0)
       end
 
       def tile_id=(n)
@@ -39,11 +39,10 @@ module ES
 
       ###
       #
-      ###
       def select_tile(*args)
-        sx, sy = *Vector2.extract(args.singularize)
+        sx, sy = *Moon::Vector2.extract(args.singularize)
         pos = screen_to_relative(sx, sy).reduce(@tilesize)
-        if relative_pos_inside?(pos)
+        if relative_contains_pos?(pos)
           ps = (pos / @tilesize).floor
           self.tile_id = ps.x + (ps.y + @row_index) * @visible_cols
         end
@@ -54,13 +53,13 @@ module ES
           vis = @visible_rows * @visible_cols
           @tileset.cell_count.times do |i|
             break if i >= vis
-            tx = (i % @visible_cols) * @tileset.cell_width
-            ty = (i / @visible_cols).floor * @tileset.cell_height
+            tx = (i % @visible_cols) * @tileset.cell_w
+            ty = (i / @visible_cols).floor * @tileset.cell_h
             @tileset.render x + tx, y + ty + 16, z, @row_index + i
           end
         end
 
-        if relative_pos_inside?(@cursor_pos)
+        if relative_contains_pos?(@cursor_pos)
           @text.string = "tile #{@tile_id}"
           @text.render x, y, z
           @block_ss.render x + @cursor_pos.x, y + @cursor_pos.y + 16, z, 1

@@ -5,7 +5,7 @@ module ES
       attr_accessor :obj
 
       def initialize
-        super "", FontCache.font("uni0553", 16)
+        super '', FontCache.font('uni0553', 16)
         @visible = true
         @obj = nil
       end
@@ -17,7 +17,7 @@ module ES
           #set_string("x: #{o.x.round(2)}, y: #{o.y.round(2)}")
           self.string = "x: #{o.x.to_i}, y: #{o.y.to_i}"
         else
-          self.string = "x: -.-, y: -.-"
+          self.string = 'x: -.-, y: -.-'
         end
       end
     end

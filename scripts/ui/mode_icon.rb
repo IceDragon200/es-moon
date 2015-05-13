@@ -4,9 +4,9 @@ class ModeIcon < Moon::RenderContainer
   def initialize(icons)
     super()
     @icons = icons
-    @font_awesome = ES.cache.font("awesome", 32)
-    @charmap_awesome = ES.cache.charmap("awesome.yml")
-    @text = Moon::Text.new("", @font_awesome)
+    @font_awesome = ES.cache.font('awesome', 32)
+    @charmap_awesome = ES.cache.charmap('awesome.yml')
+    @text = Moon::Text.new('', @font_awesome)
 
     add(@text)
   end
@@ -21,6 +21,6 @@ class ModeIcon < Moon::RenderContainer
 
   def mode=(name)
     @mode = name
-    @text.string = @charmap_awesome[@icons[@mode]] || ""
+    @text.string = @charmap_awesome[@icons[@mode]] || ''
   end
 end

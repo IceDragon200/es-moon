@@ -6,23 +6,23 @@ module ES
 
       def initialize
         super
-        texture = TextureCache.block "e008x008.png"
+        texture = TextureCache.block 'e008x008.png'
         @micro_ss = Moon::Spritesheet.new texture, 8, 8
-        texture = TextureCache.block "e064x064.png"
+        texture = TextureCache.block 'e064x064.png'
         @background_ss = Moon::Spritesheet.new texture, 64, 64
 
-        @text = Moon::Text.new "", FontCache.font("uni0553", 16)
+        @text = Moon::Text.new '', FontCache.font('uni0553', 16)
 
         @tileset = nil
         @tile_id = -1
       end
 
-      def width
-        @background_ss.cell_width
+      def w
+        @background_ss.cell_w
       end
 
-      def height
-        @background_ss.cell_height
+      def h
+        @background_ss.cell_h
       end
 
       def render_content(x, y, z, options)
@@ -37,7 +37,7 @@ module ES
 
           @text.string = @tile_id.to_s
           @text.render diff.x + x,
-                       diff.y + y + @tileset.cell_height,
+                       diff.y + y + @tileset.cell_h,
                        z
         else
           @micro_ss.render x, y, z, 8

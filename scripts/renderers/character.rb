@@ -16,11 +16,11 @@ class CharacterRenderer
     if @oldfilename != @character.filename
       @oldfilename = @character.filename
       @texture = TextureCache.tileset(@oldfilename)
-      @spritesheet = Moon::Spritesheet.new(@texture, @character.cell_width, @character.cell_height)
+      @spritesheet = Moon::Spritesheet.new(@texture, @character.cell_w, @character.cell_h)
     end
   end
 
-  def render(x=0, y=0, z=0, options={})
+  def render(x = 0, y = 0, z = 0, options = {})
     return unless @character
     return unless @position
     check_spritesheet

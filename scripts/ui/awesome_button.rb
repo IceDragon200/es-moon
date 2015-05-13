@@ -5,21 +5,21 @@ module ES
 
       def initialize
         super
-        @text = Moon::Text.new "", FontCache.font("awesome", 32)
+        @text = Moon::Text.new '', FontCache.font('awesome', 32)
       end
 
-      def width
+      def w
         32
       end
 
-      def height
+      def h
         32
       end
 
       def render_content(x, y, z, options)
         return unless @text.string.presence
-        @text.render x + (width-@text.font.size)/2,
-                     y + (height-@text.font.size)/2,
+        @text.render x + (w - @text.font.size) / 2,
+                     y + (h - @text.font.size) / 2,
                      z
         super
       end

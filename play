@@ -1,2 +1,2 @@
-#!/bin/bash
-./game
+#!/usr/bin/env bash
+moon-player

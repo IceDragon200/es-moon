@@ -8,7 +8,7 @@ class RectEdgePressureDetector
   attr_accessor :range
   attr_accessor :easer
 
-  def initialize(rect, range=96, easer=Moon::Easing::Linear)
+  def initialize(rect, range = 96, easer = Moon::Easing::Linear)
     @range = range
     @easer = easer
     @rect = rect
@@ -16,20 +16,19 @@ class RectEdgePressureDetector
 
   def calc(position)
     result = Moon::Vector2.new(0, 0)
-    return result unless @rect.inside?(position)
+    return result unless @rect.contains?(position)
     rel = position - @rect.xy
     if rel.x < range
       result.x = 1 - (rel.x / range.to_f)
-    elsif rel.x < @rect.width && rel.x >= (@rect.width-@range)
-      result.x = -(1 + (rel.x-@rect.width) / range)
+    elsif rel.x < @rect.w && rel.x >= (@rect.w-@range)
+      result.x = -(1 + (rel.x-@rect.w) / range)
     end
     if rel.y < range
       result.y = 1 - (rel.y / range.to_f)
-    elsif rel.y < @rect.height && rel.y >= (@rect.height-@range)
-      result.y = -(1 + (rel.y-@rect.height) / range)
+    elsif rel.y < @rect.h && rel.y >= (@rect.h-@range)
+      result.y = -(1 + (rel.y-@rect.h) / range)
     end
-    result.x = @easer.call(result.x)
-    result.y = @easer.call(result.y)
+    result.set(@easer.call(result.x), @easer.call(result.y))
     -result
   end
 end
