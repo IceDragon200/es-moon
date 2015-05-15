@@ -6,18 +6,18 @@ pkg 'data_model'
 pkg 'data_painter' # Data manipulation package
 pkg 'dataman'
 pkg 'debug'
-pkg 'duck' # stub base class package
+pkg 'moon-mock' # stub base class package
 pkg 'entity_system'
 pkg 'es'
 pkg 'es-aux' # ES auxillary package, various prototypes
 pkg 'es_map_editor'
 pkg 'lunar_ui'
-pkg 'moon-safe_copy'
 pkg 'moon-boolean'
 pkg 'moon-inflector'
 pkg 'moon-logfmt'
 pkg 'moon-null_io'
 pkg 'moon-prototype'
+pkg 'moon-safe_copy'
 pkg 'moon-serializable'
 pkg 'nui' # NanoVG UI package
 pkg 'render_primitives'
