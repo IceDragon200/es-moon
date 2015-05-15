@@ -35,7 +35,7 @@ module ES
 
     def initialize
       super
-      init_eventable
+      initialize_eventable
     end
 
     def on_entity_added(entity)
