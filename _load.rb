@@ -7,10 +7,10 @@ $: << File.dirname(__FILE__)
 $: << File.join(File.dirname(__FILE__), 'modules')
 #STDERR.puts $:
 
-require 'modules/std/core_ext/module'
-require 'modules/std/mixins/serializable'
-require 'modules/data_model/load'
-require 'modules/duck/load'
+require 'packages/std/core_ext/module'
+require 'packages/std/mixins/serializable'
+require 'packages/data_model/load'
+require 'packages/moon-mock/load'
 require 'core/load'
 require 'scripts/load'
 

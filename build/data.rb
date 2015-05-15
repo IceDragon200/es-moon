@@ -10,7 +10,7 @@ require 'std/core_ext'
 require 'std/mixins'
 require 'data_model/load'
 
-require 'duck/load'
+require 'moon-mock/load'
 
 require 'std/vector2'
 require 'std/vector3'
