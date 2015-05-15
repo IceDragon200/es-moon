@@ -1,5 +1,8 @@
 # [![Moon](https://raw.githubusercontent.com/IceDragon200/es-moon/master/es-logo-128x.png)](https://raw.githubusercontent.com/IceDragon200/es-moon/master/es-logo-128x.png) es-moon
-[![Code Climate](https://codeclimate.com/github/IceDragon200/es-moon.png)](https://codeclimate.com/github/IceDragon200/es-moon)
+[![Build Status](https://travis-ci.org/IceDragon200/es-moon.svg?branch=master)](https://travis-ci.org/IceDragon200/es-moon)
+[![Test Coverage](https://codeclimate.com/github/IceDragon200/es-moon/badges/coverage.svg)](https://codeclimate.com/github/IceDragon200/es-moon)
+[![Inline docs](http://inch-ci.org/github/IceDragon200/es-moon.svg?branch=master)](http://inch-ci.org/github/IceDragon200/es-moon)
+[![Code Climate](https://codeclimate.com/github/IceDragon200/es-moon/badges/gpa.svg)](https://codeclimate.com/github/IceDragon200/es-moon)
 
 Earthen - Smiths built atop [moon](https://github.com/archSeer/moon)
 
