@@ -4,7 +4,7 @@ module States
       super
       @control_map = DataCache.controlmap('map_editor')
       @camera = Camera2.new(view: engine.screen.rect)
-      @camera_cursor = CameraCursor.new
+      @camera_cursor = CameraCursor2.new
       @camera.follow(@camera_cursor)
 
       setup_state_events
