@@ -8,7 +8,7 @@ module ES
       def initialize
         super
         @tileset = nil # spritesheet
-        @visible_rows = 4
+        @visible_rows = 8
         @visible_cols = 8
 
         @tilesize = Moon::Vector2.new 32, 32
@@ -37,7 +37,6 @@ module ES
                         (@tile_id / @visible_cols).floor * @tilesize.y)
       end
 
-      ###
       #
       def select_tile(*args)
         sx, sy = *Moon::Vector2.extract(args.singularize)
@@ -51,8 +50,7 @@ module ES
       def render_content(x, y, z, options)
         if @tileset
           vis = @visible_rows * @visible_cols
-          @tileset.cell_count.times do |i|
-            break if i >= vis
+          vis.times do |i|
             tx = (i % @visible_cols) * @tileset.cell_w
             ty = (i / @visible_cols).floor * @tileset.cell_h
             @tileset.render x + tx, y + ty + 16, z, @row_index + i
