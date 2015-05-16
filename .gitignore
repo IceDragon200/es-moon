@@ -37,6 +37,7 @@
 media/tilesets/oryx_lofi_fantasy
 media/tilesets/es-oryx
 
+Gemfile.lock
 # build stuff thats too much to upload
 build/font-awesome-*
 build/icons
