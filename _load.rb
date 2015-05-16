@@ -4,42 +4,57 @@
 require 'yaml'
 
 $: << File.dirname(__FILE__)
-$: << File.join(File.dirname(__FILE__), 'modules')
+$: << File.join(File.dirname(__FILE__), 'packages')
 #STDERR.puts $:
 
+module NVG
+  class Color
+  end
+end
+
+require 'packages/std/core_ext/object'
 require 'packages/std/core_ext/module'
-require 'packages/std/mixins/serializable'
+require 'packages/moon-inflector/load'
+require 'packages/moon-serializable/load'
 require 'packages/data_model/load'
 require 'packages/moon-mock/load'
 require 'core/load'
 require 'scripts/load'
 
-def tick
-  step 0.016
+def tick(d = 0.016)
+  step @engine, d
 end
 
 def press_sim(key, mods = 0)
-  Moon::Input.on_key(key, nil, :press, mods)
+  @engine.input.on_key(key, nil, :press, mods)
   tick
-  Moon::Input.on_key(key, nil, :release, mods)
+  @engine.input.on_key(key, nil, :release, mods)
 end
 
 def repeat_sim(key, mods = 0)
-  Moon::Input.on_key(key, nil, :press, mods)
+  @engine.input.on_key(key, nil, :press, mods)
   7.times { tick }
-  Moon::Input.on_key(key, nil, :repeat, mods)
+  @engine.input.on_key(key, nil, :repeat, mods)
   tick
-  Moon::Input.on_key(key, nil, :release, mods)
+  @engine.input.on_key(key, nil, :release, mods)
 end
 
-tick until States::Title === State.current
+
+@engine = Moon::Engine.new do |_, d|
+  tick d
+end
+
+@engine.setup
+
+tick
+tick until States::Title === @state_main.state_manager.current
 
 tick
 
 menu = nil
 # Find the title menu
-State.current.tree.each do |e|
-  menu = e.everyone.find { |e| e.tags.include?('#menu') }
+@state_main.state_manager.current.tree.each do |e|
+  menu = e.value.everyone.find { |e| e.tags.include?('#menu') }
   break if menu
 end
 
