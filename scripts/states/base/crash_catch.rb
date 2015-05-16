@@ -13,32 +13,28 @@ class CrashException
 end
 
 module States
-  class Base
+  class Base < ::State
     def crash_handling(exc)
       cvar['exc'] = exc
       state_manager.clear
       state_manager.push States::Crash
     end
 
-    def step(delta)
-      unless @started
-        start
-        @started = true
-      end
-      # game logic
-      update_step delta
-      # rendering
-      render_step
-      #
-      @ticks += 1
-    rescue => exc
+    def on_exception(exc, backtrace)
       STDERR.puts exc.inspect
-      exc.backtrace.each do |line|
+      backtrace.each do |line|
         STDERR.puts "\t#{line}"
       end
       # for some odd reason, even though the exception is dup-ed, the backtrace
       # can change afterwards.
-      crash_handling CrashException.new(exc, exc.backtrace.dup)
+      crash_handling CrashException.new(exc, backtrace)
+    end
+
+    alias :state_step :step
+    def step(delta)
+      state_step(delta)
+    rescue => exc
+      on_exception exc, exc.backtrace.dup
     end
   end
 end
