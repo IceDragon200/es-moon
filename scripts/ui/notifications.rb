@@ -7,13 +7,13 @@ module ES
         show
         @time = 0
         @duration = duration
-        @target_string = @string
+        @target_string = string.dup
         self
       end
 
       def finish
         @time = @duration
-        @string = @target_string
+        self.string = @target_string.dup
         self
       end
 
@@ -26,11 +26,12 @@ module ES
         if @string
           @time += delta
           @time = @duration if @time > @duration
-          @string = @target_string[0, ((@time / @duration) * @target_string.size).to_i]
+          self.string = @target_string[0, ((@time / @duration) * @target_string.size).to_i]
         end
         self
       end
     end
+
     class Notifications < AnimatedText
       def initialize(*args, &block)
         @time = 1.0
@@ -38,13 +39,13 @@ module ES
         super
       end
 
+      # @return [self]
       def clear
         self.string = nil
         arm(1.0).finish
         self
       end
 
-      ###
       # @param [Hash] options
       #   @option [Sftring] string
       #   @option [Float] duration  in seconds
@@ -52,10 +53,10 @@ module ES
       #     @optional
       #   @option [Symbol] align
       #     @optional
-      ###
+      # @return [self]
       def notify(options)
         set options
-        arm options.fetch(:duration, 0.25)
+        arm options.fetch(:duration, 0.50)
       end
     end
   end
