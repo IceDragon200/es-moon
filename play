@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-moon-player
+moon-mruby ./main.rb

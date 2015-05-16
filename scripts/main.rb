@@ -8,6 +8,7 @@ class StateBootstrap
   end
 
   attr_reader :engine
+  attr_reader :state_manager
 
   def initialize(engine)
     @engine = engine
@@ -49,9 +50,4 @@ class StateBootstrap
   def step(delta)
     @state_manager.step delta
   end
-end
-
-def step(e, delta)
-  @state_main ||= StateBootstrap.new(e)
-  @state_main.step delta
 end
