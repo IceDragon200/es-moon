@@ -4,19 +4,19 @@ name: New Chunk 3
 note: ''
 tags: []
 meta: {}
-uri: "/chunks/new/chunk-UZP3jXECIgxsuvCu"
+uri: /chunks/new/chunk-UZP3jXECIgxsuvCu
 data:
   xsize: 8
   ysize: 6
   zsize: 2
-  default: -1
+  size:
   data:
   - 0
   - 0
+  - 1
   - 0
   - 0
-  - 0
-  - 0
+  - 1
   - 0
   - 0
   - 0
@@ -107,114 +107,12 @@ data:
   - -1
   - -1
   - -1
-  "&class": Moon::DataMatrix
-flags:
-  xsize: 8
-  ysize: 6
-  zsize: 2
-  default: 0
-  data:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  "&class": Moon::DataMatrix
+  default: -1
+  '&class': Moon::DataMatrix
 passages:
   xsize: 8
   ysize: 6
-  default: 0
+  size:
   data:
   - 0
   - 0
@@ -264,8 +162,10 @@ passages:
   - 0
   - 0
   - 0
-  "&class": Moon::Table
+  default: 0
+  '&class': Moon::Table
 tileset:
-  uri: "/tilesets/common"
-  "&class": ES::TilesetHead
-"&class": ES::Chunk
+  uri: /tilesets/common
+  '&class': ES::TilesetHead
+'&class': ES::Chunk
+...

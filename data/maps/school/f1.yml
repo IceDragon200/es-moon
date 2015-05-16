@@ -4,27 +4,49 @@ name: School F1
 note: ''
 tags: []
 meta: {}
-uri: "/maps/school/f1"
+uri: /maps/school/f1
 chunks:
-- uri: "/chunks/school/f1/hallway"
+- uri: /chunks/school/f1/hallway
   position:
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    "&class": Moon::Vector3
-  "&class": ES::ChunkHead
-- uri: "/chunks/school/f1/room/baron"
+    x: 0
+    y: 0
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+- uri: /chunks/school/f1/room/baron
   position:
-    x: 7.0
-    y: 0.0
-    z: 0.0
-    "&class": Moon::Vector3
-  "&class": ES::ChunkHead
-- uri: "/chunks/new/chunk-UZP3jXECIgxsuvCu"
+    x: 7
+    y: 0
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+- uri: /chunks/new/chunk-UZP3jXECIgxsuvCu
   position:
-    x: 7.0
-    y: 6.0
-    z: 0.0
-    "&class": Moon::Vector3
-  "&class": ES::ChunkHead
-"&class": ES::Map
+    x: 7
+    y: 6
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+- uri: /chunks/new/chunk-kf96c3jxYH-q0Wj9
+  position:
+    x: 0
+    y: 12
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+- uri: /chunks/new/chunk-DkJxptXPUKNNXazn
+  position:
+    x: 6
+    y: 12
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+- uri: /chunks/new/chunk-x0k+cbMGjpAhonY9
+  position:
+    x: -8
+    y: 0
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+'&class': ES::Map
+...
