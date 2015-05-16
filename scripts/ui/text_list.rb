@@ -19,7 +19,7 @@ module UI
 
     def find_item(query)
       @list.find do |d|
-        d.has?(query)
+        d.has_slice?(query)
       end
     end
 
