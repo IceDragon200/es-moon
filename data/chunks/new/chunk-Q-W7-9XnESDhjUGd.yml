@@ -1,47 +1,23 @@
 ---
-id: UZP3jXECIgxsuvCu
-name: New Chunk 3
+id: Q-W7-9XnESDhjUGd
+name: New Chunk 7
 note: ''
 tags: []
 meta: {}
-uri: /chunks/new/chunk-UZP3jXECIgxsuvCu
+uri: /chunks/new/chunk-Q-W7-9XnESDhjUGd
 data:
   xsize: 8
-  ysize: 6
+  ysize: 5
   zsize: 2
-  size: 96
+  size: 80
   data:
   - 0
-  - 0
-  - 1
-  - 0
-  - 0
-  - 1
-  - 0
-  - 0
-  - 0
-  - 12
-  - 12
-  - 12
-  - 60
-  - 60
-  - 60
-  - 0
   - 12
   - 12
   - 12
   - 12
-  - 60
-  - 60
-  - 60
-  - 0
-  - 0
   - 12
   - 12
-  - 12
-  - 60
-  - 60
-  - 60
   - 0
   - 0
   - 12
@@ -50,9 +26,17 @@ data:
   - 12
   - 12
   - 12
-  - 0
   - 0
   - 3
+  - 12
+  - 12
+  - 12
+  - 12
+  - 12
+  - 12
+  - 0
+  - 0
+  - 0
   - 0
   - 0
   - 0
@@ -70,18 +54,6 @@ data:
   - -1
   - -1
   - -1
-  - 141
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - 138
-  - 140
-  - 137
   - -1
   - -1
   - -1
@@ -92,7 +64,19 @@ data:
   - -1
   - -1
   - -1
-  - 135
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
   - -1
   - -1
   - -1
@@ -111,17 +95,9 @@ data:
   '&class': Moon::DataMatrix
 passages:
   xsize: 8
-  ysize: 6
-  size: 48
+  ysize: 5
+  size: 40
   data:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
   - 0
   - 0
   - 0

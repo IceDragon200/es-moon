@@ -23,7 +23,7 @@ chunks:
 - uri: /chunks/new/chunk-UZP3jXECIgxsuvCu
   position:
     x: 7
-    y: 6
+    y: 7
     z: 0
     '&class': Moon::Vector3
   '&class': ES::ChunkHead
@@ -37,7 +37,7 @@ chunks:
 - uri: /chunks/new/chunk-DkJxptXPUKNNXazn
   position:
     x: 6
-    y: 12
+    y: 14
     z: 0
     '&class': Moon::Vector3
   '&class': ES::ChunkHead
@@ -45,6 +45,13 @@ chunks:
   position:
     x: -8
     y: 0
+    z: 0
+    '&class': Moon::Vector3
+  '&class': ES::ChunkHead
+- uri: /chunks/new/chunk-Q-W7-9XnESDhjUGd
+  position:
+    x: -8
+    y: 7
     z: 0
     '&class': Moon::Vector3
   '&class': ES::ChunkHead
