@@ -18,11 +18,12 @@ require 'packages/moon-inflector/load'
 require 'packages/moon-serializable/load'
 require 'packages/data_model/load'
 require 'packages/moon-mock/load'
-require 'core/load'
-require 'scripts/load'
+
+require 'core/application_base'
+require 'application' if File.exist?('application.rb')
 
 def tick(d = 0.016)
-  step @engine, d
+  @app.step @engine, d
 end
 
 def press_sim(key, mods = 0)
@@ -39,21 +40,32 @@ def repeat_sim(key, mods = 0)
   @engine.input.on_key(key, nil, :release, mods)
 end
 
-
+@app = Application.new
 @engine = Moon::Engine.new do |_, d|
   tick d
 end
 
 @engine.setup
 
+@app.configure @engine
+@engine.setup
+@app.post_setup @engine
+
+@app.load_scripts @engine
+
+@app.start @engine
+
 tick
-tick until States::Title === @state_main.state_manager.current
+until States::Title === @app.state_main.state_manager.current
+  puts "Waiting for Title state"
+  tick
+end
 
 tick
 
 menu = nil
 # Find the title menu
-@state_main.state_manager.current.tree.each do |e|
+@app.state_main.state_manager.current.tree.each do |e|
   menu = e.value.everyone.find { |e| e.tags.include?('#menu') }
   break if menu
 end
