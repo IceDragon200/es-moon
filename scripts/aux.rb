@@ -83,7 +83,7 @@ class MapView < Moon::RenderContainer
     @entities.reject! { |r| r.entity == entity }
   end
 
-  def init_events
+  def initialize_events
     super
     on :entity_added do |e|
       add_entity e.entity

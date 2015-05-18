@@ -136,7 +136,7 @@ class TilePaletteEditorModel < State::ModelBase
 end
 
 class TilePaletteEditorView < State::ViewBase
-  def init_view
+  def initialize_view
     super
     @tile_palette_panel = TilePalettePanel.new
     @tileset_panel = TilesetPanel.new
@@ -164,7 +164,7 @@ class TilePaletteEditorView < State::ViewBase
 end
 
 class TilePaletteEditorController < State::ControllerBase
-  def init_controller
+  def initialize_controller
     super
 
   end

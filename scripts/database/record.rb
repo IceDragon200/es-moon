@@ -1,7 +1,7 @@
 module Database
   module Record
     module ClassMethods
-      def init_record_cache
+      def initialize_record_cache
         ##
         # DB Cache is used to store externally loaded files
         # @type [Hash<filename: String, object: Object>]
@@ -87,7 +87,7 @@ module Database
       end
 
       def self.extended(mod)
-        mod.init_record_cache
+        mod.initialize_record_cache
         super
       end
     end
