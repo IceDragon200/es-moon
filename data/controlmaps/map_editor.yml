@@ -10,7 +10,7 @@ toggle_keyboard_mode: 'f9'
 show_chunk_labels: 'f10'
 edit_tile_palette: 'f11'
 # Tile Panel
-show_tile_panel: 'tab'
+toggle_tile_panel: 'tab'
 # Layer Editing
 deactivate_layer_edit: 'grave_accent'
 edit_layer_0: 'n1'
@@ -22,7 +22,7 @@ place_tile:
 erase_tile:
 - 'mouse_right'
 - 'x'
-copy_tile:
+sample_tile:
 - 'mouse_middle'
 - 'c'
 # Zoom Controls
