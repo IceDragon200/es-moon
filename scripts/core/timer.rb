@@ -2,9 +2,16 @@ module Moon
   class Timer
     include Moon::Activatable
 
-    # @return [Float]
+    # @!attribute [rw] active
+    # @return [Boolean] active  is the object active?
+    attr_accessor :active
+
+    # @!attribute [r] time
+    #   @return [Float]
     attr_reader :time
-    # @return [Float]
+
+    # @!attribute [r] duration
+    #   @return [Float]
     attr_reader :duration
 
     # @param [Hash<Symbol, Object>] options
