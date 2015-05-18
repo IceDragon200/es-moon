@@ -40,10 +40,18 @@ resize_chunk_vert_plus: 'm'
 resize_chunk_vert_minus: 'comma'
 # Camera Controls
 center_on_map: 'home'
-move_camera_down: 'down'
-move_camera_left: 'left'
-move_camera_right: 'right'
-move_camera_up: 'up'
+move_camera_down:
+- 's'
+- 'down'
+move_camera_left:
+- 'left'
+- 'a'
+move_camera_right:
+- 'right'
+- 'd'
+move_camera_up:
+- 'up'
+- 'w'
 move_cursor_down: 'j'
 move_cursor_left: 'h'
 move_cursor_right: 'l'
