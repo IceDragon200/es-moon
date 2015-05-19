@@ -10,8 +10,11 @@ class Application
 
   # @param [Moon::Engine] engine
   def load_scripts(engine)
+    GC.disable
     require 'core/load'
     require 'scripts/load'
+  ensure
+    GC.enable
   end
 
   # @param [Moon::Engine] engine
