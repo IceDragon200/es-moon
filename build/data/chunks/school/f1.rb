@@ -29,7 +29,7 @@ pool(ES::Chunk.new do |chunk|
     pnt[5, 3] = 137                                            # right chair
   end
 
-  chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
+  chunk.passages = Table.new(*chunk.data.sizes.to_vector2) do |table| table.clear(0)
     pss = "xxxxxxxx" +
           "xoooooox" +
           "xoooooox" +
@@ -61,7 +61,7 @@ pool(ES::Chunk.new do |chunk|
     pnt.layer = 1
   end
 
-  chunk.passages = Table.new(*chunk.data.size.xy) do |table| table.clear(0)
+  chunk.passages = Table.new(*chunk.data.sizes.to_vector2) do |table| table.clear(0)
     pss = "xxxxxxx" +
           "xxoooxx" +
           "xxoooxx" +
