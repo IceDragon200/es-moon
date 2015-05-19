@@ -4,15 +4,13 @@ module States
       super
       create_background
       create_title_menu
-
-      #@title_texture = TextureCache.system 'title_text.png'
-      #@title_sprite = Moon::Sprite.new(@title_texture)
     end
 
     def start
       super
       t = TweenScheduler.new(scheduler)
       t.tween_obj @background.sprite, :opacity, to: 1.0, duration: '2s', easer: Moon::Easing::Linear
+      scheduler.print_jobs
     end
 
     def create_background
@@ -33,26 +31,26 @@ module States
       @title_menu.add_entry(:quit, 'Quit')
       #
       @title_menu.align!('center', screen.rect)
-      @title_menu.position = Moon::Vector3.new(8, 4, 0)
+      #@title_menu.position = Moon::Vector3.new(8, 4, 0)
 
       @gui.add @title_menu
     end
 
     def register_input
-      input.on :press, :up do
-        @title_menu.index -= 1
+      input.on :press, :repeat do |e|
+        case e.key
+        when :up
+          @title_menu.index -= 1
+        when :down
+          @title_menu.index += 1
+        end
       end
 
-      input.on :press, :down do
-        @title_menu.index += 1
+      input.on :press do |e|
+        if e.key == :enter || e.key == :z
+          on_title_menu_accept
+        end
       end
-
-      input.on :press, :enter, :z do
-        on_title_menu_accept
-      end
-
-      #input.on :press, :x do
-      #end
     end
 
     def on_title_menu_accept

@@ -2,8 +2,10 @@ module States
   class MapViewer < Base
     def init
       super
+      view = engine.screen.rect
+      view = view.translate(-view.w / 2, -view.h / 2)
       @control_map = DataCache.controlmap('map_editor')
-      @camera = Camera2.new(view: engine.screen.rect)
+      @camera = Camera2.new(view: view)
       @camera_cursor = CameraCursor2.new
       @camera.follow(@camera_cursor)
 
@@ -17,8 +19,8 @@ module States
     end
 
     def setup_state_events
-      input.on :press, :escape do
-        state_manager.pop
+      input.on :press do |e|
+        state_manager.pop if e.key == :escape
       end
     end
 
@@ -29,29 +31,43 @@ module States
 
     def setup_camera_events
       d = 16
-      input.on :press, @control_map['move_camera_left'] do
+      key_handle = lambda do |*a, &b|
+        keys = a.map(&:to_sym)
+        lambda do |e, elm|
+          if keys.any? { |key| e.key == key }
+            b.call(e, elm)
+          end
+        end
+      end
+
+      control_handle = lambda do |*names, &b|
+        keys = names.map { |name| @control_map[name] }.flatten
+        key_handle.call(*keys, &b)
+      end
+
+      input.on :press, &(control_handle.call('move_camera_left') do |e, elm|
         set_camera_velocity(-d, nil)
-      end
+      end)
 
-      input.on :press, @control_map['move_camera_right'] do
+      input.on :press, &(control_handle.call('move_camera_right') do
         set_camera_velocity(d, nil)
-      end
+      end)
 
-      input.on :release, @control_map['move_camera_left'], @control_map['move_camera_right'] do
+      input.on :release, &(control_handle.call('move_camera_left', 'move_camera_right') do
         set_camera_velocity(0, nil)
-      end
+      end)
 
-      input.on :press, @control_map['move_camera_up'] do
+      input.on :press, &(control_handle.call('move_camera_up') do
         set_camera_velocity(nil, -d)
-      end
+      end)
 
-      input.on :press, @control_map['move_camera_down'] do
+      input.on :press, &(control_handle.call('move_camera_down') do
         set_camera_velocity(nil, d)
-      end
+      end)
 
-      input.on :release, @control_map['move_camera_up'], @control_map['move_camera_down'] do
+      input.on :release, &(control_handle.call('move_camera_up', 'move_camera_down') do
         set_camera_velocity(nil, 0)
-      end
+      end)
     end
 
     def create_map
@@ -67,10 +83,14 @@ module States
       @map_renderer.dm_map = @editor_map
       @map_renderer.camera = @camera
       @map_renderer.each do |element|
-        element.enable_mouseinside
-        element.on :mouseinside do |e|
-          element.show_border = e.inside
-          element.show_label = e.inside
+        element.enable_default_events
+        element.on :mousehover do |e, elm|
+          elm.show_border = e.state
+          elm.show_label = e.state
+        end
+
+        element.on :click do |e, elm|
+          @camera_cursor.moveto elm.chunk.position + (Moon::Vector3[elm.chunk.w, elm.chunk.h, 0] / 2)
         end
       end
 
