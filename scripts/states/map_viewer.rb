@@ -28,7 +28,7 @@ module States
     end
 
     def setup_camera_events
-      d = 8
+      d = 16
       input.on :press, @control_map['move_camera_left'] do
         set_camera_velocity(-d, nil)
       end

@@ -16,7 +16,6 @@ require 'scripts/states'
 require 'scripts/adapters'
 require 'scripts/aux'
 ##
-require 'scripts/test'
 require 'scripts/data'
 
 require 'scripts/main'

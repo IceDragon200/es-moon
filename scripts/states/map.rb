@@ -1,3 +1,5 @@
+require 'scripts/renderers/camera_context'
+
 module States
   class Map < Base
     def init

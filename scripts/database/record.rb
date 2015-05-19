@@ -2,11 +2,10 @@ module Database
   module Record
     module ClassMethods
       def initialize_record_cache
-        ##
         # DB Cache is used to store externally loaded files
         # @type [Hash<filename: String, object: Object>]
         @record_cache = {}
-        ##
+
         # DB Pool stores all the active records including those loaded into the
         # record_cache, as of such, its possible to have a pool that has entries
         # that the cache doesn't have

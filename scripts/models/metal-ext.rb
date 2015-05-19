@@ -34,7 +34,7 @@ module Moon
 
       # @param [String] rootname
       def save_file(rootname = nil)
-        warn "no uri set, skipping saving of #{self["name"]}" unless self['uri']
+        warn "no uri set, skipping saving of #{name}" unless self['uri'].present?
 
         path = File.join(self.class.basepath, self['uri'])
         path = File.join(rootname, path) if rootname

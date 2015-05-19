@@ -13,11 +13,13 @@ module Moon
       super :mouseinside
     end
   end
+
   class MouseInside < MouseContent
     def initialize(p)
       super true, p
     end
   end
+
   class MouseOutside < MouseContent
     def initialize(p)
       super false, p
@@ -43,16 +45,6 @@ end
 class Game < Moon::DataModel::Metal
   field :map,   type: ES::EditorMap, default: nil
   field :world, type: ES::World,     default: nil
-end
-
-class CameraContext < Moon::RenderContainer
-  attr_accessor :camera
-
-  def apply_position_modifier(vec3 = 0)
-    pos = super(vec3)
-    pos -= @camera.view_offset if @camera
-    pos
-  end
 end
 
 class MapView < Moon::RenderContainer
