@@ -1,4 +1,4 @@
-class TilePalettePanel < Moon::RenderContainer
+class TilePalettePanel < Moon::RenderContext
   attr_accessor :cursor_position # Vector3
   attr_reader :tile_palette # EditorTilePalette
 
@@ -27,7 +27,7 @@ class TilePalettePanel < Moon::RenderContainer
     super
   end
 
-  def render(x=0, y=0, z=0, options={})
+  def render_content(x, y, z, options)
     if @spritesheet
       px, py, pz = *(@position + [x, y, z])
       cw, ch = @spritesheet.cell_w, @spritesheet.cell_h
@@ -57,7 +57,7 @@ class TilePalettePanel < Moon::RenderContainer
   end
 end
 
-class TilesetPanel < Moon::RenderContainer
+class TilesetPanel < Moon::RenderContext
   attr_accessor :cursor_position # Vector3
   attr_reader :tileset # Tileset
 
@@ -85,7 +85,7 @@ class TilesetPanel < Moon::RenderContainer
     super delta
   end
 
-  def render(x=0, y=0, z=0, options={})
+  def render_content(x, y, z, options)
     if @tileset_sprite
       px, py, pz = *(@position + [x, y, z])
       cw, ch = @tileset.cell_w, @tileset.cell_h
