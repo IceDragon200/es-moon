@@ -19,7 +19,6 @@ pkg 'moon-null_io'
 pkg 'moon-prototype'
 pkg 'moon-safe_copy'
 pkg 'moon-serializable'
-pkg 'nui' # NanoVG UI package
 pkg 'render_primitives'
 pkg 'scheduler'
 pkg 'splash' # splash screen package
