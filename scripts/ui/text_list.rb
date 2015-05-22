@@ -2,27 +2,42 @@ module UI
   class TextList < Moon::RenderContext
     attr_reader :index
 
-    def initialize
+    def initialize_members
       super
       create_fonts
       @index = 0
-      make_list
+      @list = []
     end
 
+    # Returns the item at the given index.
+    #
+    # @param [Integer] index
+    # @return [Object] item at index
     def get_item(index)
       @list[index]
     end
 
+    # Returns the item at the current @index
+    #
+    # @return [Object]
     def current_item
       get_item(@index)
     end
 
+    # Finds an item given a quqry, the query will be tested against the item
+    # using has_slice?
+    #
+    # @param [Hash<Symbol, Object>] query
     def find_item(query)
       @list.find do |d|
         d.has_slice?(query)
       end
     end
 
+    # Sets the index by locating an item by query, see {#find_item}, the
+    # index remains unchanged if the item is not found.
+    #
+    # @param [Hash<Symbol, Object>] query
     def jump_to_item(query)
       @index = @list.index(find_item(query)) || @index
     end
@@ -39,10 +54,6 @@ module UI
       @list.push(id: id, name: name)
     end
 
-    def make_list
-      @list = []
-    end
-
     def index=(new_index)
       @index = new_index % [@list.size, 1].max
     end
@@ -56,7 +67,6 @@ module UI
         text.render(x, y + oy, z, opts)
         oy += text.h
       end
-      super
     end
   end
 end
