@@ -34,9 +34,7 @@ module States
       key_handle = lambda do |*a, &b|
         keys = a.map(&:to_sym)
         lambda do |e, elm|
-          if keys.any? { |key| e.key == key }
-            b.call(e, elm)
-          end
+          b.call(e, elm) if keys.include?(e.key)
         end
       end
 
