@@ -82,6 +82,7 @@ module States
       @map_renderer.camera = @camera
       @map_renderer.each do |element|
         element.enable_default_events
+        element.border_renderer.animate = true
         element.on :mousehover do |e, elm|
           elm.show_border = e.state
           elm.show_label = e.state
