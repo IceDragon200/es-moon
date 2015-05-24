@@ -52,8 +52,8 @@ module States
         @spriteset_map.trigger(e) if @spriteset_map
       end
 
-      @updatables << @world
-      @renderables << @world
+      @update_list << @world
+      @render_list << @world
     end
 
     def create_map

@@ -14,8 +14,8 @@ module States
       create_map
       create_spriteset
 
-      @updatables << @camera
-      @updatables << @camera_cursor
+      @update_list << @camera
+      @update_list << @camera_cursor
     end
 
     def setup_state_events
