@@ -3,6 +3,7 @@ class Application
 
   def start(engine)
     @state_main = StateBootstrap.new engine
+    @state_main.reset
   end
 
   def step(_, delta)

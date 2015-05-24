@@ -2,19 +2,34 @@ TextureCache = ES::TextureCacheClass.new
 FontCache = ES::FontCacheClass.new
 DataCache = ES::DataCacheClass.new
 
-class StateBootstrap
+class StateBootstrap < State
   class StateManager < Moon::StateManager
 
   end
 
-  attr_reader :engine
-  attr_reader :state_manager
+  def init
+    @state_manager = StateManager.new engine
+  end
 
-  def initialize(engine)
-    @engine = engine
-    @state_manager = StateManager.new @engine
+  def start
     load_config
     setup_states
+
+    #export_map
+  end
+
+  def export_map
+    map = {}
+    ObjectSpace.each_object(Module) do |mod|
+      mod.ancestors.each do |submod|
+        unless submod == mod
+          ary = (map[submod.to_s] ||= [])
+          ary.push(mod.to_s)
+          ary.uniq!
+        end
+      end
+    end
+    YAML.save_file('class_map.yml', map)
   end
 
   def load_config
@@ -40,14 +55,14 @@ class StateBootstrap
     #@state_manager.push StateUITest01
 
     # Splash screens
-    if @config[:splash] == 'true'
+    if @config[:splash]
       @state_manager.push States::EsSplash
       @state_manager.push States::MoonSplash
       @state_manager.push States::MrubySplash
     end
   end
 
-  def step(delta)
+  def update(delta)
     @state_manager.step delta
   end
 end
