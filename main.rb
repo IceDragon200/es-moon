@@ -18,11 +18,17 @@ begin
 
   app.start engine
   engine.main
-rescue Exception => exc
+rescue Exception => exception
+  exc = [exception, exception.backtrace.dup]
 ensure
   app.pre_shutdown engine
   engine.shutdown
   app.post_shutdown engine
 end
 
-raise exc if exc
+if exc
+  puts exc[0].inspect
+  exc[1].each do |line|
+    puts "\t#{line}"
+  end
+end
