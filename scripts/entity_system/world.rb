@@ -13,7 +13,7 @@ module ES
     include Moon::Eventable
 
     class EntityEvent < Moon::Event
-      attr_reader :entity
+      attr_accessor :entity
 
       def initialize(entity, type)
         @entity = entity
