@@ -13,12 +13,12 @@ module ES
   end
 
   class TextureCacheClass < CacheClass
-    private def load_texture(filename)
+    private def create_texture(filename)
       Moon::Texture.new(filename)
     end
 
     cache def resource(filename)
-      load_texture('resources/' + filename)
+      create_texture('resources/' + filename)
     end
 
     cache def block(filename)
