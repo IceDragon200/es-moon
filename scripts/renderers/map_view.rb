@@ -6,7 +6,7 @@ class MapView < Moon::RenderContainer
   attr_reader :tilesize
   attr_reader :world
 
-  def init
+  def initialize_content
     super
     @dm_map = nil
     @world = nil
