@@ -55,7 +55,6 @@ module States
           t.tween_obj screen, :clear_color, to: Moon::Vector4.new(0.0, 0.0, 0.0, 0.0), duration: d, easer: e
 
           scheduler.in '500' do
-            restore_clear_color
             finish
           end
         end
@@ -65,6 +64,11 @@ module States
 
     def restore_clear_color
       screen.clear_color = Moon::Vector4.new(0.0, 0.0, 0.0, 0.0)
+    end
+
+    def finish
+      restore_clear_color
+      super
     end
 
     #def update(delta)
