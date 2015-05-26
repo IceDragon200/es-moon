@@ -1,12 +1,34 @@
 module UI
-  class TextList < Moon::RenderContext
-    attr_reader :index
+  class TextList < Moon::RenderContainer
+    include Moon::Indexable
 
-    def initialize_members
+    private def initialize_members
       super
-      create_fonts
-      @index = 0
+      initialize_index
       @list = []
+    end
+
+    private def initialize_content
+      super
+      create_colors
+    end
+
+    private def initialize_events
+      super
+      on :index do |e|
+        case e.state
+        when :pre_index
+          @elements[e.index].color = @normal_color
+        when :post_index
+          @elements[e.index].color = @selected_color
+        end
+      end
+    end
+
+    private def create_colors
+      @normal_color = Moon::Vector4.new(1.0, 1.0, 1.0, 1.0)
+      @selected_color = Moon::Vector4.new(0.2000, 0.7098, 0.8980, 1.0000)
+      @outline_color = Moon::Vector4.new(0.2000, 0.2000, 0.2000, 1.0000)
     end
 
     # Returns the item at the given index.
@@ -42,31 +64,26 @@ module UI
       @index = @list.index(find_item(query)) || @index
     end
 
-    def create_fonts
-      font = FontCache.font 'uni0553', 16
-      @text_unselected = Moon::Text.new '', font
-      @text_selected = Moon::Text.new '', font
-      @text_selected.color = Moon::Vector4.new(0.2000, 0.7098, 0.8980, 1.0000)
-      @outline_color = Moon::Vector4.new(0.2000, 0.2000, 0.2000, 1.0000)
-    end
-
+    # Adds a new item to the list, :name will be used as the label
+    #
+    # @param [Object] id
+    # @param [String] name
     def add_entry(id, name)
       @list.push(id: id, name: name)
+      font = FontCache.font 'uni0553', 16
+      text = add Moon::Text.new(name, font)
+      text.position.set(0, font.size * (@elements.size - 1), 0)
+      text.color = @normal_color
+      text.outline_color = @outline_color
+      text.outline = 2
+      # invalidate w and h
+      resize nil, nil
+      # reset index
+      self.index = index
     end
 
-    def index=(new_index)
-      @index = new_index % [@list.size, 1].max
-    end
-
-    def render_content(x, y, z, options)
-      oy = 0
-      opts = { outline: 2, outline_color: @outline_color }
-      @list.each_with_index do |dat, i|
-        text = i == @index ? @text_selected : @text_unselected
-        text.string = dat[:name]
-        text.render(x, y + oy, z, opts)
-        oy += text.h
-      end
+    private def treat_index(new_index)
+      new_index % [@list.size, 1].max
     end
   end
 end

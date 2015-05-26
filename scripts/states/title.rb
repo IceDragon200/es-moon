@@ -33,6 +33,19 @@ module States
       @title_menu.align!('center', screen.rect)
       #@title_menu.position = Moon::Vector3.new(8, 4, 0)
 
+      # temp, until events are seperate components
+      #@title_menu.enable_default_events
+      @title_menu.elements.each_with_index do |elm, i|
+        elm.enable_default_events
+        elm.on :click do |e|
+          @title_menu.index = i
+        end
+        elm.on :double_click do
+          @title_menu.index = i
+          on_title_menu_accept
+        end
+      end
+
       @gui.add @title_menu
     end
 
