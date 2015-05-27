@@ -24,11 +24,11 @@ module States
     def create_title_menu
       @title_menu = UI::TitleMenu.new
       @title_menu.tag('#menu')
-      @title_menu.add_entry(:newgame, 'New Game')
-      @title_menu.add_entry(:continue, 'Continue')
-      @title_menu.add_entry(:map_viewer, 'Map Viewer')
-      @title_menu.add_entry(:map_editor, 'Map Editor')
-      @title_menu.add_entry(:quit, 'Quit')
+      @title_menu.add_entry(:newgame, name: 'New Game')
+      @title_menu.add_entry(:continue, name: 'Continue', enabled: false)
+      @title_menu.add_entry(:map_viewer, name: 'Map Viewer')
+      @title_menu.add_entry(:map_editor, name: 'Map Editor')
+      @title_menu.add_entry(:quit, name: 'Quit')
       #
       @title_menu.align!('center', screen.rect)
       #@title_menu.position = Moon::Vector3.new(8, 4, 0)
@@ -40,6 +40,7 @@ module States
         elm.on :click do |e|
           @title_menu.index = i
         end
+
         elm.on :double_click do
           @title_menu.index = i
           on_title_menu_accept
@@ -73,7 +74,7 @@ module States
       when :map_viewer
         state_manager.push States::MapViewer
       when :map_editor
-        state_manager.push EsMapEditor
+        state_manager.push States::EsMapEditor
       when :quit
         state_manager.pop
       end

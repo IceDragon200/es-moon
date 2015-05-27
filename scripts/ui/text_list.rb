@@ -16,12 +16,14 @@ module UI
     private def initialize_events
       super
       on :index do |e|
-        case e.state
+        col = case e.state
         when :pre_index
-          @elements[e.index].color = @normal_color
+          @normal_color
         when :post_index
-          @elements[e.index].color = @selected_color
-        end
+          @selected_color
+        end.dup
+        col.a *= 0.5 unless get_item(e.index)[:enabled]
+        @elements[e.index].color = col
       end
     end
 
@@ -68,10 +70,11 @@ module UI
     #
     # @param [Object] id
     # @param [String] name
-    def add_entry(id, name)
-      @list.push(id: id, name: name)
+    def add_entry(id, options)
+      item = { id: id, enabled: true, name: id.to_s.capitalize }.merge(options)
+      @list.push(item)
       font = FontCache.font 'uni0553', 16
-      text = add Moon::Text.new(name, font)
+      text = add Moon::Text.new(item[:name], font)
       text.position.set(0, font.size * (@elements.size - 1), 0)
       text.color = @normal_color
       text.outline_color = @outline_color
@@ -79,11 +82,16 @@ module UI
       # invalidate w and h
       resize nil, nil
       # reset index
-      self.index = index
+      old_index = index
+      self.index = @list.size - 1
+      self.index = old_index
     end
 
+    # Wraps the provided index around the list size
+    #
+    # @param [Integer] new_index
     private def treat_index(new_index)
-      new_index % [@list.size, 1].max
+      new_index % @list.size.max(1)
     end
   end
 end
