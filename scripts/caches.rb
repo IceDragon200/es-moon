@@ -1,14 +1,6 @@
+require 'scripts/core/fetch_only_hash'
+
 module ES
-  class FetchOnlyHash
-    def initialize(hash)
-      @hash = hash
-    end
-
-    def [](key)
-      @hash.fetch(key)
-    end
-  end
-
   class CacheClass < Moon::CacheBase
   end
 
