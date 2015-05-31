@@ -1,6 +1,7 @@
 module Moon
   class DataMatrix
     # Determines if position is inside the DataMatrix
+    #
     # @overload contains_xy?(x, y)
     # @overload contains_xy?(vec2)
     # @return [Boolean]
@@ -10,6 +11,7 @@ module Moon
     end
 
     # Determines if position is inside the DataMatrix
+    #
     # @overload contains_pos?(x, y, z)
     # @overload contains_pos?(vec3)
     # @return [Boolean]
@@ -18,6 +20,10 @@ module Moon
       px.between?(0, xsize) && py.between?(0, ysize) && pz.between?(0, zsize)
     end
 
+    # DataModel coercion
+    #
+    # @param [Object] obj
+    # @return [Object, Table]
     def self.coerce(obj)
       if obj.is_a?(Hash)
         load obj

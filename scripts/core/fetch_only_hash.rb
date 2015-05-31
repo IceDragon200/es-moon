@@ -1,3 +1,4 @@
+# A limited access Hash, which only allows reading and #fetch-ing
 class FetchOnlyHash
   include Enumerable
 

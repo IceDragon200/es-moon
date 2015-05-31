@@ -1,6 +1,6 @@
 module FileUtils
+  # @param [String] path
   def self.mkdir_p(path)
-    #p "mkdir -p #{path}"
     dirs = path.split('/')
     dirs.size.times do |i|
       pth = dirs[0, i + 1].join('/')
