@@ -1,6 +1,6 @@
-class WtComponent
+class WaitTimeComponent
   include Moon::EntitySystem::Component
-  register :wt
+  register :wait_time
 
   field :value, type: Integer, default: 0
   field :max,   type: Integer, default: 0
