@@ -31,13 +31,13 @@ module States
 
     def start
       super
-
       e = @game.world.spawn do |en|
         en.add transform: { position: Moon::Vector3.new },
+               health: { value: 20, max: 20 },
                sprite: { filename: 'characters/3x/characters_3x.png',
                          clip_rect: Moon::Rect.new(72, 24, 24, 24) }
       end
-      @camera.follow(EntityPositionAdapter.new(e))
+      @camera.follow EntityPositionAdapter.new(e)
 
       input.on :press, :repeat do |ev|
         trns = e[:transform]
