@@ -39,6 +39,13 @@ module States
                          clip_rect: Moon::Rect.new(72, 24, 24, 24) }
       end
 
+      @game.world.spawn do |en|
+        en.add transform: { position: Moon::Vector3.new(-6, 4) },
+               team: { number: Enum::Team::ENEMY },
+               health: { value: 100, max: 10 },
+               sprite: { filename: 'characters/3x/characters_3x.png',
+                         clip_rect: Moon::Rect.new(72, 144, 24, 24) }
+      end
       @camera.follow EntityPositionAdapter.new(@player)
 
       register_input_events
