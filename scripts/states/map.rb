@@ -17,8 +17,8 @@ module States
       @view = MapView.new
       @view.dm_map = @game.map
 
-      @game.world.on :any do |e|
-        @view.trigger e
+      @game.world.on :any do |ev|
+        @view.trigger ev
       end
 
       ctx = CameraContext.new
