@@ -1,8 +1,3 @@
-class Game < Moon::DataModel::Metal
-  field :map,   type: ES::EditorMap, default: nil
-  field :world, type: ES::World,     default: nil
-end
-
 module Dataman
   def self.load_editor_map(query)
     map = ES::Map.find_by(query)

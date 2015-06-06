@@ -1,3 +1,5 @@
+require 'scripts/game'
+
 module States
   # Used for preparing a new game
   class NewGame < Base
