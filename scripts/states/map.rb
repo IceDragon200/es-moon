@@ -31,16 +31,22 @@ module States
 
     def start
       super
-      e = @game.world.spawn do |en|
-        en.add transform: { position: Moon::Vector3.new },
+      @player = @game.world.spawn do |en|
+        en.add transform: { position: Moon::Vector3.new(3, 3) },
+               team: { number: Enum::Team::ALLY },
                health: { value: 20, max: 20 },
                sprite: { filename: 'characters/3x/characters_3x.png',
                          clip_rect: Moon::Rect.new(72, 24, 24, 24) }
       end
-      @camera.follow EntityPositionAdapter.new(e)
 
+      @camera.follow EntityPositionAdapter.new(@player)
+
+      register_input_events
+    end
+
+    def register_input_events
       input.on :press, :repeat do |ev|
-        trns = e[:transform]
+        trns = @player[:transform]
         case ev.key
         when :left
           trns.position += [-1, 0, 0]
