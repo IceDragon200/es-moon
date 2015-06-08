@@ -1,4 +1,6 @@
+require 'scripts/entity_system/systems/actions'
 require 'scripts/entity_system/systems/movement'
-require 'scripts/entity_system/systems/thinks'
-require 'scripts/entity_system/systems/spawning'
+require 'scripts/entity_system/systems/rendering'
 require 'scripts/entity_system/systems/scripting'
+require 'scripts/entity_system/systems/spawning'
+require 'scripts/entity_system/systems/thinks'
