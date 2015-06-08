@@ -7,8 +7,9 @@
 | ap           | Action Points | Points required to perform actions |
 | hp           | Health Points | Points determining an entities health |
 | mp           | Mana Points   | Points required to use magic or special abilities |
-| wt           | Wait Time     | The global wait time |
-| round_wt     | Wait time allocated to 1 round                    |
+| wt           | Wait Time     | Time till object is allowed to act |
+| battle_wt    | Battle Wait Time | The global Wait Time |
+| round_wt     | Round Wait Time | Wait Time allocated to a round |
 | rounds       | Round count | How many rounds have passed since the beginning of the battle                                     |
 | action_index | Limits the number of actions performable per turn |
 
