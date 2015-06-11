@@ -1,8 +1,6 @@
 # Battle System
-## Abbreviations
-
 ## Variables
-| name         | Human Readable | Description |
+| Name         | Human Readable | Description |
 | ------------ | -------------- | ----------- |
 | ap           | Action Points | Points required to perform actions |
 | hp           | Health Points | Points determining an entities health |
@@ -47,6 +45,29 @@
 * battle_end - Ends the battle
 
 * battle_judge - Checks victory or losing conditions
+
+## WT
+Wait Time, is decremented to determine turn order and does not have a "maximum" per say, Wait Time is reset, not by setting its value, but by adding to it.
+```ruby
+attr_accessor :wt
+
+def wt_default
+  # wait time is normally a value around 500
+  512
+end
+
+def wt_reset
+  self.wt += wt_default
+end
+
+def wt_turn?
+  self.wt < 0
+end
+
+def wt_tick
+  self.wt -= 1
+end
+```
 
 ## Faq
 q. Why is wt normally added to, instead of set.
