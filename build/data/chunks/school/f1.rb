@@ -36,7 +36,7 @@ pool(ES::Chunk.new do |chunk|
           "ooooxoox" +
           "xoooooox" +
           "xxxxxxxx"
-    table.set_from_strmap(pss, ES::Passage::STRMAP)
+    table.set_from_strmap(pss, Enum::Passage::STRMAP)
   end
 end)
 
@@ -74,6 +74,6 @@ pool(ES::Chunk.new do |chunk|
           "xxoooxx" +
           "xxoooxx" +
           "xxxxxxx"
-    table.set_from_strmap(pss, ES::Passage::STRMAP)
+    table.set_from_strmap(pss, Enum::Passage::STRMAP)
   end
 end)
