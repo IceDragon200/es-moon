@@ -1,7 +1,6 @@
 require 'scripts/core_ext'
 require 'scripts/version'
 require 'scripts/core'
-require 'scripts/const'
 require 'scripts/enums'
 require 'scripts/caches'
 require 'scripts/database'
