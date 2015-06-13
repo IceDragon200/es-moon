@@ -47,11 +47,5 @@ module ES
       trigger EntityRemovedEvent.new(entity)
       super
     end
-
-    def render(x = 0, y = 0, z = 0, options = {})
-      for system in @systems
-        system.render(x, y, z, options)
-      end
-    end
   end
 end
