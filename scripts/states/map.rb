@@ -27,6 +27,7 @@ module States
       ctx.add @view
 
       @update_list << @camera
+      @update_list << @game.world
       @renderer.add ctx
     end
 
