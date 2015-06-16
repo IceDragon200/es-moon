@@ -1,5 +1,4 @@
-require 'es-aux/entity_renderer'
-require 'es-aux/gauge_renderer'
+require 'scripts/renderers/entity_renderer'
 
 class MapView < Moon::RenderContainer
   attr_reader :dm_map
