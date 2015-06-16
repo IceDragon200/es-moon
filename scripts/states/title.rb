@@ -15,7 +15,7 @@ module States
 
     def create_background
       tex = TextureCache.background 'title.png'
-      @background = Moon::Sprite.new(tex).to_proxy_sprite
+      @background = Moon::Sprite.new(tex).to_sprite_context
       @background.sprite.opacity = 0.0
 
       @gui.add @background

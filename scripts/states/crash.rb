@@ -4,7 +4,7 @@ module States
       super
       ex = cvar['exc']
       tex = TextureCache.background 'crash.png'
-      @background = Moon::Sprite.new(tex).to_proxy_sprite
+      @background = Moon::Sprite.new(tex).to_sprite_context
       @text = Moon::Text.new(format_exception(ex), backtrace_font)
       @gui.add @background
       @gui.add @text
