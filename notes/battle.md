@@ -14,37 +14,36 @@
 ## Phases
 * battle_start - Very first phase, initiates the battle
 
-  * round_next - Advances to the next round, in the case of a battle start, this will be round 1
+  * round_next - Advances to the next round, in the case of a battle start, this will be round 1.
 
-  * round_start - Start phase of a round
+  * round_start - Start phase of a round.
 
-    * next_tick - Advances the global tick to the next available event or entity, if `round_wt` is reduced to 0 and no event/entity is obtained, then this will jump to the `round_end`
+    * next_tick - Advances the global tick to the next available event or entity then advances to `turn_start`, if `round_wt` is reduced to 0 and no event/entity is obtained, then this will jump to the `round_end`.
 
     * turn_start - Start phase of a entity or event's turn. 
 
-      * action_next - Determine if the actor can make an action, as well as incrementing the entities `action_index`
+      * action_next - Determine if the actor can make an action, as well as incrementing the entities `action_index`. If the entity can make an action, then it will jump to `action_make`, else jumps to `turn_end`
 
-      * action_make - AI or player makes an action
+      * action_make - AI or player makes an action.
 
-      * action_prepare - Action is prepared (such as paying costs and all dat jazz)
+      * action_prepare - Action is prepared (such as paying costs and all dat jazz).
 
-      * action_execute - Executes the action
+      * action_execute - Executes the action.
 
-      * action_judge - Checks victory or losing conditions, if no conditions have been met, jump back to `action_next`
+      * action_judge - Checks victory or losing conditions, if conditions have been met, jumps to `battle_end`, else jumps back to `action_next`.
 
     * turn_end - End phase of a entity or event's turn.
-      At this point, the event dropped from the list, or the entity has its
-      wt reset to its maximum value (not by setting it, but by adding to it).
+      At this point, the event dropped from the list, or the entity has its `wait_time` reset to its maximum value (not by setting it, but by adding to it).
 
-    * turn_judge - Checks victory or losing conditions, if no conditions have been met, jump back to `next_tick` 
+    * turn_judge - Checks victory or losing conditions, if conditions have been met, jumps to `battle_end`, else jumps back to `next_tick`. 
 
-  * round_end - End phase of a round
+  * round_end - End phase of a round.
 
-  * round_judge - Checks victory or losing conditions, if no conditions have been met, jump back to `round_next`
+  * round_judge - Checks victory or losing conditions, if conditions have been met, jumps to `battle_end` else jumps back to `round_next`.
 
-* battle_end - Ends the battle
+* battle_end - Ends the battle.
 
-* battle_judge - Checks victory or losing conditions
+* battle_judge - Checks victory or losing conditions.
 
 ## WT
 Wait Time, is decremented to determine turn order and does not have a "maximum" per say, Wait Time is reset, not by setting its value, but by adding to it.
