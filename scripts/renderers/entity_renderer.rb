@@ -13,36 +13,58 @@ class EntityRenderer < Moon::RenderContext
     @tilesize = Moon::Vector3.new 32, 32, 32
   end
 
+  def create_sprite
+    texture = TextureCache.resource @filename
+    @sprite = Moon::Sprite.new texture
+    if @clip_rect
+      @sprite.clip_rect = Moon::Rect.new(0, 0, 0, 0).set(@clip_rect)
+    end
+    @sprite.ox = @sprite.w / 2
+    @sprite.oy = @sprite.h / 2
+  end
+
+  def create_hp_gauge
+    @hp_gauge = GaugeRenderer.new
+    hp_gauge_texture = TextureCache.gauge 'gauge_48x6_hp.png'
+    if team_component = @entity[:team]
+      hp_gauge_texture = case team_component.number
+      when Enum::Team::ENEMY
+        TextureCache.gauge 'gauge_48x6_red.png'
+      else
+        hp_gauge_texture
+      end
+    end
+    @hp_gauge.set_texture hp_gauge_texture, 48, 6
+  end
+
+  def create_mp_gauge
+    @mp_gauge = GaugeRenderer.new
+    @mp_gauge.set_texture TextureCache.gauge('gauge_48x4_mp.png'), 48, 4
+  end
+
+  def create_gauges
+    create_hp_gauge
+    create_mp_gauge
+  end
+
+  def on_entity_changed
+    if @entity && (data = @entity[:sprite])
+      @filename = data.filename
+      @clip_rect = data.clip_rect
+      create_sprite
+      create_gauges
+    end
+  end
+
   def entity=(entity)
     @entity = entity
     @sprite = nil
-    if @entity && (data = @entity[:sprite])
-      @filename = data.filename
-      texture = TextureCache.resource @filename
-      @sprite = Moon::Sprite.new texture
-      if data.clip_rect
-        @sprite.clip_rect = Moon::Rect.new(0, 0, 0, 0).set(data.clip_rect)
-      end
-      @sprite.ox = @sprite.w / 2
-      @sprite.oy = @sprite.h / 2
-      @hp_gauge = GaugeRenderer.new
-      hp_gauge_texture = TextureCache.gauge 'gauge_48x6_hp.png'
-      if team_component = @entity[:team]
-        hp_gauge_texture = case team_component.number
-        when Enum::Team::ENEMY
-          TextureCache.gauge 'gauge_48x6_red.png'
-        else
-          hp_gauge_texture
-        end
-      end
-      @hp_gauge.set_texture hp_gauge_texture, 48, 6
-      @mp_gauge = GaugeRenderer.new
-      @mp_gauge.set_texture TextureCache.gauge('gauge_48x4_mp.png'), 48, 4
-    end
+    on_entity_changed
   end
 
   def update_content(delta)
     return unless @entity
+    return unless @sprite
     if health = @entity[:health]
       @hp_gauge.rate = health.rate if @hp_gauge.rate != health.rate
       @hp_gauge.show unless @hp_gauge.visible?
@@ -61,6 +83,7 @@ class EntityRenderer < Moon::RenderContext
 
   def render_content(x, y, z, options)
     return unless @entity
+    return unless @sprite
 
     @entity.comp :transform, :sprite  do |t, s|
       charpos = t.position * @tilesize + [x, y, z]
