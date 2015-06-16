@@ -6,15 +6,29 @@ module States
   class Map < Base
     def init
       super
+      create_game_world
+      create_camera
+      create_view
+      create_rounds_text
+    end
+
+    def create_game_world
       @game = cvar['game']
       @game.world = ES::World.new
       @game.world.register :actions
       @game.world.register :movement
       @game.world.register :thinks
+      @game.world.register :tactics
 
+      @update_list << @game.world
+    end
+
+    def create_camera
       r = screen.rect.translatef(-0.5, -0.5)
       @camera = Camera2.new view: r
+    end
 
+    def create_view
       @view = MapView.new
       @view.dm_map = @game.map
 
@@ -27,14 +41,23 @@ module States
       ctx.add @view
 
       @update_list << @camera
-      @update_list << @game.world
       @renderer.add ctx
+    end
+
+    def create_rounds_text
+      rounds_text = Moon::Text.new '', FontCache.font('system', 16)
+      rounds_text.tag 'rounds'
+      scheduler.run do
+        t = @tactics[:tactics]
+        rounds_text.string = "Round: #{t.rounds}\nPhase: #{t.phase}\nRoundWT: #{t.round_wt}"
+      end
+      @gui.add rounds_text
     end
 
     def start
       super
       @tactics = @game.world.spawn do |en|
-        en.add tactics: { }
+        en.add tactics: { phase: Enum::TacticsPhase::BATTLE_START }
       end
 
       @cursor = @game.world.spawn do |en|
@@ -44,6 +67,7 @@ module States
 
       @player = @game.world.spawn do |en|
         en.add transform: { position: Moon::Vector3.new(3, 3, 0) },
+               wait_time: { value: 500, max: 500 },
                action_points: { value: 10, max: 10 },
                team: { number: Enum::Team::ALLY },
                health: { value: 20, max: 20 },
@@ -53,6 +77,7 @@ module States
 
       @game.world.spawn do |en|
         en.add transform: { position: Moon::Vector3.new(-6, 4) },
+               wait_time: { value: 530, max: 530 },
                action_points: { value: 10, max: 10 },
                team: { number: Enum::Team::ENEMY },
                health: { value: 100, max: 10 },
