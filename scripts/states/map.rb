@@ -33,6 +33,10 @@ module States
 
     def start
       super
+      @tactics = @game.world.spawn do |en|
+        en.add tactics: { }
+      end
+
       @cursor = @game.world.spawn do |en|
         en.add transform: { position: Moon::Vector3.new(3, 3, 0) },
                sprite: { filename: 'ui/map_editor_cursor_32x32_ffffffff.png' }

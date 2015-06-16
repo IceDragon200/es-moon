@@ -39,4 +39,24 @@ module Enum
     UP         = 8
     UP_RIGHT   = 9
   end
+
+  module TacticsPhase
+    INVALID        = 0
+    BATTLE_START   = 1
+    ROUND_NEXT     = 2
+    ROUND_START    = 3
+    NEXT_TICK      = 4
+    TURN_START     = 5
+    ACTION_NEXT    = 6
+    ACTION_MAKE    = 7
+    ACTION_PREPARE = 8
+    ACTION_EXECUTE = 9
+    ACTION_JUDGE   = 10
+    TURN_END       = 11
+    TURN_JUDGE     = 12
+    ROUND_END      = 13
+    ROUND_JUDGE    = 14
+    BATTLE_END     = 15
+    BATTLE_JUDGE   = 16
+  end
 end
