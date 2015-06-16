@@ -41,6 +41,7 @@ module Enum
   end
 
   module TacticsPhase
+    IDLE           = -1
     INVALID        = 0
     BATTLE_START   = 1
     ROUND_NEXT     = 2
