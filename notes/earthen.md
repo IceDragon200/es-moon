@@ -3,8 +3,7 @@ Earthen
 
 Oh hi, what brings you to my notes?
 
-Whatever it may be, welcome to the es-moon notes, this is just an extract
-from IceDragon's ever messy EDOS/ES notes.
+Whatever it may be, welcome to the es-moon notes, this is just an extract from IceDragon's ever messy EDOS/ES notes.
 
 
 ## What is Earthen?
@@ -15,13 +14,13 @@ Earthen
 adjective
 (of a floor or structure) made of compressed earth.
 "earthen mounds"
+
 (of a pot) made of baked or fired clay.
 "on shelves sat earthen jugs"
 ```
 
 ## No, WHAT IS EARTHEN!?
-Easy there, Earthen is the name of world in which this game's story takes
-place.
+Easy there, Earthen is the name of world in which this game's story takes place.
 
 ## Oh, so why Earthen?
 Since the original focus of the game was crafting, I named it after the "earth".

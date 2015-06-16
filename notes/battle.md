@@ -1,15 +1,15 @@
 # Battle System
 ## Variables
-| Name         | Human Readable | Description |
-| ------------ | -------------- | ----------- |
-| ap           | Action Points | Points required to perform actions |
-| hp           | Health Points | Points determining an entities health |
-| mp           | Mana Points   | Points required to use magic or special abilities |
-| wt           | Wait Time     | Time till object is allowed to act |
-| battle_wt    | Battle Wait Time | The global Wait Time |
-| round_wt     | Round Wait Time | Wait Time allocated to a round |
-| rounds       | Round count | How many rounds have passed since the beginning of the battle                                     |
-| action_index | Limits the number of actions performable per turn |
+| Name         | Human Readable   | Description                                                    |
+| ------------ | ---------------- | -------------------------------------------------------------- |
+| ap           | Action Points    | Points required to perform actions                             |
+| hp           | Health Points    | Points determining an entities health                          |
+| mp           | Mana Points      | Points required to use magic or special abilities              |
+| wt           | Wait Time        | Time till object is allowed to act                             |
+| battle_wt    | Battle Wait Time | The global Wait Time                                           |
+| round_wt     | Round Wait Time  | Wait Time allocated to a round                                 |
+| rounds       | Round count      | How many rounds have passed since the beginning of the battle  |
+| action_index | Action Index     | Limits the number of actions performable per turn              |
 
 ## Phases
 * battle_start - Very first phase, initiates the battle
@@ -48,6 +48,7 @@
 
 ## WT
 Wait Time, is decremented to determine turn order and does not have a "maximum" per say, Wait Time is reset, not by setting its value, but by adding to it.
+
 ```ruby
 attr_accessor :wt
 
@@ -68,6 +69,25 @@ def wt_tick
   self.wt -= 1
 end
 ```
+
+## Magic
+Cooldown
+  Cooldown magic become unavaiable after they are used for a period of time, after the period is over, the magic becomes available once again.
+
+Charged
+  Charged magic are similar to cooldown magic, the difference is they require a period to `re-charge`, this effectively renders them useless until the period has passed, this affects magic before their first usage, making them unavailable at the start of a battle.
+
+Casted
+  Some magic requires that it is casted, this causes the caster (or user) to gain some Wait Time, therefore delaying their current turn in order to use the skill.
+
+Overdrive
+  Overdrive magic causes the caster's final wait time to be doubled, think a Hyper Beam from pokemon for example.
+
+Points
+  Some magic has limited number of uses, after all the points have been used the magic becomes unavailable until the points are restored by some method.
+
+Variable Cost
+  Most magic can have a variable cost, which affects the strength of the magic and its effects, some magic may allow the caster to use all of their mana to inflict massive amounts of damage, however this leaves the caster very vunerable.
 
 ## Faq
 q. Why is wt normally added to, instead of set.
