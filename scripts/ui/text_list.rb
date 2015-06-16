@@ -66,6 +66,23 @@ module UI
       @index = @list.index(find_item(query)) || @index
     end
 
+    # @param [Hash] item
+    def on_item_added(item)
+      font = FontCache.font 'uni0553', 16
+      text = Moon::Text.new(item[:name], font)
+      text.position.set(0, font.size * @elements.size, 0)
+      text.color = @normal_color
+      text.outline_color = @outline_color
+      text.outline = 2
+      add text
+      # invalidate w and h
+      resize nil, nil
+      # reset index
+      old_index = index
+      self.index = @list.size - 1
+      self.index = old_index
+    end
+
     # Adds a new item to the list, :name will be used as the label
     #
     # @param [Object] id
@@ -73,18 +90,7 @@ module UI
     def add_entry(id, options)
       item = { id: id, enabled: true, name: id.to_s.capitalize }.merge(options)
       @list.push(item)
-      font = FontCache.font 'uni0553', 16
-      text = add Moon::Text.new(item[:name], font)
-      text.position.set(0, font.size * (@elements.size - 1), 0)
-      text.color = @normal_color
-      text.outline_color = @outline_color
-      text.outline = 2
-      # invalidate w and h
-      resize nil, nil
-      # reset index
-      old_index = index
-      self.index = @list.size - 1
-      self.index = old_index
+      on_item_added(item)
     end
 
     # Wraps the provided index around the list size
