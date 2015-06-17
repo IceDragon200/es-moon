@@ -15,10 +15,10 @@ module States
     def create_game_world
       @game = cvar['game']
       @game.world = ES::World.new
-      @game.world.register :actions
-      @game.world.register :movement
-      @game.world.register :thinks
       @game.world.register :tactics
+      @game.world.register :actions
+      @game.world.register :thinks
+      @game.world.register :movement
 
       @update_list << @game.world
     end
