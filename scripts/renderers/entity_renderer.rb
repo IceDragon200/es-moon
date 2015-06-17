@@ -10,7 +10,7 @@ class EntityRenderer < Moon::RenderContext
     @index = 0
     @entity = nil
     @sprite = nil
-    @tilesize = Moon::Vector3.new 32, 32, 32
+    @tilesize = Moon::Vector3.new 32, 32, 0
   end
 
   def create_sprite
@@ -88,8 +88,8 @@ class EntityRenderer < Moon::RenderContext
     @entity.comp :transform, :sprite  do |t, s|
       charpos = t.position * @tilesize + [x, y, z]
 
-      sx = charpos.x + (@tilesize.x / 2) - @sprite.ox
-      sy = charpos.y + (@tilesize.y / 2) - @sprite.oy
+      sx = charpos.x + (@tilesize.x - @sprite.ox) / 2
+      sy = charpos.y + (@tilesize.y - @sprite.oy) / 2
       sz = charpos.z
       @sprite.render sx, sy, sz
       @mp_gauge.render sx + @sprite.ox, sy, sz, options
