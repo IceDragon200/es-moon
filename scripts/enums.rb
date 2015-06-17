@@ -60,4 +60,25 @@ module Enum
     BATTLE_END     = 15
     BATTLE_JUDGE   = 16
   end
+
+  PHASE_NAME = {
+    TacticsPhase::IDLE => "IDLE",
+    TacticsPhase::INVALID => "INVALID",
+    TacticsPhase::BATTLE_START => "BATTLE_START",
+    TacticsPhase::ROUND_NEXT => "ROUND_NEXT",
+    TacticsPhase::ROUND_START => "ROUND_START",
+    TacticsPhase::NEXT_TICK => "NEXT_TICK",
+    TacticsPhase::TURN_START => "TURN_START",
+    TacticsPhase::ACTION_NEXT => "ACTION_NEXT",
+    TacticsPhase::ACTION_MAKE => "ACTION_MAKE",
+    TacticsPhase::ACTION_PREPARE => "ACTION_PREPARE",
+    TacticsPhase::ACTION_EXECUTE => "ACTION_EXECUTE",
+    TacticsPhase::ACTION_JUDGE => "ACTION_JUDGE",
+    TacticsPhase::TURN_END => "TURN_END",
+    TacticsPhase::TURN_JUDGE => "TURN_JUDGE",
+    TacticsPhase::ROUND_END => "ROUND_END",
+    TacticsPhase::ROUND_JUDGE => "ROUND_JUDGE",
+    TacticsPhase::BATTLE_END => "BATTLE_END",
+    TacticsPhase::BATTLE_JUDGE => "BATTLE_JUDGE",
+  }
 end
