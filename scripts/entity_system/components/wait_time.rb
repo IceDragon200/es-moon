@@ -1,5 +1,6 @@
-class WaitTimeComponent
-  include Moon::EntitySystem::Component
+require 'scripts/entity_system/component'
+
+class WaitTimeComponent < ES::EntitySystem::Component
   register :wait_time
 
   field :value, type: Integer, default: 0

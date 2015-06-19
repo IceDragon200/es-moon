@@ -1,5 +1,6 @@
-class ActionPointsComponent
-  include Moon::EntitySystem::Component
+require 'scripts/entity_system/component'
+
+class ActionPointsComponent < ES::EntitySystem::Component
   register :action_points
 
   field :value, type: Integer, default: 0

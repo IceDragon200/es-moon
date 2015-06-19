@@ -1,5 +1,6 @@
-class CharacterComponent
-  include Moon::EntitySystem::Component
+require 'scripts/entity_system/component'
+
+class CharacterComponent < ES::EntitySystem::Component
   register :character
 
   field :filename,    type: String,  default: ''

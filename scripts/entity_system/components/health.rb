@@ -1,5 +1,6 @@
-class HealthComponent
-  include Moon::EntitySystem::Component
+require 'scripts/entity_system/component'
+
+class HealthComponent < ES::EntitySystem::Component
   register :health
 
   field :value, type: Integer, default: 0

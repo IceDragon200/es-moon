@@ -1,5 +1,6 @@
-class TacticalComponent
-  include Moon::EntitySystem::Component
+require 'scripts/entity_system/component'
+
+class TacticalComponent < ES::EntitySystem::Component
   register :tactics
 
   # whether the tactics is currently idling, this causes the tactics system to

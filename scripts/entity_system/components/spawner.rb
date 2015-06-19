@@ -1,5 +1,6 @@
-class SpawnerComponent
-  include Moon::EntitySystem::Component
+require 'scripts/entity_system/component'
+
+class SpawnerComponent < ES::EntitySystem::Component
   register :spawner
 
   field :template, type: Moon::EntitySystem::Entity
