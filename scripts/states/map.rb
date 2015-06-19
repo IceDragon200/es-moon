@@ -7,7 +7,7 @@ module States
   class Map < Base
     def create_game_world
       @game = cvar['game']
-      @game.world = ES::World.new
+      @game.world = ES::EntitySystem::World.new
       @game.world.register :tactics
       @game.world.register :actions
       @game.world.register :thinks
@@ -18,6 +18,7 @@ module States
 
     def create_camera
       r = screen.rect.translatef(-0.5, -0.5)
+      puts r
       @camera = Camera2.new view: r
     end
 

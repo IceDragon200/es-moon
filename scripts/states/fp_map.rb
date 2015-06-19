@@ -42,8 +42,8 @@ module States
     end
 
     def create_world
-      @world = ES::World.new
-      @template_world = ES::World.new
+      @world = ES::EntitySystem::World.new
+      @template_world = ES::EntitySystem::World.new
       @world.register :movement
       @world.register :thinks
       @world.register :spawning
