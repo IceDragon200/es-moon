@@ -1,5 +1,6 @@
-class RenderingSystem
-  include Moon::EntitySystem::System
+require 'scripts/entity_system/system'
+
+class RenderingSystem < ES::EntitySystem::System
   register :rendering
 
   def update(delta)

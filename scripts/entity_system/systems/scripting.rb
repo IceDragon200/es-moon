@@ -1,5 +1,6 @@
-class ScriptingSystem
-  include Moon::EntitySystem::System
+require 'scripts/entity_system/system'
+
+class ScriptingSystem < ES::EntitySystem::System
   register :scripting
 
   def awake

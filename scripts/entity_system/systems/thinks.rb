@@ -1,5 +1,6 @@
-class ThinksSystem
-  include Moon::EntitySystem::System
+require 'scripts/entity_system/system'
+
+class ThinksSystem < ES::EntitySystem::System
   register :thinks
 
   def update(delta)
