@@ -10,6 +10,10 @@ module Phases
     # @param [TacticsComponent] tactics
     def process(tactics, world, delta)
     end
+
+    def subject(tactics, world)
+      world.get_entity_by_id(tactics.subject_id)
+    end
   end
 
   module Judge
