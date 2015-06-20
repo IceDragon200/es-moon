@@ -5,4 +5,5 @@ class ActionPointsComponent < ES::EntitySystem::Component
 
   field :value, type: Integer, default: 0
   field :max,   type: Integer, default: 0
+  field :regen, type: Integer, default: 3
 end

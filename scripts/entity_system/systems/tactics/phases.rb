@@ -104,10 +104,14 @@ module Phases
 
     # (see Base#process)
     def process(tactics, world, delta)
-      if entity = world.get_entity_by_id(tactics.subject_id)
-        wt = entity[:wait_time]
-        #wt.reset = 0
-        wt.reset = wt.max
+      if entity = subject(tactics, world)
+        if wt = entity[:wait_time]
+          #wt.reset = 0
+          wt.reset = wt.max
+        end
+        if ap = entity[:action_points]
+          ap.value += ap.regen
+        end
       end
       goto_and_idle tactics, ACTION_NEXT
     end
