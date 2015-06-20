@@ -122,8 +122,12 @@ module Phases
 
     # (see Base#process)
     def process(tactics, world, delta)
-      #goto_and_idle tactics, ACTION_MAKE
-      goto_and_idle tactics, TURN_END
+      if (entity = subject(tactics, world)) && (actions = entity[:actions])
+        goto_and_idle tactics, ACTION_MAKE
+      else
+        # there is no entity, OR, the entity doesn't have an actions component
+        goto_and_idle tactics, TURN_END
+      end
     end
   end
 
