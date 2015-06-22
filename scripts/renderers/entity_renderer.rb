@@ -20,7 +20,7 @@ class EntityRenderer < Moon::RenderContext
       @sprite.clip_rect = Moon::Rect.new(0, 0, 0, 0).set(@clip_rect)
     end
     @sprite.ox = @sprite.w / 2
-    @sprite.oy = @sprite.h / 2
+    @sprite.oy = @sprite.h
   end
 
   def create_hp_gauge
@@ -88,8 +88,8 @@ class EntityRenderer < Moon::RenderContext
     @entity.comp :transform, :sprite  do |t, s|
       charpos = t.position * @tilesize + [x, y, z]
 
-      sx = charpos.x + (@tilesize.x - @sprite.ox) / 2
-      sy = charpos.y + (@tilesize.y - @sprite.oy) / 2
+      sx = charpos.x + (@tilesize.x - @sprite.w) / 2
+      sy = charpos.y + (@tilesize.y - @sprite.h) / 2
       sz = charpos.z
       @sprite.render sx, sy, sz
       @mp_gauge.render sx + @sprite.ox, sy, sz, options
