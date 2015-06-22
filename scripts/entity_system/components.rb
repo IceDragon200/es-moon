@@ -1,5 +1,6 @@
 require 'scripts/entity_system/components/action_points'
 require 'scripts/entity_system/components/actions'
+require 'scripts/entity_system/components/ai'
 require 'scripts/entity_system/components/body'
 require 'scripts/entity_system/components/brain'
 require 'scripts/entity_system/components/character'
