@@ -102,6 +102,7 @@ module States
       @player = @game.world.spawn do |en|
         en.add transform: { position: Moon::Vector3.new(3, 3, 0) },
                wait_time: { value: 500, max: 500 + rand(160) },
+               actions: { },
                action_points: { value: 10, max: 10 },
                name: { string: 'Player' },
                team: { number: Enum::Team::ALLY },
@@ -115,6 +116,7 @@ module States
                wait_time: { value: 500, max: 500 + rand(160) },
                action_points: { value: 10, max: 10 },
                name: { string: 'Enemy' },
+               ai: { },
                team: { number: Enum::Team::ENEMY },
                health: { value: 100, max: 10 },
                sprite: { filename: 'characters/3x/characters_3x.png',
