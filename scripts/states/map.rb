@@ -41,7 +41,6 @@ module States
     def create_rounds_text
       rounds_text = Moon::Text.new '', FontCache.font('system', 16)
       rounds_text.tag 'rounds'
-      rounds_text.position.set(8, screen.h - 24 * 4 - 8, 0)
       scheduler.run do
         t = @tactics[:tactics]
         str = ''
@@ -51,6 +50,7 @@ module States
           end
           str << "#{key.to_s.camelize}: #{value}\n"
         end
+        rounds_text.position.set(8, screen.h - 24 * (t.each_field.count + 1) - 8, 0)
         rounds_text.string = str
       end
       @gui.add rounds_text
