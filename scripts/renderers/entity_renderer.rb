@@ -11,6 +11,8 @@ class EntityRenderer < Moon::RenderContext
     @entity = nil
     @sprite = nil
     @tilesize = Moon::Vector3.new 32, 32, 0
+    @cursor_sprite = Moon::Sprite.new(TextureCache.ui('character_cursor_32x32.png'))
+    @cursor_sprite.color = DataCache.palette['system/ok']
   end
 
   def create_sprite
@@ -91,6 +93,9 @@ class EntityRenderer < Moon::RenderContext
       sx = charpos.x + (@tilesize.x - @sprite.w) / 2
       sy = charpos.y + (@tilesize.y - @sprite.h) / 2
       sz = charpos.z
+      if s.selected
+        @cursor_sprite.render charpos.x + (@tilesize.x - @cursor_sprite.w) / 2, sy, sz
+      end
       @sprite.render sx, sy, sz
       @mp_gauge.render sx + @sprite.ox, sy, sz, options
       @hp_gauge.render sx + @sprite.ox, sy - @mp_gauge.h, sz, options
