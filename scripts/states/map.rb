@@ -134,7 +134,8 @@ module States
         when Enum::TacticsPhase::BATTLE_START,
              Enum::TacticsPhase::ROUND_NEXT,
              Enum::TacticsPhase::ROUND_START,
-             Enum::TacticsPhase::TURN_START
+             Enum::TacticsPhase::TURN_START,
+             Enum::TacticsPhase::TURN_JUDGE
           tactics.idle = false
         when Enum::TacticsPhase::NEXT_TICK
           if entity = @game.world.get_entity_by_id(tactics.subject_id)
@@ -145,6 +146,8 @@ module States
           if entity = @game.world.get_entity_by_id(tactics.subject_id)
             entity[:sprite].selected = false
           end
+          tactics.idle = false
+        when Enum::TacticsPhase::ACTION_NEXT
           tactics.idle = false
         end
       end
