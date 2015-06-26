@@ -9,9 +9,9 @@ class MapView < Moon::RenderContainer
     super
     @dm_map = nil
     @world = nil
+    @tilesize = Moon::Vector3.new(32, 32, 32)
     @map_renderer = MapRenderer.new
     @entities = Moon::RenderArray.new
-    @tilesize = Moon::Vector3.new(32, 32, 32)
 
     add @map_renderer
     add @entities
