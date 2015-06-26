@@ -1,6 +1,18 @@
 require 'scripts/renderers/entity_renderer'
 
+class PopupSpriteset < Moon::RenderContainer
+  def initialize_members
+    super
+    @scheduler = Moon::Scheduler.new
+  end
+
+  def add_popup(popup)
+
+  end
+end
+
 class MapView < Moon::RenderContainer
+  attr_reader :popups
   attr_reader :dm_map
   attr_reader :tilesize
   attr_reader :world
@@ -10,11 +22,13 @@ class MapView < Moon::RenderContainer
     @dm_map = nil
     @world = nil
     @tilesize = Moon::Vector3.new(32, 32, 32)
+    @popups = PopupSpriteset.new
     @map_renderer = MapRenderer.new
     @entities = Moon::RenderArray.new
 
     add @map_renderer
     add @entities
+    add @popups
   end
 
   private def add_entity(entity)

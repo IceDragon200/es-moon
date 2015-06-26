@@ -9,13 +9,13 @@ module ES
   end
 
   class Popup < Moon::DataModel::Metal
-    field :name,        type: String,  default: ""
-    field :uri,         type: String,  default: ""
-    field :filename,    type: String,  default: ""
-    field :cell_w,  type: Integer, default: 40
-    field :cell_h, type: Integer, default: 40
-    field :frame_rate,  type: Integer, default: 16
-    array :sequence,    type: PopupSequenceFrame
+    field :name,       type: String,  default: ""
+    field :uri,        type: String,  default: ""
+    field :filename,   type: String,  default: ""
+    field :cell_w,     type: Integer, default: 40
+    field :cell_h,     type: Integer, default: 40
+    field :frame_rate, type: Integer, default: 16
+    array :sequence,   type: PopupSequenceFrame
 
     alias :__export__ :export
 
