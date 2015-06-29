@@ -24,12 +24,6 @@ module States
     def create_title_menu
       @title_menu = UI::TitleMenu.new
       @title_menu.tag('#menu')
-      @title_menu.add_entry(:newgame, name: 'New Game')
-      @title_menu.add_entry(:continue, name: 'Continue', enabled: false)
-      @title_menu.add_entry(:map_viewer, name: 'Map Viewer')
-      @title_menu.add_entry(:map_editor, name: 'Map Editor')
-      @title_menu.add_entry(:quit, name: 'Quit')
-      #
       @title_menu.align!('center', screen.rect)
       #@title_menu.position = Moon::Vector3.new(8, 4, 0)
 
