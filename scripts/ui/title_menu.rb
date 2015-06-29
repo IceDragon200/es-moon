@@ -1,3 +1,5 @@
+require 'scripts/ui/text_list'
+
 module UI
   class TitleMenu < TextList
     def post_initialize
