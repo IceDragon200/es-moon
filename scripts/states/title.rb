@@ -27,8 +27,6 @@ module States
       @title_menu.align!('center', screen.rect)
       #@title_menu.position = Moon::Vector3.new(8, 4, 0)
 
-      # temp, until events are seperate components
-      #@title_menu.enable_default_events
       @title_menu.elements.each_with_index do |elm, i|
         elm.enable_default_events
         elm.on :click do |e|
