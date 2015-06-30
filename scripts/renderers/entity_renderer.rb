@@ -13,6 +13,8 @@ class EntityRenderer < Moon::RenderContext
     @tilesize = Moon::Vector3.new 32, 32, 0
     @cursor_sprite = Moon::Sprite.new(TextureCache.ui('character_cursor_32x32.png'))
     @cursor_sprite.color = DataCache.palette['system/ok']
+    @cursor_sprite.ox = @cursor_sprite.w / 2
+    @cursor_sprite.oy = @cursor_sprite.h / 2
   end
 
   def create_sprite
@@ -22,7 +24,7 @@ class EntityRenderer < Moon::RenderContext
       @sprite.clip_rect = Moon::Rect.new(0, 0, 0, 0).set(@clip_rect)
     end
     @sprite.ox = @sprite.w / 2
-    @sprite.oy = @sprite.h
+    @sprite.oy = @sprite.h / 2
   end
 
   def create_hp_gauge
@@ -90,15 +92,15 @@ class EntityRenderer < Moon::RenderContext
     @entity.comp :transform, :sprite  do |t, s|
       charpos = t.position * @tilesize + [x, y, z]
 
-      sx = charpos.x + (@tilesize.x - @sprite.w) / 2
-      sy = charpos.y + (@tilesize.y - @sprite.h) / 2
+      sx = charpos.x + @tilesize.x / 2
+      sy = charpos.y + @tilesize.y / 2
       sz = charpos.z
       if s.selected
-        @cursor_sprite.render charpos.x + (@tilesize.x - @cursor_sprite.w) / 2, sy, sz
+        @cursor_sprite.render sx, sy, sz
       end
       @sprite.render sx, sy, sz
-      @mp_gauge.render sx + @sprite.ox, sy, sz, options
-      @hp_gauge.render sx + @sprite.ox, sy - @mp_gauge.h, sz, options
+      @mp_gauge.render sx, charpos.y, sz, options
+      @hp_gauge.render sx, charpos.y - @mp_gauge.h, sz, options
 
       s.bounds ||= Moon::Cuboid.new
       s.bounds.set sx, sy, sz, @sprite.w, @sprite.h, 1

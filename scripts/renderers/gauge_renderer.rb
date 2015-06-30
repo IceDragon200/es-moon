@@ -35,10 +35,10 @@ class GaugeRenderer < Moon::RenderContext
   # @param [Hash] options
   def render_content(x, y, z, options)
     if @base_sprite
-      @base_sprite.render x - @base_sprite.ox, y - @base_sprite.oy, z
+      @base_sprite.render x, y, z
     end
     if @bar_sprite
-      @bar_sprite.render x - @bar_sprite.ox, y - @bar_sprite.oy, z
+      @bar_sprite.render x, y, z
     end
   end
 
