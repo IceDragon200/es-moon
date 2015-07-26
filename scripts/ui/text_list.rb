@@ -69,7 +69,7 @@ module UI
     # @param [Hash] item
     def on_item_added(item)
       font = FontCache.font 'uni0553', 16
-      text = Moon::Text.new(item[:name], font)
+      text = Moon::Label.new(item[:name], font)
       text.position.set(0, font.size * @elements.size, 0)
       text.color = @normal_color
       text.outline_color = @outline_color

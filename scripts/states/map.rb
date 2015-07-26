@@ -39,7 +39,7 @@ module States
     end
 
     def create_rounds_text
-      rounds_text = Moon::Text.new '', FontCache.font('system', 16)
+      rounds_text = Moon::Label.new '', FontCache.font('system', 16)
       rounds_text.tag 'rounds'
       scheduler.run do
         t = @tactics[:tactics]

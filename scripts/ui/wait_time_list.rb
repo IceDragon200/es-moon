@@ -4,15 +4,16 @@ module UI
 
     def initialize_content
       super
-      @font = FontCache.font('system', 16)
+      font = FontCache.font('system', 16)
+      @text = Moon::Text.new(font, '')
     end
 
     def render_content(x, y, z, options)
       row = 0
       world.filter(:wait_time) do |entity|
         wt = entity[:wait_time]
-        str = "#{entity[:name].string}: WT #{wt.value} / #{wt.max} ~#{wt.reset}"
-        @font.render x, y + row * 16, z, str
+        @text.string = "#{entity[:name].string}: WT #{wt.value} / #{wt.max} ~#{wt.reset}"
+        @text.render x, y + row * 16, z
         row += 1
       end
     end

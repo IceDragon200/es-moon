@@ -9,7 +9,7 @@ module States
       tex = TextureCache.resource 'splash/es_logo2.png'
       font = FontCache.font 'uni0553', 16
       str = "Earthen : Smiths #{ES::Version::STRING}"
-      @text = Moon::Text.new(str, font)
+      @text = Moon::Label.new(str, font)
       @text.color = Moon::Vector4.new(0, 0, 0, 1.0)
       @moon_logo = Moon::Sprite.new(tex)
       @moon_logo.ox = @moon_logo.w / 2

@@ -6,7 +6,7 @@ class TilePalettePanel < Moon::RenderContext
     super
     @background = Moon::Sprite.new('resources/ui/grid_32x32_ff777777.png')
     @cursor = Moon::Sprite.new('resources/ui/map_editor_cursor.png')
-    @text = Moon::Text.new('', FontCache.font('uni0553', 8))
+    @text = Moon::Label.new('', FontCache.font('uni0553', 8))
     @tile_palette = nil
 
     @text.align = :right
@@ -106,7 +106,7 @@ class TilePaletteInfoPanel < Moon::RenderContainer
 
   def initialize
     super
-    @text = Moon::Text.new('', FontCache.font('uni0553', 16))
+    @text = Moon::Label.new('', FontCache.font('uni0553', 16))
     @tile_palette = nil
     add(@text)
   end
