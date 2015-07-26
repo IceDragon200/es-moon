@@ -16,7 +16,7 @@ module States
       #@pss_sprite = Moon::sprite.new('resources/blocks/e032x032.png', 32, 32)
       register_actor_move
 
-      @transform = Moon::Transform.new
+      @transform = Moon::Matrix4.new
     end
 
     def register_actor_move
