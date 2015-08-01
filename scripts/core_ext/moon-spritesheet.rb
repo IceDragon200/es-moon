@@ -4,7 +4,7 @@ module Moon
     #
     # @return [Vector2]
     def cell_size
-      @cell_size ||= Vector2.new cell_w, cell_h
+      @cell_size ||= Vector2.new w, h
     end
   end
 end

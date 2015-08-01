@@ -33,7 +33,7 @@ module States
       d = 16
       key_handle = lambda do |*a, &b|
         keys = a.map(&:to_sym)
-        lambda do |e, elm|
+        proc do |e, elm|
           b.call(e, elm) if keys.include?(e.key)
         end
       end

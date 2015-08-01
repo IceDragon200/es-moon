@@ -13,8 +13,8 @@ class EntityRenderer < Moon::RenderContext
     @tilesize = Moon::Vector3.new 32, 32, 0
     @cursor_sprite = Moon::Sprite.new(TextureCache.ui('character_cursor_32x32.png'))
     @cursor_sprite.color = DataCache.palette['system/ok']
-    @cursor_sprite.ox = @cursor_sprite.w / 2
-    @cursor_sprite.oy = @cursor_sprite.h / 2
+    @cursor_sprite.origin.x = @cursor_sprite.w / 2
+    @cursor_sprite.origin.y = @cursor_sprite.h / 2
   end
 
   def create_sprite
@@ -23,8 +23,8 @@ class EntityRenderer < Moon::RenderContext
     if @clip_rect
       @sprite.clip_rect = Moon::Rect.new(0, 0, 0, 0).set(@clip_rect)
     end
-    @sprite.ox = @sprite.w / 2
-    @sprite.oy = @sprite.h / 2
+    @sprite.origin.x = @sprite.w / 2
+    @sprite.origin.y = @sprite.h / 2
   end
 
   def create_hp_gauge

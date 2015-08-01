@@ -73,7 +73,7 @@ module States
     end
 
     def register_input_events
-      input.on :press, :repeat do |ev|
+      input.on [:press, :repeat] do |ev|
         trns = @cursor[:transform]
         case ev.key
         when :left

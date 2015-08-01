@@ -18,10 +18,10 @@ class GaugeRenderer < Moon::RenderContext
     @bar_sprite = Moon::Sprite.new @gauge_texture
     on_bar_index_changed
 
-    @base_sprite.ox = @base_sprite.w / 2
-    @base_sprite.oy = @base_sprite.h
-    @bar_sprite.ox = @bar_sprite.w / 2
-    @bar_sprite.oy = @bar_sprite.h
+    @base_sprite.origin.x = @base_sprite.w / 2
+    @base_sprite.origin.y = @base_sprite.h
+    @bar_sprite.origin.x = @bar_sprite.w / 2
+    @bar_sprite.origin.y = @bar_sprite.h
 
     self.w = @base_sprite.w
     self.h = @base_sprite.h

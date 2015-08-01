@@ -43,7 +43,7 @@ module States
     end
 
     def register_input
-      input.on :press, :repeat do |e|
+      input.on [:press, :repeat] do |e|
         case e.key
         when :up
           @title_menu.index -= 1
