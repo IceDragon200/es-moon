@@ -83,13 +83,13 @@ module States
       @map_renderer.each do |element|
         element.enable_default_events
         element.border_renderer.animate = true
-        element.on :mousehover do |e, elm|
-          elm.show_border = e.state
-          elm.show_label = e.state
+        element.on :mousehover do |e|
+          element.show_border = e.state
+          element.show_label = e.state
         end
 
-        element.on :click do |e, elm|
-          @camera_cursor.moveto elm.chunk.position + (Moon::Vector3[elm.chunk.w, elm.chunk.h, 0] / 2)
+        element.on :click do |e|
+          @camera_cursor.moveto element.chunk.position + (Moon::Vector3[element.chunk.w, element.chunk.h, 0] / 2)
         end
       end
 
