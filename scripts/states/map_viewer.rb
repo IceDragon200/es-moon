@@ -43,7 +43,7 @@ module States
         key_handle.call(*keys, &b)
       end
 
-      input.on :press, &(control_handle.call('move_camera_left') do |e, elm|
+      input.on :press, &(control_handle.call('move_camera_left') do
         set_camera_velocity(-d, nil)
       end)
 
