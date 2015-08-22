@@ -1,3 +1,5 @@
+require 'scripts/models/tileset_head'
+
 module ES
   class Chunk < Moon::DataModel::Base
     field_setting coerce_value: true, default: nil do

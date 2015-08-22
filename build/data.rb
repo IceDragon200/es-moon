@@ -26,9 +26,9 @@ require 'render_primitives/load'
 require 'state_mvc/load'
 require 'twod/load'
 
-require 'es_map_editor/camera_cursor'
-require 'es_map_editor/map_cursor'
-require 'es_map_editor/models'
+require 'scripts/camera_cursor'
+require 'scripts/map_cursor'
+require 'scripts/models'
 
 include Moon
 

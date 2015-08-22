@@ -1,3 +1,5 @@
+require 'scripts/models/editor_chunk'
+
 module ES
   class TileData < Moon::DataModel::Base
     field :valid,               type: Boolean,       default: false

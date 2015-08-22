@@ -1,3 +1,5 @@
+require 'scripts/models/chunk_head'
+
 module ES
   class Map < Moon::DataModel::Base
     array :chunks, type: ChunkHead

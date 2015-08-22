@@ -1,3 +1,5 @@
+require 'scripts/database/record'
+
 module Moon
   module DataModel
     class Metal
