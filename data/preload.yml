@@ -1,0 +1,17 @@
+---
+textures:
+- resources/backgrounds/crash.png
+- resources/splash/es_logo-px.png
+- resources/splash/es_logo.png
+- resources/splash/es_logo2.png
+- resources/splash/moon_logo-px.png
+- resources/splash/moon_logo.png
+- resources/splash/mruby_logo_red-px.png
+- resources/splash/mruby_logo_red-sml.png
+- resources/splash/mruby_logo_red.png
+fonts:
+- "vera/Vera.ttf,18"
+- "uni0553/uni0553-webfont.ttf,16"
+#- "uni0554/uni0554-webfont.ttf,16"
+- "uni0563/uni0563-webfont.ttf,16"
+- "uni0564/uni0564-webfont.ttf,16"
