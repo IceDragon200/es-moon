@@ -2,6 +2,20 @@ module UI
   class TextList < Moon::RenderContainer
     include Moon::Indexable
 
+    attr_reader :font
+
+    def font=(font)
+      @font = font
+      @elements.each do |element|
+        element.font = @font
+      end
+    end
+
+    private def initialize_from_options(options)
+      super
+      self.font = options.fetch(:font)
+    end
+
     private def initialize_members
       super
       initialize_index
@@ -68,8 +82,7 @@ module UI
 
     # @param [Hash] item
     def on_item_added(item)
-      font = FontCache.font 'uni0553', 16
-      text = Moon::Label.new(item[:name], font)
+      text = Moon::Label.new(item[:name], @font)
       text.position.set(0, font.size * @elements.size, 0)
       text.color = @normal_color
       text.outline_color = @outline_color
