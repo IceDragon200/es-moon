@@ -9,7 +9,6 @@ require 'scripts/models'
 require 'scripts/helpers'
 require 'scripts/entity_system'
 require 'scripts/renderers'
-require 'scripts/ui'
 require 'scripts/states'
 require 'scripts/adapters'
 ##

@@ -1,3 +1,5 @@
+require 'scripts/ui/title_menu'
+
 module States
   class Title < Base
     def init
