@@ -1,6 +1,48 @@
 GLFW.init
 
-require 'core/application_base'
+class Application
+  # @param [Moon::Engine] engine
+  def configure(engine)
+  end
+
+  # @param [Moon::Engine] engine
+  def post_setup(engine)
+  end
+
+  # @param [Moon::Engine] engine
+  def load_scripts(engine)
+    GC.disable
+    require 'core/load'
+    require 'scripts/load'
+  ensure
+    GC.enable
+  end
+
+  # Called right before the engine enters its main loop
+  # @param [Moon::Engine] engine
+  def start(engine)
+  end
+
+  # Called every frame by the engine
+  #
+  # @param [Moon::Engine] engine
+  # @param [Float] delta
+  def step(engine, delta)
+  end
+
+  # Called before the engine is shutdown
+  #
+  # @param [Moon::Engine] engine
+  def pre_shutdown(engine)
+  end
+
+  # Called after the engine has shutdown
+  #
+  # @param [Moon::Engine] engine
+  def post_shutdown(engine)
+  end
+end
+
 require 'application' if File.exist?('application.rb')
 
 app = Application.new
