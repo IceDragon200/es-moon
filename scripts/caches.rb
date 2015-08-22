@@ -1,52 +1,49 @@
 require 'scripts/core/fetch_only_hash'
 
 module ES
-  class CacheClass < Moon::CacheBase
-  end
-
-  class TextureCacheClass < CacheClass
-    private def create_texture(filename)
+  class TextureCache < Moon::CacheBase
+    cache def texture(filename)
       Moon::Texture.new(filename)
     end
 
     cache def resource(filename)
-      create_texture('resources/' + filename)
+      texture('resources/' + filename)
     end
 
     cache def block(filename)
-      load_resource('blocks/' + filename)
+      resource('blocks/' + filename)
     end
 
     cache def icon(filename)
-      load_resource('icons_64x64/' + filename)
+      resource('icons_64x64/' + filename)
     end
 
     cache def bmpfont(filename)
-      load_resource('bmpfont/' + filename)
+      resource('bmpfont/' + filename)
     end
 
     cache def tileset(filename)
-      load_resource('tilesets/' + filename)
+      resource('tilesets/' + filename)
     end
 
     cache def system(filename)
-      load_resource('system/' + filename)
+      resource('system/' + filename)
     end
 
     cache def gauge(filename)
-      load_resource('gauges/' + filename)
+      resource('gauges/' + filename)
     end
 
     cache def ui(filename)
-      load_resource('ui/' + filename)
+      resource('ui/' + filename)
     end
 
     cache def background(filename)
-      load_resource('backgrounds/' + filename)
+      resource('backgrounds/' + filename)
     end
   end
 
-  class FontCacheClass < CacheClass
+  class FontCache < Moon::CacheBase
     def post_initialize
       super
       @aliases = {}
@@ -81,7 +78,7 @@ module ES
     end
   end
 
-  class DataCacheClass < CacheClass
+  class DataCache < Moon::CacheBase
     cache def palette
       data = Moon::DataSerializer.load_file('palette')
       palette = Moon::PaletteParser.load_palette(data)

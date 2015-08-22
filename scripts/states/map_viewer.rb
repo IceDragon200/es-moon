@@ -2,9 +2,9 @@ module States
   class MapViewer < Base
     def init
       super
-      view = engine.screen.rect
+      view = screen.rect
       view = view.translate(-view.w / 2, -view.h / 2)
-      @control_map = DataCache.controlmap('map_editor')
+      @control_map = game.data_cache.controlmap('map_editor')
       @camera = Camera2.new(view: view)
       @camera_cursor = CameraCursor2.new
       @camera.follow(@camera_cursor)

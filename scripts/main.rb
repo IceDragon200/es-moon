@@ -1,14 +1,30 @@
-TextureCache = ES::TextureCacheClass.new
-FontCache = ES::FontCacheClass.new
-DataCache = ES::DataCacheClass.new
+require 'scripts/game'
+require 'scripts/states/preload'
+
+module ES
+  class << self
+    attr_accessor :game
+  end
+end
 
 class StateBootstrap < State
   class StateManager < Moon::StateManager
+    attr_accessor :game
 
+    def initialize(game, engine)
+      @game = game
+      super engine
+    end
+
+    private def on_spawn(state)
+      super
+      state.game = @game
+    end
   end
 
   def init
-    @state_manager = StateManager.new engine
+    ES.game = @game = Game.new
+    @state_manager = StateManager.new @game, engine
   end
 
   def start
@@ -60,9 +76,12 @@ class StateBootstrap < State
       @state_manager.push States::MoonSplash
       @state_manager.push States::MrubySplash
     end
+
+    @state_manager.push States::Preload
   end
 
   def update(delta)
+    @game.scheduler.update delta
     @state_manager.step delta
   end
 end

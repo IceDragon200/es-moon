@@ -3,7 +3,7 @@ module States
     def init
       super
       ex = cvar['exc']
-      tex = TextureCache.background 'crash.png'
+      tex = game.texture_cache.background 'crash.png'
       @background = Moon::Sprite.new(tex).to_sprite_context
       @text = Moon::Label.new(format_exception(ex), backtrace_font)
       @gui.add @background
@@ -17,7 +17,7 @@ module States
     end
 
     def backtrace_font
-      FontCache.font('vera', 10)
+      game.font_cache.font('vera', 10)
     end
 
     def start

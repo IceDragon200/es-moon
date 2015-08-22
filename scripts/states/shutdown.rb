@@ -4,9 +4,9 @@ module States
       super
     end
 
-    def update(delta)
+    def start
+      super
       engine.quit
-      super delta
     end
   end
 end

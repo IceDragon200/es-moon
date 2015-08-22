@@ -6,8 +6,8 @@ module States
       @sounds[0] = Moon::Sound.new('resources/sfx/ISTS-EndTurn.ogg', 'ogg')
       @sounds[1] = Moon::Sound.new('resources/sfx/ISTS-OptionChange.ogg', 'ogg')
       @sounds[2] = Moon::Sound.new('resources/sfx/ISTS-OptionChange2.ogg', 'ogg')
-      tex = TextureCache.resource 'splash/es_logo2.png'
-      font = FontCache.font 'uni0553', 16
+      tex = game.texture_cache.resource 'splash/es_logo2.png'
+      font = game.font_cache.font 'uni0553', 16
       str = "Earthen : Smiths #{ES::Version::STRING}"
       @text = Moon::Label.new(str, font)
       @text.color = Moon::Vector4.new(0, 0, 0, 1.0)

@@ -14,7 +14,7 @@ module States
     end
 
     def create_background
-      tex = TextureCache.background 'title.png'
+      tex = game.texture_cache.background 'title.png'
       @background = Moon::Sprite.new(tex).to_sprite_context
       @background.sprite.opacity = 0.0
 
@@ -22,7 +22,7 @@ module States
     end
 
     def create_title_menu
-      @title_menu = UI::TitleMenu.new
+      @title_menu = UI::TitleMenu.new font: game.font_cache.font('uni0553', 16)
       @title_menu.tag('#menu')
       @title_menu.align!('center', screen.rect)
       #@title_menu.position = Moon::Vector3.new(8, 4, 0)
@@ -66,7 +66,7 @@ module States
       when :map_viewer
         state_manager.push States::MapViewer
       when :map_editor
-        state_manager.push States::EsMapEditor
+        state_manager.push States::MapEditor
       when :quit
         state_manager.pop
       end
