@@ -10,7 +10,6 @@ pkg 'moon-mock' # stub base class package
 pkg 'entity_system'
 pkg 'es'
 pkg 'es-aux' # ES auxillary package, various prototypes
-pkg 'es_map_editor'
 pkg 'lunar_ui'
 pkg 'moon-boolean'
 pkg 'moon-inflector'
@@ -22,7 +21,6 @@ pkg 'moon-serializable'
 pkg 'render_primitives'
 pkg 'scheduler'
 pkg 'splash' # splash screen package
-pkg 'state_middleware'
 pkg 'state_mvc'
 pkg 'std' # standard library
 pkg 'twod'
