@@ -1,5 +1,4 @@
-require 'scripts/models/editor_chunk'
-require 'scripts/models/editor_map'
+require 'scripts/models/map'
 
 class MapEditorGuiController < State::ControllerBase
   attr_accessor :map_controller
