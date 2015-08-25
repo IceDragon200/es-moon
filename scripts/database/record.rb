@@ -72,7 +72,9 @@ module Database
 
       def load_file(basename)
         record_cache[basename] ||= begin
-          object = load Moon::DataLoader.file(basename)
+          STDERR.puts "[#{self}] loading (#{basename})"
+          data = Moon::DataLoader.file(basename)
+          object = load data
           object.record_basename = basename
           record_cache[basename] = object
           add_to_pool(object)
