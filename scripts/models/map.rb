@@ -1,14 +1,15 @@
-require 'scripts/models/chunk_head'
-
 module ES
   class Map < Moon::DataModel::Base
-    array :chunks, type: ChunkHead
+    field :data,       type: Moon::DataMatrix, default: nil
+    field :tileset_id, type: String, default: ''
+    attr_accessor :tileset
 
-    def to_editor_map
-      editor_map = ES::EditorMap.new
-      data = to_h.exclude(:chunks)
-      editor_map.update_fields(data)
-      editor_map
+    def w
+      data.xsize
+    end
+
+    def h
+      data.ysize
     end
   end
 end
