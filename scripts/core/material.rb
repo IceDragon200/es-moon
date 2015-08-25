@@ -28,15 +28,19 @@ class Material
     end
   end
 
+  def bind_texture(texture, index = 0)
+    Moon::OpenGL.active_texture(Moon::OpenGL::TEXTURE0 + index)
+    texture.bind
+    @shader.set_uniform("tex#{index}", index)
+  end
+
   def use
     @shader.use
     @uniforms.each_pair do |key, value|
       @shader.set_uniform(key, value)
     end
     @textures.each_with_index do |texture, index|
-      OpenGL.active_texture(OpenGL::TEXTURE0 + index)
-      texture.bind
-      @shader.set_uniform("tex#{index}", index)
+      bind_texture(texture, index)
     end
   end
 end
