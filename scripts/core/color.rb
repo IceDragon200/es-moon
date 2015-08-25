@@ -8,7 +8,7 @@ class Color
   # @param [Float] a
   # @return [Moon::Vector4]
   def self.new(r, g, b, a)
-    Moon::Vector4.new r, g, b, a
+    Moon::Vector4.new r / 255.0, g / 255.0, b / 255.0, a / 255.0
   end
 
   # Creates a RGBA color from the given r, g, b, a values
@@ -18,7 +18,7 @@ class Color
   # @param [Integer] a
   # @return [Moon::Vector4]
   def self.rgba(r, g, b, a)
-    new r / 255.0, g / 255.0, b / 255.0, a / 255.0
+    new r, g, b, a
   end
 
   # Creates a RGB color from the given r, g, b values
@@ -46,4 +46,7 @@ class Color
   def self.hex(rgb24)
     rgb((rgb24 >> 16) & 0xFF, (rgb24 >> 8) & 0xFF, rgb24 & 0xFF)
   end
+
+  WHITE = new 255, 255, 255, 255
+  BLACK = new 0, 0, 0, 255
 end
