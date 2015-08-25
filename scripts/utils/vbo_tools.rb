@@ -1,10 +1,10 @@
 module VboTools
-  def rect_to_texrect(rect, texture)
+  def self.rect_to_texrect(rect, texture)
     [ rect.x.to_f / texture.w, rect.y.to_f / texture.h,  # x, y,
       rect.w.to_f / texture.w, rect.h.to_f / texture.h ] # w, h
   end
 
-  def fill_rect(vbo, rect, srcrect, texture, texr, color)
+  def self.fill_rect(vbo, rect, srcrect, texture, texr, color)
     xrun, xrem = rect.w.divmod(srcrect.w)
     yrun, yrem = rect.h.divmod(srcrect.h)
     yrun.times do |y|
@@ -34,7 +34,7 @@ module VboTools
     end
   end
 
-  def fill_windowskin_vbo(vbo, rect, texture, color, part_rects)
+  def self.fill_windowskin_vbo(vbo, rect, texture, color, part_rects)
     x, y, w, h = *rect
 
     # these represent the numpad
@@ -98,6 +98,4 @@ module VboTools
     r = Moon::Rect.new rect.x + q4r.w, rect.y + q8r.h, rect.w - q4r.w - q6r.w, rect.h - q8r.h - q2r.h
     fill_rect vbo, r, q5r, texture, q5tr, color
   end
-
-  extend self
 end
