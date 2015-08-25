@@ -14,9 +14,16 @@ module ES
         end
       end
 
-      def initialize
-        super
+      attr_reader :game
+
+      def initialize(game)
+        super()
+        @game = game
         initialize_eventable
+      end
+
+      def on_system_added(system)
+        system.game = @game
       end
 
       def on_entity_added(entity)
