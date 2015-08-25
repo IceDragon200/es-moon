@@ -5,8 +5,10 @@ note: ''
 tags: []
 meta: {}
 uri: "/tilesets/common"
-filename: oryx_lofi_fantasy/4x/lofi_environment_4x.png
+filename: tilesets/oryx_lofi_fantasy/4x/lofi_environment_4x
 cell_w: 32
 cell_h: 32
 columns: 16
+passages: []
+tile_properties: []
 "&class": ES::Tileset

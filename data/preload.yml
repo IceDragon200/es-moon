@@ -1,17 +1,41 @@
 ---
 textures:
-- resources/backgrounds/crash.png
-- resources/splash/es_logo-px.png
-- resources/splash/es_logo.png
-- resources/splash/es_logo2.png
-- resources/splash/moon_logo-px.png
-- resources/splash/moon_logo.png
-- resources/splash/mruby_logo_red-px.png
-- resources/splash/mruby_logo_red-sml.png
-- resources/splash/mruby_logo_red.png
+  backgrounds/blue: "resources/backgrounds/blue.png"
+  backgrounds/crash: "resources/backgrounds/crash.png"
+  backgrounds/title: "resources/backgrounds/title.png"
+  characters/2x/characters_2x: "resources/characters/2x/characters_2x.png"
+  characters/3x/characters_3x: "resources/characters/3x/characters_3x.png"
+  characters/4x/characters_4x: "resources/characters/4x/characters_4x.png"
+  characters/characters: "resources/characters/characters.png"
+  icons/lil-icons: "resources/icons/lil-icons.png"
+  icons/lil-icons_3x: "resources/icons/lil-icons_3x.png"
+  icons/lil-icons_4x: "resources/icons/lil-icons_4x.png"
+  splash/es_logo-px: "resources/splash/es_logo-px.png"
+  splash/es_logo2: "resources/splash/es_logo2.png"
+  splash/es_logo: "resources/splash/es_logo.png"
+  splash/moon_logo-px: "resources/splash/moon_logo-px.png"
+  splash/moon_logo: "resources/splash/moon_logo.png"
+  splash/mruby_logo_red-px: "resources/splash/mruby_logo_red-px.png"
+  splash/mruby_logo_red-sml: "resources/splash/mruby_logo_red-sml.png"
+  splash/mruby_logo_red: "resources/splash/mruby_logo_red.png"
+  tilesets/oryx_lofi_fantasy/4x/lofi_environment_4x: "resources/tilesets/oryx_lofi_fantasy/4x/lofi_environment_4x.png"
+  tilesets/oryx_lofi_fantasy/4x/lofi_glyphs_4x: "resources/tilesets/oryx_lofi_fantasy/4x/lofi_glyphs_4x.png"
+
 fonts:
-- "vera/Vera.ttf,18"
-- "uni0553/uni0553-webfont.ttf,16"
-#- "uni0554/uni0554-webfont.ttf,16"
-- "uni0563/uni0563-webfont.ttf,16"
-- "uni0564/uni0564-webfont.ttf,16"
+  awesome.16: "resources/fonts/fontawesome-webfont.ttf,16"
+  awesome.24: "resources/fonts/fontawesome-webfont.ttf,24"
+  awesome.32: "resources/fonts/fontawesome-webfont.ttf,32"
+  foundation.24: "resources/fonts/general_foundicons.ttf,24"
+  foundation_enclosed.24: "resources/fonts/general_enclosed_foundicons.ttf,24"
+  ipaexg.16: "resources/fonts/ipaexg00201/ipaexg.ttf,16"
+  system: "resources/fonts/uni0553/uni0553-webfont.ttf,16"
+  uni0553.16: "resources/fonts/uni0553/uni0553-webfont.ttf,16"
+  #uni0554.16: "resources/fonts/uni0554/uni0554-webfont.ttf,16"
+  uni0563.16: "resources/fonts/uni0563/uni0563-webfont.ttf,16"
+  uni0564.16: "resources/fonts/uni0564/uni0564-webfont.ttf,16"
+  vera.10: "resources/fonts/vera/Vera.ttf,10"
+  vera.18: "resources/fonts/vera/Vera.ttf,18"
+  vera_mono.18: "resources/fonts/vera/VeraMono.ttf,18"
+  vera_mono_bold.18: "resources/fonts/vera/VeraMoBd.ttf,18"
+  vera_mono_bold_italic.18: "resources/fonts/vera/VeraMoBI.ttf,18"
+  vera_mono_italic.18: "resources/fonts/vera/VeraMoIt.ttf,18"

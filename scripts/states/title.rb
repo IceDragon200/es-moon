@@ -16,7 +16,7 @@ module States
     end
 
     def create_background
-      tex = game.texture_cache.background 'title.png'
+      tex = game.texture_cache['backgrounds/title']
       @background = Moon::Sprite.new(tex).to_sprite_context
       @background.sprite.opacity = 0.0
 
@@ -24,7 +24,7 @@ module States
     end
 
     def create_title_menu
-      @title_menu = UI::TitleMenu.new font: game.font_cache.font('uni0553', 16)
+      @title_menu = UI::TitleMenu.new font: game.font_cache['system']
       @title_menu.tag('#menu')
       @title_menu.align!('center', screen.rect)
       #@title_menu.position = Moon::Vector3.new(8, 4, 0)

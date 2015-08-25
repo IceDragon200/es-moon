@@ -10,7 +10,5 @@ require 'scripts/entity_system'
 require 'scripts/renderers'
 require 'scripts/states'
 require 'scripts/adapters'
-##
-require 'scripts/data'
 
 require 'scripts/main'
