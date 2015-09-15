@@ -64,9 +64,9 @@ class RenderingSystem < ES::EntitySystem::System
     sprite.vbo ||= Moon::VertexBuffer.new(Moon::VertexBuffer::DYNAMIC_DRAW)
     sprite.vbo.clear
     case sprite.type
-    when :sprite
+    when 'sprite'
       sprite.vbo.add_quad([0, 0, sprite.texture.w, sprite.texture.h], [0, 0, 1, 1], [1, 1, 1, 1])
-    when :spritesheet
+    when 'spritesheet'
       setup_spritesheet_vbo(sprite)
     else
       raise RuntimeError, "unrecognized sprite.type #{sprite.type}!"
@@ -75,7 +75,7 @@ class RenderingSystem < ES::EntitySystem::System
   end
 
   def setup_clip_rect(sprite)
-    return unless sprite.type == :sprite
+    return unless sprite.type == 'sprite'
     if sprite.last_clip_rect != sprite.clip_rect
       puts "Refreshing VBO"
       sprite.vbo.clear

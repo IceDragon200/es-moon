@@ -19,7 +19,7 @@ class SpriteComponent < ES::EntitySystem::Component
   # last known rendered bounds
   field :bounds,    type: Moon::Cuboid, default: proc { |t| t.model.new }
 
-  field :type, type: Symbol, default: :sprite
+  field :type, type: String, default: 'sprite'
 
   # if type == SPRITESHEET
   field :cell_w, type: Integer, default: 0
@@ -30,7 +30,7 @@ class SpriteComponent < ES::EntitySystem::Component
   field :clip_rect, type: Moon::Rect,   default: nil
 
   def vertex_index
-    return index * 4 if type == :spritesheet
+    return index * 4 if type == 'spritesheet'
     index
   end
 end

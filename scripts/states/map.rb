@@ -17,7 +17,7 @@ module States
       end
 
       @world.spawn do |entity|
-        entity.add sprite: { filename: 'characters/4x/characters_4x', type: :spritesheet, cell_w: 32, cell_h: 32, index: 1 }
+        entity.add sprite: { filename: 'characters/4x/characters_4x', type: 'spritesheet', cell_w: 32, cell_h: 32, index: 1 }
       end
     end
 
