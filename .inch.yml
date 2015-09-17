@@ -1,0 +1,6 @@
+files:
+  included:
+    - application.rb
+    - main.rb
+    - core/*.rb
+    - scripts/**/*.rb
