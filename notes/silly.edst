@@ -1,0 +1,18 @@
+%%silly
+{
+  %description Because sometimes when you're stuck, its best to note down every "silly" thing, even if its not silly.
+
+  %%note
+  {
+    What is ES?
+
+    ES an acronym for Earthen : Smiths.
+    It is a Role Playing, Turn based, somewhat rogue-like game.
+
+    The player controls Baron and his friends, taking them on an adventure throughout the world of Earthen, crafting items and fighting monsters along the way.
+
+    Unlike other roguelikes where movement can be done in 8 different directions, ES only allows the 4 adjacent tiles to be moved in, however a character can move multiple times in a single turn.
+
+    When a character moves, he/she/it is affected by terrain effects (poison, traps etc..), there is no UNDO, REDO or TAKE BACK, once a character moves, its counted as an action.
+  }
+}
