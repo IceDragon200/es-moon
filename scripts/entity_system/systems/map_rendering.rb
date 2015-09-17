@@ -18,7 +18,7 @@ class MapRenderingSystem < ES::EntitySystem::System
         spritesheet = @spritesheet_cache[tileset.spritesheet_id] ||= begin
           Moon::Spritesheet.new(game.texture_cache[tileset.filename], tileset.cell_w, tileset.cell_h)
         end
-        @tilemap.set data: map.data.data, datasize: map.data.sizes, tileset: spritesheet
+        @tilemap.set data: map.data.blob, datasize: map.data.sizes, tileset: spritesheet
         @last_map = map
       end
       @tilemap.render 0, 0, 0
