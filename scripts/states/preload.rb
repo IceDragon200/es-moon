@@ -12,6 +12,9 @@ module States
       load_vfs
       load_materials
 
+      game.font_cache.lock
+      game.texture_cache.lock
+
       state_manager.change States::Shutdown
       state_manager.push States::Title
       # Test Map
@@ -39,7 +42,9 @@ module States
 
     def load_vfs
       ## maps
-      vfs = YAML.load_file('data/vfs.yml')['data']
+      root_filename = "data/vfs.yml"
+      root = File.dirname(root_filename)
+      vfs = YAML.load_file(root_filename)['data']
       vfs.each_pair do |key, entries|
         klass = case key
         when 'characters'
@@ -53,8 +58,14 @@ module States
           IdentityLoader
         end
 
-        entries.each do |filename|
-          klass.load_file filename.gsub('.yml', '')
+        entries.each do |basename|
+          filename = File.join(root, basename)
+          cachename = basename.gsub(/#{File.extname(filename)}\z/, '')
+          puts "Preloading #{key} data: #{filename}"
+          data = YAML.load_file(filename)
+          record = klass.load data
+          record.uri = cachename if record.respond_to?(:uri=)
+          game.database[cachename] = record
         end
       end
     end
@@ -68,7 +79,7 @@ module States
           value.each_pair do |name, filename|
             puts "Preloading Texture: #{filename}"
             texture = textures[filename] ||= Moon::Texture.new(filename)
-            game.texture_cache.cache(name, texture)
+            game.texture_cache[name] = texture
           end
         when 'fonts'
           fonts = {}
@@ -76,7 +87,7 @@ module States
             filename, size = str.split(',')
             puts "Preloading Font: #{str}"
             font = fonts[str] ||= Moon::Font.new(filename, size.to_i)
-            game.font_cache.cache(name, font)
+            game.font_cache[name] = font
           end
         end
       end
