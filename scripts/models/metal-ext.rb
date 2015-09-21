@@ -1,9 +1,9 @@
-require 'scripts/database/record'
+require 'scripts/database/queryable'
 
 module Moon
   module DataModel
     class Metal
-      include Database::Record
+      include Database::Queryable
 
       # When querying the model about its properties this is used.
       #
