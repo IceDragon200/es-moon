@@ -1,6 +1,6 @@
 require 'scripts/models/base'
 
-module ES
+module Models
   class Tileset < Base
     field :filename,        type: String,  default: ''
     array :passages,        type: Integer

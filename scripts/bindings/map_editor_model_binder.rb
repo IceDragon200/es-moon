@@ -2,7 +2,7 @@ require 'scripts/models/map_editor_model'
 require 'state_mvc/model_binder'
 
 class MapEditorModelBinder < State::ModelBinder
-  schema MapEditorModel, :model
+  schema Models::MapEditorModel, :model
 
   def start
   end

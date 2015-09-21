@@ -1,7 +1,7 @@
 require 'scripts/models/base'
 require 'scripts/models/tileset'
 
-module ES
+module Models
   class TilePalette < Base
     field :tileset, type: Tileset,   default: ->(t, _) { t.model.new }
     array :tiles,   type: Integer

@@ -25,7 +25,6 @@ module ES
 
         chunk_id = chunk ? chunk.id : ''
         chunk_name = chunk ? chunk.name : ''
-        chunk_uri = chunk ? chunk.uri : ''
         chunk_position = chunk ? chunk.position.to_a : [-1, -1]
         chunk_data_pos = @tile_data[:chunk_data_position] || [-1, -1]
 
