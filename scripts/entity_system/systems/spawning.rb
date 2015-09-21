@@ -4,7 +4,7 @@ require 'scripts/entity_system/components/spawner'
 
 module Systems
   class Spawning < Base
-    include ES::EntitySystem::System::Processing
+    include Processing
     register :spawning
 
     def filtered(&block)

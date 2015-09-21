@@ -5,7 +5,7 @@ require 'scripts/entity_system/components/tactics'
 
 module Systems
   class Tactics < Base
-    include ES::EntitySystem::System::Processing
+    include Processing
 
     register :tactics
 

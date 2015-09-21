@@ -6,7 +6,7 @@ require 'scripts/entity_system/components/body'
 
 module Systems
   class Movement < Base
-    include ES::EntitySystem::System::Processing
+    include Processing
     register :movement
 
     def init
