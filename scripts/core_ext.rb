@@ -1,6 +1,7 @@
 # mruby core
 require 'scripts/core_ext/enumerable'
 require 'scripts/core_ext/string'
+require 'scripts/core_ext/object'
 
 # moon core
 require 'scripts/core_ext/moon-spritesheet'
