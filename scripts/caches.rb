@@ -23,12 +23,25 @@ module ES
       @locked
     end
 
+    # Checks if the cache is locked, prints an error if it is.
+    #
+    # @return [Boolean]
+    private def check_locked
+      if locked?
+        puts "WARN: AssetCache(#{@name}) is locked"
+        return true
+      end
+      false
+    end
+
     def clear
+      return if check_locked
       @entries.clear
+      self
     end
 
     def []=(key, value)
-      return warn "AssetCache(#{@name}) is locked" if locked?
+      return if check_locked
       @entries[key] = value
     end
 
