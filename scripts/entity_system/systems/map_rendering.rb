@@ -1,3 +1,4 @@
+require 'scripts/models/tileset'
 require 'scripts/entity_system/system'
 require 'scripts/entity_system/components/map'
 
@@ -16,7 +17,7 @@ module Systems
       world.filter :map do |map_entity|
         map = map_entity[:map].map
         if @last_map != map
-          tileset = ES::Tileset.find_by(uri: map.tileset_id)
+          tileset = game.database[map.tileset_id].as(Models::Tileset)
           spritesheet = @spritesheet_cache[tileset.spritesheet_id] ||= begin
             Moon::Spritesheet.new(game.texture_cache[tileset.filename], tileset.cell_w, tileset.cell_h)
           end
