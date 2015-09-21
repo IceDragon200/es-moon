@@ -1,16 +1,16 @@
 ---
 data:
   characters:
-    - "/characters/baron.yml"
-    - "/characters/baron+backpack.yml"
-    - "/characters/chika.yml"
-    - "/characters/cogan.yml"
-    - "/characters/cyrus.yml"
-    - "/characters/nixe.yml"
-    - "/characters/spyet.yml"
+    - "characters/baron.yml"
+    - "characters/baron+backpack.yml"
+    - "characters/chika.yml"
+    - "characters/cogan.yml"
+    - "characters/cyrus.yml"
+    - "characters/nixe.yml"
+    - "characters/spyet.yml"
   charmaps:
-    - "/charmap/awesome.yml"
+    - "charmap/awesome.yml"
   maps:
-    - "/maps/school/f1.yml"
+    - "maps/school/f1.yml"
   tilesets:
-    - "/tilesets/common.yml"
+    - "tilesets/common.yml"
