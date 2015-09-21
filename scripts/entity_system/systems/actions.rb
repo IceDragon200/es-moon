@@ -1,6 +1,7 @@
 require 'scripts/entity_system/system'
 
-class ActionsSystem < ES::EntitySystem::System
-  register :actions
-
+module Systems
+  class Actions < Base
+    register :actions
+  end
 end

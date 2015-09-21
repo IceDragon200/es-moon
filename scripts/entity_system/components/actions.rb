@@ -5,8 +5,10 @@ module ES
   end
 end
 
-class ActionsComponent < ES::EntitySystem::Component
-  register :actions
+module Components
+  class Actions < Base
+    register :actions
 
-  array :list, type: ES::Action
+    array :list, type: ES::Action
+  end
 end

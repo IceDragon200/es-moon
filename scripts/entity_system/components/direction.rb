@@ -1,8 +1,10 @@
 require 'scripts/entity_system/component'
 
-class DirectionComponent < ES::EntitySystem::Component
-  register :direction
+module Components
+  class Direction < Base
+    register :direction
 
-  # Enum::Direction
-  field :dir, type: Integer, default: Enum::Direction::DOWN
+    # Enum::Direction
+    field :dir, type: Integer, default: Enum::Direction::DOWN
+  end
 end

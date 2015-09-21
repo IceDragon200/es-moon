@@ -1,5 +1,7 @@
 require 'scripts/entity_system/component'
 
-class BrainComponent < ES::EntitySystem::Component
-  register :brain
+module Components
+  class Brain < Base
+    register :brain
+  end
 end

@@ -1,13 +1,16 @@
 require 'scripts/entity_system/system'
+require 'scripts/entity_system/components/script'
 
-class ScriptingSystem < ES::EntitySystem::System
-  register :scripting
+module Systems
+  class Scripting < Base
+    register :scripting
 
-  def awake
-    #
-  end
+    def awake
+      #
+    end
 
-  def update(delta)
-    #
+    def update(delta)
+      #
+    end
   end
 end

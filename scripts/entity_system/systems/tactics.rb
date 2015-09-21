@@ -1,37 +1,41 @@
 require 'scripts/entity_system/system'
 require 'scripts/entity_system/system/processing'
 require 'scripts/entity_system/systems/tactics/phases'
+require 'scripts/entity_system/components/tactics'
 
-class TacticsSystem < ES::EntitySystem::System
-  include ES::EntitySystem::System::Processing
-  register :tactics
+module Systems
+  class Tactics < Base
+    include ES::EntitySystem::System::Processing
 
-  def post_initialize
-    super
-    initialize_phases
-  end
+    register :tactics
 
-  def initialize_phases
-    @phases = {}
-    Phases::PHASE_TABLE.each_pair do |key, klass|
-      @phases[key] = klass.new
+    def post_initialize
+      super
+      initialize_phases
     end
-  end
 
-  def filtered(&block)
-    world.filter(:tactics, &block)
-  end
-
-  def process(entity, delta)
-    tactics = entity[:tactics]
-    until tactics.idle
-      if tactics.next_phase != Enum::TacticsPhase::INVALID
-        tactics.phase = tactics.next_phase
+    def initialize_phases
+      @phases = {}
+      Phases::PHASE_TABLE.each_pair do |key, klass|
+        @phases[key] = klass.new
       end
-      if phase = @phases[tactics.phase]
-        phase.process(tactics, world, delta)
-      else
-        puts "warning: Tactics is in an invalid phase!"
+    end
+
+    def filtered(&block)
+      world.filter(:tactics, &block)
+    end
+
+    def process(entity, delta)
+      tactics = entity[:tactics]
+      until tactics.idle
+        if tactics.next_phase != Enum::TacticsPhase::INVALID
+          tactics.phase = tactics.next_phase
+        end
+        if phase = @phases[tactics.phase]
+          phase.process(tactics, world, delta)
+        else
+          puts "warning: Tactics is in an invalid phase!"
+        end
       end
     end
   end

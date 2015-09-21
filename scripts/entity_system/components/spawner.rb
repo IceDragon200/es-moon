@@ -1,8 +1,10 @@
 require 'scripts/entity_system/component'
 
-class SpawnerComponent < ES::EntitySystem::Component
-  register :spawner
+module Components
+  class Spawner < Base
+    register :spawner
 
-  field :template, type: Moon::EntitySystem::Entity
-  field :timer,    type: Moon::Timer
+    field :template, type: Moon::EntitySystem::Entity
+    field :timer,    type: Moon::Timer
+  end
 end

@@ -1,5 +1,7 @@
 require 'scripts/entity_system/component'
 
-class ScriptComponent < ES::EntitySystem::Component
-  register :script
+module Components
+  class Script < Base
+    register :script
+  end
 end

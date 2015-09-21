@@ -1,7 +1,9 @@
 require 'scripts/entity_system/component'
 
-class NameComponent < ES::EntitySystem::Component
-  register :name
+module Components
+  class Name < Base
+    register :name
 
-  field :string, field: String, default: 'Anonymous'
+    field :string, field: String, default: 'Anonymous'
+  end
 end

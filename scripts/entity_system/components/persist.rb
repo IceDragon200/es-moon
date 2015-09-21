@@ -1,7 +1,7 @@
 require 'scripts/entity_system/component'
 
 module Components
-  class Ai < Base
-    register :ai
+  class Persist < Base
+    register :persist
   end
 end

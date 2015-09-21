@@ -1,11 +1,9 @@
 require 'entity_system/system'
 
-module ES
-  module EntitySystem
-    class System
-      include Moon::EntitySystem::System
+module Systems
+  class Base
+    include Moon::EntitySystem::System
 
-      attr_accessor :game
-    end
+    attr_accessor :game
   end
 end

@@ -1,7 +1,9 @@
 require 'scripts/entity_system/component'
 
-class TargetComponent < ES::EntitySystem::Component
-  register :target
+module Components
+  class Target < Base
+    register :target
 
-  field :target, type: Moon::EntitySystem::Entity, default: nil
+    field :target, type: Moon::EntitySystem::Entity, default: nil
+  end
 end
