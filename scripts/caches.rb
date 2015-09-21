@@ -5,20 +5,43 @@ module ES
   # will not load or create an new objects by itself, this forces the user
   # to preload all needed assets before usage and prevents in game loading lag.
   class AssetCache
-    def initialize
+    attr_reader :name
+    attr_reader :entries
+
+    def initialize(name)
+      @name = name
       @entries = {}
+      @locked = false
+    end
+
+    def lock
+      @locked = true
+      self
+    end
+
+    def locked?
+      @locked
     end
 
     def clear
       @entries.clear
     end
 
-    def cache(key, value)
+    def []=(key, value)
+      return warn "AssetCache(#{@name}) is locked" if locked?
       @entries[key] = value
+    end
+
+    def exist?(key)
+      @entries.key?(key)
     end
 
     def [](key)
       @entries.fetch(key)
+    end
+
+    def each_pair(&block)
+      @entries.each_pair(&block)
     end
   end
 
