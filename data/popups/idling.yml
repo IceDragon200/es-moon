@@ -12,185 +12,185 @@ sequence:
   x: 0
   y: -2
   angle: 0
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -2
   angle: 0
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: 2
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: 4
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 6
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 8
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 10
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 12
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: 14
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: 16
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: 18
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: 20
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: 22
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: 24
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: 26
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 4
   angle: 28
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 4
   angle: 28
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: 26
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: 24
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: 22
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: 20
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: 18
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: 16
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: 14
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 12
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 10
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 8
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: 6
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: 4
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: 2
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -2
   angle: 0
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -2
   angle: 0
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: -2
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: -4
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -6
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -8
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -10
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -12
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: -14
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: -16
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: -18
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: -20
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: -22
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: -24
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: -26
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 4
   angle: -28
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 4
   angle: -28
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: -26
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 3
   angle: -24
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: -22
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 2
   angle: -20
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: -18
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: -16
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 1
   angle: -14
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -12
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -10
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -8
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: 0
   angle: -6
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: -4
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -1
   angle: -2
-  "&class": ES::PopupSequenceFrame
+  "&class": Models::PopupSequenceFrame
 - y: -2
   angle: 0
-  "&class": ES::PopupSequenceFrame
-"&class": ES::Popup
+  "&class": Models::PopupSequenceFrame
+"&class": Models::Popup

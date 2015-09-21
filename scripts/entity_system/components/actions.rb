@@ -1,6 +1,6 @@
 require 'scripts/entity_system/component'
 
-module ES
+module Models
   class Action < Moon::DataModel::Metal
   end
 end
@@ -9,6 +9,6 @@ module Components
   class Actions < Base
     register :actions
 
-    array :list, type: ES::Action
+    array :list, type: Models::Action
   end
 end

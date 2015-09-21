@@ -109,5 +109,5 @@ data:
   - -1
   default: -1
   '&class': Moon::DataMatrix
-tileset_id: "/tilesets/common"
+tileset_id: "tilesets/common"
 "&class": ES::Map

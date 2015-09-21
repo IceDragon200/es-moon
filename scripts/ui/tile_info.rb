@@ -6,7 +6,7 @@ module ES
 
       def initialize_members
         super
-        @tile_data = ES::TileData.new
+        @tile_data = Models::TileData.new
         @tileset = nil # spritesheet
         @text = Moon::Label.new '', ES.game.font_cache.font('uni0553', 16)
 

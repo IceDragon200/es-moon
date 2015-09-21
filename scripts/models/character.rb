@@ -1,4 +1,6 @@
-module ES
+require 'scripts/models/base'
+
+module Models
   class CharacterSequenceFrame < Moon::DataModel::Metal
     field :index,        type: Integer, allow_nil: true
     field :ox,           type: Integer, allow_nil: true

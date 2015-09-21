@@ -1,7 +1,8 @@
+require 'scripts/models/base'
 require 'scripts/models/map'
 
-module ES
-  class TileData < Moon::DataModel::Base
+module Models
+  class TileData < Base
     field :valid,    type: Boolean,       default: false
     field :passage,  type: Integer,       default: 0
     array :tile_ids, type: Integer

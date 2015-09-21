@@ -4,8 +4,10 @@ require 'scripts/renderers/chunk_renderer'
 class MapRenderer < Moon::RenderArray
   # @return [Camera3]
   attr_accessor :camera
-  # @return [ES::EditorMap]
+
+  # @return [Models::Map]
   attr_accessor :dm_map
+
   # @return [Array<Float>]
   attr_reader :layer_opacity
 

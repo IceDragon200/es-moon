@@ -1,5 +1,7 @@
-module ES
-  class TileProperty < Moon::DataModel::Base
+require 'scripts/models/base'
+
+module Models
+  class TileProperty < Base
 
   end
 end

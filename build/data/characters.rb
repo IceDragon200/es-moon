@@ -1,6 +1,0 @@
-require_relative 'characters/baron'
-require_relative 'characters/nixe'
-require_relative 'characters/chika'
-require_relative 'characters/spyet'
-require_relative 'characters/cogan'
-require_relative 'characters/cyrus'

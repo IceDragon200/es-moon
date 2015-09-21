@@ -1,14 +1,10 @@
 ---
-id: bEwjEkU4pttcj1Jq
+id: "tilesets/common"
 name: Common Tileset
-note: ''
-tags: []
-meta: {}
-uri: "/tilesets/common"
 filename: tilesets/oryx_lofi_fantasy/4x/lofi_environment_4x
 cell_w: 32
 cell_h: 32
 columns: 16
 passages: []
 tile_properties: []
-"&class": ES::Tileset
+"&class": Models::Tileset

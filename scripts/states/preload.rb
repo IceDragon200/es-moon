@@ -1,11 +1,17 @@
 module States
   class Preload < Base
     class IdentityLoader
+      # Place holder Loader for data classes without a schema, this loader
+      # will just return the data passed in.
+      #
+      # @param [Object] data
+      # @return [Object] data
       def self.load(data)
         data
       end
     end
 
+    # @return [void]
     def start
       super
       load_assets
@@ -40,6 +46,9 @@ module States
       end
     end
 
+    # Loads the game data from the data/vfs.yml
+    #
+    # @return [void]
     def load_vfs
       ## maps
       root_filename = "data/vfs.yml"
@@ -48,11 +57,11 @@ module States
       vfs.each_pair do |key, entries|
         klass = case key
         when 'characters'
-          ES::Character
+          Models::Character
         when 'maps'
-          ES::Map
+          Models::Map
         when 'tilesets'
-          ES::Tileset
+          Models::Tileset
         else
           puts "WARN: Unhandled data key #{key}"
           IdentityLoader
@@ -64,12 +73,16 @@ module States
           puts "Preloading #{key} data: #{cachename}=#{filename}"
           data = YAML.load_file(filename)
           record = klass.load data
-          record.uri = cachename if record.respond_to?(:uri=)
+          record.id = cachename if record.respond_to?(:id=)
           game.database[cachename] = record
         end
       end
     end
 
+    # Loads all Textures, Fonts and other objects into their respective caches.
+    # These objects are loaded from the data/preload.yml list
+    #
+    # @return [void]
     def load_assets
       assets = YAML.load_file('data/preload.yml')
       assets.each_pair do |key, value|
@@ -93,6 +106,9 @@ module States
       end
     end
 
+    # Loads all materials that will be used in the Game
+    #
+    # @return [void]
     def load_materials
       game.materials['sprite'] = begin
         material = Material.new(Moon::Sprite.default_shader)

@@ -4,7 +4,7 @@ require 'scripts/models/map'
 require 'scripts/entity_system'
 
 class Game < Moon::DataModel::Metal
-  field :map,           type: ES::Map,                 default: nil
+  field :map,           type: Models::Map,             default: nil
   field :world,         type: ES::EntitySystem::World, default: nil
   field :data_cache,    type: ES::DataCache,           default: ->(t, _) { t.model.new('Data') }
   field :database,      type: ES::AssetCache,          default: ->(t, _) { t.model.new('Database') }

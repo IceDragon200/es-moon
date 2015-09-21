@@ -116,11 +116,11 @@ class MapEditorGuiController < State::ControllerBase
   end
 
   def create_chunk(bounds, data)
-    chunk          = ES::EditorChunk.new(data)
+    chunk          = Models::EditorChunk.new(data)
     chunk.position = Moon::Vector3.new(bounds.x, bounds.y, 0)
     chunk.data     = Moon::DataMatrix.new(bounds.w, bounds.h, 2, default: -1)
     chunk.passages = Moon::Table.new(bounds.w, bounds.h)
-    chunk.tileset  = ES::Tileset.find_by(uri: '/tilesets/common')
+    chunk.tileset  = Models::Tileset.find_by(uri: '/tilesets/common')
     @model.map.chunks << chunk
     @map_controller.refresh_map
     chunk

@@ -1,5 +1,7 @@
-module ES
-  class Map < Moon::DataModel::Base
+require 'scripts/models/base'
+
+module Models
+  class Map < Base
     field :data,       type: Moon::DataMatrix, default: nil
     field :tileset_id, type: String, default: ''
 

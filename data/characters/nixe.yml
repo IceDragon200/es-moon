@@ -19,7 +19,7 @@ poses:
         w: 32
         h: 20
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
+      "&class": Models::CharacterSequenceFrame
     - index: 71
       ox: 0
       oy: 0
@@ -31,8 +31,8 @@ poses:
         w: 32
         h: 20
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   dead:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -50,8 +50,8 @@ poses:
         w: 32
         h: 20
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   stand.l:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -69,8 +69,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   stand.r:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -88,8 +88,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   stand.u:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -107,8 +107,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   stand.d:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -126,8 +126,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   walk.l:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -145,7 +145,7 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
+      "&class": Models::CharacterSequenceFrame
     - index: 40
       ox: 0
       oy: 0
@@ -157,8 +157,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   walk.r:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -176,7 +176,7 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
+      "&class": Models::CharacterSequenceFrame
     - index: 8
       ox: 0
       oy: 0
@@ -188,8 +188,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   walk.u:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -207,7 +207,7 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
+      "&class": Models::CharacterSequenceFrame
     - index: 56
       ox: 0
       oy: 0
@@ -219,8 +219,8 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
   walk.d:
     filename: 4x/characters_4x.png
     cell_w: 32
@@ -238,7 +238,7 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
+      "&class": Models::CharacterSequenceFrame
     - index: 24
       ox: 0
       oy: 0
@@ -250,6 +250,6 @@ poses:
         w: 32
         h: 32
         "&class": Moon::Rect
-      "&class": ES::CharacterSequenceFrame
-    "&class": ES::Pose
-"&class": ES::Character
+      "&class": Models::CharacterSequenceFrame
+    "&class": Models::Pose
+"&class": Models::Character

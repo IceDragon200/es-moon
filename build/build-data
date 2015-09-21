@@ -1,4 +1,3 @@
 #!/usr/bin/env ruby
-require_relative 'data'
 require_relative 'palette'
 #require_relative 'fontmap-awesome'

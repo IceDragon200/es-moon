@@ -1,5 +1,7 @@
+require 'scripts/models/base'
+
 module ES
-  class Tileset < Moon::DataModel::Base
+  class Tileset < Base
     field :filename,        type: String,  default: ''
     array :passages,        type: Integer
     array :tile_properties, type: Integer
@@ -7,6 +9,9 @@ module ES
     field :cell_h,          type: Integer, default: 32
     field :columns,         type: Integer, default: 16
 
+    # Used by the map_rendering system to cache the tileset's Spritesheet
+    #
+    # @return [String]
     def spritesheet_id
       "#{filename},#{cell_w},#{cell_h}"
     end

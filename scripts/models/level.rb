@@ -1,8 +1,10 @@
+require 'scripts/models/base'
 require 'scripts/models/map'
 
-module ES
-  class Level < Moon::DataModel::Base
+module Models
+  class Level < Base
     field :map_id, type: String, default: ''
+
     attr_accessor :map
   end
 end
