@@ -1,3 +1,0 @@
-module Dataman
-
-end
