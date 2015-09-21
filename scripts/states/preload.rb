@@ -54,14 +54,14 @@ module States
         when 'tilesets'
           ES::Tileset
         else
-          warn "Unhandled data key #{key}"
+          puts "WARN: Unhandled data key #{key}"
           IdentityLoader
         end
 
         entries.each do |basename|
           filename = File.join(root, basename)
           cachename = basename.gsub(/#{File.extname(filename)}\z/, '')
-          puts "Preloading #{key} data: #{filename}"
+          puts "Preloading #{key} data: #{cachename}=#{filename}"
           data = YAML.load_file(filename)
           record = klass.load data
           record.uri = cachename if record.respond_to?(:uri=)
@@ -77,7 +77,7 @@ module States
         when 'textures'
           textures = {}
           value.each_pair do |name, filename|
-            puts "Preloading Texture: #{filename}"
+            puts "Preloading Texture: #{name}=#{filename}"
             texture = textures[filename] ||= Moon::Texture.new(filename)
             game.texture_cache[name] = texture
           end
@@ -85,7 +85,7 @@ module States
           fonts = {}
           value.each_pair do |name, str|
             filename, size = str.split(',')
-            puts "Preloading Font: #{str}"
+            puts "Preloading Font: #{name}=#{str}"
             font = fonts[str] ||= Moon::Font.new(filename, size.to_i)
             game.font_cache[name] = font
           end
