@@ -23,7 +23,7 @@ class StateBootstrap < State
   end
 
   def init
-    ES.game = @game = Game.new
+    Game.instance = ES.game = @game = Game.new
     @state_manager = StateManager.new @game, engine
   end
 

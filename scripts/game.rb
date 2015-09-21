@@ -13,4 +13,8 @@ class Game < Moon::DataModel::Metal
   field :scheduler,     type: Moon::Scheduler,         default: ->(t, _) { t.model.new }
   dict  :materials,     key: String, value: Material
   dict  :config, key: Symbol, value: Object
+
+  class << self
+    attr_accessor :instance
+  end
 end

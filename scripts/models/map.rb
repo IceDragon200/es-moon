@@ -2,7 +2,10 @@ module ES
   class Map < Moon::DataModel::Base
     field :data,       type: Moon::DataMatrix, default: nil
     field :tileset_id, type: String, default: ''
-    attr_accessor :tileset
+
+    def tileset
+      Game.instance.database[tileset_id]
+    end
 
     def w
       data.xsize
