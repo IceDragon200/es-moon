@@ -23,7 +23,7 @@ module States
 
       @player = @world.spawn do |entity|
         entity.add sprite: { filename: 'characters/4x/characters_4x', type: 'spritesheet', cell_w: 32, cell_h: 32, index: 1 }
-        entity.add mapobj: { position: Moon::Vector2[1, 1] }
+        entity.add mapobj: { map_id: @map.id, position: Moon::Vector2[1, 1] }
         entity.add :movement
         entity.add :transform
       end

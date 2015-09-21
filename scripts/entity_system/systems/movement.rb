@@ -49,7 +49,7 @@ module Systems
     def get_map(map_id)
       @map_cache[map_id] ||= begin
         e = world.filter(:map).find do |m|
-          m[:map].map.uri == map_id
+          m[:map].map.id == map_id
         end
         e && e[:map].map
       end
