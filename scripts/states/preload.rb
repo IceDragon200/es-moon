@@ -1,5 +1,11 @@
 module States
   class Preload < Base
+    class IdentityLoader
+      def self.load(data)
+        data
+      end
+    end
+
     def start
       super
       load_assets
@@ -40,12 +46,11 @@ module States
           ES::Character
         when 'maps'
           ES::Map
-        when 'charmaps'
-          next
         when 'tilesets'
           ES::Tileset
         else
-          fail "Unhandled data key #{key}"
+          warn "Unhandled data key #{key}"
+          IdentityLoader
         end
 
         entries.each do |filename|
