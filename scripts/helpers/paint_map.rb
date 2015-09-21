@@ -1,5 +1,6 @@
 module ES
   module Helper
+    # Utility class for drawing maps
     class PaintMap
       attr_accessor :layer
 

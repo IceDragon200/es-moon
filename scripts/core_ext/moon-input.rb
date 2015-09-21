@@ -1,5 +1,6 @@
 module Moon
   class Input
+    # @return [Hash<Symbol, Array<String>>]
     KEY_TO_HUMAN = {
       space: %w[Spacebar],
       apostrophe: %w[' "],
@@ -134,6 +135,8 @@ module Moon
       mouse_middle: %w[Mouse-Middle],
     }
 
+    # @param [Symbol]
+    # @return [Array<String>]
     def self.key_to_human_readable(key)
       KEY_TO_HUMAN.fetch(key.to_sym)
     end
