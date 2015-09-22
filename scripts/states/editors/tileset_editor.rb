@@ -65,6 +65,7 @@ module States
 
     def start
       super
+      screen.clear_color = Color.mono(64)
       build_tileset_list
       create_tileset_view
       create_ui
