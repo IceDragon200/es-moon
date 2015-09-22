@@ -1,7 +1,7 @@
 require 'scripts/ui/text_list'
-require 'scripts/states/map_editor'
 require 'scripts/states/map_viewer'
 require 'scripts/states/new_game'
+require 'scripts/states/editors/map_editor'
 require 'scripts/states/editors/tileset_editor'
 
 module States
