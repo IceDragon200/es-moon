@@ -31,9 +31,9 @@ module States
       @title_menu = UI::TextList.new font: game.font_cache['system']
       @title_menu.add_entry(:newgame,        name: 'New Game',       cb: -> { state_manager.change States::NewGame })
       @title_menu.add_entry(:continue,       name: 'Continue',       enabled: false)
-      @title_menu.add_entry(:map_viewer,     name: 'Map Viewer',     cb: -> { state_manager.change States::MapViewer })
-      @title_menu.add_entry(:map_editor,     name: 'Map Editor',     cb: -> { state_manager.change States::MapEditor })
-      @title_menu.add_entry(:tileset_editor, name: 'Tileset Editor', cb: -> { state_manager.change States::TilesetEditor })
+      @title_menu.add_entry(:map_viewer,     name: 'Map Viewer',     cb: -> { state_manager.push States::MapViewer })
+      @title_menu.add_entry(:map_editor,     name: 'Map Editor',     cb: -> { state_manager.push States::MapEditor })
+      @title_menu.add_entry(:tileset_editor, name: 'Tileset Editor', cb: -> { state_manager.push States::TilesetEditor })
       @title_menu.add_entry(:quit,           name: 'Quit',           cb: -> { state_manager.pop })
       @title_menu.tag('#menu')
       @title_menu.align!('center', screen.rect)
