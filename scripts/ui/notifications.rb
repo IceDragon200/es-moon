@@ -6,7 +6,7 @@ module ES
       def initialize(*args, &block)
         @time = 1.0
         @duration = 1.0
-        super '', ES.game.font_cache.font('system', 18)
+        super '', Game.instance.fonts['system.16']
       end
 
       # @return [self]
@@ -25,6 +25,7 @@ module ES
       #     @optional
       # @return [self]
       def notify(options)
+        options = { string: options } if options.is_a?(String)
         set options
         arm options.fetch(:duration, 0.50)
       end
