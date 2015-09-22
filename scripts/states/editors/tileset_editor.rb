@@ -105,6 +105,14 @@ module States
     def setup_tileset
       @tileset_sprite.texture = game.textures[@tileset.filename]
       @tileset_grid.bounds = [@tileset_sprite.texture.w, @tileset_sprite.texture.h]
+
+      # patch up passage data, it may be empty or null filled, better fix it.
+      rows = (@tileset_sprite.texture.h / @tileset.cell_h).to_i
+      cols = (@tileset_sprite.texture.w / @tileset.cell_w).to_i
+
+      ((cols * rows) - 1).downto(0) do |i|
+        @tileset.passages[i] ||= Enum::Passage::NONE
+      end
     end
 
     def set_active_tileset(tileset)
