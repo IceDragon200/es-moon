@@ -1,9 +1,5 @@
 module States
   class Map < Base
-    def init
-      super
-    end
-
     def start
       super
       @map = game.database['maps/school/f1']
