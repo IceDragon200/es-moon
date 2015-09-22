@@ -28,7 +28,7 @@ module UI
     # @param [Integer] new_passage
     def change_passage(new_passage)
       @passage = new_passage
-      trigger PassageChanged.new(@passage)
+      trigger { PassageChanged.new(@passage) }
     end
 
     # Determines where the user clicked in the passage editor, flips flags

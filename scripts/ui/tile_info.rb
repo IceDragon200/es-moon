@@ -7,9 +7,9 @@ module UI
       super
       @tile_data = Models::TileData.new
       @tileset = nil # spritesheet
-      @text = Moon::Label.new '', ES.game.font_cache.font('uni0553', 16)
+      @text = Moon::Label.new '', Game.instance.fonts['system.16']
 
-      texture = ES.game.texture_cache.block 'e008x008.png'
+      texture = Game.instance.textures['ui/passage_icons_mini']
       @block_ss = Moon::Spritesheet.new(texture, 8, 8)
     end
 

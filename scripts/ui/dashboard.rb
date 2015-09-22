@@ -5,9 +5,9 @@ module UI
   class MapEditorDashboard < Moon::RenderContainer
     attr_accessor :default_color
 
-    def initialize
+    def initialize_members
       super
-      pal = ES.game.data_cache.palette
+      pal = Game.instance.database['palette']
       @default_color = pal['white']
       @info_color    = pal['system/info']
       @ok_color      = pal['system/ok']
@@ -32,9 +32,9 @@ module UI
 
     def add_button(label, icon_name, icon_name_active = nil)
       button = IconButton.new
-      button.icon_sprite = Moon::Sprite.new(ES.game.texture_cache.resource("icons/map_editor/2x/#{icon_name}_2x.png"))
+      button.icon_sprite = Moon::Sprite.new(Game.instance.textures["icons/map_editor/2x/#{icon_name}_2x"])
       if icon_name_active
-        button.icon_sprite_active = Moon::Sprite.new(ES.game.texture_cache.resource("icons/map_editor/2x/#{icon_name_active}_2x.png"))
+        button.icon_sprite_active = Moon::Sprite.new(Game.instance.textures["icons/map_editor/2x/#{icon_name_active}_2x"])
       end
       button.label = label
       button.position = Moon::Vector3.new(@elements.size * (button.w + 16), 0, 0)

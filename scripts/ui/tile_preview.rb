@@ -6,14 +6,15 @@ module UI
     # @return [Moon::Spritesheet]
     attr_reader :tileset
 
-    def initialize
+    private def initialize_content
       super
-      texture = ES.game.texture_cache.block 'e008x008.png'
+      texture = Game.instance.textures['ui/passage_icons_mini']
       @micro_ss = Moon::Spritesheet.new texture, 8, 8
-      texture = ES.game.texture_cache.block 'e064x064.png'
-      @background_ss = Moon::Spritesheet.new texture, 64, 64
 
-      @text = AnimatedText.new '', ES.game.font_cache.font('uni0553', 16)
+      texture = Game.instance.textures['ui/tile_preview_background']
+      @background = Moon::Sprite.new texture
+
+      @text = AnimatedText.new '', Game.instance.fonts['system.16']
 
       @tile_id = -2
       @old_tile_id = -1
@@ -38,11 +39,11 @@ module UI
     end
 
     def w
-      @w ||= @background_ss.w
+      @w ||= @background.w
     end
 
     def h
-      @h ||= @background_ss.h
+      @h ||= @background.h
     end
 
     def update_content(delta)
@@ -50,7 +51,7 @@ module UI
     end
 
     def render_content(x, y, z, options)
-      @background_ss.render x, y, z, 1
+      @background.render x, y, z
 
       if @tileset
         diff = (@background_ss.cell_size - @tileset.cell_size) / 2

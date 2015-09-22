@@ -4,7 +4,7 @@ module UI
 
     def initialize_content
       super
-      font = FontCache.font('system', 16)
+      font = Game.instance.fonts['system.16']
       @text = Moon::Text.new(font, '')
     end
 

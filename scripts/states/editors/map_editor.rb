@@ -1,10 +1,10 @@
-require 'scripts/core/color'
+require 'scripts/models/map_editor_model'
 require 'scripts/bindings/map_editor_model_binder'
 require 'scripts/controllers/map_editor_gui_controller'
 require 'scripts/controllers/map_editor_map_controller'
-require 'scripts/views/map_editor_map_view'
-require 'scripts/views/map_editor_gui_view'
 require 'scripts/input_delegates/map_editor_input_delegate'
+require 'scripts/views/map_editor_gui_view'
+require 'scripts/views/map_editor_map_view'
 
 module States
   # Built-in Map Editor for editing ES-Moon style maps and chunks
@@ -41,9 +41,9 @@ module States
       view = engine.screen.rect
       view = view.translate(-(view.w / 2), -(view.h / 2))
       data = File.exist?('editor.yml') ? YAML.load_file('editor.yml') : {}
-      @model = MapEditorModelBinder.new(model: MapEditorModel.new(data))
+      @model = MapEditorModelBinder.new(model: Models::MapEditorModel.new(data))
       @model.camera = Camera2.new(view: view)
-      @model.tile_palette.tileset = ES::Tileset.find_by(uri: '/tilesets/common')
+      @model.tile_palette.tileset = game.database['tilesets/common']
       @model.layer ||= -1
     end
 
@@ -51,7 +51,7 @@ module States
       @map_view = MapEditorMapView.new(game: game, model: @model, view: engine.screen.rect)
       @gui_view = MapEditorGuiView.new(game: game, model: @model, view: engine.screen.rect.contract(16))
       tileset = @model.tile_palette.tileset
-      texture = game.texture_cache.tileset(tileset.filename)
+      texture = game.textures[tileset.filename]
       @gui_view.tileset = Moon::Spritesheet.new(texture, tileset.cell_w,
                                                          tileset.cell_h)
       @renderer.add @map_view
@@ -91,15 +91,7 @@ module States
     end
 
     private def create_map
-      map = ES::Map.find_by(uri: '/maps/school/f1')
-      @model.map = map.to_editor_map
-      @model.map.chunks = map.chunks.map do |chunk_head|
-        chunk = ES::Chunk.find_by(uri: chunk_head.uri)
-        editor_chunk = chunk.to_editor_chunk
-        editor_chunk.position = chunk_head.position
-        editor_chunk.tileset = ES::Tileset.find_by(uri: chunk.tileset.uri)
-        editor_chunk
-      end
+      @model.map = game.database['maps/school/f1']
     end
 
     private def create_autosave_interval

@@ -2,11 +2,12 @@ module UI
   class ModeIcon < Moon::RenderContainer
     attr_reader :mode
 
+    # @param [Hash<>] icons
     def initialize(icons)
       super()
       @icons = icons
-      @font_awesome = ES.cache.font('awesome', 32)
-      @charmap_awesome = ES.cache.charmap('awesome.yml')
+      @font_awesome = Game.instance.fonts['awesome.32']
+      @charmap_awesome = Game.instance.database('charmap/awesome.yml')
       @text = Moon::Label.new('', @font_awesome)
 
       add(@text)

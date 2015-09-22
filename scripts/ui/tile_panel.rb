@@ -25,22 +25,29 @@ module UI
     # @return [Integer]
     attr_accessor :visible_rows
 
-    def pre_initialize
+    def initialize_members
       super
       @tileset = nil # spritesheet
       @visible_rows = 8
       @visible_cols = 8
 
       @tilesize = Moon::Vector2.new 32, 32
+
+      @tile_id = 0
+      @row_index = 0
+    end
+
+    def initialize_content
+      super
       @cursor = PanelCursor.new
       @cursor.position = Moon::Vector2.new 0, 0
 
-      @text = Moon::Label.new '', ES.game.font_cache.font('uni0553', 16)
+      @text = Moon::Label.new '', Game.instance.fonts['system.16']
 
-      texture = ES.game.texture_cache.block 'e032x032.png'
-      @block_ss = Moon::Spritesheet.new texture, 32, 32
+      texture = Game.instance.textures['ui/tile_panel_background']
+      @block_ss = Moon::Sprite.new texture
 
-      background_texture = ES.game.texture_cache.ui 'hud_mockup_4x.png'
+      background_texture = Game.instance.textures['ui/hud_mockup_4x']
       @background_s = Moon::Sprite.new background_texture
       @background_s.clip_rect = Moon::Rect.new 24, 216, 272, 272
       @tile_box = Moon::Sprite.new background_texture
@@ -49,9 +56,6 @@ module UI
       @scroll_bar.clip_rect = Moon::Rect.new 408, 216, 48, 272
       @scroll_knob = Moon::Sprite.new background_texture
       @scroll_knob.clip_rect = Moon::Rect.new 480, 224, 32, 32
-
-      @tile_id = 0
-      @row_index = 0
     end
 
     def w
@@ -131,7 +135,7 @@ module UI
 
         cp = @cursor.position * @tilesize
         cp.y -= @row_index * @tilesize.y
-        @block_ss.render x + cp.x, y + cp.y + 16, z, 1
+        @block_ss.render x + cp.x, y + cp.y + 16, z
       end
 
 

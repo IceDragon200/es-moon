@@ -16,23 +16,14 @@ class MapEditorMapView < State::ViewBase
     @tileselection_rect.tile_rect = @model.selection_rect
     @map_renderer = EditorMapRenderer.new
     @map_cursor = MapCursorRenderer.new
-    texture  = game.texture_cache.block 'e032x032.png'
-    @cursor_ss  = Moon::Spritesheet.new texture, 32, 32
-    color = game.data_cache.palette['system/selection']
-    @tileselection_rect.spritesheet = @cursor_ss
+    texture = game.textures['ui/selection_tile']
+    sprite = Moon::Sprite.new texture
+    color = game.database['palette']['system/selection']
+    @tileselection_rect.sprite = sprite
     @tileselection_rect.color = color
-
-    #create_passage_layer
 
     add @map_renderer
     add @map_cursor
-  end
-
-  private def create_passage_layer
-    t = @passage_tilemap = Moon::Tilemap.new
-    t.tileset = @cursor_ss
-    # special case passage data
-    t.set data: @passage_data.data, datasize: @passage_data.sizes
   end
 
   def refresh_layer_opacity

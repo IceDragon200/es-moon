@@ -3,7 +3,7 @@ module UI
     attr_accessor :obj
 
     def initialize
-      super '', ES.game.font_cache.font('uni0553', 16)
+      super '', Game.instance.fonts['system.16']
       @obj = nil
     end
 

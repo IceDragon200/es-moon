@@ -2,7 +2,7 @@
 class MapCursorRenderer < Moon::RenderContext
   def initialize_content
     super
-    @texture = ES.game.texture_cache.ui('map_editor_cursor.png')
+    @texture = Game.instance.textures['ui/map_editor_cursor']
     @sprite = Moon::Sprite.new(@texture)
   end
 
