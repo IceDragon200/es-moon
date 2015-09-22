@@ -4,6 +4,9 @@ module ES
     #   @return [Vector2]
     attr_reader :bounds
 
+    # Sets the grid bound size
+    #
+    # @param [Vector2] bounds
     def bounds=(bounds)
       @bounds.set(bounds)
       @sprite.clip_rect = Moon::Rect.new(0, 0, @bounds.x, @bounds.y)
