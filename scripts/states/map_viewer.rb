@@ -78,7 +78,7 @@ module States
       @map_renderer.show_labels   = nil
       @map_renderer.show_underlay = true
       @map_renderer.show_overlay  = nil
-      @map_renderer.dm_map = @editor_map
+      @map_renderer.map = @editor_map
       @map_renderer.camera = @camera
       @map_renderer.each do |element|
         element.enable_default_events

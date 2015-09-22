@@ -23,7 +23,7 @@ module States
 
     def create_view
       @view = MapView.new
-      @view.dm_map = @game.map
+      @view.map = @game.map
 
       @game.world.on :any do |ev|
         @view.trigger ev

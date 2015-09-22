@@ -39,7 +39,7 @@ class MapEditorMapView < State::ViewBase
   end
 
   def refresh_tilemaps
-    @map_renderer.dm_map = @model.map
+    @map_renderer.map = @model.map
     refresh_layer_opacity
   end
 

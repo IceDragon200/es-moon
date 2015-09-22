@@ -13,18 +13,15 @@ end
 
 class MapView < Moon::RenderContainer
   attr_reader :popups
-  attr_reader :dm_map
-  attr_reader :tilesize
-  attr_reader :world
 
   def initialize_content
     super
-    @dm_map = nil
+    @map = nil
     @world = nil
     @tilesize = Moon::Vector3.new(32, 32, 32)
     @popups = PopupSpriteset.new
     @map_renderer = MapRenderer.new
-    @entities = Moon::RenderArray.new
+    @entities = Moon::RenderContainer.new
 
     add @map_renderer
     add @entities
@@ -39,7 +36,7 @@ class MapView < Moon::RenderContainer
   end
 
   private def remove_entity(entity)
-    @entities.reject! { |r| r.entity == entity }
+    @entities.elements.reject! { |r| r.entity == entity }
   end
 
   def initialize_events
@@ -54,26 +51,29 @@ class MapView < Moon::RenderContainer
   end
 
   def refresh_world
-    @entities.clear
+    @entities.clear_elements
     @world.entities.each do |entity|
       add_entity entity
     end
   end
 
   def refresh_tilesize
-    @entities.each { |e| e.tilesize = @tilesize }
+    @entities.elements.each { |e| e.tilesize = @tilesize }
   end
 
-  def dm_map=(dm_map)
-    @dm_map = dm_map
-    @map_renderer.dm_map = @dm_map
+  attr_reader :map
+  def map=(map)
+    @map = map
+    @map_renderer.map = @map
   end
 
+  attr_reader :world
   def world=(world)
     @world = world
     refresh_world
   end
 
+  attr_reader :tilesize
   def tilesize=(tilesize)
     @tilesize = tilesize
     refresh_tilesize
