@@ -30,7 +30,7 @@ module States
     def create_title_menu
       @title_menu = UI::TextList.new font: game.font_cache['system']
       @title_menu.add_entry(:newgame,        name: 'New Game',       cb: -> { state_manager.change States::NewGame })
-      @title_menu.add_entry(:continue,       name: 'Continue', enabled: false)
+      @title_menu.add_entry(:continue,       name: 'Continue',       enabled: false)
       @title_menu.add_entry(:map_viewer,     name: 'Map Viewer',     cb: -> { state_manager.change States::MapViewer })
       @title_menu.add_entry(:map_editor,     name: 'Map Editor',     cb: -> { state_manager.change States::MapEditor })
       @title_menu.add_entry(:tileset_editor, name: 'Tileset Editor', cb: -> { state_manager.change States::TilesetEditor })
@@ -52,25 +52,6 @@ module States
       end
 
       @gui.add @title_menu
-    end
-
-    def register_input
-      input.on [:press, :repeat] do |e|
-        case e.key
-        when :up
-          @title_menu.index -= 1
-        when :down
-          @title_menu.index += 1
-        end
-      end
-
-      input.on :press do |e|
-        if e.key == :enter || e.key == :z
-          if cb = @title_menu.current_item[:cb]
-            cb.call
-          end
-        end
-      end
     end
   end
 end

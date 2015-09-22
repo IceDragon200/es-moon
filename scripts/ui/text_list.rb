@@ -1,9 +1,13 @@
 module UI
   class TextList < Moon::RenderContainer
     include Moon::Indexable
+    include Moon::Activatable
+
+    attr_accessor :active
 
     attr_reader :font
 
+    # @param [Moon::Font] font
     def font=(font)
       @font = font
       @elements.each do |element|
@@ -19,6 +23,7 @@ module UI
     private def initialize_members
       super
       initialize_index
+      @active = true
       @list = []
     end
 
@@ -27,8 +32,27 @@ module UI
       create_colors
     end
 
+    private def register_input_events
+      input.on [:press, :repeat] do |e|
+        if active?
+          case e.key
+          when :up   then self.index -= 1
+          when :down then self.index += 1
+          end
+        end
+      end
+
+      input.on :press do |e|
+        if active? && (e.key == :enter || e.key == :z)
+          (cb = current_item[:cb]) && cb.call
+        end
+      end
+    end
+
     private def initialize_events
       super
+      register_input_events
+
       on :index do |e|
         col = case e.state
         when :pre_index
