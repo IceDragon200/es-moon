@@ -34,7 +34,10 @@ module Models
           (data.zsize - 1).downto(0) do |z|
             tile_id = tile_at(x, y, z)
             next if tile_id < 0
-            table[x, y] = tileset.passages[tile_id]
+            passage_id = tileset.passages[tile_id]
+            next if passage_id.masked?(Enum::Passage::ABOVE)
+            table[x, y] = passage_id
+            break
           end
         end
       end
