@@ -22,7 +22,7 @@ module ES
       end
 
       def done?
-        @timer.done?
+        !@timer || @timer.done?
       end
 
       def update(delta)
