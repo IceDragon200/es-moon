@@ -106,7 +106,7 @@ module ES
       def select_tile(*args)
         sx, sy = *Moon::Vector2.extract(args.singularize)
         pos = screen_to_relative(sx, sy).reduce(@tilesize)
-        if relative_contains_pos?(pos)
+        if contains_relative_pos?(pos)
           ps = (pos / @tilesize).floor
           self.tile_id = ps.x + (ps.y + @row_index) * @visible_cols
         end
@@ -136,7 +136,7 @@ module ES
         end
 
 
-        if relative_contains_pos?(cp)
+        if contains_relative_pos?(cp)
           ty = y - @tile_box.h
           @tile_box.render x, ty, z
           if @tileset
