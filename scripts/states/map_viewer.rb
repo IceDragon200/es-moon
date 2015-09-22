@@ -4,7 +4,7 @@ module States
       super
       view = screen.rect
       view = view.translate(-view.w / 2, -view.h / 2)
-      @control_map = game.data_cache.controlmap('map_editor')
+      @control_map = game.database['controlmaps/map_editor']
       @camera = Camera2.new(view: view)
       @camera_cursor = CameraCursor2.new
       @camera.follow(@camera_cursor)
@@ -69,7 +69,7 @@ module States
     end
 
     def create_map
-      @editor_map = Dataman.load_editor_map(uri: '/maps/school/f1')
+      @editor_map = game.database['maps/school/f1']
     end
 
     def create_spriteset
