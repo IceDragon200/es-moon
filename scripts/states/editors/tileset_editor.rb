@@ -66,6 +66,10 @@ module States
     def start
       super
       screen.clear_color = Color.mono(64)
+      input.on :press do |e|
+        state_manager.pop if e.key == :escape
+      end
+
       build_tileset_list
       create_tileset_view
       create_ui
