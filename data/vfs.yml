@@ -14,6 +14,7 @@ data:
     - "maps/school/f1.yml"
   tilesets:
     - "tilesets/common.yml"
-  other:
+  palette:
     - "palette.yml"
+  read_only:
     - "controlmaps/map_editor.yml"

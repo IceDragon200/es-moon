@@ -1,4 +1,7 @@
 module States
+  # State responsible for preloading all assets that will be used in the game
+  # This is to avoid runtime allocations, and forces thinking ahead instead
+  # of "maybe I'll use this"
   class Preload < Base
     class IdentityLoader
       # Place holder Loader for data classes without a schema, this loader
@@ -8,6 +11,27 @@ module States
       # @return [Object] data
       def self.load(data)
         data
+      end
+    end
+
+    class ReadOnlyLoader
+      # This loader will wrap the data in a FetchOnlyHash
+      #
+      # @param [Hash] data
+      # @return [FetchOnlyHash] data
+      def self.load(data)
+        FetchOnlyHash.new(data)
+      end
+    end
+
+    class PaletteLoader
+      # This loader will load a valid PalleteParser palette and
+      # wrap the data in a FetchOnlyHash
+      #
+      # @param [Hash] data
+      # @return [FetchOnlyHash] data
+      def self.load(data)
+        FetchOnlyHash.new Moon::PaletteParser.load_palette(data)
       end
     end
 
@@ -62,6 +86,10 @@ module States
           Models::Map
         when 'tilesets'
           Models::Tileset
+        when 'palette'
+          PaletteLoader
+        when 'read_only'
+          ReadOnlyLoader
         else
           puts "WARN: Unhandled data key #{key}"
           IdentityLoader
