@@ -21,6 +21,7 @@ module Systems
     # @param [Components::Map] map
     # @param [Moon::EntitySystem::Entity] entity
     def post_move(map, entity)
+      return # TODO
       entity.comp(:mapobj, :transfer) do |mapobj, transfer|
         # is this entity already pending a transfer?
         return if transfer.pending
