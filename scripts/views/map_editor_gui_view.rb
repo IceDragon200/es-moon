@@ -30,18 +30,18 @@ class MapEditorGuiView < State::ViewBase
 
     @hud = Moon::RenderContainer.new
 
-    @help_panel       = ES::UI::MapEditorHelpPanel.new(@controlmap)
+    @help_panel       = UI::MapEditorHelpPanel.new(@controlmap)
 
-    @dashboard        = ES::UI::MapEditorDashboard.new
-    @layer_view       = ES::UI::MapEditorLayerView.new
-    @tile_info        = ES::UI::TileInfo.new
-    @tile_panel       = ES::UI::TilePanel.new
-    @tile_preview     = ES::UI::TilePreview.new
+    @dashboard        = UI::MapEditorDashboard.new
+    @layer_view       = UI::MapEditorLayerView.new
+    @tile_info        = UI::TileInfo.new
+    @tile_panel       = UI::TilePanel.new
+    @tile_preview     = UI::TilePreview.new
 
-    @ui_posmon        = ES::UI::PositionMonitor.new
-    @ui_camera_posmon = ES::UI::PositionMonitor.new
+    @ui_posmon        = UI::PositionMonitor.new
+    @ui_camera_posmon = UI::PositionMonitor.new
 
-    @notifications    = ES::UI::Notifications.new
+    @notifications    = UI::Notifications.new
 
     texture = ES.game.texture_cache.block 'passage_blocks.png'
     @passage_ss = Moon::Spritesheet.new texture, 32, 32

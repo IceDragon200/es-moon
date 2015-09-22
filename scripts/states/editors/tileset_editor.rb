@@ -17,7 +17,7 @@ module States
       @passage_editor = UI::PassageEditor.new
       @passage_editor.position.set(screen.w - @passage_editor.w - 16, 16, 0)
 
-      @notifications = ES::UI::Notifications.new
+      @notifications = UI::Notifications.new
       @notifications.position.set(32, screen.h - @notifications.font.size * 2, 0)
 
       @save_button = Moon::Sprite.new(game.textures['ui/tileset_editor_save_button']).to_sprite_context

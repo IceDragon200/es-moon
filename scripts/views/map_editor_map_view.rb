@@ -12,7 +12,7 @@ class MapEditorMapView < State::ViewBase
 
   def initialize_view
     super
-    @tileselection_rect = ES::UI::SelectionTileRect.new
+    @tileselection_rect = UI::SelectionTileRect.new
     @tileselection_rect.tile_rect = @model.selection_rect
     @map_renderer = EditorMapRenderer.new
     @map_cursor = MapCursorRenderer.new
