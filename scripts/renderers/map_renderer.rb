@@ -26,9 +26,18 @@ class MapRenderer < Moon::RenderContext
   # @param [Models::Map] map
   def map=(map)
     @map = map
-    @tilemap.set data: @map.data.blob, datasize: @map.data.sizes, layer_opacity: @layer_opacity
+    resize nil, nil
     # clear size, so it can refresh
-    resize @tilemap.w, @tilemap.h
+    if @map
+      @tileset = @map.tileset
+      @texture = Game.instance.textures[@tileset.filename]
+      @tilemap.set data: @map.data.blob,
+        datasize: @map.data.sizes,
+        layer_opacity: @layer_opacity,
+        tileset: Moon::Spritesheet.new(@texture, @tileset.cell_w, @tileset.cell_h)
+
+      resize @tilemap.w, @tilemap.h
+    end
   end
 
   # Call this to refresh the map renderer
@@ -46,6 +55,6 @@ class MapRenderer < Moon::RenderContext
   end
 
   private def render_content(x, y, z, options)
-    @tilemap.render x, y, z
+    @tilemap.render x, y, z if @map
   end
 end
