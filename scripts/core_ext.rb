@@ -7,6 +7,7 @@ require 'scripts/core_ext/object'
 require 'scripts/core_ext/moon-spritesheet'
 require 'scripts/core_ext/moon-vector2'
 require 'scripts/core_ext/moon-vector3'
+require 'scripts/core_ext/moon-texture'
 require 'scripts/core_ext/moon-input'
 
 # data_bags
