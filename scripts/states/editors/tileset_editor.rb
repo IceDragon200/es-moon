@@ -67,7 +67,14 @@ module States
       super
       screen.clear_color = Color.mono(64)
       input.on :press do |e|
-        state_manager.pop if e.key == :escape
+        if e.key == :escape
+          if @tilesets_list.inactive?
+            @tilesets_list.show.activate
+            @tileset_view.hide
+          else
+            state_manager.pop
+          end
+        end
       end
 
       build_tileset_list
@@ -120,9 +127,10 @@ module States
     end
 
     def set_active_tileset(tileset)
-      @tilesets_list.deactivate.hide
       @tileset = tileset
       setup_tileset
+      @tileset_view.show
+      @tilesets_list.deactivate.hide
     end
   end
 end
