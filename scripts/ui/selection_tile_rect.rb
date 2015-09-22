@@ -58,7 +58,7 @@ module UI
       @sprite.color
     end
 
-    # @param [Moon::Vector4]
+    # @param [Moon::Vector4] color
     def color=(color)
       @sprite.color = color
     end

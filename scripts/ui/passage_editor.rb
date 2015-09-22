@@ -34,7 +34,7 @@ module UI
     # Determines where the user clicked in the passage editor, flips flags
     # if they clicked on any of the valid tiles
     #
-    # @param [Moon::Vector2] position
+    # @param [Moon::MouseInputEvent] event
     def on_click(event)
       rel = screen_to_relative(event.position)
       col = (rel.x / @ss.w).to_i

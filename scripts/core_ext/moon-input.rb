@@ -135,7 +135,7 @@ module Moon
       mouse_middle: %w[Mouse-Middle],
     }
 
-    # @param [Symbol]
+    # @param [Symbol] key
     # @return [Array<String>]
     def self.key_to_human_readable(key)
       KEY_TO_HUMAN.fetch(key.to_sym)

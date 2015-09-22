@@ -11,11 +11,12 @@ module UI
     end
 
     # @!group margin settings
-    # @return
+    # @return [Integer]
     def compute_w
       super + 16
     end
 
+    # @return [Integer]
     def compute_h
       super + 16
     end

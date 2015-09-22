@@ -22,11 +22,13 @@ module UI
       self.tileset = nil
     end
 
+    # @param [Moon::Spritesheet] tileset
     def tileset=(tileset)
       @tileset = tileset
       resize(nil, nil)
     end
 
+    # @param [Integer] tile_id
     def tile_id=(tile_id)
       old = @tile_id
       @tile_id = tile_id
@@ -38,18 +40,25 @@ module UI
       end
     end
 
+    # @return [Integer]
     def w
       @w ||= @background.w
     end
 
+    # @return [Integer]
     def h
       @h ||= @background.h
     end
 
+    # @param [Float] delta
     def update_content(delta)
       @text.update delta
     end
 
+    # @param [Integer] x
+    # @param [Integer] y
+    # @param [Integer] z
+    # @param [Hash] options
     def render_content(x, y, z, options)
       @background.render x, y, z
 
