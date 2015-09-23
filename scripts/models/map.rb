@@ -24,6 +24,13 @@ module Models
       data.ysize
     end
 
+    # Bounding rect of the map
+    #
+    # @return [Moon::Rect]
+    def bounds
+      Moon::Rect.new(0, 0, w, h)
+    end
+
     # Constructs a static Passage table from the map, it is expected that
     # the data will not be modified during runtime
     private def build_passage_table
