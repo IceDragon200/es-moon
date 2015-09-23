@@ -7,7 +7,7 @@ module UI
     # @return [Moon::Vector3]
     attr_reader :cell_size
 
-    private def initialize_members
+    protected def initialize_members
       super
       @active = false
       @tile_rect = Moon::Rect.new(0, 0, 0, 0)
@@ -15,7 +15,7 @@ module UI
       @color = Moon::Vector4.new(1.0, 1.0, 1.0, 1.0)
     end
 
-    private def initialize_content
+    protected def initialize_content
       super
       @sprite = nil
     end

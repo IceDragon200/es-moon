@@ -15,19 +15,19 @@ module UI
       end
     end
 
-    private def initialize_from_options(options)
+    protected def initialize_from_options(options)
       super
       self.font = options.fetch(:font)
     end
 
-    private def initialize_members
+    protected def initialize_members
       super
       initialize_index
       @active = true
       @list = []
     end
 
-    private def initialize_content
+    protected def initialize_content
       super
       create_colors
     end
@@ -49,7 +49,7 @@ module UI
       end
     end
 
-    private def initialize_events
+    protected def initialize_events
       super
       register_input_events
 

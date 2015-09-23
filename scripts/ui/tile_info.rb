@@ -1,19 +1,31 @@
+require 'scripts/models/tile_data'
+require 'scripts/ui/passage_panel'
+
 module UI
+  # Panel that appears in the top left corner of the Map Editor, this displays
+  # the tile, its passage and id
   class TileInfo < Moon::RenderContext
-    attr_accessor :tileset       # Spritesheet
+    attr_accessor :spritesheet   # Spritesheet
     attr_accessor :tile_data     # DataModel::TileData
 
-    def initialize_members
+    protected def initialize_members
       super
       @tile_data = Models::TileData.new
-      @tileset = nil # spritesheet
+      @spritesheet = nil # spritesheet
       @text = Moon::Label.new '', Game.instance.fonts['system.16']
-
-      texture = Game.instance.textures['ui/passage_icons_mini']
-      @block_ss = Moon::Spritesheet.new(texture, 8, 8)
     end
 
-    def render_content(x, y, z, options)
+    protected def initialize_content
+      super
+      @passage_panel = UI::PassagePanel.new(
+        spritesheet: Game.instance.spritesheets['ui/passage_icons_mini', 8, 8])
+    end
+
+    # @param [Integer] x
+    # @param [Integer] y
+    # @param [Integer] z
+    # @param [Hash] options
+    protected def render_content(x, y, z, options)
       return unless @tile_data.valid
 
       tile_ids = @tile_data[:tile_ids] || []
@@ -30,51 +42,22 @@ module UI
 
       y += @text.h + 8
 
+      @passage_panel.passage = passage
+      @passage_panel.render x, y, z
 
       # draw blocks for passage
-      if passage == Enum::Passage::NONE
-        @block_ss.render x + @block_ss.w,
-                         y + @block_ss.h,
-                         z,
-                         0
-      else
-        @block_ss.render x + @block_ss.w,
-                         y,
-                         z,
-                         passage.masked?(Enum::Passage::UP) ? 1 : 0
-        #
-        @block_ss.render x,
-                         y + @block_ss.h,
-                         z,
-                         passage.masked?(Enum::Passage::LEFT) ? 1 : 0
-        #
-        @block_ss.render x + @block_ss.w,
-                         y + @block_ss.h,
-                         z,
-                         passage.masked?(Enum::Passage::ABOVE) ? 3 : 2
-        #
-        @block_ss.render x + @block_ss.w * 2,
-                         y + @block_ss.h,
-                         z,
-                         passage.masked?(Enum::Passage::RIGHT) ? 1 : 0
-        #
-        @block_ss.render x + @block_ss.w,
-                         y + @block_ss.h * 2,
-                         z,
-                         passage.masked?(Enum::Passage::DOWN) ? 1 : 0
-      end
 
-      if @tileset
-        y += @block_ss.h * 3
+      if @spritesheet
+        y += @passage_panel.h
         tile_ids.each_with_index do |tile_id, i|
           next if tile_id < 0
-          xo = @tileset.w * i
+          xo = @spritesheet.w * i
 
 
-          @tileset.render x + xo, y, z, tile_id
+          @spritesheet.render x + xo, y, z, tile_id
 
           @text.string = tile_id.to_s
-          @text.render x + xo, y + @tileset.h, z
+          @text.render x + xo, y + @spritesheet.h, z
         end
       end
     end

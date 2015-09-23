@@ -1,3 +1,5 @@
+require 'scripts/ui/passage_panel'
+
 module UI
   # UI component for editing passage flags
   # The flag is disabled as:
@@ -7,7 +9,7 @@ module UI
   # Where U=UP, L=LEFT, A=ABOVE, R=RIGHT, D=DOWN
   # Left clicking on any of the blocks will flip the flag and trigger a
   # {PassageEditor::PassageChanged} (passage_changed) event
-  class PassageEditor < Moon::RenderContext
+  class PassageEditor < PassagePanel
     class PassageChanged < Moon::Event
       # @return [Integer]
       attr_accessor :passage
@@ -18,10 +20,6 @@ module UI
         super :passage_changed
       end
     end
-
-    # @!attribute passage
-    #   @return [Integer]
-    attr_accessor :passage
 
     private
 
@@ -60,17 +58,7 @@ module UI
       change_passage @passage ^ flag
     end
 
-    def initialize_members
-      super
-      @passage = 0
-    end
-
-    def initialize_content
-      super
-      texture = Game.instance.textures['ui/passage_editor_icons']
-      @ss = Moon::Spritesheet.new(texture, 16, 16)
-      resize @ss.w * 3, @ss.h * 3
-    end
+    protected
 
     def initialize_events
       super
@@ -79,27 +67,6 @@ module UI
           on_click(e) if e.button == :mouse_left
         end
       end
-    end
-
-    # @param [Integer] x
-    # @param [Integer] y
-    # @param [Integer] z
-    # @param [Hash] options
-    def render_content(x, y, z, options)
-      m = @passage.masked?(Enum::Passage::UP)
-      @ss.render x + @ss.w, y, z, m ? 1 : 0
-
-      m = @passage.masked?(Enum::Passage::DOWN)
-      @ss.render x + @ss.w, y + @ss.h * 2, z, m ? 1 : 0
-
-      m = @passage.masked?(Enum::Passage::LEFT)
-      @ss.render x, y + @ss.h, z, m ? 1 : 0
-
-      m = @passage.masked?(Enum::Passage::RIGHT)
-      @ss.render x + @ss.w * 2, y + @ss.h, z, m ? 1 : 0
-
-      m = @passage.masked?(Enum::Passage::ABOVE)
-      @ss.render x + @ss.w, y + @ss.h, z, m ? 2 : 3
     end
   end
 end

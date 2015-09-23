@@ -43,8 +43,7 @@ class MapEditorGuiView < State::ViewBase
 
     @notifications    = UI::Notifications.new
 
-    texture = ES.game.textures['ui/passage_blocks']
-    @passage_ss = Moon::Spritesheet.new texture, 32, 32
+    @passage_ss = Game.instance.spritesheets['ui/passage_blocks', 32, 32]
 
     @notifications.font = @font
 
@@ -81,10 +80,14 @@ class MapEditorGuiView < State::ViewBase
                                     0
   end
 
+  def spritesheet=(spritesheet)
+    @spritesheet = spritesheet
+    @tile_preview.spritesheet = @spritesheet
+    @tile_info.spritesheet = @spritesheet
+  end
+
   def tileset=(tileset)
     @tileset = tileset
-    @tile_preview.tileset = @tileset
-    @tile_info.tileset = @tileset
     @tile_panel.tileset = @tileset
   end
 end

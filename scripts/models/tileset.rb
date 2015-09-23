@@ -9,11 +9,11 @@ module Models
     field :cell_h,          type: Integer, default: 32
     field :columns,         type: Integer, default: 16
 
-    # Used by the map_rendering system to cache the tileset's Spritesheet
+    # Used by the SpritesheetCache
     #
-    # @return [String]
+    # @return [Array<Object>] [filename, cell_w, cell_h]
     def spritesheet_id
-      "#{filename},#{cell_w},#{cell_h}"
+      return filename, cell_w, cell_h
     end
   end
 end

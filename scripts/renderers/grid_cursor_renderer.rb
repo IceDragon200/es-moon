@@ -7,18 +7,18 @@ module Renderers
     attr_accessor :cols
 
     # @param [Hash] options
-    private def initialize_from_options(options)
+    protected def initialize_from_options(options)
       super
       @texture = options.fetch(:texture)
     end
 
-    private def initialize_members
+    protected def initialize_members
       super
       @index = 0
       @cols = 0
     end
 
-    private def initialize_content
+    protected def initialize_content
       super
       @sprite = Moon::Sprite.new(@texture)
     end

@@ -46,6 +46,7 @@ textures:
   ui/passage_icons_mini: "resources/ui/passage_icons_mini.png"
   ui/selection_tile: "resources/ui/selection_tile.png"
   ui/tile_panel_background: "resources/ui/tile_panel_background.png"
+  ui/tile_panel_cursor: "resources/ui/tile_panel_cursor.png"
   ui/tile_preview_background: "resources/ui/tile_preview_background.png"
   ui/tileset_editor_cursor: "resources/ui/tileset_editor_cursor.png"
   ui/tileset_editor_grid: "resources/ui/tileset_editor_grid.png"

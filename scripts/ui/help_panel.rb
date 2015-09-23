@@ -22,9 +22,9 @@ module UI
     end
     # @!endgroup margin settings
 
-    private def initialize_elements
+    protected def initialize_elements
       super
-      @background.windowskin = Moon::Spritesheet.new(Game.instance.textures['ui/windowskin_help_panel'], 16, 16)
+      @background.windowskin = Game.instance.spritesheets['ui/windowskin_help_panel', 16, 16]
 
       @text = Moon::Label.new '', Game.instance.fonts['system.16']
       @text.string = '' <<
@@ -43,10 +43,8 @@ module UI
       add(@text)
     end
 
-    def human_key(*keys)
+    private def human_key(*keys)
       keys.flatten.map { |key| Moon::Input.key_to_human_readable(key).first }.join(' or ').dump
     end
-
-    private :human_key
   end
 end

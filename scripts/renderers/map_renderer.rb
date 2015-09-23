@@ -3,12 +3,12 @@ class MapRenderer < Moon::RenderContext
   # @return [Camera3]
   attr_accessor :camera
 
-  private def initialize_members
+  protected def initialize_members
     super
     @layer_opacity = [1.0, 1.0]
   end
 
-  private def initialize_content
+  protected def initialize_content
     super
     @tilemap = Moon::Tilemap.new
   end
@@ -34,12 +34,13 @@ class MapRenderer < Moon::RenderContext
     # clear size, so it can refresh
     if @map
       @tileset = @map.tileset
-      @texture = Game.instance.textures[@tileset.filename]
-      @tilemap.set data: @map.data.blob,
+      spritesheet = Game.instance.spritesheets[@tileset.spritesheet_id]
+      @tilemap.set(
+        data: @map.data.blob,
         layer_opacity: @layer_opacity,
         datasize: @map.data.sizes,
         layer_opacity: @layer_opacity,
-        tileset: Moon::Spritesheet.new(@texture, @tileset.cell_w, @tileset.cell_h)
+        tileset: spritesheet)
 
       resize @tilemap.w, @tilemap.h
     end
@@ -59,7 +60,7 @@ class MapRenderer < Moon::RenderContext
     pos
   end
 
-  private def render_content(x, y, z, options)
+  protected def render_content(x, y, z, options)
     @tilemap.render x, y, z if @map
   end
 end

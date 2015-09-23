@@ -15,7 +15,7 @@ class EditorMapRenderer < MapRenderer
   # @return [Boolean]
   attr_accessor :show_overlay
 
-  private def initialize_members
+  protected def initialize_members
     super
     @show_borders = false
     @show_labels = false
@@ -32,7 +32,7 @@ class EditorMapRenderer < MapRenderer
     options
   end
 
-  private def render_content(x, y, z, options)
+  protected def render_content(x, y, z, options)
     super x, y, z, options.merge(render_show_options)
   end
 end

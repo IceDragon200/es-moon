@@ -4,12 +4,11 @@ module UI
   class TilePreview < Moon::RenderContext
     attr_reader :tile_id       # Integer
     # @return [Moon::Spritesheet]
-    attr_reader :tileset
+    attr_reader :spritesheet
 
-    private def initialize_content
+    protected def initialize_content
       super
-      texture = Game.instance.textures['ui/passage_icons_mini']
-      @micro_ss = Moon::Spritesheet.new texture, 8, 8
+      @micro_ss = Game.instance.spritesheets['ui/passage_icons_mini', 8, 8]
 
       texture = Game.instance.textures['ui/tile_preview_background']
       @background = Moon::Sprite.new texture
@@ -19,12 +18,12 @@ module UI
       @tile_id = -2
       @old_tile_id = -1
       self.tile_id = -1
-      self.tileset = nil
+      self.spritesheet = nil
     end
 
-    # @param [Moon::Spritesheet] tileset
-    def tileset=(tileset)
-      @tileset = tileset
+    # @param [Moon::Spritesheet] spritesheet
+    def spritesheet=(spritesheet)
+      @spritesheet = spritesheet
       resize(nil, nil)
     end
 
@@ -62,26 +61,26 @@ module UI
     def render_content(x, y, z, options)
       @background.render x, y, z
 
-      if @tileset
-        diff = (@background.cell_size - @tileset.cell_size) / 2
+      if @spritesheet
+        diff = (@background.cell_size - @spritesheet.cell_size) / 2
 
         if @text.done?
           if @tile_id >= 0
-            @tileset.render diff.x + x, diff.y + y, z, @tile_id
+            @spritesheet.render diff.x + x, diff.y + y, z, @tile_id
           end
         else
           r = @text.rate
           if @tile_id >= 0
-            @tileset.render diff.x + x, diff.y + y, z, @tile_id, opacity: r
+            @spritesheet.render diff.x + x, diff.y + y, z, @tile_id, opacity: r
           end
           if @old_tile_id >= 0
-            @tileset.render diff.x + x, diff.y + y, z, @old_tile_id, opacity: 1-r
+            @spritesheet.render diff.x + x, diff.y + y, z, @old_tile_id, opacity: 1-r
           end
         end
 
         dx = (@background.w - @text.w) / 2
         @text.render x + dx,
-                     diff.y + y + @tileset.h - 4,
+                     diff.y + y + @spritesheet.h - 4,
                      z
       else
         @micro_ss.render x, y, z, 8

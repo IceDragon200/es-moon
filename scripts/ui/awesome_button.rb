@@ -1,6 +1,6 @@
 module UI
   class AwesomeButton < Moon::RenderContext
-    private def initialize_content
+    protected def initialize_content
       super
       @icon_text = Moon::Label.new '', Game.instance.fonts['awesome.24']
       @label_text = Moon::Label.new '', Game.instance.fonts['system.16']
@@ -50,7 +50,7 @@ module UI
     # @param [Integer] y
     # @param [Integer] z
     # @param [Hash] options
-    def render_content(x, y, z, options)
+    protected def render_content(x, y, z, options)
       tx = x + (w - @icon_text.font.size) / 2
       ty = y + (h - @icon_text.font.size) / 2
       @icon_text.render tx, ty, z

@@ -6,7 +6,7 @@ module UI
     attr_accessor :icon_sprite
     attr_accessor :icon_sprite_active
 
-    def initialize_content
+    protected def initialize_content
       super
       @active = false
       @icon_sprite = nil
@@ -48,7 +48,7 @@ module UI
     # @param [Integer] y
     # @param [Integer] z
     # @param [Hash] options
-    def render_content(x, y, z, options)
+    protected def render_content(x, y, z, options)
       if active? && @icon_sprite_active
         @icon_sprite_active.render x, y, z
       else

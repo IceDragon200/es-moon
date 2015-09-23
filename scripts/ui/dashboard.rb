@@ -5,7 +5,7 @@ module UI
   class MapEditorDashboard < Moon::RenderContainer
     attr_accessor :default_color
 
-    def initialize_members
+    protected def initialize_members
       super
       pal = Game.instance.database['palette']
       @default_color = pal['white']

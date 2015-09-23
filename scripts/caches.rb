@@ -86,6 +86,20 @@ module ES
     end
   end
 
+  class SpritesheetCache < AssetCache
+    protected :[]=
+
+    def [](*args)
+      filename, cell_w, cell_h = *args.singularize
+      key = "#{filename},#{cell_w},#{cell_h}"
+      unless exist?(key)
+        texture = Game.instance.textures[filename]
+        self[key] = Moon::Spritesheet.new(texture, cell_w, cell_h)
+      end
+      super key
+    end
+  end
+
   class DataCache < Moon::CacheBase
     cache def data(filename)
       Moon::DataSerializer.load_file(filename)

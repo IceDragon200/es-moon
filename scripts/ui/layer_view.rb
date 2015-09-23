@@ -3,13 +3,13 @@ module UI
     attr_accessor :index
     attr_accessor :layer_count
 
-    private def initialize_members
+    protected def initialize_members
       super
       @index = -1
       @layer_count = 2
     end
 
-    private def initialize_content
+    protected def initialize_content
       super
       @layer_ss = Moon::Sprite.new(Game.instance.textures['ui/hud_mockup'])
     end
@@ -28,7 +28,7 @@ module UI
     # @param [Integer] y
     # @param [Integer] z
     # @param [Hash] options
-    def render_content(x, y, z, options)
+    protected def render_content(x, y, z, options)
       @layer_ss.clip_rect = Moon::Rect.new(144, 80, 16, 40)
       case @index
       when -1

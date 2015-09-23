@@ -19,8 +19,7 @@ class TilePalettePanel < Moon::RenderContext
 
   def refresh_tile_palette
     tileset = @tile_palette.tileset
-    texture = TextureCache.tileset(tileset.filename)
-    @spritesheet = Moon::Spritesheet.new(texture, tileset.cell_w, tileset.cell_h)
+    @spritesheet = Game.instance.spritesheets[tileset.spritesheet_id]
   end
 
   def update(delta)

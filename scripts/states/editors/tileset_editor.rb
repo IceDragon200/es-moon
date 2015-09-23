@@ -14,7 +14,7 @@ module States
         @tilesets_list.add_entry :tileset, name: tileset.id, tileset: tileset, cb: -> { set_active_tileset tileset }
       end
 
-      @passage_editor = UI::PassageEditor.new
+      @passage_editor = UI::PassageEditor.new spritesheet: Game.instance.spritesheets['ui/passage_editor_icons', 16, 16]
       @passage_editor.position.set(screen.w - @passage_editor.w - 16, 16, 0)
 
       @notifications = UI::Notifications.new
