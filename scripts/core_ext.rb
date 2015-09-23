@@ -4,6 +4,7 @@ require 'scripts/core_ext/string'
 require 'scripts/core_ext/object'
 
 # moon core
+require 'scripts/core_ext/moon-sprite'
 require 'scripts/core_ext/moon-spritesheet'
 require 'scripts/core_ext/moon-vector2'
 require 'scripts/core_ext/moon-vector3'
