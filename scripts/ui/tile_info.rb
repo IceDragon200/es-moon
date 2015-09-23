@@ -17,31 +17,18 @@ module UI
       return unless @tile_data.valid
 
       tile_ids = @tile_data[:tile_ids] || []
-      chunk = @tile_data[:chunk]
+      map = @tile_data[:map]
       passage = @tile_data[:passage]
 
-      data_position = @tile_data[:data_position]
+      position = @tile_data[:position]
 
-      chunk_id = chunk ? chunk.id : ''
-      chunk_name = chunk ? chunk.name : ''
-      chunk_position = chunk ? chunk.position.to_a : [-1, -1]
-      chunk_data_pos = @tile_data[:chunk_data_position] || [-1, -1]
+      map_id = map ? map.id : ''
+      map_name = map ? map.name : ''
 
-
-      @text.string = "#{chunk_id[0,5]} -- #{chunk_name} (#{chunk_uri})"
-      ## verbose
-      #@text.string ="" +
-      #              "position:       #{data_position.to_a}\n" +
-      #              "chunk_id:       #{chunk_id}\n" +
-      #              "chunk_name:     #{chunk_name}\n" +
-      #              "chunk_uri:      #{chunk_uri}\n" +
-      #              "chunk_data_pos: #{chunk_data_pos.to_a}\n" +
-      #              "chunk_position: #{chunk_position.to_a}\n" +
-      #              "passage:        #{passage}\n" +
-      #              "" # placeholder
-
+      @text.string = "#{map_id} -- #{map_name}"
       @text.render x, y, z
-      y += @text.h
+
+      y += @text.h + 8
 
 
       # draw blocks for passage
@@ -49,32 +36,32 @@ module UI
         @block_ss.render x + @block_ss.w,
                          y + @block_ss.h,
                          z,
-                         8
+                         0
       else
         @block_ss.render x + @block_ss.w,
                          y,
                          z,
-                         passage.masked?(Enum::Passage::UP) ? 9 : 8
+                         passage.masked?(Enum::Passage::UP) ? 1 : 0
         #
         @block_ss.render x,
                          y + @block_ss.h,
                          z,
-                         passage.masked?(Enum::Passage::LEFT) ? 9 : 8
+                         passage.masked?(Enum::Passage::LEFT) ? 1 : 0
         #
         @block_ss.render x + @block_ss.w,
                          y + @block_ss.h,
                          z,
-                         passage.masked?(Enum::Passage::ABOVE) ? 12 : 1
+                         passage.masked?(Enum::Passage::ABOVE) ? 3 : 2
         #
         @block_ss.render x + @block_ss.w * 2,
                          y + @block_ss.h,
                          z,
-                         passage.masked?(Enum::Passage::RIGHT) ? 9 : 8
+                         passage.masked?(Enum::Passage::RIGHT) ? 1 : 0
         #
         @block_ss.render x + @block_ss.w,
                          y + @block_ss.h * 2,
                          z,
-                         passage.masked?(Enum::Passage::DOWN) ? 9 : 8
+                         passage.masked?(Enum::Passage::DOWN) ? 1 : 0
       end
 
       if @tileset

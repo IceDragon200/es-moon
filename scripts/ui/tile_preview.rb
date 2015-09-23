@@ -63,7 +63,7 @@ module UI
       @background.render x, y, z
 
       if @tileset
-        diff = (@background_ss.cell_size - @tileset.cell_size) / 2
+        diff = (@background.cell_size - @tileset.cell_size) / 2
 
         if @text.done?
           if @tile_id >= 0
@@ -79,7 +79,7 @@ module UI
           end
         end
 
-        dx = (@background_ss.w - @text.w) / 2
+        dx = (@background.w - @text.w) / 2
         @text.render x + dx,
                      diff.y + y + @tileset.h - 4,
                      z

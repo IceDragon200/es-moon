@@ -55,7 +55,8 @@ class MapEditorGuiController < State::ControllerBase
     @view.dashboard.enable 1
     @view.notifications.notify string: 'New Map'
     @model.map = create_map(name: 'New Map')
-    @model.map.uri = "/maps/new/map-#{@model.map.id}"
+    @model.map.id = "maps/new/map-#{@model.map.id}"
+    @model.map.data =
     create_chunk(Moon::Rect.new(0, 0, 4, 4), name: "New Chunk #{@model.map.chunks.size}")
   end
 
@@ -66,8 +67,7 @@ class MapEditorGuiController < State::ControllerBase
 
   def save_map
     @view.dashboard.ok 4
-    @model.map.to_map.save_file
-    save_chunks
+    @model.map.save_file
     @view.notifications.notify string: 'Saved'
   end
 
@@ -144,14 +144,14 @@ class MapEditorGuiController < State::ControllerBase
     @view.dashboard.disable 5
   end
 
-  def rename_chunk(new_name)
-    if chunk = chunk_at_position(@model.map_cursor.position.floor)
-      chunk.name = new_name
+  def rename_map(new_name)
+    if map = map_at_position(@model.map_cursor.position.floor)
+      map.name = new_name
     end
   end
 
-  def move_chunk(x, y)
-    if chunk = chunk_at_position(@model.map_cursor.position.floor)
+  def move_map(x, y)
+    if chunk = map_at_position(@model.map_cursor.position.floor)
       pos = [x, y]
       chunk.position += Moon::Vector3[pos, 0]
       @model.map_cursor.move pos
@@ -159,7 +159,7 @@ class MapEditorGuiController < State::ControllerBase
   end
 
   def resize_chunk(x, y)
-    if chunk = chunk_at_position(@model.map_cursor.position.floor)
+    if chunk = map_at_position(@model.map_cursor.position.floor)
       chunk.resize(chunk.w + x, chunk.h + y)
     end
   end
@@ -358,26 +358,22 @@ class MapEditorGuiController < State::ControllerBase
     state_manager.push(States::TilePaletteEditor)
   end
 
-  def chunk_at_position(position)
-    chunk = @model.map.chunks.find do |c|
-      c.bounds.contains?(position)
-    end
+  def map_at_position(position)
+    @model.map.bounds.contains?(position) ? @model.map : nil
   end
 
   def get_tile_data(tile_data, position)
     position = position.floor
-    chunk = chunk_at_position(position)
+    map = map_at_position(position)
     tile_data.valid = false
-    if chunk
+    if map
       tile_data.valid = true
-      return if tile_data.data_position.x == position.x &&
-        tile_data.data_position.y == position.y
-      tile_data.chunk = chunk
-      tile_data.data_position.set position.x, position.y, 0
-      tile_data.chunk_data_position.set tile_data.data_position - chunk.position
-      x, y, _ = *tile_data.chunk_data_position
-      tile_data.tile_ids = chunk.data.sampler.pillar(x, y).to_a
-      tile_data.passage = chunk.passages[*tile_data.chunk_data_position.xy]
+      return if tile_data.position == position
+      tile_data.map = map
+      tile_data.position.set position.x, position.y, 0
+      x, y, _ = *tile_data.position
+      tile_data.tile_ids = map.data.sampler.pillar(x, y).to_a
+      tile_data.passage = map.passage_at(*tile_data.position.xy)
     end
     tile_data
   end
