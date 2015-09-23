@@ -50,7 +50,7 @@ module UI
       @text = Moon::Label.new '', Game.instance.fonts['system.16']
 
       texture = Game.instance.textures['ui/tile_panel_cursor']
-      @block_ss = Moon::Sprite.new texture
+      @tile_cursor = Moon::Sprite.new texture
 
       background_texture = Game.instance.textures['ui/hud_mockup_4x']
 
@@ -141,9 +141,11 @@ module UI
       end
     end
 
-    def render_content(x, y, z, options)
+    private def render_background(x, y, z)
       @background_s.render x - 8, y + 8, z
-      return unless @spritesheet
+    end
+
+    private def render_tiles(x, y, z)
       row = @row_index * @visible_cols
       vis = @visible_rows * @visible_cols
       vis.times do |i|
@@ -151,40 +153,59 @@ module UI
         ty = (i / @visible_cols).floor * @spritesheet.h
         @spritesheet.render x + tx, y + ty + 16, z, row + i
       end
+    end
 
+    private def render_scrollbar(x, y, z)
       bx, by = x + @background_s.w + 8, y + 8
       @scroll_bar.render bx, by, z
       inc = @tile_id.to_f / @spritesheet.cell_count
       knob_y = by + 8 + inc * @visible_rows * @tilesize.y
       @scroll_knob.render bx + 8, knob_y, z
+    end
 
-      cp = @cursor.position * @tilesize
-      cp.y -= @row_index * @tilesize.y
-      @block_ss.render x + cp.x, y + cp.y + 16, z
+    private def render_tile_preview(x, y, z)
+      @tile_box.render x, y, z
+      @spritesheet.render x + 8, y + 8, z, @tile_id
 
-      if contains_relative_pos?(cp)
-        ty = y - @tile_box.h
-        @tile_box.render x, ty, z
-        @spritesheet.render x + 8, ty + 8, z, @tile_id
+      text_y = y + ((@tile_box.h - @text.h) / 2).to_i
+      @text.set string: "Tile #{@tile_id}", align: :left
+      @text.render x + @tile_box.w + 4, text_y, z
+    end
 
-        text_y = ty + ((@tile_box.h - @text.h) / 2).to_i
-        @text.set string: "Tile #{@tile_id}", align: :left
-        @text.render x + @tile_box.w + 4, text_y, z
+    private def render_passage_preview(x, y, z)
+      passage_id = @tileset.passages[@tile_id]
+      @passage_box.render x, y, z
+      @passage_panel.passage = passage_id
+      @passage_panel.render(
+        x + (@passage_box.w - @passage_panel.w) / 2,
+        y + (@passage_box.h - @passage_panel.h) / 2,
+        z)
 
-        passage_id = @tileset.passages[@tile_id]
+      @text.set string: "Passage #{passage_id}", align: :right
+      @text.render x - 4, y, z
+    end
 
-        tx = x + @background_s.w - @passage_box.w
-        @passage_box.render tx, ty, z
-        @passage_panel.passage = passage_id
-        @passage_panel.render(
-          tx + (@passage_box.w - @passage_panel.w) / 2,
-          ty + (@passage_box.h - @passage_panel.h) / 2,
-          z)
+    private def render_previews(x, y, z)
+      ty = y - @tile_box.h
+      tx = x + @background_s.w - @passage_box.w
+      render_tile_preview(x, ty, z)
+      render_passage_preview(tx, ty, z)
+    end
 
-        text_y = ty
-        @text.set string: "Passage #{passage_id}", align: :right
-        @text.render tx - 4, text_y, z
-      end
+    private def render_tile_info(x, y, z)
+      cursor_pos = @cursor.position * @tilesize
+      cursor_pos.y -= @row_index * @tilesize.y
+      @tile_cursor.render x + cursor_pos.x, y + cursor_pos.y + 16, z
+
+      render_previews(x, y, z) if contains_relative_pos?(cursor_pos)
+    end
+
+    protected def render_content(x, y, z, options)
+      render_background(x, y, z)
+      return unless @spritesheet
+      render_tiles(x, y, z)
+      render_scrollbar(x, y, z)
+      render_tile_info(x, y, z)
     end
   end
 end
