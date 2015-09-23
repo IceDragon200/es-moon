@@ -1,5 +1,4 @@
 require 'scripts/renderers/map_renderer'
-require 'scripts/renderers/editor_chunk_renderer'
 
 # Extended renderer for rendering EditorMaps with support for borders, labels,
 # overlays and underlays

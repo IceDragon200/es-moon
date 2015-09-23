@@ -1,5 +1,3 @@
-require 'scripts/renderers/chunk_renderer'
-
 # Specialized renderer for rendering EditorMaps
 class MapRenderer < Moon::RenderContext
   # @return [Camera3]

@@ -5,7 +5,6 @@ require 'scripts/enums'
 require 'scripts/models'
 require 'scripts/helpers'
 require 'scripts/entity_system'
-require 'scripts/renderers'
 require 'scripts/states'
 require 'scripts/adapters'
 
