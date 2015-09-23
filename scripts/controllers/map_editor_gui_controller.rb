@@ -208,9 +208,10 @@ class MapEditorGuiController < State::ControllerBase
 
   def place_tile(tile_id)
     tile_data = @view.tile_info.tile_data
-    if chunk = tile_data.chunk
-      dx, dy, _ = *tile_data.chunk_data_position
-      chunk.data[dx, dy, @model.layer] = tile_id
+    if map = tile_data.map
+      dx, dy, _ = *tile_data.position
+      map.data[dx, dy, @model.layer] = tile_id
+      @map_controller.refresh_map
     end
   end
 
