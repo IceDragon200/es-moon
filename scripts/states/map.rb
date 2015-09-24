@@ -2,7 +2,7 @@ module States
   class Map < Base
     def start
       super
-      @map = game.database['maps/school/f1']
+      @map = game.database[game.database['system']['starting_map']]
 
       @world = ES::EntitySystem::World.new(game)
       @world.register :movement

@@ -89,7 +89,7 @@ module States
     end
 
     private def create_map
-      @model.map = game.database['maps/school/f1']
+      @model.map = game.database[game.database['system']['starting_map']]
     end
 
     private def create_autosave_interval

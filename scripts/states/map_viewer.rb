@@ -69,7 +69,7 @@ module States
     end
 
     def create_map
-      @editor_map = game.database['maps/school/f1']
+      @editor_map = game.database[game.database['system']['starting_map']]
     end
 
     def create_spriteset

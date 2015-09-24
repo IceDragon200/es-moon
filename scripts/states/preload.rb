@@ -35,6 +35,56 @@ module States
       end
     end
 
+    class VfsLoader
+      # @return [Game]
+      attr_reader :game
+
+      # @param [String] key
+      # @param [Game] game
+      # @param [String] root  root path
+      # @param [#load] loader
+      def initialize(key, game, root, loader)
+        @key = key
+        @game = game
+        @root = root
+        @loader = loader
+      end
+
+      # @param [String] subpath  path to concat to the current root
+      # @return [VfsLoader] a new instance with its root changed
+      private def new(subpath)
+        VfsLoader.new(@key, @game, File.join(@root, subpath), @loader)
+      end
+
+      # @param [String] basename of the filename
+      private def load_record(basename)
+        filename = File.join(@root, basename)
+        cachename = filename.gsub(/#{File.extname(filename)}\z/, '').gsub(/\Adata\//, '')
+        puts "Preloading #{@key} data: #{cachename}=#{filename}"
+        data = YAML.load_file(filename)
+        record = @loader.load data
+        record.id = cachename if record.respond_to?(:id=)
+        @game.database[cachename] = record
+      end
+
+      # @param [String] basename of the filename
+      private def load_import(basename)
+        filename = File.join(@root, basename)
+        import_loader = new(File.dirname(basename))
+        data = YAML.load_file(filename)
+        data.each { |name| import_loader.load(name) }
+      end
+
+      # @param [String] basname
+      public def load(basename)
+        if basename =~ /\A&import:(.+)/
+          load_import($1)
+        else
+          load_record(basename)
+        end
+      end
+    end
+
     # @return [void]
     def start
       super
@@ -79,7 +129,7 @@ module States
       root = File.dirname(root_filename)
       vfs = YAML.load_file(root_filename)['data']
       vfs.each_pair do |key, entries|
-        klass = case key
+        loader = case key
         when 'characters'
           Models::Character
         when 'maps'
@@ -90,20 +140,15 @@ module States
           PaletteLoader
         when 'read_only'
           ReadOnlyLoader
+        when 'data'
+          IdentityLoader
         else
           puts "WARN: Unhandled data key #{key}"
           IdentityLoader
         end
 
-        entries.each do |basename|
-          filename = File.join(root, basename)
-          cachename = basename.gsub(/#{File.extname(filename)}\z/, '')
-          puts "Preloading #{key} data: #{cachename}=#{filename}"
-          data = YAML.load_file(filename)
-          record = klass.load data
-          record.id = cachename if record.respond_to?(:id=)
-          game.database[cachename] = record
-        end
+        vfs_loader = VfsLoader.new(key, game, root, loader)
+        entries.each { |basename| vfs_loader.load(basename) }
       end
     end
 

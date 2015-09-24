@@ -1,0 +1,45 @@
+---
+id: maps/school/f1/hallway
+name: Hallway
+data:
+  xsize: 4
+  ysize: 4
+  zsize: 2
+  size: 32
+  data:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  default: -1
+  '&class': Moon::DataMatrix
+tileset_id: tilesets/common
+'&class': Models::Map
