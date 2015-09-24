@@ -11,10 +11,11 @@ data:
   charmaps:
     - "charmap/awesome.yml"
   maps:
-    - "maps/school/f1.yml"
+    - "&import:maps/school.import.yml"
   tilesets:
     - "tilesets/common.yml"
   palette:
     - "palette.yml"
   read_only:
+    - "system.yml"
     - "controlmaps/map_editor.yml"

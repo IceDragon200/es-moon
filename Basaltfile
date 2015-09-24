@@ -6,7 +6,6 @@ pkg 'data_model'
 pkg 'data_painter' # Data manipulation package
 pkg 'dataman'
 pkg 'debug'
-pkg 'moon-mock' # stub base class package
 pkg 'entity_system'
 pkg 'es'
 pkg 'es-aux' # ES auxillary package, various prototypes
@@ -14,9 +13,10 @@ pkg 'lunar_ui'
 pkg 'moon-boolean'
 pkg 'moon-inflector'
 pkg 'moon-logfmt'
+pkg 'moon-maybe_copy'
+pkg 'moon-mock' # stub base class package
 pkg 'moon-null_io'
 pkg 'moon-prototype'
-pkg 'moon-maybe_copy'
 pkg 'moon-serializable'
 pkg 'render_primitives'
 pkg 'scheduler'
