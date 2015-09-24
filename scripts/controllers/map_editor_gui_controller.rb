@@ -8,8 +8,8 @@ class MapEditorGuiController < State::ControllerBase
 
     @model.on :changed do |e|
       case e.attribute
-      when :show_chunk_labels
-        on_show_chunk_labels(e.value)
+      when :show_map_label
+        on_show_map_label(e.value)
       when :show_grid
         @map_controller.on_show_grid
         @view.dashboard.toggle 7, e.value
@@ -51,13 +51,21 @@ class MapEditorGuiController < State::ControllerBase
     @model.show_grid = !@model.show_grid
   end
 
+  def create_map(data)
+    map = Models::Map.new(data)
+    map
+  end
+
   def new_map
     @view.dashboard.enable 1
     @view.notifications.notify string: 'New Map'
-    @model.map = create_map(name: 'New Map')
-    @model.map.id = "maps/new/map-#{@model.map.id}"
-    @model.map.data =
-    create_chunk(Moon::Rect.new(0, 0, 4, 4), name: "New Chunk #{@model.map.chunks.size}")
+    old_map = @model.map
+    @model.map = create_map(
+      id: "maps/new/map-#{@model.map.id}",
+      name: 'New Map',
+      data: Moon::DataMatrix.new(4, 4, 2, default: -1),
+      tileset_id: old_map.tileset_id)
+    @map_controller.refresh_map
   end
 
   def on_new_map_release
@@ -73,7 +81,7 @@ class MapEditorGuiController < State::ControllerBase
 
   def on_save_map_release
     @view.dashboard.disable 4
-    @view.notifications.clear
+    #@view.notifications.clear
   end
 
   def new_chunk
@@ -126,11 +134,6 @@ class MapEditorGuiController < State::ControllerBase
     chunk
   end
 
-  def create_map(data)
-    map = ES::EditorMap.new(data)
-    map
-  end
-
   def save_chunks
     @model.map.chunks.each { |chunk| chunk.to_chunk.save_file }
   end
@@ -176,7 +179,7 @@ class MapEditorGuiController < State::ControllerBase
     refresh_follow
   end
 
-  def on_show_chunk_labels(value)
+  def on_show_map_label(value)
     if value
       @view.dashboard.enable 9
       @view.notifications.notify string: 'Showing Chunk Labels'
@@ -347,12 +350,12 @@ class MapEditorGuiController < State::ControllerBase
     @view.tile_preview.hide
   end
 
-  def show_chunk_labels
-    @model.show_chunk_labels = true
+  def show_map_label
+    @model.show_map_label = true
   end
 
-  def hide_chunk_labels
-    @model.show_chunk_labels = false
+  def hide_map_label
+    @model.show_map_label = false
   end
 
   def edit_tile_palette

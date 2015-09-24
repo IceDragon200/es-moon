@@ -9,7 +9,7 @@ load_chunks: 'f6'
 playtest: 'f7'
 toggle_grid: 'f8'
 toggle_keyboard_mode: 'f9'
-show_chunk_labels: 'f10'
+show_map_label: 'f10'
 edit_tile_palette: 'f11'
 # Tile Panel
 toggle_tile_panel: 'tab'

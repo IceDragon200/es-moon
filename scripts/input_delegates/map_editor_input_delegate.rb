@@ -208,13 +208,13 @@ class MapEditorInputDelegate < State::InputDelegateBase
     end
 
     ## Show Chunk Labels
-    on_press @control_map['show_chunk_labels'] do
-      @controller.show_chunk_labels
+    on_press @control_map['show_map_label'] do
+      @controller.show_map_label
       @controller.hide_tile_info
     end
 
-    on_release @control_map['show_chunk_labels'] do
-      @controller.hide_chunk_labels
+    on_release @control_map['show_map_label'] do
+      @controller.hide_map_label
       @controller.show_tile_info
     end
 

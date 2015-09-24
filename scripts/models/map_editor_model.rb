@@ -18,7 +18,7 @@ module Models
     field :map_cursor,             type: MapCursor,       default: proc{ |t| t.model.new }
     field :selection_rect,         type: Moon::Rect,      default: proc{ |t| t.model.new(0, 0, 0, 0) }
     field :selection_stage,        type: Integer,         default: 0
-    field :show_chunk_labels,      type: Boolean,         default: false
+    field :show_map_label,         type: Boolean,         default: false
     field :show_grid,              type: Boolean,         default: false
     field :tile_palette,           type: TilePalette,     default: proc{ |t| t.model.new }
     field :zoom,                   type: Float,           default: 1.0

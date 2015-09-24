@@ -48,7 +48,7 @@ class MapEditorMapView < State::ViewBase
   end
 
   def update_content(delta)
-    show_labels = @model.show_chunk_labels
+    show_labels = @model.show_map_label
     campos = -@model.camera.view_offset.floor
     pos = @model.map_cursor.position * @model.camera.tilesize + campos
     @map_cursor.position.set pos.x, pos.y, 0
