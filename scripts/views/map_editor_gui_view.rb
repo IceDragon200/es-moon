@@ -42,6 +42,10 @@ class MapEditorGuiView < State::ViewBase
     @ui_camera_posmon = UI::PositionMonitor.new
 
     @notifications    = UI::Notifications.new
+    @notifications.formatter = lambda do |s|
+      t = Time.now
+      "[#{t.hour}:#{t.min}] " << s
+    end
 
     @passage_ss = Game.instance.spritesheets['ui/passage_blocks', 32, 32]
 
