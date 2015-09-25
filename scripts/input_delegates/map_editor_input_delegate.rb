@@ -1,9 +1,18 @@
 require 'state_mvc/input_delegate_base'
 
+# controller is a MapEditorGuiController
 class MapEditorInputDelegate < State::InputDelegateBase
   def init
     super
-    @control_map = ES.game.data_cache.controlmap('map_editor')
+    @control_map = Game.instance.database['controlmaps/map_editor']
+  end
+
+  def control_map_to_keymap(map, commands)
+    commands.each_with_object({}) do |command, result|
+      map[command].each do |key|
+        result[key] = command
+      end
+    end
   end
 
   def on_keys(type, *args, &block)
@@ -26,84 +35,74 @@ class MapEditorInputDelegate < State::InputDelegateBase
   end
 
   def register_actor_move
-    on_press @control_map['move_camera_left'] do
-      @controller.set_camera_velocity(-1, nil)
+    input_map = control_map_to_keymap(@control_map, [
+      'move_camera_left',
+      'move_camera_right',
+      'move_camera_up',
+      'move_camera_down'
+    ])
+
+    input.on :press do |e|
+      case input_map[e.key]
+      when 'move_camera_left'
+        @controller.set_camera_velocity(-1, nil)
+      when 'move_camera_right'
+        @controller.set_camera_velocity(1, nil)
+      when 'move_camera_up'
+        @controller.set_camera_velocity(nil, -1)
+      when 'move_camera_down'
+        @controller.set_camera_velocity(nil, 1)
+      end
     end
 
-    on_press @control_map['move_camera_right'] do
-      @controller.set_camera_velocity(1, nil)
-    end
-
-    on_release @control_map['move_camera_left'], @control_map['move_camera_right'] do
-      @controller.set_camera_velocity(0, nil)
-    end
-
-    on_press @control_map['move_camera_up'] do
-      @controller.set_camera_velocity(nil, -1)
-    end
-
-    on_press @control_map['move_camera_down'] do
-      @controller.set_camera_velocity(nil, 1)
-    end
-
-    on_release @control_map['move_camera_up'], @control_map['move_camera_down'] do
-      @controller.set_camera_velocity(nil, 0)
+    input.on :release do |e|
+      case input_map[e.key]
+      when 'move_camera_left', 'move_camera_right'
+        @controller.set_camera_velocity(0, nil)
+      when 'move_camera_up', 'move_camera_down'
+        @controller.set_camera_velocity(nil, 0)
+      end
     end
   end
 
   def register_cursor_move
-    on_held @control_map['move_cursor_left'] do
-      @controller.move_cursor(-1, 0)
-    end
+    input_map = control_map_to_keymap(@control_map, [
+      'move_cursor_left',
+      'move_cursor_right',
+      'move_cursor_up',
+      'move_cursor_down'
+    ])
 
-    on_held @control_map['move_cursor_right'] do
-      @controller.move_cursor(1, 0)
-    end
-
-    on_held @control_map['move_cursor_up'] do
-      @controller.move_cursor(0, -1)
-    end
-
-    on_held @control_map['move_cursor_down'] do
-      @controller.move_cursor(0, 1)
-    end
-  end
-
-  def register_chunk_move
-    on_press @control_map['move_chunk_left'] do
-      @controller.move_chunk(-1, 0)
-    end
-
-    on_press @control_map['move_chunk_right'] do
-      @controller.move_chunk(1, 0)
-    end
-
-    on_press @control_map['move_chunk_up'] do
-      @controller.move_chunk(0, -1)
-    end
-
-    on_press @control_map['move_chunk_down'] do
-      @controller.move_chunk(0, 1)
+    input.on [:press, :repeat] do |e|
+      case input_map[e.key]
+      when 'move_cursor_left'
+        @controller.move_cursor(-1, 0)
+      when 'move_cursor_right'
+        @controller.move_cursor(1, 0)
+      when 'move_cursor_up'
+        @controller.move_cursor(0, -1)
+      when 'move_cursor_down'
+        @controller.move_cursor(0, 1)
+      end
     end
   end
 
-  def register_chunk_resize
-    on_press @control_map['resize_chunk_horz_plus'] do
-      @controller.resize_chunk(1, 0)
+  def register_map_resize
+    on_press @control_map['resize_map_horz_plus'] do
+      @controller.resize_map(1, 0)
     end
 
-    on_press @control_map['resize_chunk_horz_minus'] do
-      @controller.resize_chunk(-1, 0)
+    on_press @control_map['resize_map_horz_minus'] do
+      @controller.resize_map(-1, 0)
     end
 
-    on_press @control_map['resize_chunk_vert_plus'] do
-      @controller.resize_chunk(0, 1)
+    on_press @control_map['resize_map_vert_plus'] do
+      @controller.resize_map(0, 1)
     end
 
-    on_press @control_map['resize_chunk_vert_minus'] do
-      @controller.resize_chunk(0, -1)
+    on_press @control_map['resize_map_vert_minus'] do
+      @controller.resize_map(0, -1)
     end
-
   end
 
   def register_zoom_controls
@@ -167,45 +166,33 @@ class MapEditorInputDelegate < State::InputDelegateBase
     end
   end
 
-  def register_dashboard_new_chunk
+  def register_dashboard_new_zone
     ## New Chunk
-    on_press @control_map['new_chunk'] do
-      @controller.new_chunk
+    on_press @control_map['new_zone'] do
+      @controller.new_zone
     end
 
     on_press @control_map['place_tile'] do
-      @controller.new_chunk_stage
+      @controller.new_zone_stage
     end
 
     on_press @control_map['erase_tile'] do
-      @controller.new_chunk_revert
+      @controller.new_zone_revert
     end
   end
 
   def register_dashboard_controls
     register_dashboard_help
     register_dashboard_new_map
-    register_dashboard_new_chunk
+    register_dashboard_new_zone
 
-    on_press @control_map['save_map'] do
-      @controller.save_map
-    end
+    on_press(@control_map['edit_map']) { @controller.edit_map }
 
-    on_release @control_map['save_map'] do
-      @controller.on_save_map_release
-    end
-
-    on_press @control_map['load_chunks'] do
-      @controller.load_chunks
-    end
-
-    on_release @control_map['load_chunks'] do
-      @controller.on_load_chunks_release
-    end
-
-    on_press @control_map['toggle_keyboard_mode'] do
-      @controller.toggle_keyboard_mode
-    end
+    on_press(@control_map['save_map']) { @controller.save_map }
+    on_release(@control_map['save_map']) { @controller.on_save_map_release }
+    on_press(@control_map['load_map']) { @controller.load_map }
+    on_release(@control_map['load_map']) { @controller.on_load_map_release }
+    on_press(@control_map['toggle_keyboard_mode']) { @controller.toggle_keyboard_mode }
 
     ## Show Chunk Labels
     on_press @control_map['show_map_label'] do
@@ -234,8 +221,6 @@ class MapEditorInputDelegate < State::InputDelegateBase
     puts "Registering #{self.class} to #{input.to_s}"
     register_actor_move
     register_cursor_move
-    register_chunk_move
-    register_chunk_resize
     register_zoom_controls
     register_tile_edit
     register_dashboard_controls

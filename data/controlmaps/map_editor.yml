@@ -2,10 +2,10 @@
 # Dashboard Icons
 help: 'f1'
 new_map: 'f2'
-new_chunk: 'f3'
+new_zone: 'f3'
 edit_map: 'f4'
 save_map: 'f5'
-load_chunks: 'f6'
+load_map: 'f6'
 playtest: 'f7'
 toggle_grid: 'f8'
 toggle_keyboard_mode: 'f9'
@@ -31,15 +31,11 @@ sample_tile:
 zoom_reset: 'n0'
 zoom_in: 'equal'
 zoom_out: 'minus'
-# Chunk Controls
-move_chunk_down: 'i'
-move_chunk_left: 'u'
-move_chunk_right: 'p'
-move_chunk_up: 'o'
-resize_chunk_horz_plus: 'period'
-resize_chunk_horz_minus: 'n'
-resize_chunk_vert_plus: 'm'
-resize_chunk_vert_minus: 'comma'
+# Map Controls
+resize_map_horz_plus: 'period'
+resize_map_horz_minus: 'n'
+resize_map_vert_plus: 'm'
+resize_map_vert_minus: 'comma'
 # Camera Controls
 center_on_map: 'home'
 move_camera_down:

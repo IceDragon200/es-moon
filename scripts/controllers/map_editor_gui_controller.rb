@@ -73,6 +73,12 @@ class MapEditorGuiController < State::ControllerBase
     @view.notifications.clear
   end
 
+  def rename_map(new_name)
+    if map = map_at_position(@model.map_cursor.position.floor)
+      map.name = new_name
+    end
+  end
+
   def save_map
     @view.dashboard.ok 4
     @model.map.save_file
@@ -84,17 +90,26 @@ class MapEditorGuiController < State::ControllerBase
     #@view.notifications.clear
   end
 
-  def new_chunk
+  def load_map
+    @view.dashboard.ok 5
+    @view.notifications.notify string: "Loading Map (NYI)"
+  end
+
+  def on_load_map_release
+    @view.dashboard.disable 5
+  end
+
+  def new_zone
     @view.dashboard.enable 2
-    @view.notifications.notify string: 'New Chunk'
+    @view.notifications.notify string: 'New Zone'
     @model.selection_stage = 1
   end
 
-  def new_chunk_stage_finish
-    id = @model.map.chunks.size+1
-    chunk = create_chunk @model.selection_rect,
-                         name: "New Chunk #{id}"
-    chunk.uri = "/chunks/new/chunk-#{chunk.id}"
+  def new_zone_stage_finish
+    #id = @model.map.chunks.size + 1
+    #chunk = create_chunk @model.selection_rect,
+    #                     name: "New Zone #{id}"
+    #chunk.uri = "/chunks/new/chunk-#{chunk.id}"
 
     @model.selection_stage = 0
     @model.selection_rect.clear
@@ -102,7 +117,7 @@ class MapEditorGuiController < State::ControllerBase
     @view.notifications.clear
   end
 
-  def new_chunk_stage
+  def new_zone_stage
     case @model.selection_stage
     when 1
       @model.selection_stage += 1
@@ -111,7 +126,7 @@ class MapEditorGuiController < State::ControllerBase
     end
   end
 
-  def new_chunk_revert
+  def new_zone_revert
     case @model.selection_stage
     when 1
       @model.selection_stage = 0
@@ -123,47 +138,9 @@ class MapEditorGuiController < State::ControllerBase
     end
   end
 
-  def create_chunk(bounds, data)
-    chunk          = Models::EditorChunk.new(data)
-    chunk.position = Moon::Vector3.new(bounds.x, bounds.y, 0)
-    chunk.data     = Moon::DataMatrix.new(bounds.w, bounds.h, 2, default: -1)
-    chunk.passages = Moon::Table.new(bounds.w, bounds.h)
-    chunk.tileset  = Models::Tileset.find_by(uri: '/tilesets/common')
-    @model.map.chunks << chunk
-    @map_controller.refresh_map
-    chunk
-  end
-
-  def save_chunks
-    @model.map.chunks.each { |chunk| chunk.to_chunk.save_file }
-  end
-
-  def load_chunks
-    @view.dashboard.ok 5
-    @view.notifications.notify string: "Loading ... (NYI)"
-  end
-
-  def on_load_chunks_release
-    @view.dashboard.disable 5
-  end
-
-  def rename_map(new_name)
+  def resize_map(x, y)
     if map = map_at_position(@model.map_cursor.position.floor)
-      map.name = new_name
-    end
-  end
-
-  def move_map(x, y)
-    if chunk = map_at_position(@model.map_cursor.position.floor)
-      pos = [x, y]
-      chunk.position += Moon::Vector3[pos, 0]
-      @model.map_cursor.move pos
-    end
-  end
-
-  def resize_chunk(x, y)
-    if chunk = map_at_position(@model.map_cursor.position.floor)
-      chunk.resize(chunk.w + x, chunk.h + y)
+      map.resize(map.w + x, map.h + y)
     end
   end
 
