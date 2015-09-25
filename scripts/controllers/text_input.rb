@@ -2,7 +2,9 @@ module Controllers
   # Helper controller for handling text input, this class will handle typing,
   # insert and appending.
   # In order to use this class, simply pass in an Object that responds to
-  # #string and #string=, such as a Moon::Text or Moon::Label
+  # #string and #string=, such as a Moon::Text or Moon::Label.
+  # :insert mode will replace characters on the index, while :append will
+  # add new characters, possibly injecting into the string
   class TextInput
     # @return [#string, #string=]
     attr_reader :target
@@ -13,12 +15,16 @@ module Controllers
     # @return [Symbol]
     attr_accessor :mode
 
-    def initialize(target)
+    # @param [#string, #string=] target
+    def initialize(target, options = {})
       @target = target
-      @index = target.string.size
-      @mode = :append
-      @input = Moon::Input::Observer.new
+      @index = options.fetch(:index, target.string.size)
+      @mode = options.fetch(:mode, :append)
+      initialize_events
+    end
 
+    private def initialize_events
+      @input = Moon::Input::Observer.new
       @input.typing { |e| insert e.char }
       @input.on([:press, :repeat]) { |e| handle_input_event(e) }
     end
@@ -26,14 +32,11 @@ module Controllers
     # @param [InputEvent] event
     private def handle_input_event(event)
       case event.key
-      when :backspace
-        erase
-      when :insert
-        @mode = @mode == :insert ? :append : :insert
-      when :left
-        cursor_prev
-      when :right
-        cursor_next
+      when :backspace then backspace
+      when :delete    then delete
+      when :insert    then toggle_input_mode
+      when :left  then cursor_prev
+      when :right then cursor_next
       end
     end
 
@@ -42,22 +45,47 @@ module Controllers
       @index = inx.clamp(0, @target.string.size)
     end
 
+    # Toggles the mode, if insert switches to append, if append switches to
+    # insert
+    def toggle_input_mode
+      @mode = @mode == :insert ? :append : :insert
+    end
+
+    # move's the cursor back
     def cursor_prev
       self.index = @index.pred
       @target.string = @target.string
     end
 
+    # move's the cursor forward
     def cursor_next
       self.index = @index.succ
       @target.string = @target.string
     end
 
-    def erase
+    private def modify
       src = @target.string
-      src = (src.slice(0...(@index - 1)) || '') +
-            (src.slice(@index..src.size) || '')
+      return if src.empty?
+      return if @index >= src.size
+      src = yield src
       @index = @index.pred.clamp(0, src.size)
       @target.string = src
+    end
+
+    # Deletes the character to the right of the cursor
+    def delete
+      modify do |src|
+        (src.slice(0, @index) || '') <<
+        (src.slice((@index + 1)..src.size) || '')
+      end
+    end
+
+    # Deletes the character to the left of the cursor
+    def backspace
+      modify do |src|
+        (src.slice(0...(@index - 1)) || '') <<
+        (src.slice(@index..src.size) || '')
+      end
     end
 
     # @param [String] str
@@ -65,8 +93,7 @@ module Controllers
       src = @target.string
       case @mode
       when :append
-        src = (src.slice(0, @index) || '') +
-          str +
+        src = (src.slice(0, @index) || '') << str <<
           (src.slice(@index..src.size) || '')
       when :insert
         src[@index] = str
