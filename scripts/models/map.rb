@@ -5,6 +5,15 @@ module Models
     field :data,       type: Moon::DataMatrix, default: nil
     field :tileset_id, type: String, default: ''
 
+    # Resizes the map's data and refreshe the passage table
+    #
+    # @return [self]
+    def resize(w, h)
+      data.resize(w, h, data.zsize)
+      @passage_table = nil
+      self
+    end
+
     # @return [Models::Tileset]
     def tileset
       Game.instance.database[tileset_id]
