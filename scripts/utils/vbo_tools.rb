@@ -1,10 +1,22 @@
+# Utility module for manipulating VertexBuffers
 module VboTools
+  # Normalizes a given Rect to the Texture
+  #
+  # @param [Moon::Rect, Array<Integer>] rect
+  # @param [Moon::Texture] texture
+  # @return [Array<Integer>] x, y, w, h
   def self.rect_to_texrect(rect, texture)
     x, y, w, h = *rect
     [ x.to_f / texture.w, y.to_f / texture.h,  # x, y,
       w.to_f / texture.w, h.to_f / texture.h ] # w, h
   end
 
+  # @param [Moon::VertexBuffer] vbo
+  # @param [Moon::Rect] rect  target rect
+  # @param [Moon::Rect] srcrect
+  # @param [Moon::Texture] texture
+  # @param [Moon::Rect] texr  texture rect
+  # @param [Moon::Vector4, Array<Float>] color  Array(r, g, b, a)
   def self.fill_rect(vbo, rect, srcrect, texture, texr, color)
     xrun, xrem = rect.w.divmod(srcrect.w)
     yrun, yrem = rect.h.divmod(srcrect.h)
@@ -35,6 +47,12 @@ module VboTools
     end
   end
 
+  # @param [Moon::VertexBuffer] vbo
+  # @param [Moon::Rect, Array<Integer>] rect  Array(x, y, w, h), the target rect
+  # @param [Moon::Texture] texture
+  # @param [Moon::Vector4, Array<Float>] color  Array(r, g, b, a)
+  # @param [Array<Moon::Rect, Array<Integer>>] part_rects, start from the top left
+  # @return [Moon::VertexBuffer] vbo
   def self.fill_windowskin_vbo(vbo, rect, texture, color, part_rects)
     x, y, w, h = *rect
 
@@ -98,5 +116,7 @@ module VboTools
     ## mid
     r = Moon::Rect.new rect.x + q4r.w, rect.y + q8r.h, rect.w - q4r.w - q6r.w, rect.h - q8r.h - q2r.h
     fill_rect vbo, r, q5r, texture, q5tr, color
+
+    vbo
   end
 end
