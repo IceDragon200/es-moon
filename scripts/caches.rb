@@ -99,23 +99,4 @@ module ES
       super key
     end
   end
-
-  class DataCache < Moon::CacheBase
-    cache def data(filename)
-      Moon::DataSerializer.load_file(filename)
-    end
-
-    cache def palette
-      palette = Moon::PaletteParser.load_palette(data('palette'))
-      FetchOnlyHash.new(palette)
-    end
-
-    cache def controlmap(filename)
-      FetchOnlyHash.new(data("controlmaps/#{filename}"))
-    end
-
-    cache def charmap(filename)
-      data("charmap/#{filename}")
-    end
-  end
 end
