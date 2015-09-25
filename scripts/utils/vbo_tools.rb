@@ -1,7 +1,8 @@
 module VboTools
   def self.rect_to_texrect(rect, texture)
-    [ rect.x.to_f / texture.w, rect.y.to_f / texture.h,  # x, y,
-      rect.w.to_f / texture.w, rect.h.to_f / texture.h ] # w, h
+    x, y, w, h = *rect
+    [ x.to_f / texture.w, y.to_f / texture.h,  # x, y,
+      w.to_f / texture.w, h.to_f / texture.h ] # w, h
   end
 
   def self.fill_rect(vbo, rect, srcrect, texture, texr, color)
