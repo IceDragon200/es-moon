@@ -17,13 +17,9 @@ module Moon
       # @param [String] rootname
       # @return [self]
       def save_file(rootname = nil)
-        warn "no id set, skipping saving of #{name}" unless self['id'].present?
-
-        path = File.join(self.class.basepath, self['id'])
+        path = File.join(self.class.basepath, id)
         path = File.join(rootname, path) if rootname
-        path = path.split('/')
-        basename = path.pop
-        pathname = File.join(path.join('/'), "#{basename}.yml")
+        pathname = path + '.yml'
 
         FileUtils.mkdir_p(File.dirname(pathname))
         YAML.save_file(pathname, export)

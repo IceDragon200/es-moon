@@ -2,6 +2,8 @@ $LOAD_PATH << File.expand_path('../', File.dirname(__FILE__))
 
 Encoding.default_internal = Encoding.default_external = 'UTF-8'
 
+require 'yaml'
+require 'fileutils'
 require 'codeclimate-test-reporter'
 require 'simplecov'
 
