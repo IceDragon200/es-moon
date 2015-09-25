@@ -24,6 +24,20 @@ module States
       end
     end
 
+    class ControlmapLoader
+      # This loader will transform a controlmap hash by converting all its
+      # string values to symbols and wrap then in an Array
+      #
+      # @param [Hash] data
+      # @return [FetchOnlyHash] data
+      def self.load(data)
+        result = Hash[data.map do |key, value|
+          [key, Array(value).map(&:to_sym)]
+        end]
+        FetchOnlyHash.new(result)
+      end
+    end
+
     class PaletteLoader
       # This loader will load a valid PalleteParser palette and
       # wrap the data in a FetchOnlyHash
@@ -88,6 +102,16 @@ module States
     # @return [void]
     def start
       super
+      @loaders = {
+        'characters' => Models::Character,
+        'maps' => Models::Map,
+        'tilesets' => Models::Tileset,
+        'palette' => PaletteLoader,
+        'read_only' => ReadOnlyLoader,
+        'data' => IdentityLoader,
+        'controlmap' => ControlmapLoader,
+      }
+
       load_assets
       load_vfs
       load_materials
@@ -129,21 +153,8 @@ module States
       root = File.dirname(root_filename)
       vfs = YAML.load_file(root_filename)['data']
       vfs.each_pair do |key, entries|
-        loader = case key
-        when 'characters'
-          Models::Character
-        when 'maps'
-          Models::Map
-        when 'tilesets'
-          Models::Tileset
-        when 'palette'
-          PaletteLoader
-        when 'read_only'
-          ReadOnlyLoader
-        when 'data'
-          IdentityLoader
-        else
-          puts "WARN: Unhandled data key #{key}"
+        loader = @loaders.fetch(key) do
+          puts "WARN: Unhandled loader key #{key}"
           IdentityLoader
         end
 
