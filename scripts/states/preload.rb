@@ -49,6 +49,21 @@ module States
       end
     end
 
+    class MapLoader
+      # This loader wraps the Models::Map and patches the map data
+      #
+      # @param [Hash] data  a map dump
+      # @return [Models::Map]
+      def self.load(data)
+        map = Models::Map.load(data)
+        unless map.zones
+          puts "WARN: #{map.id} was missing zones data"
+          map.zones = Moon::DataMatrix.new(map.w, map.h, 1, default: -1)
+        end
+        map
+      end
+    end
+
     class VfsLoader
       # @return [Game]
       attr_reader :game
@@ -76,8 +91,7 @@ module States
         cachename = filename.gsub(/#{File.extname(filename)}\z/, '').gsub(/\Adata\//, '')
         puts "Preloading #{@key} data: #{cachename}=#{filename}"
         data = YAML.load_file(filename)
-        record = @loader.load data
-        record.id = cachename if record.respond_to?(:id=)
+        record = @loader.load({ 'id' => cachename }.merge(data))
         @game.database[cachename] = record
       end
 
@@ -104,7 +118,7 @@ module States
       super
       @loaders = {
         'characters' => Models::Character,
-        'maps' => Models::Map,
+        'maps' => MapLoader,
         'tilesets' => Models::Tileset,
         'palette' => PaletteLoader,
         'read_only' => ReadOnlyLoader,
