@@ -2,8 +2,9 @@ require 'scripts/models/base'
 
 module Models
   class Map < Base
+    field :tileset_id, type: String,           default: ''
     field :data,       type: Moon::DataMatrix, default: nil
-    field :tileset_id, type: String, default: ''
+    field :zones,      type: Moon::DataMatrix, default: nil
 
     # Resizes the map's data and refreshe the passage table
     #
@@ -65,6 +66,28 @@ module Models
     # @return [Moon::Table]
     def passage_table
       @passage_table ||= build_passage_table
+    end
+
+    # zone_id at the given position, if any
+    #
+    # @param [Integer] x
+    # @param [Integer] y
+    # @param [Integer] z
+    # @return [Integer] zone_id  (-1 is disabled)
+    def zone_at(x, y, z = 0)
+      zones[x, y, z]
+    end
+
+    # Returns a list of zones at the given tile
+    #
+    # @param [Integer] x
+    # @param [Integer] y
+    # @return [Array<Integer>] zones
+    def zones_at(x, y)
+      zones.zsize.times.each_with_object([]) do |z, ary|
+        zone_id = zone_at(x, y, z)
+        ary << zone_id if zone_id >= 0
+      end
     end
 
     # tile_id at the given position, if any
