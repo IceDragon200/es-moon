@@ -370,7 +370,9 @@ class MapEditorGuiController < State::ControllerBase
       tile_data.position.set position.x, position.y, 0
       x, y, _ = *tile_data.position
       tile_data.tile_ids = map.data.sampler.pillar(x, y).to_a
-      tile_data.passage = map.passage_at(*tile_data.position.xy)
+      tile_data.zone_ids = map.zones_at(x, y)
+      tile_data.nodes = map.nodes_at(x, y)
+      tile_data.passage = map.passage_at(x, y)
     end
     tile_data
   end
