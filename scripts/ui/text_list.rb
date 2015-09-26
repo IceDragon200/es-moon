@@ -1,5 +1,16 @@
 module UI
   class TextList < Moon::RenderContainer
+    class OkEvent < Moon::Event
+      # @return [Hash]
+      attr_accessor :item
+
+      # @param [Hash] item
+      def initialize(item)
+        @item = item
+        super :ok
+      end
+    end
+
     include Moon::Indexable
     include Moon::Activatable
 
@@ -44,7 +55,18 @@ module UI
 
       input.on :press do |e|
         if active? && (e.key == :enter || e.key == :z)
-          (cb = current_item[:cb]) && cb.call
+          item = current_item
+          (cb = item[:cb]) && cb.call
+          trigger { OkEvent.new(item) }
+        end
+      end
+    end
+
+    private def set_item_color(index, col)
+      if item = get_item(index)
+        col.a *= 0.5 unless item[:enabled]
+        if element = @elements[index]
+          element.color = col
         end
       end
     end
@@ -60,8 +82,7 @@ module UI
         when :post_index
           @selected_color
         end.dup
-        col.a *= 0.5 unless get_item(e.index)[:enabled]
-        @elements[e.index].color = col
+        set_item_color(index, col)
       end
     end
 
@@ -69,6 +90,12 @@ module UI
       @normal_color = Moon::Vector4.new(1.0, 1.0, 1.0, 1.0)
       @selected_color = Moon::Vector4.new(0.2000, 0.7098, 0.8980, 1.0000)
       @outline_color = Moon::Vector4.new(0.2000, 0.2000, 0.2000, 1.0000)
+    end
+
+    # Clears all items in the TextList
+    def clear_elements
+      set_index 0
+      super
     end
 
     # Returns the item at the given index.
