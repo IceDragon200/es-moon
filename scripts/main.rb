@@ -22,6 +22,9 @@ class StateBootstrap < State
     end
   end
 
+  attr_accessor :game
+  attr_accessor :state_manager
+
   def init
     Game.instance = ES.game = @game = Game.new
     @state_manager = StateManager.new @game, engine
