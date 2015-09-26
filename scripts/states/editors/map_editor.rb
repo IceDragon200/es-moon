@@ -20,7 +20,7 @@ module States
       create_mvc
       create_input_delegate
       create_world
-      create_map
+      initialize_map
       create_autosave_interval
     end
 
@@ -43,17 +43,18 @@ module States
       data = File.exist?('editor.yml') ? YAML.load_file('editor.yml') : {}
       @model = MapEditorModelBinder.new(model: Models::MapEditorModel.new(data))
       @model.camera = Camera2.new(view: view)
-      @model.tile_palette.tileset = game.database['tilesets/common']
       @model.layer ||= -1
+    end
+
+    private def create_gui_view
+      @gui_view = MapEditorGuiView.new(game: game, model: @model, view: engine.screen.rect.contract(16))
+      @gui.add @gui_view
     end
 
     private def create_view
       @map_view = MapEditorMapView.new(game: game, model: @model, view: engine.screen.rect)
-      @gui_view = MapEditorGuiView.new(game: game, model: @model, view: engine.screen.rect.contract(16))
-      @gui_view.tileset = @model.tile_palette.tileset
-      @gui_view.spritesheet = game.spritesheets[@gui_view.tileset.spritesheet_id]
       @renderer.add @map_view
-      @gui.add @gui_view
+      create_gui_view
     end
 
     private def create_controller
@@ -75,8 +76,6 @@ module States
       @router = MapEditorInputDelegate.new engine, @gui_controller
 
       @input_list << @router
-      @input_list << @gui_view
-      @input_list << @map_view
 
       input.on :mousemove do |e|
         @gui_controller.set_cursor_position_from_mouse(e.position)
@@ -88,8 +87,8 @@ module States
       @update_list.unshift @world
     end
 
-    private def create_map
-      @model.map = game.database[game.database['system']['starting_map']]
+    private def initialize_map
+      @gui_controller.set_map game.database[game.database['system']['starting_map']]
     end
 
     private def create_autosave_interval
