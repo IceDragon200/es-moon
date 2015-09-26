@@ -89,10 +89,11 @@ module States
       private def load_record(basename)
         filename = File.join(@root, basename)
         cachename = filename.gsub(/#{File.extname(filename)}\z/, '').gsub(/\Adata\//, '')
-        puts "Preloading #{@key} data: #{cachename}=#{filename}"
         data = YAML.load_file(filename)
-        record = @loader.load({ 'id' => cachename }.merge(data))
+        record = @loader.load(data)
+        record.id = cachename if record.respond_to?(:id=)
         @game.database[cachename] = record
+        puts "Preloaded #{@key} data: #{cachename}=#{filename}"
       end
 
       # @param [String] basename of the filename
