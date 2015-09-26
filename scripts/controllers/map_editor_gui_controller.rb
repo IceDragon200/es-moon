@@ -38,7 +38,7 @@ class MapEditorGuiController < State::ControllerBase
 
   def center_on_map
     bounds = @model.map.bounds
-    @model.cam_cursor.position.set(bounds.cx, bounds.cy, 0)
+    @model.cam_cursor.position.set(bounds.cx, bounds.cy)
   end
 
   def camera_follow(obj)
@@ -155,7 +155,7 @@ class MapEditorGuiController < State::ControllerBase
     when 1
       @model.selection_stage += 1
     when 2
-      new_chunk_stage_finish
+      new_zone_stage_finish
     end
   end
 
