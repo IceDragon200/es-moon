@@ -21,38 +21,25 @@ module Systems
     # @param [Components::Map] map
     # @param [Moon::EntitySystem::Entity] entity
     def post_move(map, entity)
-      return # TODO
       entity.comp(:mapobj, :transfer) do |mapobj, transfer|
         # is this entity already pending a transfer?
         return if transfer.pending
 
-        zone = map.transfer_zone_at(*mapobj.position)
-        # is there a zone?
-        return unless zone
+        node = map.transfer_node_at(*mapobj.position)
+        # is there a node?
+        return unless node
 
-        anchor = zone.properties['anchor']
-        dest_map_id, dest_name = anchor.split("#")
-        if dest_map = game.data["maps/#{dest_map_id}"]
-          if dest_zone = dest_map.anchor_zone(dest_name)
-            transfer.x = dest_zone.rect.x
-            transfer.y = dest_zone.rect.y
-            transfer.map_id = dest_map.id
-            transfer.pending = true
-          else
-            puts "WARN: Transfer to #{anchor} failed, no such anchor (name: #{dest_name}) in dest map"
-          end
+        dest_map_id = node['map_id']
+        x = node['x']
+        y = node['y']
+        if dest_map = game.database[dest_map_id]
+          transfer.x = x
+          transfer.y = y
+          transfer.map_id = dest_map.id
+          transfer.pending = true
         else
           puts "WARN: Transfer to #{dest_map_id} failed, no such map"
         end
-      end
-    end
-
-    def get_map(map_id)
-      @map_cache[map_id] ||= begin
-        e = world.filter(:map).find do |m|
-          m[:map].map.id == map_id
-        end
-        e && e[:map].map
       end
     end
 
@@ -60,13 +47,10 @@ module Systems
     #
     # @param [Float] delta
     def update(delta)
+      level_entity = world.filter(:level).first
+      map = level_entity[:level].map
       world.filter :movement, :mapobj do |entity|
         entity.comp(:movement, :mapobj) do |movement, mapobj|
-          map = get_map(mapobj.map_id)
-          unless map
-            puts "WARN: Entity is present in an invalid map (#{mapobj.map_id})"
-            next
-          end
           vect = movement.vect
           unless vect.zero?
             x = mapobj.position.x + vect.x

@@ -1,6 +1,6 @@
 require 'scripts/models/tileset'
 require 'scripts/entity_system/system'
-require 'scripts/entity_system/components/map'
+require 'scripts/entity_system/components/level'
 
 module Systems
   class MapRendering < Base
@@ -13,8 +13,8 @@ module Systems
     end
 
     def render(x, y, z, options)
-      world.filter :map do |map_entity|
-        map = map_entity[:map].map
+      world.filter :level do |map_entity|
+        map = map_entity[:level].map
         if @last_map != map
           tileset = game.database[map.tileset_id].as(Models::Tileset)
           spritesheet = game.spritesheets[tileset.spritesheet_id]

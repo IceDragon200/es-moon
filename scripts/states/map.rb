@@ -14,12 +14,14 @@ module States
       @world.register :rendering
 
       @world.spawn do |entity|
-        entity.add map: { map: @map }
+        entity.add level: { map: @map }
       end
 
       @player = @world.spawn do |entity|
+        entity.add :player
         entity.add sprite: { filename: 'characters/4x/characters_4x', type: 'spritesheet', cell_w: 32, cell_h: 32, index: 1 }
         entity.add mapobj: { map_id: @map.id, position: Moon::Vector2[1, 1] }
+        entity.add :transfer
         entity.add :movement
         entity.add :transform
       end
