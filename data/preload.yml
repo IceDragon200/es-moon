@@ -39,7 +39,7 @@ textures:
   tilesets/oryx_lofi_fantasy/4x/lofi_environment_4x: "resources/tilesets/oryx_lofi_fantasy/4x/lofi_environment_4x.png"
   tilesets/oryx_lofi_fantasy/4x/lofi_glyphs_4x: "resources/tilesets/oryx_lofi_fantasy/4x/lofi_glyphs_4x.png"
   ui/hud_mockup: "resources/ui/hud_mockup.png"
-  ui/hud_mockup_4x: "resources/ui/hud_mockup_4x.png"
+  ui/hud_mockup_4x: "resources/ui/hud_mockup.x4.png"
   ui/map_editor_cursor: "resources/ui/map_editor_cursor.png"
   ui/map_editor_overlay_grid: "resources/ui/map_editor_overlay_grid.png"
   ui/map_editor_underlay_grid: "resources/ui/map_editor_underlay_grid.png"
