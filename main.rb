@@ -1,6 +1,14 @@
 GLFW.init
 
 class Application
+  class << self
+    attr_accessor :instance
+  end
+
+  def initialize
+    Application.instance = self
+  end
+
   # @param [Moon::Engine] engine
   def configure(engine)
   end
@@ -40,6 +48,7 @@ class Application
   #
   # @param [Moon::Engine] engine
   def post_shutdown(engine)
+    Application.instance = nil if Application.instance.equal?(self)
   end
 end
 
