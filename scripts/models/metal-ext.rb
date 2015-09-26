@@ -17,6 +17,7 @@ module Moon
       # @param [String] rootname
       # @return [self]
       def save_file(rootname = nil)
+        raise RuntimeError, "id is empty" if id.blank?
         path = File.join(self.class.basepath, id)
         path = File.join(rootname, path) if rootname
         pathname = path + '.yml'
