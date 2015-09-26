@@ -181,6 +181,17 @@ class MapEditorInputDelegate < State::InputDelegateBase
     end
   end
 
+  def register_zone_controls
+    input.on :press do |e|
+      case e.key
+      when *@control_map['increment_zone']
+        @controller.increment_zone
+      when *@control_map['decrement_zone']
+        @controller.decrement_zone
+      end
+    end
+  end
+
   def register_dashboard_controls
     register_dashboard_help
     register_dashboard_new_map
@@ -222,6 +233,7 @@ class MapEditorInputDelegate < State::InputDelegateBase
     register_actor_move
     register_cursor_move
     register_zoom_controls
+    register_zone_controls
     register_tile_edit
     register_dashboard_controls
 

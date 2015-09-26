@@ -144,6 +144,22 @@ class MapEditorGuiController < State::ControllerBase
     end
   end
 
+  private def map_zone
+    tile_data = @view.tile_info.tile_data
+    if map = tile_data.map
+      x, y, z = tile_data.position.x, tile_data.position.y, 0
+      map.zones[x, y, z] = yield(map.zones[x, y, z]).clamp(-1, 255)
+    end
+  end
+
+  def increment_zone
+    map_zone { |data| data + 1 }
+  end
+
+  def decrement_zone
+    map_zone { |data| data - 1 }
+  end
+
   def toggle_keyboard_mode
     @model.keyboard_only_mode = !@model.keyboard_only_mode
     if @model.keyboard_only_mode

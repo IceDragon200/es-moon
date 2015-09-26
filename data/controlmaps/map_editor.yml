@@ -17,6 +17,8 @@ toggle_tile_panel: 'tab'
 deactivate_layer_edit: 'grave_accent'
 edit_layer_0: 'n1'
 edit_layer_1: 'n2'
+increment_zone: 'kp_add'
+decrement_zone: 'kp_subtract'
 #
 place_tile:
 - 'mouse_left'
