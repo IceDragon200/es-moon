@@ -95,7 +95,7 @@ class MapEditorGuiController < State::ControllerBase
   def save_map
     @view.dashboard.ok 4
     @model.map.save_file
-    @view.notifications.notify string: 'Saved'
+    @view.notifications.notify string: "Saved Map #{@model.map.id}"
   end
 
   def on_save_map_release
