@@ -1,6 +1,7 @@
 require 'scripts/core_ext'
 require 'scripts/version'
 require 'scripts/core'
+require 'scripts/debug/eventable'
 require 'scripts/enums'
 require 'scripts/models'
 require 'scripts/helpers'
