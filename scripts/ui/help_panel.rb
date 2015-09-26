@@ -1,30 +1,31 @@
-require 'lunar_ui/window'
+require 'scripts/renderers/windowskin'
 
 module UI
-  class MapEditorHelpPanel < Lunar::Window
+  class MapEditorHelpPanel < Moon::RenderContainer
     attr_accessor :controlmap
 
-    # @param [Hash] controlmap
-    def initialize(controlmap)
+    # @param [Hash<String, Object>] controlmap
+    # @param [Hash<Symbol, Object>] options
+    def initialize(controlmap, options = {})
       @controlmap = controlmap
-      super()
+      super options
     end
 
     # @!group margin settings
     # @return [Integer]
     def compute_w
-      super + 16
+      @text.w + 16
     end
 
     # @return [Integer]
     def compute_h
-      super + 16
+      @text.h + 32 # tailing
     end
     # @!endgroup margin settings
 
     protected def initialize_elements
       super
-      @background.windowskin = Game.instance.spritesheets['ui/windowskin_help_panel', 16, 16]
+      @background = Renderers::Windowskin.new texture: Game.instance.textures['ui/windowskin_help_panel']
 
       @text = Moon::Label.new '', Game.instance.fonts['system.16']
       @text.string = '' <<
@@ -40,7 +41,14 @@ module UI
         "#{human_key(@controlmap["zoom_reset"])} reset Zoom Level\n" <<
         ''
       @text.position.set(8, 8, 0)
-      add(@text)
+
+      add @background
+      add @text
+    end
+
+    protected def initialize_events
+      super
+      on(:resize) { |e| @background.resize(e.parent.w, e.parent.h) }
     end
 
     private def human_key(*keys)
