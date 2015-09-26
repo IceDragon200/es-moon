@@ -3,9 +3,13 @@ require 'scripts/models/map'
 class MapEditorGuiController < State::ControllerBase
   attr_accessor :map_controller
 
-  def start
-    super
+  def on_map_changed
+    @view.tileset =
+      @model.tile_palette.tileset = Game.instance.database[@model.map.tileset_id]
+    @map_controller.refresh_map
+  end
 
+  private def initialize_model_events
     @model.on :changed do |e|
       case e.attribute
       when :show_map_label
@@ -15,12 +19,21 @@ class MapEditorGuiController < State::ControllerBase
         @view.dashboard.toggle 7, e.value
       when :layer
         on_layer_changed(e.value)
+      when :map
+        on_map_changed
       end
     end
 
     @model.map_cursor.on :moved do |e|
       get_tile_data(@view.tile_info.tile_data, e.position)
     end
+  end
+
+  def start
+    super
+    initialize_model_events
+    @view.map_list.on(:map_selected) { |e| on_map_selected e.map }
+    @view.map_list.on(:ok) { |e| close_map_list }
   end
 
   def center_on_map
@@ -90,13 +103,33 @@ class MapEditorGuiController < State::ControllerBase
     #@view.notifications.clear
   end
 
+  def set_map(map)
+    @model.map = map
+  end
+
+  def on_map_selected(map)
+    set_map map
+    center_on_map
+  end
+
+  def close_map_list
+    @view.map_list.hide.deactivate
+    @view.dashboard.disable 5
+    @model.map_cursor.activate
+  end
+
+  def open_map_list
+    @view.map_list.refresh_list.show.activate
+    @model.map_cursor.deactivate
+  end
+
   def load_map
     @view.dashboard.ok 5
-    @view.notifications.notify string: "Loading Map (NYI)"
+    @view.notifications.notify string: "Loading Map"
+    open_map_list
   end
 
   def on_load_map_release
-    @view.dashboard.disable 5
   end
 
   def new_zone
