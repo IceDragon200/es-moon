@@ -86,35 +86,35 @@ module VboTools
 
     # fill corners
     ## top left
-    vbo.add_quad [rect.x, rect.y, q7r.w, q7r.h], q7tr, color
+    vbo.add_quad [x, y, q7r.w, q7r.h], q7tr, color
 
     ## top right
-    vbo.add_quad [rect.x + rect.w - q9r.w, rect.y, q9r.w, q9r.h], q9tr, color
+    vbo.add_quad [x + w - q9r.w, y, q9r.w, q9r.h], q9tr, color
 
     ## bottom left
-    vbo.add_quad [rect.x, rect.y + rect.h - q1r.h, q1r.w, q1r.h], q1tr, color
+    vbo.add_quad [x, y + h - q1r.h, q1r.w, q1r.h], q1tr, color
 
     ## bottom right
-    vbo.add_quad [rect.x + rect.w - q3r.w, rect.y + rect.h - q3r.h, q3r.w, q3r.h], q3tr, color
+    vbo.add_quad [x + w - q3r.w, y + h - q3r.h, q3r.w, q3r.h], q3tr, color
 
     ## top run
-    r = Moon::Rect.new rect.x + q7r.w, rect.y, rect.w - q7r.w - q9r.w, q8r.h
+    r = Moon::Rect.new x + q7r.w, y, w - q7r.w - q9r.w, q8r.h
     fill_rect vbo, r, q8r, texture, q8tr, color
 
     ## bottom run
-    r = Moon::Rect.new rect.x + q1r.w, rect.y + rect.h - q2r.h, rect.w - q1r.w - q3r.w, q2r.h
+    r = Moon::Rect.new x + q1r.w, y + h - q2r.h, w - q1r.w - q3r.w, q2r.h
     fill_rect vbo, r, q2r, texture, q2tr, color
 
     ## left run
-    r = Moon::Rect.new rect.x, rect.y + q7r.h, q4r.w, rect.h - q7r.h - q1r.h
+    r = Moon::Rect.new x, y + q7r.h, q4r.w, h - q7r.h - q1r.h
     fill_rect vbo, r, q4r, texture, q4tr, color
 
     ## right run
-    r = Moon::Rect.new rect.x + rect.w - q6r.w, rect.y + q9r.h, q6r.w, rect.h - q9r.h - q3r.h
+    r = Moon::Rect.new x + w - q6r.w, y + q9r.h, q6r.w, h - q9r.h - q3r.h
     fill_rect vbo, r, q6r, texture, q6tr, color
 
     ## mid
-    r = Moon::Rect.new rect.x + q4r.w, rect.y + q8r.h, rect.w - q4r.w - q6r.w, rect.h - q8r.h - q2r.h
+    r = Moon::Rect.new x + q4r.w, y + q8r.h, w - q4r.w - q6r.w, h - q8r.h - q2r.h
     fill_rect vbo, r, q5r, texture, q5tr, color
 
     vbo
