@@ -139,7 +139,7 @@ class MapEditorGuiController < State::ControllerBase
   end
 
   def resize_map(x, y)
-    if map = map_at_position(@model.map_cursor.position.floor)
+    if map = @view.tile_info.tile_data.map
       map.resize(map.w + x, map.h + y)
     end
   end
