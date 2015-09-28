@@ -28,7 +28,7 @@ module UI
 
     protected def initialize_from_options(options)
       super
-      self.font = options.fetch(:font)
+      self.font = options.fetch(:font) { Game.instance.fonts['system'] }
     end
 
     protected def initialize_members
