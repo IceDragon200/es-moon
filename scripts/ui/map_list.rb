@@ -41,6 +41,7 @@ module UI
         next unless Models::Map === map
         add_entry :map,
           name: "#{map.id} - #{map.name}",
+          map_id: map.id,
           map: map,
           enabled: true
       end
