@@ -1,26 +1,61 @@
+require 'scripts/ui/map_list'
+
 module States
   class MapViewer < Base
     def init
       super
       view = screen.rect
       view = view.translate(-view.w / 2, -view.h / 2)
-      @control_map = game.database['controlmaps/map_editor']
       @camera = Camera2.new(view: view)
       @camera_cursor = CameraCursor2.new
       @camera.follow(@camera_cursor)
-
-      setup_state_events
-      setup_camera_events
-      create_map
-      create_spriteset
 
       @update_list << @camera
       @update_list << @camera_cursor
     end
 
+    def start
+      super
+      @control_map = game.database['controlmaps/map_editor']
+
+      @map_list = UI::MapList.new
+      @map_list.position.set(16, 16, 0)
+      @gui.add @map_list
+
+      create_spriteset
+      setup_camera_events
+      setup_state_events
+      setup_map_events
+
+      setup_map
+      show_map_list
+    end
+
+    def on_map_selected(map)
+      @map = @map_renderer.map = map
+      @camera_cursor.position.set(map.bounds.cx, map.bounds.cy)
+    end
+
+    def hide_map_list
+      @camera_cursor.activate
+      @map_list.deactivate.hide
+    end
+
+    def show_map_list
+      @camera_cursor.deactivate
+      old_map = @map
+      @map_list.refresh_list.activate.show.jump_to_item(map_id: old_map.id)
+    end
+
     def setup_state_events
       input.on :press do |e|
-        state_manager.pop if e.key == :escape
+        if e.key == :escape
+          if @map_list.active?
+            state_manager.pop
+          else
+            show_map_list
+          end
+        end
       end
     end
 
@@ -68,19 +103,29 @@ module States
       end)
     end
 
-    def create_map
-      @editor_map = game.database[game.database['system']['starting_map']]
+    def setup_map
+      on_map_selected game.database[game.database['system']['starting_map']]
     end
 
     def create_spriteset
       @map_renderer = EditorMapRenderer.new
-      @map_renderer.show_borders  = nil
-      @map_renderer.show_labels   = nil
+      @map_renderer.show_borders  = true
+      @map_renderer.show_labels   = true
       @map_renderer.show_underlay = true
       @map_renderer.show_overlay  = nil
-      @map_renderer.map = @editor_map
+      @map_renderer.map = @map
       @map_renderer.camera = @camera
       @renderer.add @map_renderer
+    end
+
+    def setup_map_events
+      @map_list.on :ok do
+        hide_map_list
+      end
+
+      @map_list.on :map_selected do |e|
+        on_map_selected(e.map)
+      end
     end
   end
 end
