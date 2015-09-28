@@ -17,7 +17,7 @@ module Systems
 
     def process(entity, delta)
       entity.comp(:mapobj, :transform) do |m, t|
-        t.position.set(m.position * 32, 0)
+        t.position.set(m.real_position * 32, 0)
         t.dirty!
       end
     end

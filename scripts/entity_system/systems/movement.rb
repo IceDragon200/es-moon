@@ -52,15 +52,27 @@ module Systems
       world.filter :movement, :mapobj do |entity|
         entity.comp(:movement, :mapobj) do |movement, mapobj|
           vect = movement.vect
-          unless vect.zero?
-            x = mapobj.position.x + vect.x
-            y = mapobj.position.y + vect.y
-            passage = map.passage_at(x, y)
-            if passage > 0
-              mapobj.position.set(x, y)
+          if mapobj.real_position == mapobj.position
+            if mapobj.moving
+              mapobj.moving = false
               post_move(map, entity)
             end
-            vect.zero!
+            unless vect.zero?
+              x = mapobj.position.x + vect.x
+              y = mapobj.position.y + vect.y
+              passage = map.passage_at(x, y)
+              if passage > 0
+                mapobj.position.set(x, y)
+              end
+            end
+          end
+
+          if mapobj.real_position != mapobj.position
+            mapobj.moving = true
+            real, act = mapobj.real_position, mapobj.position
+            spd = delta * 5
+            real.x = real.x.step_to(act.x, spd)
+            real.y = real.y.step_to(act.y, spd)
           end
         end
       end

@@ -12,8 +12,7 @@ module Systems
         entity.comp(:mapobj, :transfer) do |mapobj, transfer|
           if transfer.pending
             mapobj.map_id = transfer.map_id
-            mapobj.position.x = transfer.x
-            mapobj.position.y = transfer.y
+            mapobj.move_to(transfer.x, transfer.y)
             transfer.pending = false
           end
         end
