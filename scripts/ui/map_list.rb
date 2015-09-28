@@ -22,7 +22,7 @@ module UI
     protected def initialize_events
       super
       on :resize do |e|
-        @background.resize(w + 16, h + 16)
+        @background.resize(w + 16, h + 32)
       end
 
       on :index do |e|
