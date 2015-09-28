@@ -128,7 +128,7 @@ module UI
     #
     # @param [Hash<Symbol, Object>] query
     def jump_to_item(query)
-      @index = @list.index(find_item(query)) || @index
+      self.index = @list.index(find_item(query)) || @index
     end
 
     # @param [Hash] item
