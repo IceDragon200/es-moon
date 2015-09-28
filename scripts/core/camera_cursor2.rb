@@ -3,6 +3,6 @@ class CameraCursor2 < Cursor2
 
   # @param [Float] delta
   def update(delta)
-    @position += @velocity * delta
+    @position += @velocity * delta if active?
   end
 end
