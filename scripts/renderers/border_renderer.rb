@@ -1,4 +1,4 @@
-module Renderer
+module Renderers
   # Generic Renderer object for display a L shaped border
   class Border < Moon::RenderContext
     # @return [Moon::Rect]
@@ -31,7 +31,7 @@ module Renderer
       end
     end
 
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       unless @border_rect.empty?
         w = @border_rect.w - 32
         h = @border_rect.h - 32

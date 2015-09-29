@@ -108,7 +108,7 @@ module States
     end
 
     def create_spriteset
-      @map_renderer = EditorMapRenderer.new
+      @map_renderer = Renderers::EditorMap.new
       @map_renderer.show_borders  = true
       @map_renderer.show_labels   = true
       @map_renderer.show_underlay = true

@@ -14,8 +14,8 @@ class MapEditorMapView < State::ViewBase
     super
     @tileselection_rect = UI::SelectionTileRect.new
     @tileselection_rect.tile_rect = @model.selection_rect
-    @map_renderer = EditorMapRenderer.new
-    @map_cursor = MapCursorRenderer.new
+    @map_renderer = Renderers::EditorMap.new
+    @map_cursor = Renderers::MapCursor.new
     texture = game.textures['ui/selection_tile']
     sprite = Moon::Sprite.new texture
     color = game.database['palette']['system/selection']

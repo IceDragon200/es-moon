@@ -29,7 +29,7 @@ module States
         @view.trigger ev
       end
 
-      ctx = CameraContext.new
+      ctx = Renderers::CameraContext.new
       ctx.camera = @camera
       ctx.add @view
 

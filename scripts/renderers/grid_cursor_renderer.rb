@@ -26,8 +26,7 @@ module Renderers
     # @param [Integer] x
     # @param [Integer] y
     # @param [Integer] z
-    # @param [Hash] options
-    def render_content(x, y, z, options)
+    def render_content(x, y, z)
       return if @cols <= 0
       @sprite.render x + @sprite.w * (@index % @cols),
         y + @sprite.h * (@index / @cols).to_i,

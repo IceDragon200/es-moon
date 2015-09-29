@@ -1,4 +1,4 @@
-module Renderer
+module Renderers
   class Grid < Moon::RenderContext
     # @!attribute [r] bounds
     #   @return [Vector2]
@@ -28,7 +28,7 @@ module Renderer
       @sprite.clip_rect = Moon::Rect.new(0, 0, 0, 0)
     end
 
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       @sprite.render x, y, z
     end
   end

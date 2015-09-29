@@ -30,7 +30,7 @@ module States
     end
 
     private def create_tileset_grid
-      @tileset_grid = ES::GridRenderer.new(texture: game.textures['ui/tileset_editor_grid'])
+      @tileset_grid = Renderers::Grid.new(texture: game.textures['ui/tileset_editor_grid'])
       @tileset_view.add @tileset_grid
     end
 
