@@ -1,5 +1,9 @@
 module Moon
   class Vector2
+    def lerp(a, b, d)
+      a + (b - a) * d
+    end
+
     # Returns the properties of the vector as an Array of Integers
     #
     # @return [Array<Integer>]
