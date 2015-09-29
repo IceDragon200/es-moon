@@ -27,12 +27,12 @@ module ES
       end
 
       def on_entity_added(entity)
-        trigger EntityEvent.new(entity, :entity_added)
+        trigger { EntityEvent.new(entity, :entity_added) }
         super
       end
 
       def on_entity_removed(entity)
-        trigger EntityEvent.new(entity, :entity_removed)
+        trigger { EntityEvent.new(entity, :entity_removed) }
         super
       end
     end
