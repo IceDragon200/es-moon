@@ -47,8 +47,7 @@ module UI
     # @param [Integer] x
     # @param [Integer] y
     # @param [Integer] z
-    # @param [Hash] options
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       if active? && @icon_sprite_active
         @icon_sprite_active.render x, y, z
       else

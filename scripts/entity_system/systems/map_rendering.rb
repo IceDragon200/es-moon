@@ -12,7 +12,7 @@ module Systems
       @tilemap = Moon::Tilemap.new
     end
 
-    def render(x, y, z, options)
+    def render(x, y, z)
       world.filter :level do |map_entity|
         map = map_entity[:level].map
         if @last_map != map

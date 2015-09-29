@@ -60,15 +60,15 @@ class MapEditorMapView < State::ViewBase
     super
   end
 
-  def render_edit_mode(x, y, z, options)
+  def render_edit_mode(x, y, z)
     if @model.selection_stage > 1
       pos = @map_renderer.position
       @tileselection_rect.render(pos.x, pos.y, pos.z)
     end
   end
 
-  def render_content(x, y, z, options)
-    render_edit_mode x, y, z, options
+  def render_content(x, y, z)
+    render_edit_mode x, y, z
     super
   end
 end

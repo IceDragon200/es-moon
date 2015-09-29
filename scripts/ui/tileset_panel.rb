@@ -26,7 +26,7 @@ class TilesetPanel < Moon::RenderContext
     super delta
   end
 
-  def render_content(x, y, z, options)
+  def render_content(x, y, z)
     if @tileset_sprite
       px, py, pz = *(@position + [x, y, z])
       cw, ch = @tileset.cell_w, @tileset.cell_h

@@ -53,7 +53,7 @@ module UI
       trigger { MapSelectedEvent.new(map) }
     end
 
-    def render_content(x, y, z, options)
+    def render_content(x, y, z)
       @background.render x, y, z
       super
     end

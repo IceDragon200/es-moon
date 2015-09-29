@@ -26,7 +26,7 @@ class TilePalettePanel < Moon::RenderContext
     super
   end
 
-  def render_content(x, y, z, options)
+  def render_content(x, y, z)
     if @spritesheet
       px, py, pz = *(@position + [x, y, z])
       cw, ch = @spritesheet.cell_w, @spritesheet.cell_h

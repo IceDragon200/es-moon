@@ -28,8 +28,7 @@ module UI
     # @param [Integer] x
     # @param [Integer] y
     # @param [Integer] z
-    # @param [Hash] options
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       return unless @tile_data.valid
 
       map = @tile_data.map

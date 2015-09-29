@@ -100,7 +100,7 @@ module Systems
       end
     end
 
-    def render(x, y, z, options)
+    def render(x, y, z)
       @world.filter :sprite do |entity|
         sprite = entity[:sprite]
         setup_texture(sprite)

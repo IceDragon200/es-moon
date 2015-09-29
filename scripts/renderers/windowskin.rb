@@ -95,7 +95,7 @@ module Renderers
       refresh
     end
 
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       @transform.clear
       @transform.translate!(x, y, z)
 

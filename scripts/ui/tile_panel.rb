@@ -200,7 +200,7 @@ module UI
       render_previews(x, y, z) if contains_relative_pos?(cursor_pos)
     end
 
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       render_background(x, y, z)
       return unless @spritesheet
       render_tiles(x, y, z)

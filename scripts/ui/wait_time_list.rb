@@ -8,7 +8,7 @@ module UI
       @text = Moon::Text.new(font, '')
     end
 
-    def render_content(x, y, z, options)
+    def render_content(x, y, z)
       row = 0
       world.filter(:wait_time) do |entity|
         wt = entity[:wait_time]

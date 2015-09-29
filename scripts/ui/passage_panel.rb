@@ -25,8 +25,7 @@ module UI
     # @param [Integer] x
     # @param [Integer] y
     # @param [Integer] z
-    # @param [Hash] options
-    def render_content(x, y, z, options)
+    def render_content(x, y, z)
       m = @passage.masked?(Enum::Passage::UP)
       @spritesheet.render x + @spritesheet.w, y, z, m ? 1 : 0
 

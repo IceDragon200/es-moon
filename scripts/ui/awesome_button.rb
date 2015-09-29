@@ -49,8 +49,7 @@ module UI
     # @param [Integer] x
     # @param [Integer] y
     # @param [Integer] z
-    # @param [Hash] options
-    protected def render_content(x, y, z, options)
+    protected def render_content(x, y, z)
       tx = x + (w - @icon_text.font.size) / 2
       ty = y + (h - @icon_text.font.size) / 2
       @icon_text.render tx, ty, z

@@ -66,8 +66,7 @@ module UI
     # @param [Integer] x
     # @param [Integer] y
     # @param [Integer] z
-    # @param [Hash] options
-    def render_content(x, y, z, options)
+    def render_content(x, y, z)
       return unless @sprite
       cw, ch = @cell_size.x, @cell_size.y
       px, py, pz = *((@cell_size * [@tile_rect.x, @tile_rect.y, 0]) + [x, y, z])
