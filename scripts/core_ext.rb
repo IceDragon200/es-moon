@@ -19,3 +19,6 @@ require 'scripts/core_ext/moon-data_matrix'
 
 # scheduler
 require 'scripts/core_ext/moon-scheduler'
+
+# render_primitives
+require 'scripts/core_ext/moon-render_context'
