@@ -29,6 +29,10 @@ class MapEditorGuiController < State::ControllerBase
     end
   end
 
+  def on_data_changed
+    get_tile_data(@view.tile_info.tile_data, @model.map_cursor.position)
+  end
+
   def start
     super
     initialize_model_events
@@ -182,6 +186,7 @@ class MapEditorGuiController < State::ControllerBase
     if map = tile_data.map
       x, y, z = tile_data.position.x, tile_data.position.y, 0
       map.zones[x, y, z] = yield(map.zones[x, y, z]).clamp(-1, 255)
+      on_data_changed
     end
   end
 
