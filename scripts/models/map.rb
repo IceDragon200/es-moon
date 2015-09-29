@@ -48,7 +48,11 @@ module Models
     #
     # @return [Moon::Rect]
     def bounds
-      Moon::Rect.new(0, 0, w, h)
+      if !@bounds || @bounds.w != w || @bounds.h != h
+        @bounds ||= Moon::Rect.new(0, 0, w, h)
+        @bounds.set(0, 0, w, h)
+      end
+      @bounds
     end
 
     # Constructs a static passage table from the map, it is expected that
