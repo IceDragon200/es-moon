@@ -1,3 +1,4 @@
+require 'scripts/states/base/render'
 require 'scripts/states/base/game'
 require 'scripts/states/base/input_context'
 require 'scripts/states/base/crash_catch'
