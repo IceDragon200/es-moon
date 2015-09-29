@@ -1,8 +1,9 @@
 # mruby core
+require 'scripts/core_ext/object'
+require 'scripts/core_ext/numeric'
+require 'scripts/core_ext/string'
 require 'scripts/core_ext/array'
 require 'scripts/core_ext/enumerable'
-require 'scripts/core_ext/string'
-require 'scripts/core_ext/object'
 
 # moon core
 require 'scripts/core_ext/moon-sprite'
