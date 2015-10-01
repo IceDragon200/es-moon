@@ -20,6 +20,10 @@ module States
       game.font_cache['vera.10']
     end
 
+    def crash_handling(exc)
+      raise exc
+    end
+
     def start
       super
     end
