@@ -4,6 +4,10 @@ module Moon
     attr_accessor :target
   end
 
+  class MouseHoverEvent
+    include UiEvent
+  end
+
   class ClickEvent
     include UiEvent
   end
@@ -101,7 +105,7 @@ module Moon
 
     def initialize
       @expecting_release = {}
-      @last_click = nil
+      @last_click = {}
     end
   end
 
@@ -109,8 +113,14 @@ module Moon
     private def handle_release(e)
       if @event_states.expecting_release[e.key]
         @event_states.expecting_release[e.key] = false
-        event = ClickEvent.new(self, e.position, :click)
+        event = ClickEvent.new(self, e.position, e.button, :click)
         child_handle_event event
+        if @event_states.last_click[e.button]
+          if (@tick - @event_states.last_click) < 0.5
+            trigger { ClickEvent.new(e.parent, e.position, e.button, :dblclick) }
+          end
+        end
+        @event_states.last_click = @tick
       end
     end
 
@@ -129,20 +139,23 @@ module Moon
       end
     end
 
+    private def handle_mousemove_event(e)
+      p = e.position
+      hover_event = MouseHoverEvent.new(e, self, p, false)
+      child_handle_event hover_event do |elm, ev|
+        ev.state = elm.screen_bounds.contains?(p.x, p.y)
+      end
+    end
+
     protected def initialize_events
       super
       @event_states = UiEventStates.new
       input.on :any do |e|
         case e.type
+        when :mousemove
+          handle_mousemove_event e
         when :press, :release
           handle_mouse_event e if e.is_a?(MouseEvent)
-        when :click
-          if @event_states.last_click
-            if (@tick - @event_states.last_click) < 0.5
-              trigger { ClickEvent.new(e.parent, e.position, :dblclick) }
-            end
-          end
-          @event_states.last_click = @tick
         end
         child_handle_event e
       end
@@ -158,6 +171,10 @@ module Moon
 
     # @param [Event] event
     def handle_event(event)
+      case event
+      when ClickEvent
+        return unless screen_bounds.contains?(event.position)
+      end
       input.trigger(event)
     end
 
@@ -192,20 +209,22 @@ module Moon
       @elements.each(&block)
     end
 
-    def child_handle_event(event)
+    def child_handle_event(event, &block)
+      block ||= ->(elm, ev) { }
       each_child do |element|
         if event.is_a?(UiEvent)
           event.parent = self
           event.target = element
         end
-        element.handle_event(event)
+        block.call(element, event)
+        element.handle_event(event, &block)
       end
     end
 
-    def handle_event(event)
-      super
+    def handle_event(event, &block)
+      super event
       if input.allow_event?(event)
-        child_handle_event event
+        child_handle_event(event, &block)
       end
     end
   end
