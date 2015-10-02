@@ -2,7 +2,6 @@
 require 'scripts/core_ext/object'
 require 'scripts/core_ext/numeric'
 require 'scripts/core_ext/string'
-require 'scripts/core_ext/array'
 require 'scripts/core_ext/enumerable'
 
 # moon core
