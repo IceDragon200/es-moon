@@ -27,11 +27,12 @@ module Moon
     end
   end
 
-  class UiObserver
+  class UiObserverBase
     include Activatable
     include Eventable
     include Taggable
 
+    attr_reader :element
     attr_accessor :active
     attr_accessor :tags
 
@@ -53,28 +54,6 @@ module Moon
       invalidate
     end
 
-    def invalidate
-      puts "Input invalidated for #{@element}"
-      @allowed = nil
-      if p = @element.parent
-        p.input.invalidate
-      end
-    end
-
-    private def child_events
-      result = []
-      if @element.is_a?(RenderPrimitive::Containable::Parent)
-        @element.each_child do |child|
-          result |= child.input.allowed
-        end
-      end
-      result
-    end
-
-    def allowed
-      @allowed ||= @listeners.keys | child_events
-    end
-
     # @param [Event] event
     # @return [Boolean]
     def allow_event?(event)
@@ -82,6 +61,9 @@ module Moon
       allowed.include?(event.type)
     end
 
+    # @param [Event, nil] event
+    # @yieldparam [Eventable] self
+    # @yieldparam [Event] event
     def trigger(event = nil)
       event = yield self if block_given?
       return unless allow_event?(event)
@@ -96,6 +78,102 @@ module Moon
           end
         end
       end
+    end
+  end
+
+  class UiObserverCapture < UiObserverBase
+    # Invalidates allowed events for this observer, as well as its parents
+    def invalidate
+      puts "Invalidating Capture input for #{@element}"
+      @allowed = nil
+      if p = @element.parent
+        p.input.invalidate
+      end
+    end
+
+    # @return [Array<Symbol>]
+    private def child_event_types
+      result = []
+      element.each_child do |child|
+        result |= child.input.allowed
+      end
+      result
+    end
+
+    # @return [Array<Symbol>]
+    def allowed
+      @allowed ||= @listeners.keys | child_event_types
+    end
+
+    # @param [Event] event
+    def children_capture_event(event, &block)
+      block ||= ->(elm, ev) { }
+      element.each_child do |child|
+        if event.is_a?(UiEvent)
+          event.parent = element
+          event.target = child
+        end
+        block.call(child, event)
+        child.input.capture_event(event, &block)
+      end
+    end
+
+    # @param [Event] event
+    def capture_event(event, &block)
+      case event
+      when ClickEvent
+        return unless element.screen_bounds.contains?(event.position)
+      end
+      trigger(event)
+      children_capture_event(event, &block) if allow_event?(event)
+    end
+  end
+
+  class UiObserverBubble < UiObserverBase
+    # Invalidates allowed events for this observer, as well as its children
+    def invalidate
+      puts "Invalidating Bubble input for #{@element}"
+      @allowed = nil
+      @element.each_child do |child|
+        child.input_bubble.invalidate
+      end
+    end
+
+    # @return [Array<Symbol>]
+    private def parent_event_types
+      result = []
+      element.each_parent do |parent, s|
+        result |= parent.input_bubble.allowed
+      end
+      result
+    end
+
+    # @return [Array<Symbol>]
+    def allowed
+      @allowed ||= @listeners.keys | parent_event_types
+    end
+
+    # @param [Event] event
+    def parent_bubble_event(event, &block)
+      block ||= ->(elm, ev) { }
+      element.each_parent do |target, parent|
+        if event.is_a?(UiEvent)
+          event.parent = parent
+          event.target = target
+        end
+        block.call(target, event)
+        target.input_bubble.bubble_event(event, &block)
+      end
+    end
+
+    # @param [Event] event
+    def bubble_event(event, &block)
+      case event
+      when ClickEvent
+        return unless element.screen_bounds.contains?(event.position)
+      end
+      trigger(event)
+      parent_bubble_event(event, &block) if allow_event?(event)
     end
   end
 
@@ -114,13 +192,14 @@ module Moon
       if @event_states.expecting_release[e.key]
         @event_states.expecting_release[e.key] = false
         event = ClickEvent.new(self, e.position, e.button, :click)
-        child_handle_event event
-        if @event_states.last_click[e.button]
-          if (@tick - @event_states.last_click) < 0.5
-            trigger { ClickEvent.new(e.parent, e.position, e.button, :dblclick) }
+        input.children_capture_event event
+        if last = @event_states.last_click[e.button]
+          if (@tick - last) < 0.5
+            dblclick_ev = ClickEvent.new(event.parent, event.position, event.button, :dblclick)
+            input.children_capture_event dblclick_ev
           end
         end
-        @event_states.last_click = @tick
+        @event_states.last_click[e.button] = @tick
       end
     end
 
@@ -142,7 +221,7 @@ module Moon
     private def handle_mousemove_event(e)
       p = e.position
       hover_event = MouseHoverEvent.new(e, self, p, false)
-      child_handle_event hover_event do |elm, ev|
+      input.children_capture_event hover_event do |elm, ev|
         ev.state = elm.screen_bounds.contains?(p.x, p.y)
       end
     end
@@ -157,31 +236,49 @@ module Moon
         when :press, :release
           handle_mouse_event e if e.is_a?(MouseEvent)
         end
-        child_handle_event e
+        input.children_capture_event e
       end
     end
   end
 
+  module AffectsParentSize
+    attr_accessor :affects_parent_size
+
+    # @param [Hash<Symbol, Object>] options
+    protected def initialize_from_options(options)
+      super
+      @affects_parent_size = options.fetch(:affects_parent_size, true)
+    end
+  end
+
   class RenderContext
+    prepend AffectsParentSize
     remove_method :enable_default_events
 
-    protected def initialize_input
-      @input = UiObserver.new self
-    end
+    attr_accessor :input_bubble
 
-    # @param [Event] event
-    def handle_event(event)
-      case event
-      when ClickEvent
-        return unless screen_bounds.contains?(event.position)
-      end
-      input.trigger(event)
+    protected def initialize_input
+      @input = UiObserverCapture.new self
+      @input_bubble = UiObserverBubble.new self
     end
 
     def on_resize(*attrs)
       super
-      if parent.is_a?(RenderContainer)
-        parent.refresh_size
+      if parent.is_a?(ContainerChildResize)
+        parent.refresh_size if @affects_parent_size
+      end
+    end
+
+    def each_child
+    end
+
+    def each_parent
+      p = self
+      t = p.parent
+      while t
+        yield t, p
+        p = t
+        t = p.parent
       end
     end
   end
@@ -190,42 +287,63 @@ module Moon
     protected def on_child_adopt(child)
       super
       input.invalidate
+      child.input_bubble.invalidate
     end
 
     protected def on_child_disown(child)
       super
       input.invalidate
+      child.input_bubble.invalidate
+    end
+  end
+
+  module ContainerChildResize
+    attr_accessor :auto_resize
+
+    # @param [RenderContext] child
+    def refresh_size
+      super if @auto_resize
+    end
+
+    protected def initialize_members
+      super
+      @auto_resize = true
+    end
+
+    # @param [Hash<Symbol, Object>] options
+    protected def initialize_from_options(options)
+      super
+      @auto_resize = options.fetch(:auto_resize, @auto_resize)
     end
   end
 
   class RenderContainer
+    prepend UiEventableContainer
+    prepend ContainerChildResize
+
     protected def initialize_events
       super
     end
 
-    prepend UiEventableContainer
+    # all elements which affect the size of the RenderContainer
+    private def sized_elements
+      @elements.select(&:affects_parent_size)
+    end
+
+    # @return [Integer]
+    private def compute_w
+      x, _, x2, _ = *Moon::Rect.bb_for(sized_elements)
+      x2 - x
+    end
+
+    # @return [Integer]
+    private def compute_h
+      _, y, _, y2 = *Moon::Rect.bb_for(sized_elements)
+      y2 - y
+    end
 
     def each_child(&block)
       @elements.each(&block)
-    end
-
-    def child_handle_event(event, &block)
-      block ||= ->(elm, ev) { }
-      each_child do |element|
-        if event.is_a?(UiEvent)
-          event.parent = self
-          event.target = element
-        end
-        block.call(element, event)
-        element.handle_event(event, &block)
-      end
-    end
-
-    def handle_event(event, &block)
-      super event
-      if input.allow_event?(event)
-        child_handle_event(event, &block)
-      end
     end
   end
 
