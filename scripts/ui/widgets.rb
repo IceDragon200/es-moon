@@ -1,0 +1,7 @@
+require 'scripts/ui/widgets/base'
+require 'scripts/ui/widgets/panel'
+require 'scripts/ui/widgets/button'
+require 'scripts/ui/widgets/label'
+require 'scripts/ui/widgets/checkbox'
+require 'scripts/ui/widgets/radio_button'
+require 'scripts/ui/widgets/radio_group'
