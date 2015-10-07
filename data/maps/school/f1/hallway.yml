@@ -1,99 +1,7 @@
 ---
-id: ""
+id: maps/school/f1/hallway
 name: School F1 Hallway
-nodes: []
-zones:
-  xsize: 7
-  ysize: 12
-  zsize: 1
-  size: 84
-  data:
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  - -1
-  default: -1
-  "&class": Moon::DataMatrix
+tileset_id: tilesets/common
 data:
   xsize: 7
   ysize: 12
@@ -269,30 +177,119 @@ data:
   - -1
   - -1
   default: -1
-  "&class": Moon::DataMatrix
+  '&class': Moon::DataMatrix
+zones:
+  xsize: 7
+  ysize: 12
+  zsize: 1
+  size: 84
+  data:
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - 1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - 0
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - 2
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - -1
+  - 3
+  - 3
+  - 3
+  - -1
+  - -1
+  default: -1
+  '&class': Moon::DataMatrix
 nodes:
-- zone_id: 1
+- zone_id: 0
   type: transfer
-  map_id: maps/school/f1/baron
+  map_id: maps/school/f1/rooms/baron
   x: 0
   y: 3
-nodes:
-- zone_id: 2
+- zone_id: 1
   type: transfer
   map_id: maps/school/f1/hallway
   x: 6
   y: 3
-nodes:
+- zone_id: 2
+  type: transfer
+  map_id: maps/school/f1/rooms/room2
+  x: 0
+  y: 2
 - zone_id: 3
   type: transfer
   map_id: maps/school/f1/hallway
   x: 6
   y: 3
-nodes:
-- zone_id: 4
-  type: transfer
-  map_id: maps/school/f1/hallway
-  x: 6
-  y: 3
-tileset_id: tilesets/common
-"&class": Models::Map
+'&class': Models::Map
+...

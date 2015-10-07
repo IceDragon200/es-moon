@@ -128,7 +128,7 @@ zones:
   - -1
   - -1
   - -1
-  - -1
+  - 0
   - -1
   - -1
   - -1
@@ -162,6 +162,11 @@ zones:
   - -1
   default: -1
   '&class': Moon::DataMatrix
-nodes: []
+nodes:
+- zone_id: 0
+  type: transfer
+  map_id: maps/school/f1/hallway
+  x: 6
+  y: 9
 '&class': Models::Map
 ...
