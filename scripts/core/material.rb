@@ -6,6 +6,7 @@ class Material
   attr_accessor :shader
   attr_accessor :textures
 
+  # @param [Moon::Shader] shader
   def initialize(shader)
     @id = @@id += 1
     @shader = shader
@@ -28,6 +29,8 @@ class Material
     end
   end
 
+  # @param [Moon::Texture] texture
+  # @param [Integer] index
   def bind_texture(texture, index = 0)
     Moon::OpenGL.active_texture(Moon::OpenGL::TEXTURE0 + index)
     texture.bind
