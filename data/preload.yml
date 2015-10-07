@@ -54,6 +54,7 @@ textures:
   ui/tileset_editor_cursor: "resources/ui/tileset_editor_cursor.png"
   ui/tileset_editor_grid: "resources/ui/tileset_editor_grid.png"
   ui/tileset_editor_save_button: "resources/ui/tileset_editor_save_button.png"
+  ui/uikit: "resources/ui/uikit.png"
   ui/windowskin_help_panel: "resources/ui/windowskin_help_panel.png"
 
 fonts:
