@@ -1,3 +1,5 @@
+require 'scripts/states/test/ui'
+
 module States
   # State responsible for preloading all assets that will be used in the game
   # This is to avoid runtime allocations, and forces thinking ahead instead
@@ -136,6 +138,7 @@ module States
 
       state_manager.change States::Shutdown
       state_manager.push States::Title
+      #state_manager.push States::Test::UI
       # Test Map
       #state_manager.push States::FpMap
       ## Roadmap tests
