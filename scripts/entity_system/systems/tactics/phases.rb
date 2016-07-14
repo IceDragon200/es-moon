@@ -91,7 +91,7 @@ module Phases
         entities.each do |entity|
           entity[:wait_time].value -= diff
         end
-        # decreate the round_wt by the diff
+        # decrease the round_wt by the diff
         tactics.round_wt -= diff
         # increase the battle_wt by the diff
         tactics.battle_wt += diff
@@ -174,7 +174,7 @@ module Phases
 
     # (see Base#process)
     def process(tactics, world, delta)
-      if entity = world.get_entity_by_id(tactics.subject_id)
+      if entity = subject(tactics, world)
         wt = entity[:wait_time]
         wt.value += wt.reset
       end

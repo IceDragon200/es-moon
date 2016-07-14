@@ -25,7 +25,10 @@ module UI
 
     protected def initialize_elements
       super
-      @background = Renderers::Windowskin.new texture: Game.instance.textures['ui/windowskin_help_panel']
+      @background = Renderers::Windowskin.new(
+        texture: Game.instance.textures['ui/windowskin_help_panel'],
+        affects_parent_size: false
+      )
 
       @text = Moon::Label.new '', Game.instance.fonts['system.16']
       @text.string = '' <<
