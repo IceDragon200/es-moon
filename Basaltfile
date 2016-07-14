@@ -1,6 +1,7 @@
 set pkgdir: 'packages'
 #set automatic_deps: true
 
+pkg 'animation'
 pkg 'data_bags'
 pkg 'data_model'
 pkg 'data_painter' # Data manipulation package
@@ -20,6 +21,7 @@ pkg 'moon-prototype'
 pkg 'moon-serializable'
 pkg 'render_primitives'
 pkg 'scheduler'
+pkg 'serializables'
 pkg 'splash' # splash screen package
 pkg 'state_mvc'
 pkg 'std' # standard library

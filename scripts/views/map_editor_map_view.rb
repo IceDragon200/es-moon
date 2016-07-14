@@ -1,4 +1,4 @@
-require 'std/mixins/transition_host'
+require 'animation/transition_host'
 require 'scripts/ui/selection_tile_rect'
 require 'scripts/renderers/editor_map_renderer'
 require 'scripts/renderers/map_cursor_renderer'
