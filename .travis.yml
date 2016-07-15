@@ -4,8 +4,7 @@ addons:
   code_climate:
     repo_token: f5101c656b72b052e4d809276320e6aa79f94ce713e676a7b7d9dba41891cc8d
 rvm:
-- 2.1
-- 2.2
+- 2.3.1
 - ruby-head
 before_install:
 - gem install bundle
